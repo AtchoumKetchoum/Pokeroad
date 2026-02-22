@@ -2339,9 +2339,25 @@ async function beginBattleSequence() {
     }
     isRunning = true;
 
-    // 1. Charger toutes les données nécessaires
-    console.log("[DEBUG] Loading necessary databases");
-    await Promise.all([loadMovesDB(), loadTypesDB(), loadPokedexDB(), loadBattleLevelsDB(), loadAoeDB(), loadRulesDB()]);
+    // 1. Charger toutes les données nécessaires avec gestion d'erreurs individuelle
+    console.log("[DEBUG] Loading databases...");
+    const dbLoads = [
+        { name: 'Moves', fn: loadMovesDB },
+        { name: 'Types', fn: loadTypesDB },
+        { name: 'Pokedex', fn: loadPokedexDB },
+        { name: 'Levels', fn: loadBattleLevelsDB },
+        { name: 'AOE', fn: loadAoeDB },
+        { name: 'Rules', fn: loadRulesDB }
+    ];
+
+    for (const db of dbLoads) {
+        try {
+            await db.fn();
+            console.log(`[DEBUG] ${db.name} DB loaded.`);
+        } catch (e) {
+            console.warn(`[DEBUG] Failed to load ${db.name} DB:`, e);
+        }
+    }
 
     // 2. Préparer le terrain (nettoyer les anciennes batailles, générer les nouveaux ennemis)
     console.log("[DEBUG] Preparing grids for new battle");
