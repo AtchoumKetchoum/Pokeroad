@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Déploie tout le projet incluant le nouvel index.html et le dossier maps/
-          path: ".maps/"
+          path: "."
 
       - name: Deploy to GitHub Pages
         id: deployment
