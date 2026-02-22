@@ -1,0 +1,158 @@
+{
+  "Normal": {
+    "Roche": 0.5,
+    "Spectre": 0,
+    "Acier": 0.5
+  },
+  "Feu": {
+    "Feu": 0.5,
+    "Eau": 0.5,
+    "Plante": 2,
+    "Glace": 2,
+    "Insecte": 2,
+    "Roche": 0.5,
+    "Dragon": 0.5,
+    "Acier": 2
+  },
+  "Eau": {
+    "Feu": 2,
+    "Eau": 0.5,
+    "Plante": 0.5,
+    "Sol": 2,
+    "Roche": 2,
+    "Dragon": 0.5
+  },
+  "Electrik": {
+    "Eau": 2,
+    "Electrik": 0.5,
+    "Plante": 0.5,
+    "Sol": 0,
+    "Vol": 2,
+    "Dragon": 0.5
+  },
+  "Plante": {
+    "Feu": 0.5,
+    "Eau": 2,
+    "Plante": 0.5,
+    "Poison": 0.5,
+    "Sol": 2,
+    "Vol": 0.5,
+    "Insecte": 0.5,
+    "Roche": 2,
+    "Dragon": 0.5,
+    "Acier": 0.5
+  },
+  "Glace": {
+    "Feu": 0.5,
+    "Eau": 0.5,
+    "Plante": 2,
+    "Glace": 0.5,
+    "Sol": 2,
+    "Vol": 2,
+    "Dragon": 2,
+    "Acier": 0.5
+  },
+  "Combat": {
+    "Normal": 2,
+    "Glace": 2,
+    "Poison": 0.5,
+    "Vol": 0.5,
+    "Psy": 0.5,
+    "Insecte": 0.5,
+    "Roche": 2,
+    "Spectre": 0,
+    "Acier": 2,
+    "Tenebres": 2,
+    "Fee": 0.5
+  },
+  "Poison": {
+    "Plante": 2,
+    "Poison": 0.5,
+    "Sol": 0.5,
+    "Roche": 0.5,
+    "Spectre": 0.5,
+    "Acier": 0,
+    "Fee": 2
+  },
+  "Sol": {
+    "Feu": 2,
+    "Electrik": 2,
+    "Plante": 0.5,
+    "Poison": 2,
+    "Vol": 0,
+    "Insecte": 0.5,
+    "Roche": 2,
+    "Acier": 2
+  },
+  "Vol": {
+    "Electrik": 0.5,
+    "Plante": 2,
+    "Combat": 2,
+    "Insecte": 2,
+    "Roche": 0.5,
+    "Acier": 0.5
+  },
+  "Psy": {
+    "Combat": 2,
+    "Poison": 2,
+    "Psy": 0.5,
+    "Tenebres": 0,
+    "Acier": 0.5
+  },
+  "Insecte": {
+    "Feu": 0.5,
+    "Plante": 2,
+    "Combat": 0.5,
+    "Poison": 0.5,
+    "Vol": 0.5,
+    "Psy": 2,
+    "Spectre": 0.5,
+    "Tenebres": 2,
+    "Acier": 0.5,
+    "Fee": 0.5
+  },
+  "Roche": {
+    "Feu": 2,
+    "Glace": 2,
+    "Combat": 0.5,
+    "Sol": 0.5,
+    "Vol": 2,
+    "Insecte": 2,
+    "Acier": 0.5
+  },
+  "Spectre": {
+    "Normal": 0,
+    "Psy": 2,
+    "Spectre": 2,
+    "Tenebres": 0.5
+  },
+  "Dragon": {
+    "Dragon": 2,
+    "Acier": 0.5,
+    "Fee": 0
+  },
+  "Acier": {
+    "Feu": 0.5,
+    "Eau": 0.5,
+    "Electrik": 0.5,
+    "Glace": 2,
+    "Roche": 2,
+    "Acier": 0.5,
+    "Fee": 2
+  },
+  "Tenebres": {
+    "Combat": 0.5,
+    "Psy": 2,
+    "Spectre": 2,
+    "Tenebres": 0.5,
+    "Fee": 0.5
+  },
+  "Fee": {
+    "Feu": 0.5,
+    "Combat": 2,
+    "Poison": 0.5,
+    "Dragon": 2,
+    "Acier": 0.5,
+    "Tenebres": 2
+  }
+}

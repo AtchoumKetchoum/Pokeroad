@@ -1,0 +1,1594 @@
+/* ============================================
+   BATTLE.CSS - Styles spécifiques au combat
+   ============================================ */
+
+/* --- CORPS DE PAGE --- */
+body {
+    margin: 0;
+    background-color: #111;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-pixel);
+    overflow: hidden;
+}
+
+/* --- ÉCRAN DE JEU (COMBAT) --- */
+#scaler-view.battle-bg {
+    background-color: #5c94d4; 
+}
+
+/* --- EFFETS D'AMBIANCE --- */
+#ambient-effects {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1; /* Derrière les unités mais au-dessus du fond */
+}
+
+@keyframes screen-shake-dynamic {
+    0%, 100% { transform: translate(-50%, -50%) translate(0, 0); }
+    25%, 75% { transform: translate(-50%, -50%) translate(var(--shake-intensity, 2px), 0); }
+    50% { transform: translate(-50%, -50%) translate(calc(var(--shake-intensity, 2px) * -1), 0); }
+}
+
+/* Style de base pour les éléments de verre */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Effet de hover global */
+.hover-effect {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-effect:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- CONTENEUR HUD HAUT-GAUCHE --- */
+.top-left-container {
+    position: absolute;
+    top: 2vh;
+    left: 2vw;
+    z-index: 71;
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+}
+
+/* Positionnement des boutons de fin de combat */
+#end-battle-nav-win, #end-battle-nav-lose {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+}
+
+#end-battle-nav-lose {
+    bottom: 20%; /* Plus bas pour le bouton Rejouer */
+}
+
+/* --- HUD DE PROGRESSION --- */
+#hudProgress {
+    position: relative;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-shadow: none;
+    color: #333;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+#hudProgress:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); /* Ombre plus sombre au survol */
+}
+
+/* --- STATUT DE BATAILLE --- */
+#battleStatus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 80;
+    font-weight: 700;
+    padding: 15px 25px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: none; /* Caché par défaut */
+}
+
+#battleStatus:hover {
+    transform: translate(-50%, -50%) translateY(-3px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.status-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.rewards-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 15px;
+    margin-top: 5px;
+}
+
+.reward-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-family: monospace;
+}
+
+.reward-egg-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.reward-amount {
+    color: #333;
+}
+
+.rewards-grid-mini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 15px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+    padding-top: 10px;
+}
+
+.reward-badge {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.reward-badge.tm {
+    background: #e3f2fd;
+    border-color: #90caf9;
+}
+
+.level-up-badge {
+    background: #fff9c4;
+    border: 2px solid #fbc02d;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); box-shadow: 0 0 0 rgba(251, 192, 45, 0); }
+    to { transform: scale(1.05); box-shadow: 0 0 10px rgba(251, 192, 45, 0.5); }
+}
+
+#battleStatus.win {
+    color: #43a047;
+    display: block;
+}
+
+#battleStatus.lose {
+    color: #888;
+    display: block;
+}
+
+.status-title + .rewards-summary button {
+    color: #333; /* Assure que le texte du bouton est lisible */
+}
+
+
+/* --- BOUTONS DE FIN DE COMBAT --- */
+#end-battle-nav-win,
+#end-battle-nav-lose {
+    position: absolute;
+    top: calc(50% + 60px); /* Positionné sous le message de statut */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 81;
+}
+
+/* --- ARÈNE 1V1 --- */
+#battleArena {
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    width: 100%;
+    height: 75vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
+    z-index: 40;
+    pointer-events: none;
+}
+
+#battleArena .slot {
+    width: 220px;
+    height: 220px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+}
+
+#battleArena .side-left {
+    transform: translateY(0);
+}
+
+#battleArena .side-right {
+    transform: translateY(0);
+}
+
+#battleArena .sprite {
+    width: 25vmin;
+    height: 25vmin;
+    
+    transform-origin: center;
+    filter: drop-shadow(0 12px 0 rgba(0, 0, 0, 0.25));
+}
+
+/* Barres de vie dans l'arène */
+#battleArena .hpBar {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 10px;
+    background: #eef5f9;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+#battleArena .hpFill {
+    height: 100%;
+    width: 100%;
+    background: #4caf50;
+    transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#battleArena .hpFill.midHp {
+    background: #ffc107;
+}
+
+#battleArena .hpFill.lowHp {
+    background: #f44336;
+}
+
+#battleArena .floatLayer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+}
+
+#battleArena .damageFloat {
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ff6b6b;
+    font-size: 18px;
+    text-shadow: 0 2px 0 #000;
+    animation: floatUpFade 700ms ease-out forwards;
+}
+
+#battleArena .damageFloat.heal {
+    color: #66bb6a;
+    text-shadow: 0 2px 0 #145;
+}
+
+/* --- SCÈNE DE BATAILLE --- */
+.battle-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.player-side,
+.enemy-side {
+    display: none;
+}
+
+/* --- GRILLES D'ÉQUIPE --- */
+.team-grid {
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.5vw;
+    width: 32vw; 
+    max-width: 420px;
+    aspect-ratio: 1;
+    bottom: 65px; /* Collée à la barre de pied de page (min-height 60px) */
+    transform: none;
+}
+
+#player-grid {
+    left: 25%;
+}
+
+#enemy-grid {
+    right: 25%;
+}
+
+/* --- SLOTS D'UNITÉ --- */
+.unit-slot {
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s, transform 0.3s ease-out;
+    background: transparent;
+    position: relative;
+    transform: translateY(var(--slot-translateY, 0)) scale(var(--slot-scale, 1));
+}
+
+.team-grid .unit-slot {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+/* Perspective par ligne */
+.team-grid .unit-slot:nth-child(1),
+.team-grid .unit-slot:nth-child(2),
+.team-grid .unit-slot:nth-child(3) {
+    --slot-scale: 0.7;
+}
+
+.team-grid .unit-slot:nth-child(4),
+.team-grid .unit-slot:nth-child(5),
+.team-grid .unit-slot:nth-child(6) {
+    --slot-scale: 0.85;
+    --slot-translateY: -15px;
+}
+
+.team-grid .unit-slot:nth-child(7),
+.team-grid .unit-slot:nth-child(8),
+.team-grid .unit-slot:nth-child(9) {
+    --slot-scale: 1;
+    --slot-translateY: -30px;
+}
+
+/* Perspective pour la grille ennemie */
+#enemy-grid .unit-slot:nth-child(1),
+#enemy-grid .unit-slot:nth-child(2),
+#enemy-grid .unit-slot:nth-child(3) {
+    --slot-scale: 0.7;
+}
+
+#enemy-grid .unit-slot:nth-child(4),
+#enemy-grid .unit-slot:nth-child(5),
+#enemy-grid .unit-slot:nth-child(6) {
+    --slot-scale: 0.85;
+    --slot-translateY: -15px;
+}
+
+#enemy-grid .unit-slot:nth-child(7),
+#enemy-grid .unit-slot:nth-child(8),
+#enemy-grid .unit-slot:nth-child(9) {
+    --slot-scale: 1;
+    --slot-translateY: -30px;
+}
+
+/* --- UNITÉ POKÉMON --- */
+.unit {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    transition: transform 0.1s;
+}
+
+.unit.is-ko,
+.unit.is-dragging {
+    animation: none;
+}
+
+.shadow {
+    position: absolute;
+    bottom: 2px;
+    width: 40px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    transform: scaleY(0.4);
+    z-index: 1;
+}
+
+.sprite {
+    width: 6.5vw;
+    height: 6.5vw;
+    min-width: 48px;
+    min-height: 48px;
+    z-index: 2;
+    
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    animation: float-idle 5s infinite ease-in-out;
+    transform-origin: center 85%;
+    will-change: transform;
+    transform: var(--transform-base, scaleX(1)); /* Assure que la transformation de base est toujours appliquée */
+}
+
+.unit.is-attacking .sprite {
+    /* Met en pause l'animation de respiration pendant une attaque */
+    animation: none;
+    /* La propriété transform de l'animation est supprimée, donc la transformation de base s'appliquera */
+}
+
+.unit.is-ko .sprite {
+    animation: none;
+}
+
+@keyframes float-idle {
+    0%, 100% {
+        transform: var(--transform-base) translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: var(--transform-base) translateY(-3px) rotate(-1deg);
+    }
+    75% {
+        transform: var(--transform-base) translateY(2px) rotate(1deg);
+    }
+}
+
+@keyframes status-glow-anim {
+    0%, 100% {
+        filter: brightness(1) drop-shadow(0 0 0 transparent);
+    }
+    50% {
+        filter: brightness(1.6) drop-shadow(0 0 10px rgba(186, 104, 200, 0.9)); /* Lueur violette pour les capacités de statut */
+    }
+}
+
+.sprite.status-glow {
+    animation: status-glow-anim 0.5s ease-in-out;
+}
+
+/* --- ICÔNES DE STATUT --- */
+.status-icons {
+    position: absolute;
+    top: -24px; /* Collé juste au dessus de la hp-box (qui est à -4vh) */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 3px; 
+    width: 120px; 
+    z-index: 11;
+    pointer-events: none;
+}
+
+.status-icon {
+    min-width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    font-size: 10px; /* Texte plus grand */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+    padding: 0 4px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.status-icon.par { background-color: #F8D030; } /* electric */
+.status-icon.psn { background-color: #A040A0; } /* poison */
+.status-icon.bru { background-color: #F08030; } /* fire */
+.status-icon.som { background-color: #A890F0; } /* psychic */
+.status-icon.conf { background-color: #F85888; } /* psychic */
+/* Les classes .buff et .debuff sont maintenant sur .v-stat pour les modifications de stats */
+.status-icon.v-stat {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+}
+.status-icon.v-stat.buff { background-color: #4CAF50; } /* green */
+.status-icon.v-stat.debuff { background-color: #f44336; } /* red */
+
+/* --- BARRES DE STATUT SUR L'UNITÉ --- */
+.hp-box {
+    position: absolute;
+    top: -4vh; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7.5vw;
+    min-width: 85px; /* Réduit pour éviter le chevauchement */
+    background: rgba(0, 0, 0, 0.85); 
+    padding: 3px 5px;
+    border-radius: 5px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Augmenté légèrement */
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.lvl-badge {
+    font-size: 11px; /* Plus grand */
+    font-weight: bold;
+    line-height: 1;
+    color: #ffd700; /* Or pour ressortir */
+    background: #111;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.charge-text {
+    font-size: 10px;
+    color: #4dd0e1; /* Cyan pour correspondre à la charge */
+    font-weight: 900;
+    margin-left: 2px;
+    min-width: 28px;
+    text-align: right;
+    text-shadow: 0 0 3px #000;
+}
+
+.hp-bar-bg {
+    flex-grow: 1;
+    height: 8px; /* Plus épais */
+    background: #222;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+}
+
+.hp-fill {
+    height: 100%;
+    background: #4caf50; /* Vert */
+    width: 100%;
+    transition: width 0.5s ease-out, background-color 0.3s;
+    border-radius: 2px;
+}
+
+.hp-fill.midHp { background: #ffc107; } /* Jaune */
+.hp-fill.lowHp { background: #f44336; } /* Rouge */
+.hp-fill.hp-flash-damage { animation: hp-flash-anim 0.2s ease-out; }
+
+/* Barre de Points d'Action (ATB) */
+.ap-bar {
+    position: absolute;
+    top: -1.2vh; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7.5vw;
+    min-width: 85px;
+    height: 5px;
+    background: rgba(0,0,0,0.85);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.ap-fill {
+    width: 0%;
+    height: 100%;
+    background: #4dd0e1; /* Cyan pour l'ATB */
+    transition: width 0.1s linear;
+}
+
+.ap-fill-update {
+    /* Animation de flash pour montrer la mise à jour */
+    animation: ap-flash 0.2s ease-out;
+}
+
+@keyframes ap-flash {
+    50% { filter: brightness(1.5); }
+}
+
+/* Postionnement dynamique par ligne pour éviter le chevauchement (perspective) */
+/* Ligne 2 (Milieu) : slots 4, 5, 6 */
+.unit-slot:nth-child(4) .hp-box, .unit-slot:nth-child(5) .hp-box, .unit-slot:nth-child(6) .hp-box {
+    top: -1.5vh;
+}
+.unit-slot:nth-child(4) .ap-bar, .unit-slot:nth-child(5) .ap-bar, .unit-slot:nth-child(6) .ap-bar {
+    top: 1.3vh;
+}
+.unit-slot:nth-child(4) .status-icons, .unit-slot:nth-child(5) .status-icons, .unit-slot:nth-child(6) .status-icons {
+    top: -20px;
+}
+
+/* Ligne 3 (Devant) : slots 7, 8, 9 */
+.unit-slot:nth-child(7) .hp-box, .unit-slot:nth-child(8) .hp-box, .unit-slot:nth-child(9) .hp-box {
+    top: 1vh;
+}
+.unit-slot:nth-child(7) .ap-bar, .unit-slot:nth-child(8) .ap-bar, .unit-slot:nth-child(9) .ap-bar {
+    top: 3.8vh;
+}
+.unit-slot:nth-child(7) .status-icons, .unit-slot:nth-child(8) .status-icons, .unit-slot:nth-child(9) .status-icons {
+    top: 25px; /* Ajusté pour suivre la hp-box descendue */
+}
+
+/* --- BANDEAU DE SÉLECTION --- */
+#selection-banner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    flex: 3;
+    height: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+#selection-banner h4 {
+    font-size: 9px;
+    color: #aaa;
+    margin-right: 10px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.banner-pokemon {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.banner-lvl-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 8px;
+    padding: 1px 3px;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+.banner-pokemon:hover {
+    transform: scale(1.1);
+}
+
+.banner-pokemon img {
+    width: 48px;
+    height: 48px;
+    
+}
+
+.banner-pokemon.selected {
+    filter: grayscale(80%) opacity(0.5);
+    cursor: not-allowed;
+    transform: scale(0.9);
+}
+
+/* --- PIED DE PAGE DE COMBAT --- */
+#battle-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 10px;
+    border-radius: 0;
+    box-sizing: border-box;
+    z-index: 60;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+    gap: 8px;
+}
+
+/* --- PANNEAU DE COMBAT --- */
+#combat-panel {
+    display: none; /* Caché par défaut */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+    align-items: center;
+    gap: 10px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+#turn-unit-display {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-self: start; /* Aligne à gauche dans sa colonne de grille */
+}
+
+.turn-unit-info {
+    display: flex;
+    flex-direction: column;
+}
+
+#turn-unit-display img {
+    width: 36px;
+    height: 36px;
+    
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+}
+
+#turn-unit-display .turn-unit-name {
+    font-size: 10px;
+    color: #333;
+    font-weight: 600;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+}
+
+#turn-unit-display .turn-unit-hp {
+    font-size: 9px;
+    color: #666;
+    margin-top: 5px;
+}
+
+#actionPanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;    
+    min-width: 0;
+    overflow: hidden; /* Empêche son contenu (les boutons) de déborder et de pousser les autres colonnes */
+    position: relative; /* Contexte de positionnement pour les barres décoratives de .movesRow */
+}
+
+/* Cacher les moves pendant le tour de l'ennemi pour centrer le message */
+#actionPanel.enemy-turn #movesRow {
+    display: none;
+}
+
+/* Inverser l'ordre pour le tour de l'ennemi */
+#actionPanel.enemy-turn {
+    flex-direction: column-reverse;
+}
+
+.target-prompt {
+    color: #333;
+    font-size: 10px;
+    text-align: center;
+    min-height: 14px; /* Empêche le décalage de la mise en page */
+    text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+    transition: opacity 0.3s;
+}
+
+/* --- PANNEAU D'INFORMATIONS GÉNÉRAL --- */
+#infoDisplayPanel {
+    position: absolute;
+    top: 10vh;
+    left: 5vw;
+    right: 5vw;
+    z-index: 70;
+
+    /* Style Glassmorphisme */
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+
+    padding: 12px 20px;
+    box-sizing: border-box;
+    color: #333;
+    text-shadow: none;
+    
+    /* Animation d'apparition */
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    display: flex; 
+    min-height: 50px;
+    align-items: center;
+}
+
+#infoDisplayPanel.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Contenu du panneau d'info */
+#infoDisplayPanel .info-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px; /* Espace vertical et horizontal */
+    width: 100%;
+    align-items: center;
+}
+
+#infoDisplayPanel .info-item {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+#infoDisplayPanel .info-item strong {
+    color: #111;
+    font-weight: 600;
+}
+
+/* Pour les descriptions de capacités */
+#infoDisplayPanel .move-description {
+    flex-basis: 100%; /* Prend toute la largeur */
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    font-size: 10px;
+    font-style: italic;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* --- TEXTES FLOTTANTS (Effets, Statuts) --- */
+.effect-float-text,
+.damage-float-number {
+    /* Base styles for all floating texts */
+    position: absolute;
+    transform: translateX(-50%);
+    font-size: 28px; /* Énorme */
+    font-weight: 900; /* Criard */
+    -webkit-text-stroke: 1.5px black; /* Contour pour lisibilité */
+    text-shadow: 0 0 6px black;
+    animation: float-shake-fade 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; /* Animation avec secousse */
+    z-index: 101;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* New style for floating move names */
+.move-name-float-text {
+    position: absolute;
+    transform: translateX(-50%);
+    font-weight: 900;
+    color: #fff; /* White for move names */
+    -webkit-text-stroke: 2px #000; /* Thicker black stroke */
+    text-shadow: 0 0 8px rgba(0,0,0,0.8);
+    animation: float-shake-fade 2s cubic-bezier(0.25, 1, 0.5, 1) forwards; /* Slightly longer animation */
+    z-index: 102; /* Above other floating texts */
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+@keyframes float-shake-fade {
+    from {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1.5) rotate(-3deg);
+    }
+    15% {
+        transform: translate(-50%, -10px) scale(1.6) rotate(3deg);
+    }
+    30% {
+        transform: translate(-50%, -20px) scale(1.5) rotate(-3deg);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -100px) scale(0.5) rotate(0deg);
+    }
+}
+
+/* Couleur par défaut (dégâts, efficacité, etc.) */
+.damage-float-number,
+.effect-float-text.info {
+    color: #ff4757; /* Rouge vif */
+}
+
+/* Couleurs spécifiques pour les buffs/debuffs */
+.effect-float-text.buff { color: #2ed573; } /* Vert vif */
+.effect-float-text.debuff { color: #ff7f50; } /* Orange corail */
+.effect-float-text.status { color: #ff9f43; } /* Orange */
+
+.damage-float-number {
+    z-index: 101;
+}
+
+/* Détails spécifiques (Z-Power, etc.) */
+#infoDisplayPanel .z-power-details {
+    color: #c07b00; /* Orange/Or foncé */
+    font-weight: 700;
+    background: rgba(255, 215, 0, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+}
+
+/* Chips pour les types */
+#infoDisplayPanel .chip {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-left: 4px;
+    display: inline-block; /* Pour que le margin s'applique */
+}
+
+.info-section .buff-text { color: #388e3c; font-weight: bold; }
+.info-section .debuff-text { color: #d32f2f; font-weight: bold; }
+
+.damage-float-number.heal {
+    color: #66bb6a;
+    color: #2ed573; /* Vert vif pour les soins */
+    -webkit-text-stroke: 1.5px #105937; /* Contour vert foncé */
+}
+
+/* Mini-grille pour l'affichage de l'AOE dans le panneau d'infos */
+#infoDisplayPanel .aoe-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.aoe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 10px);
+    grid-template-rows: repeat(3, 10px);
+    gap: 2px;
+    background: rgba(0,0,0,0.05);
+    padding: 3px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.08);
+    transform: rotate(90deg);
+}
+
+.aoe-grid-cell {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 2px;
+}
+
+.aoe-grid-cell.hit {
+    background-color: #ff8a80; /* Rouge clair pour la zone touchée */
+}
+
+.aoe-grid-cell.center {
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.4); /* Cible principale */
+}
+
+/* --- ACTIONS LATÉRALES --- */
+#side-actions {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+    align-items: stretch;
+}
+
+/* Nouvelle section pour les Z-Moves */
+#z-move-panel {
+    display: none; /* Cet élément n'est plus utilisé */
+}
+
+/* --- ACTIONS EN HAUT À DROITE --- */
+#top-right-actions {
+    position: absolute;
+    top: 8px; /* Aligné avec hudProgress */
+    right: 20px;
+    z-index: 75;
+    display: flex;
+    flex-direction: row; /* Changé de column à row */
+    gap: 8px; /* Réduit l'écart */
+    align-items: center;
+}
+
+/* Bouton icône en haut à droite (Retour/Abandon) */
+#top-right-actions .pk-btn-action {
+    padding: 4px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    background: rgba(255, 255, 255, 0.6);
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Rendre le bouton rond */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+#top-right-actions .pk-btn-action svg {
+    width: 16px;
+    height: 16px;
+    stroke: #555;
+}
+
+/* Style pour le bouton auto-battle actif */
+#top-right-actions #auto-battle-btn.active {
+    background: #4caf50; /* Vert pour indiquer l'état actif */
+    color: white;
+    border-color: #388e3c;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.7);
+}
+
+/* --- ÉTATS DE COMBAT --- */
+.in-combat-btn {
+    display: none;
+}
+
+.combat-active #selection-banner {
+    display: none;
+}
+
+.combat-active #side-actions {
+    display: none;
+}
+
+.combat-active #combat-panel {
+    display: grid; /* Affiche le panneau de combat en mode grid */
+}
+
+.combat-active .pre-combat-btn {
+    display: none;
+}
+.combat-active #player-grid .unit {
+    cursor: default;
+    pointer-events: none;
+}
+.combat-active .team-grid .unit-slot {
+    background-color: transparent;
+    border: none;
+}
+
+/* --- DRAG & DROP --- */
+.unit.is-dragging {
+    opacity: 0.5;
+}
+
+#drag-ghost {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    pointer-events: none;
+}
+
+.unit-slot.drag-over {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-style: solid;
+}
+
+.unit:active {
+    cursor: grabbing;
+}
+
+/* --- CIBLAGE --- */
+.unit-slot.targetable {
+    outline: 3px solid #ffd54f;
+    background-color: rgba(255, 230, 128, 0.12);
+    cursor: pointer;
+}
+
+.unit-slot.targetable:hover {
+    outline-color: #ffe082; /* Jaune plus clair */
+    background-color: rgba(255, 230, 128, 0.2); /* Léger fond jaune */
+}
+
+/* Style pour la surbrillance de la zone d'effet sur la grille */
+.unit-slot.aoe-highlight {
+    background-color: rgba(255, 107, 107, 0.3) !important; /* Rouge clair pour la zone d'effet */
+    outline: 2px solid rgba(255, 107, 107, 0.7) !important;
+    transition: background-color 0.1s, outline-color 0.1s;
+}
+
+/* --- BOUTONS DE CAPACITÉS (maintenant dans battle.css) --- */
+.movesRow {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Ajuste la largeur des boutons */
+    gap: 8px;
+    align-items: center; /* Centrer verticalement les boutons dans la grille */
+    flex-grow: 1; /* Permet aux movesRow de prendre l'espace disponible */
+}
+
+.move-btn,
+.boost-btn {
+    width: 100%;
+    padding: 6px 5px; /* Padding horizontal réduit */
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; /* Taille de police réduite */
+    font-weight: 600;
+    text-transform: none;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s, outline-color 0.2s;
+    background: var(--type-color, rgba(255, 255, 255, 0.7));
+    color: white;
+    border: none;
+    border-radius: 5px;
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+    white-space: nowrap; 
+    overflow: visible; /* Permet à la vignette Z de déborder */
+    text-overflow: ellipsis;
+    outline: 1px solid transparent; /* Bordure plus fine */
+    outline-offset: 2px;
+    position: relative; /* Pour le positionnement de la vignette Z */
+}
+
+
+
+.move-btn.is-hovered {
+    outline-color: var(--type-color, #A8A878);
+}
+
+.move-btn.boosted-attack {
+    /* Le style est déjà dans styles.css, on ne fait que surcharger la couleur */
+    background: var(--pk-grad-yellow);
+}
+
+.move-btn.boosted-attack.charging {
+    background: linear-gradient(to right, #ffeb3b var(--charge-percent, 0%), #555 var(--charge-percent, 0%));
+}
+
+.move-btn:active,
+.boost-btn:active {
+    transform: scale(0.98); /* Effet de clic moderne */
+    filter: brightness(0.9);
+}
+
+/* Vignette pour le Z-Move de base */
+/* Vignette pour le Z-Move de base */
+.move-btn.is-z-move-base::after {
+    content: 'Z';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    background: #ffc107; /* Jaune Z-Move */
+    color: #333;
+    font-size: 10px;
+    font-weight: 900;
+    border-radius: 50%;
+    display: flex;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.boost-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Style pour les boutons Z-Move individuels */
+.z-move-unit-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+    overflow: visible; /* Permet au % de déborder */
+}
+
+.z-move-unit-btn img {
+    width: 32px;
+    height: 32px;
+    
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+    position: relative;
+    z-index: 1;
+}
+
+/* On n'utilise plus ces pseudo-éléments pour la jauge */
+.z-move-unit-btn::before,
+.z-move-unit-btn::after {
+    content: none;
+}
+
+/* On cache l'ancienne lettre Z */
+.z-move-letter {
+    display: none;
+}
+
+/* Nouveau style pour le pourcentage */
+.z-move-charge-percent {
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 5px;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+.z-move-unit-btn.z-ready {
+    animation: z-ready-border-pulse 1.5s infinite;
+}
+
+/* Style du 'Z' quand prêt */
+.z-move-unit-btn.z-ready .z-move-charge-percent {
+    background: #ffeb3b;
+    color: #333;
+    font-size: 14px;
+    font-weight: 900;
+    padding: 2px 6px;
+    bottom: -8px;
+    animation: z-letter-blink 1.2s infinite ease-in-out;
+}
+
+@keyframes z-ready-border-pulse {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.7);
+        border-color: rgba(255, 235, 59, 0.9);
+    }
+    50% {
+        box-shadow: 0 0 16px rgba(255, 235, 59, 1);
+        border-color: white;
+    }
+}
+
+@keyframes z-letter-blink {
+    0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.z-move-unit-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.z-move-unit-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    animation: none;
+}
+
+/* Indicateur Z-Move sur le terrain */
+.z-move-indicator {
+    position: absolute;
+    top: -12px; 
+    left: calc(50% + 31px); 
+    transform: translateY(-50%); 
+    width: 18px;
+    height: 18px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 50%;
+    display: none; /* CHANGÉ : Caché par défaut pour éviter les reliques */
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    z-index: 12; /* Au dessus des barres */
+    transition: all 0.3s ease;
+}
+
+.z-move-indicator.ready {
+    background: #ffeb3b;
+    color: #333;
+    font-size: 10px;
+    font-weight: 900;
+    border-color: white;
+    animation: z-ready-border-pulse 1.5s infinite;
+}
+
+
+/* --- TIMELINE DES TOURS --- */
+.turn-order-sidebar {
+    position: relative;
+    display: none; /* Caché par défaut, affiché via .combat-active */
+    flex-direction: row;
+    gap: 5px;
+    padding: 4px 6px; /* Padding réduit */
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+    border: 1px solid white;
+    width: auto;
+    height: 30px; /* Hauteur réduite pour correspondre aux autres éléments */
+    align-items: center;
+}
+
+.combat-active .turn-order-sidebar {
+    display: flex !important;
+}
+
+.turn-order-sidebar .timeline-unit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.turn-order-sidebar .timeline-boost-gauge {
+    display: none; /* Barre retirée */
+}
+
+.turn-order-sidebar .timeline-boost-fill {
+    width: 0%;
+    height: 100%;
+    background: #00e5ff;
+    transition: width 0.3s ease-out;
+} /* Légèrement plus petit */
+
+.turn-order-sidebar .timeline-unit {
+    width: 20px; /* Taille de sprite réduite */
+    height: 20px; /* Taille de sprite réduite */
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    border: 1px solid white; /* Bordure plus fine */
+    
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.turn-order-sidebar .timeline-unit.player {
+    border-color: #4db8ff;
+}
+
+.turn-order-sidebar .timeline-unit.enemy {
+    border-color: #ff7961;
+}
+
+/* --- SIDE HUD (désactivé) --- */
+.side-hud {
+    display: none;
+}
+
+/* --- OVERRIDES COMBAT --- */
+.combat-active .top-band {
+    display: none !important;
+}
+
+/* --- Styles pour les effets d'ambiance --- */
+.wind-line {
+    position: absolute;
+    left: -20%; /* Démarre plus loin hors de l'écran */
+    width: 80px; /* Trait horizontal */
+    height: 1px; /* Fin */
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7), transparent);
+    transform: none; /* Supprime l'inclinaison */
+    animation: wind-anim linear infinite;
+}
+
+@keyframes wind-anim {
+    from { left: -20%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    to { left: 120%; opacity: 0; }
+}
+
+.firefly {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px 2px #fff, 0 0 12px 4px #f0e68c; /* Cœur blanc, lueur jaune */
+    animation: firefly-anim ease-in-out infinite;
+}
+
+@keyframes firefly-anim {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+    25% { transform: translate(20px, -30px) scale(0.8); opacity: 1; }
+    50% { transform: translate(-10px, 10px) scale(1.2); opacity: 0.7; }
+    75% { transform: translate(15px, 25px) scale(0.9); opacity: 1; }
+}
+/* --- BOUTONS DE VITESSE --- */
+.speed-controls {
+    display: flex;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 3px;
+    border-radius: 20px;
+    margin-right: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.speed-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+    font-family: var(--font-pixel);
+}
+
+.speed-btn.active {
+    background: #ffcb05;
+    color: #000;
+    box-shadow: 0 0 10px rgba(255, 203, 5, 0.4);
+}
+
+.speed-btn:hover:not(.active) {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- EFFETS EXPLOSIFS & AMBIANCE --- */
+.screen-flash {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    animation: flash-overlay 0.3s ease-out forwards;
+}
+
+@keyframes flash-overlay {
+    0% { opacity: 0.8; }
+    100% { opacity: 0; }
+}
+
+/* Teinte d'écran progressive pour les attaques */
+.screen-tint-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 80;
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.screen-tint-overlay.active {
+    opacity: 0.25; /* Teinte subtile mais visible */
+}
+
+.sprite.hitFlash {
+    animation: flash-white 0.15s steps(2) forwards;
+}
+
+@keyframes flash-white {
+    0% { filter: brightness(1) contrast(1); }
+    50% { filter: brightness(10) contrast(10); }
+    100% { filter: brightness(1) contrast(1); }
+}
+
+/* Amélioration des textes flottants */
+.damage-float-number {
+    font-size: 42px !important;
+    animation: explosive-float 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards !important;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    font-weight: 900;
+}
+
+@keyframes explosive-float {
+    0% { transform: translate(-50%, 0) scale(0); opacity: 0; }
+    30% { transform: translate(-50%, -40px) scale(1.5); opacity: 1; }
+    100% { transform: translate(-50%, -80px) scale(1); opacity: 0; }
+}
+
+/* Onde de choc d'impact */
+.impact-ripple {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 4px solid white;
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+    z-index: 100;
+    animation: ripple-out 0.6s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes ripple-out {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(var(--ripple-scale, 5)); opacity: 0; }
+}
+
+.projectile {
+    position: absolute;
+    pointer-events: none;
+    z-index: 90;
+    transition: transform 0.3s cubic-bezier(0.5, 0, 1, 0.5);
+}
+
+/* Particules d'impact (Confettis améliorés) */
+.impact-particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 101;
+    animation: particle-explode-gravity 1s cubic-bezier(0.1, 0.5, 0.3, 1) forwards;
+}
+
+.impact-particle.shape-circle { border-radius: 50%; }
+.impact-particle.shape-square { border-radius: 0; }
+.impact-particle.shape-rect   { width: 10px !important; height: 4px !important; }
+
+@keyframes particle-explode-gravity {
+    0% { 
+        transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(2);
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% { 
+        transform: translate(-50%, -50%) translate(var(--x-end), var(--y-end)) rotate(var(--rot-end)) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Animation de contact physique (Shake) */
+.physical-impact-shake {
+    animation: impact-shake 0.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes impact-shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Hit Stop Effect (Optionnel, géré en JS mais aide visuellement) */
+.hit-stop {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+}
+
+.hit-stop-global {
+    filter: brightness(1.1) contrast(1.1);
+    transform: scale(1.01);
+}
+
+@keyframes particle-explode {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--x-end), var(--y-end)) scale(0) rotate(var(--rot-end)); opacity: 0; }
+}

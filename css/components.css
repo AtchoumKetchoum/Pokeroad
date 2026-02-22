@@ -1,0 +1,736 @@
+/* ============================================
+   COMPONENTS.CSS - Composants réutilisables
+   ============================================ */
+
+/* --- HUD BAR (Barre supérieure) --- */
+.hud-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: white;
+    z-index: 100;
+    text-shadow: 2px 2px 0 #000;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    background: #ff9800;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.money {
+    color: #ffd700;
+    font-size: 10px;
+}
+
+/* --- BOUTONS D'ACTION PRINCIPAUX --- */
+.pk-btn-action {
+    background: var(--pk-grad-blue);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    font-family: var(--font-pixel);
+    padding: 12px 25px;
+    text-transform: none;
+    box-shadow: 0 4px 0px #1e88e5;
+    transition: transform 0.1s, box-shadow 0.1s;
+    cursor: pointer;
+}
+
+.pk-btn-action:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0px #1e88e5;
+}
+
+.pk-btn-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* --- BOUTONS LATÉRAUX --- */
+.side-btn {
+    padding: 8px 12px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: white;
+    border: 3px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    transition: transform 0.1s, box-shadow 0.1s;
+    flex-grow: 1;
+    max-width: 200px;
+    text-align: center;
+}
+
+.side-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Variantes de couleur */
+.side-btn.btn-green,
+#start-battle-btn {
+    background-color: #4caf50;
+}
+
+.side-btn.btn-red,
+#back-btn {
+    background-color: #f44336;
+}
+
+#next-battle-btn {
+    background: linear-gradient(135deg, #66bb6a, #388e3c);
+    box-shadow: 0 4px 0px #2e7d32;
+}
+
+#next-battle-btn:active {
+    box-shadow: 0 2px 0px #2e7d32;
+}
+
+#leave-battle-btn {
+    background: linear-gradient(135deg, #ef5350, #c62828);
+    box-shadow: 0 4px 0px #b71c1c;
+}
+
+#leave-battle-btn:active {
+    box-shadow: 0 2px 0px #b71c1c;
+}
+
+/* --- BOUTONS ICÔNES --- */
+.icon-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 3px solid #555;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    transition: all 0.2s;
+    box-shadow: 0 4px 0 #333;
+}
+
+.icon-btn:hover {
+    background-color: #fff;
+}
+
+.icon-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #333;
+}
+
+.icon-btn img {
+    width: 28px;
+    height: 28px;
+    
+}
+
+.icon-btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* --- TOP-RIGHT ACTIONS (Standardized) --- */
+#top-right-actions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 150;
+}
+
+/* --- BOUTON DE SORTIE / RETOUR (PAGE LEVEL) --- */
+.exit-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--pk-grad-red);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #b71c1c;
+    transition: all 0.1s;
+}
+
+.exit-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #b71c1c;
+}
+
+.exit-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* --- MODALS --- */
+.modal {
+    position: fixed;
+    z-index: 200;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #f5f7fa;
+    color: #333;
+    padding: 30px 20px 20px 20px;
+    border: 3px solid #333;
+    width: 95vw;
+    max-width: 900px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 15px;
+    text-shadow: none !important;
+    margin: auto; /* Force le centrage complet dans un flex container */
+}
+
+/* Force dark text for common elements inside modals to avoid white-on-light issues */
+.modal-content h1, 
+.modal-content h2, 
+.modal-content h3, 
+.modal-content h4, 
+.modal-content h5, 
+.modal-content p, 
+.modal-content span:not([class*="badge"]):not([class*="pill"]):not([class*="indicator"]),
+.modal-content div:not([class*="btn"]):not([class*="card"]):not([class*="slot"]):not([class*="badge"]) {
+    color: #333;
+}
+
+/* On smaller screens, modals take the full screen */
+@media (max-width: 768px) {
+    .modal {
+        padding: 0;
+    }
+    .modal-content {
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        border: none;
+    }
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-top: 0;
+    border-bottom: 3px solid #ddd;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    font-family: var(--font-pixel);
+    text-transform: uppercase;
+}
+
+/* --- BOUTON FERMETURE MODALE (X) --- */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    background: #ff5252;
+    border: 2px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #c62828;
+    z-index: 10;
+    transition: all 0.1s;
+}
+
+.close-btn:hover {
+    background: #ff1744;
+}
+
+.close-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #c62828;
+}
+
+/* --- BOUTON RETOUR DANS MODALE (⬅) --- */
+.modal-back-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 32px;
+    height: 32px;
+    background: #3498db;
+    border: 2px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #2980b9;
+    z-index: 10;
+    transition: all 0.1s;
+}
+
+.modal-back-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #2980b9;
+}
+
+/* --- BARRES DE VIE --- */
+.hp-box {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px;
+    border-radius: 3px;
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.hp-bar-bg {
+    flex-grow: 1;
+    height: 4px;
+    background: #555;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.hp-fill {
+    height: 100%;
+    background: var(--hp-green);
+    width: 100%;
+    transition: width 0.3s ease-out;
+}
+
+.hp-fill.midHp {
+    background: var(--hp-yellow);
+}
+
+.hp-fill.lowHp {
+    background: var(--hp-red);
+}
+
+.lvl-badge {
+    font-size: 8px;
+    line-height: 1;
+    color: #fff;
+    background: #333;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+/* --- BARRE DE POINTS D'ACTION --- */
+.ap-bar {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #222;
+    border: 1px solid black;
+    border-radius: 2px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.ap-fill {
+    width: 0%;
+    height: 100%;
+    background: #4dd0e1;
+    transition: width 0.1s linear;
+}
+
+/* --- BADGES DE TYPE --- */
+.chip,
+.type-badge {
+    font-size: 9px;
+    padding: 3px 6px;
+    border: 2px solid #333;
+    background: #eee;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+/* Couleurs de types pour les badges */
+.chip.type-normal, .type-badge.type-normal { background: var(--type-normal); border-color: #6d6d4e; }
+.chip.type-fire, .type-badge.type-fire { background: var(--type-fire); border-color: #aa4a17; }
+.chip.type-water, .type-badge.type-water { background: var(--type-water); border-color: #3b63b8; }
+.chip.type-electric, .type-badge.type-electric { background: var(--type-electric); color: #333; border-color: #c3a20f; }
+.chip.type-grass, .type-badge.type-grass { background: var(--type-grass); border-color: #4c7d2e; }
+.chip.type-ice, .type-badge.type-ice { background: var(--type-ice); color: #333; border-color: #66b9b3; }
+.chip.type-fighting, .type-badge.type-fighting { background: var(--type-fighting); border-color: #7d1f1a; }
+.chip.type-poison, .type-badge.type-poison { background: var(--type-poison); border-color: #5b2a63; }
+.chip.type-ground, .type-badge.type-ground { background: var(--type-ground); color: #333; border-color: #a3872a; }
+.chip.type-flying, .type-badge.type-flying { background: var(--type-flying); border-color: #6a58b2; }
+.chip.type-psychic, .type-badge.type-psychic { background: var(--type-psychic); border-color: #b22a52; }
+.chip.type-bug, .type-badge.type-bug { background: var(--type-bug); border-color: #6c7f14; }
+.chip.type-rock, .type-badge.type-rock { background: var(--type-rock); border-color: #7d6f1f; }
+.chip.type-ghost, .type-badge.type-ghost { background: var(--type-ghost); border-color: #443355; }
+.chip.type-dragon, .type-badge.type-dragon { background: var(--type-dragon); border-color: #4a22b3; }
+.chip.type-dark, .type-badge.type-dark { background: var(--type-dark); border-color: #3d2f27; }
+.chip.type-steel, .type-badge.type-steel { background: var(--type-steel); color: #333; border-color: #8e8ea8; }
+.chip.type-fairy, .type-badge.type-fairy { background: var(--type-fairy); border-color: #9a446e; }
+.chip.type-shadow, .type-badge.type-shadow { background: var(--type-shadow); border-color: #332642; }
+
+/* --- CONTENEUR DE CHIPS --- */
+.chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* --- EGG VISUALS --- */
+.egg-visual {
+    position: relative;
+    display: inline-block;
+}
+
+.egg-visual img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    
+}
+
+/* 'Bébé' is the default, no filter needed */
+.egg-visual.egg-bébé img {
+    filter: none;
+}
+
+.egg-visual.egg-commun img {
+    filter: hue-rotate(80deg) saturate(0.8); /* Green spots */
+}
+
+.egg-visual.egg-peu-commun img {
+    filter: hue-rotate(30deg) saturate(1.2); /* Orange spots */
+}
+
+.egg-visual.egg-rare img {
+    filter: hue-rotate(220deg) saturate(1.5); /* Purple spots */
+}
+
+.egg-visual.egg-très-rare img {
+    filter: hue-rotate(310deg) saturate(1.8); /* Red/Pink spots */
+}
+
+.egg-visual.egg-légendaire img {
+    animation: legendary-glow 1.5s infinite alternate;
+}
+
+.egg-visual.egg-mythique img {
+    animation: mythic-glow 2s infinite alternate;
+}
+
+@keyframes legendary-glow {
+    from { filter: hue-rotate(40deg) saturate(2) drop-shadow(0 0 5px gold); }
+    to { filter: hue-rotate(45deg) saturate(2.5) drop-shadow(0 0 12px yellow); }
+}
+
+@keyframes mythic-glow {
+    from { filter: brightness(1.2) drop-shadow(0 0 8px white); }
+    to { filter: brightness(1.5) drop-shadow(0 0 18px cyan) hue-rotate(20deg); }
+}
+/* --- BARRE DE NAVIGATION RAPIDE (GLOBAL) --- */
+#quick-nav-bar {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid #3498db;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.nav-item:hover, .nav-item.active {
+    transform: translateY(-5px) scale(1.1);
+    background: white;
+    box-shadow: 0 8px 15px rgba(52, 152, 219, 0.4);
+    border-color: #2980b9;
+}
+
+.nav-item.active {
+    background: #e3f2fd;
+    border-color: #1e88e5;
+}
+
+.nav-item:active {
+    transform: translateY(2px) scale(0.95);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.nav-icon {
+    font-size: 20px;
+}
+
+.nav-label {
+    font-size: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #34495e;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+/* --- NEW EGG BAG OVERHAUL --- */
+.egg-bag-content {
+    max-width: 950px !important;
+    background: #f8faff !important;
+    padding: 0 !important;
+    overflow: hidden;
+    height: 80vh;
+}
+
+.egg-bag-layout {
+    display: flex;
+    height: 100%;
+}
+
+#egg-bag-sidebar {
+    width: 250px;
+    background: #fff;
+    border-right: 1px solid #e1e8f0;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#egg-bag-sidebar h3 {
+    font-family: var(--font-pixel);
+    font-size: 14px;
+    color: #2c3e50;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#egg-rarity-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.egg-filter-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.egg-filter-item:hover {
+    background: #f0f7ff;
+    border-color: #3498db;
+    transform: translateX(5px);
+}
+
+.egg-filter-item.active {
+    background: #3498db;
+    border-color: #2980b9;
+    color: white;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.egg-filter-item .egg-sprite {
+    width: 24px;
+    height: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.egg-filter-item .egg-filter-name {
+    font-size: 11px;
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.egg-filter-item .egg-filter-count {
+    background: rgba(0,0,0,0.05);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.egg-filter-item.active .egg-filter-count {
+    background: rgba(255,255,255,0.2);
+}
+
+#egg-bag-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    overflow: hidden;
+}
+
+.egg-bag-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.egg-bag-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+#egg-bag-total-count {
+    font-size: 12px;
+    color: #7f8c8d;
+    font-weight: 600;
+    background: #e1e8f0;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+#egg-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    flex-grow: 1;
+}
+
+.egg-pick-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    cursor: default;
+}
+
+.egg-pick-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    border-color: #3498db;
+}
+
+.egg-pick-card .egg-sprite {
+    width: 64px;
+    height: 72px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    transition: transform 0.3s ease;
+}
+
+.egg-pick-card:hover .egg-sprite {
+    transform: rotate(5deg) scale(1.1);
+}
+
+.egg-pick-card h5 {
+    margin: 0;
+    font-size: 13px;
+    color: #2c3e50;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Empty State */
+.egg-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    color: #95a5a6;
+    text-align: center;
+    gap: 15px;
+}
+
+.egg-empty-state span {
+    font-size: 48px;
+    opacity: 0.5;
+}
+
+.bg-commun     { background-color: #bdc3c7; }
+.bg-peu-commun { background-color: #2ecc71; }
+.bg-rare       { background-color: #3498db; }
+.bg-bébé       { background-color: #f1c40f; }
+.bg-très-rare  { background-color: #9b59b6; }
+.bg-légendaire { background-color: #e67e22; }
+.bg-mythique   { background-color: #e74c3c; }
+
+.egg-rarity-pill {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 8px;
+  font-weight: bold;
+}

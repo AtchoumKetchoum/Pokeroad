@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PokeRoad - Carte du Monde</title>
+    <link rel="icon" type="image/png" href="/assets/favicon.png.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/worldmap.css">
+</head>
+<body>
+    <div id="map-screen">
+        <div class="map-header">
+            <button class="back-btn" onclick="goBack()">RETOUR</button>
+            <div class="map-title">Phase 1 : L'Éveil</div>
+            <div style="width: 80px;"></div> <!-- Spacer -->
+        </div>
+
+        <div id="map-container">
+            <!-- Pins générés par worldmap.js -->
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/storage.js"></script>
+    <script src="/js/gamedata.js"></script>
+    <script src="/js/worldmap.js"></script>
+</body>
+</html>

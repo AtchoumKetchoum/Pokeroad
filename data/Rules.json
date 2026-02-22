@@ -1,0 +1,170 @@
+{
+  "game_effects": {
+    "major_statuses": {
+      "STAT_PAR": {
+        "name": "Paralysie",
+        "category": "Majeur",
+        "cumulable": false,
+        "effect_value": -30,
+        "target_stat": "ATB_Speed",
+        "description": "Réduit la vitesse de remplissage de la jauge d'action."
+      },
+      "STAT_BRU": {
+        "name": "Brûlure",
+        "category": "Majeur",
+        "cumulable": false,
+        "effect_value": -30,
+        "target_stat": "Damage_Output",
+        "description": "Réduit tous les dommages infligés, y compris les Z-Moves."
+      },
+      "STAT_PSN": {
+        "name": "Poison",
+        "category": "Majeur",
+        "cumulable": false,
+        "effect_value": -12.5,
+        "target_stat": "HP",
+        "description": "Dégâts fixes à la fin de chaque tour."
+      },
+      "STAT_SOM": {
+        "name": "Sommeil",
+        "category": "Majeur",
+        "cumulable": false,
+        "wake_up_chance": 50,
+        "max_duration": 3,
+        "target_stat": "Incapacité",
+        "description": "50% de chance de se réveiller à chaque tour pendant 3 tours."
+      }
+    },
+    "minor_statuses": {
+      "STAT_CONF": {
+        "name": "Confusion",
+        "category": "Mineur",
+        "cumulable": true,
+        "self_hit_chance": 15,
+        "duration": "2-5 tours",
+        "target_stat": "Behavior",
+        "description": "33% de chance de s'infliger des dégâts  à soi-même au lieu d'attaquer."
+      },
+      "STAT_FLINCH": {
+        "name": "Peur",
+        "category": "Effet",
+        "cumulable": false,
+        "effect_value": -100,
+        "duration": 1,
+        "target_stat": "Action",
+        "description": "L'unité ne peut pas agir pendant ce tour (ne fonctionne que si le lanceur est plus rapide)."
+      },
+      "STAT_NO_REVIVE": {
+        "name": "Anti-Résurrection",
+        "category": "Mineur",
+        "cumulable": false,
+        "duration": "permanent",
+        "target_stat": "Revivable",
+        "description": "Empêche la cible d'être ressuscitée tant que l'effet est actif."
+      }
+    },
+    "v_stats": {
+      "MOD_STAT": {
+        "name": "Modification Statistique",
+        "category": "V-Stat",
+        "cumulable": true,
+        "max_stacks": 5,
+        "value_per_stack": 20,
+        "target_stats": ["ATK", "DEF", "SPA", "SPD", "SPE"],
+        "description": "Boost ou malus de 20% par palier (max 100%)."
+      },
+      "MOD_PRE": {
+        "name": "Précision",
+        "category": "V-Stat",
+        "cumulable": true,
+        "max_stacks": 5,
+        "value_per_stack": 10,
+        "description": "Multiplicateur de précision standard du sort (10% par palier)."
+      },
+      "MOD_CRIT": {
+        "name": "Taux de Critique",
+        "category": "V-Stat",
+        "cumulable": true,
+        "max_stacks": 3,
+        "description": "Augmente les chances de porter un coup critique par paliers (stages)."
+      }
+    },
+    "buffs": {
+      "BUFF_REG": {
+        "name": "Régénération",
+        "category": "Buff",
+        "cumulable": true,
+        "effect_value": 5,
+        "target_stat": "HP",
+        "description": "Restaure 5% des PV max au début du tour."
+      },
+      "BUFF_SHIELD": {
+        "name": "Bouclier",
+        "category": "Buff",
+        "cumulable": true,
+        "effect_value": 20,
+        "target_stat": "Armor_HP",
+        "description": "Crée une protection de 20% des PV max agissant comme une barre de vie supplémentaire."
+      }
+    },
+    "actions": {
+      "HEAL_HP": {
+        "name": "Soin Direct",
+        "category": "Action",
+        "effect_value_pct": 50,
+        "target_stat": "HP",
+        "description": "Restaure un pourcentage des PV max de la cible."
+      },
+      "ACTION_REVIVE": {
+        "name": "Résurrection",
+        "category": "Action",
+        "effect_value_pct": 50,
+        "target_stat": "HP",
+        "description": "Ressuscite un allié K.O. avec un pourcentage de ses PV max."
+      }
+    },
+    "reactive_effects": {
+      "REACT_SP_DMG": {
+        "name": "Voile Miroir",
+        "category": "Réactif",
+        "multiplier": 2,
+        "damage_type_source": "special",
+        "description": "Si le lanceur est touché par une capacité spéciale ce tour, il renvoie le double des dégâts subis."
+      },
+      "REACT_PHY_DMG": {
+        "name": "Riposte",
+        "category": "Réactif",
+        "multiplier": 2,
+        "damage_type_source": "physical",
+        "description": "Si le lanceur est touché par une capacité physique ce tour, il renvoie le double des dégâts subis."
+      }
+    },
+    "core_mechanics": {
+      "CRITICAL_HIT": {
+        "name": "Coup Critique",
+        "category": "Mécanique",
+        "base_chance_pct": 6.25,
+        "damage_multiplier": 1.5,
+        "description": "Une attaque qui a une chance d'ignorer certains modificateurs de stats défensives de l'adversaire et d'augmenter ses propres dégâts."
+      }
+    },
+    "environment": {
+      "FLD_TERRAIN": {
+        "name": "Terrain Élémentaire",
+        "category": "Champ",
+        "cumulable": false,
+        "effect_value": 30,
+        "target_stat": "Move_Damage",
+        "description": "Augmente les dégâts des capacités du même type que le terrain."
+      },
+      "FLD_SAND": {
+        "name": "Avaries",
+        "category": "Champ",
+        "cumulable": false,
+        "effect_value": -6.25,
+        "target_stat": "HP",
+        "description": "Dégâts constants sauf exception."
+      }
+    }
+  }
+}

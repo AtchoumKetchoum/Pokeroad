@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PokeRoad - Laboratoire</title>
+    <link rel="icon" type="image/png" href="/assets/favicon.png.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/labo.css">
+    <link rel="stylesheet" href="/css/refinement.css">
+</head>
+<body>
+    <div id="game-screen">
+        <div id="scaler-view" class="lab-viewport">
+            <div class="lab-container">
+                <!-- Barre de Navigation Supérieure -->
+                <div id="top-right-actions">
+                    <button class="exit-btn" onclick="goToHome()" title="Quitter">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </button>
+                </div>
+
+                <!-- Colonnes cliquables -->
+                <div class="lab-column" onclick="openModal('incubator-modal')">
+                    <div class="column-title"><h3>Incubateur</h3></div>
+                </div>
+                <div class="lab-column" onclick="RefinementUI.open(null, 'pokemon')">
+                    <div class="column-title"><h3>Entraînement</h3></div>
+                </div>
+
+                <!-- Modals -->
+                <div id="incubator-modal" class="modal">
+                    <div class="modal-content glass-premium">
+                        <div class="modal-header">
+                            <div class="title-group">
+                                <h2>Incubateur Mobile</h2>
+                                <p class="subtitle">Vos œufs Pokémon en gestation</p>
+                            </div>
+                            <span class="close-btn" onclick="closeCurrentModal()">&times;</span>
+                        </div>
+                        <div id="incubator-slots-container">
+                            <div class="incubator-loading">Initialisation des systèmes...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Sac à Oeufs (pour sélection) -->
+                <div id="egg-bag-modal" class="modal">
+                    <div class="modal-content egg-bag-content">
+                        <span class="close-btn" onclick="closeEggBagModal()">&times;</span>
+                        <div class="egg-bag-layout">
+                            <div id="egg-bag-sidebar">
+                                <h3>Inventaire</h3>
+                                <div id="egg-rarity-filters">
+                                    <!-- Généré par JS : filtres par rareté -->
+                                </div>
+                            </div>
+                            <div id="egg-bag-main">
+                                <div class="egg-bag-header">
+                                    <div class="header-main">
+                                        <h2>Sélectionner un œuf</h2>
+                                        <div id="egg-bag-total-count">0 œuf(s)</div>
+                                    </div>
+                                </div>
+                                <div id="egg-selection-grid">
+                                    <!-- Liste des œufs individuels filtrée générée par JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToHome() { window.location.href = 'home.html'; }
+    </script>
+    <script src="/js/storage.js"></script>
+    <script src="/js/gamedata.js"></script>
+    <script src="/js/progression.js"></script>
+    <script src="/js/refinement.js"></script>
+    <script src="/js/refinement-ui.js"></script>
+    <script src="/js/labo.js"></script>
+</body>
+</html>

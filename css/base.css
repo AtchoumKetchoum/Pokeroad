@@ -1,0 +1,205 @@
+/* ============================================
+   BASE.CSS - Variables et styles de base
+   ============================================ */
+
+/* --- VARIABLES CSS GLOBALES --- */
+:root {
+    /* Police */
+    --font-pixel: 'Press Start 2P', cursive;
+    
+    /* Couleurs de base */
+    --pk-bg-main: #f0f4f8;
+    --pk-white-glass: rgba(255, 255, 255, 0.6);
+    --ui-bg: rgba(0, 0, 0, 0.8);
+    
+    /* Couleurs HP */
+    --hp-green: #4caf50;
+    --hp-yellow: #ffc400;
+    --hp-red: #f44336;
+    
+    /* Gradients */
+    --pk-grad-blue: linear-gradient(135deg, #4ed9ff, #29a0ff);
+    --pk-grad-yellow: linear-gradient(135deg, #ffeb3b, #ffc107);
+    --pk-grad-header: linear-gradient(to right, #4caf50, #2196f3, #f44336);
+    
+    /* Effets et Bordures */
+    --pk-shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --pk-border-radius: 5px; /* Uniform border-radius */
+    
+    /* Couleurs de types Pokémon */
+    --type-normal: #A8A878;
+    --type-fire: #F08030;
+    --type-water: #6890F0;
+    --type-grass: #78C850;
+    --type-electric: #F8D030;
+    --type-ice: #98D8D8;
+    --type-fighting: #C03028;
+    --type-poison: #A040A0;
+    --type-ground: #E0C068;
+    --type-flying: #A890F0;
+    --type-psychic: #F85888;
+    --type-bug: #A8B820;
+    --type-rock: #B8A038;
+    --type-ghost: #705898;
+    --type-dragon: #7038F8;
+    --type-dark: #705848;
+    --type-steel: #B8B8D0;
+    --type-fairy: #EE99AC;
+    --type-shadow: #4E3B63;
+}
+
+/* --- RESET ET STYLES DE BASE --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-pixel);
+    overflow: hidden;
+}
+
+/* --- CLASSES UTILITAIRES --- */
+.hidden {
+    display: none !important;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Image pixelisée */
+.pixelated {
+    
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* Conteneur de jeu standard (Viewport) */
+#game-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #111;
+    overflow: hidden;
+    touch-action: none; /* Empêche le zoom/pan tactile */
+    user-select: none; /* Empêche la sélection de texte */
+}
+
+/* Zone de rendu à l'échelle (Maintenant 100% écran) */
+#scaler-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-size: 100% 100%; /* Affiche l'image en entier sur tout l'écran */
+    background-position: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* --- HEADER ARC-EN-CIEL --- */
+.pk-header-rainbow {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #4caf50 0%, #00bcd4 33%, #ffeb3b 66%, #f44336 100%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* --- CONTENEUR VERRE DÉPOLI --- */
+.pk-container-glass {
+    background: var(--pk-white-glass);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--pk-border-radius); /* Utilise la nouvelle variable */
+    box-shadow: var(--pk-shadow-soft);
+    padding: 15px;
+    margin: 10px;
+}
+
+/* --- GRILLE DE CARTES --- */
+.pk-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+/* --- CONTENEUR FIXE EN BAS --- */
+.pk-fixed-bottom-container {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+/* --- HUD JOUEUR --- */
+#player-hud {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    min-width: 280px;
+    color: white;
+}
+
+#player-avatar-container {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+    border: 2px solid #fff;
+    flex-shrink: 0;
+}
+
+#player-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#player-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+#player-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+#player-money {
+    font-size: 14px;
+    color: #ffc107;
+    font-family: monospace;
+}
+
+.locked-feature {
+    filter: grayscale(1) opacity(0.7) !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}

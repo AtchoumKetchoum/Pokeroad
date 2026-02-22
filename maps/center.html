@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PokeRoad - Centre Pokémon</title>
+    <link rel="icon" type="image/png" href="/assets/favicon.png.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/center.css">
+    <link rel="stylesheet" href="/css/refinement.css">
+</head>
+<body>
+
+    <div id="game-screen">
+        <div id="scaler-view" class="center-viewport">
+            <!-- Barre de Navigation Supérieure -->
+            <div id="top-right-actions">
+                <button class="exit-btn" onclick="goToHome()" title="Quitter">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                </button>
+            </div>
+
+            <!-- Modal Pokémon -->
+            <div id="pokemon-detail-modal" style="display: none;">
+                <div id="pokemon-detail-card">
+                    <span class="close-btn" onclick="closePokemonDetail()">&times;</span>
+                    <h2 id="detail-title">Détails du Pokémon</h2>
+                    <div class="detail-header">
+                        <img id="detail-sprite" src="" alt="Sprite du Pokémon">
+                        <div class="detail-right">
+                            <div class="header-row">
+                                <h3 id="detail-level">Niveau</h3>
+                                <div id="detail-types"></div>
+                            </div>
+                            <p id="detail-description" class="desc"></p>
+                            <p id="detail-evolution" class="kv"></p>
+                            <div id="evolution-actions" style="margin-top: 10px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Statistiques</div>
+                    <div id="detail-stats-container" class="stats-table-container">
+                        <!-- Généré dynamiquement par JS -->
+                    </div>
+                    <div id="detail-boosters-container" class="boosters-container">
+                        <!-- Vitamines et bouchons possédés -->
+                    </div>
+                    <div class="section-title">Gestion des Capacités</div>
+                    <div class="moves-manager">
+                        <div class="moves-column">
+                            <h4>Capacités Équipées (<span id="equipped-count">0</span>/4)</h4>
+                            <div class="moves-list-container" id="equipped-moves-list"></div>
+                        </div>
+                        <div class="moves-column">
+                            <h4>Capacités Disponibles</h4>
+                            <div class="moves-list-container" id="available-moves-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="center-main-layout">
+                <!-- Sidebar: Soins -->
+                <div id="center-sidebar">
+                    <div class="sidebar-header">
+                        <h3>Infirmerie</h3>
+                        <button class="pk-btn-action small" onclick="healAllExhausted()">Tout soigner</button>
+                    </div>
+                    <div id="heal-status-container">
+                        <!-- Pokémon en soin ou épuisés -->
+                    </div>
+                </div>
+
+                <!-- Main: PC -->
+                <div id="center-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 onclick="openLocker()" style="cursor:pointer; display: inline-block; margin: 0;">Boîte Pokémon 🎒</h2>
+                       
+                    </div>
+                    <div id="pokemon-list">
+                        <!-- Les cartes Pokémon -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal PC (Boîte) -->
+            <div id="pc-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closePCModal()">&times;</span>
+                    <h2>Boîte Pokémon</h2>
+                    <div id="pc-modal-list">
+                        <!-- Les cartes Pokémon seront générées ici par JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Soins -->
+            <div id="heal-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeHealModal()">&times;</span>
+                    <h2>Centre de Soins</h2>
+                    <div id="heal-view-container">
+                        <!-- Contenu généré par center.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/storage.js"></script>
+    <script src="/js/gamedata.js"></script>
+    <script src="/js/refinement.js"></script>
+    <script src="/js/refinement-ui.js"></script>
+    <script src="/js/center.js"></script>
+
+</body>
+</html>
