@@ -81,21 +81,16 @@ body {
 /* --- HUD DE PROGRESSION --- */
 #hudProgress {
     position: relative;
-    background: rgba(255, 255, 255, 0.7);
-    padding: 6px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 5px;
-    font-size: 12px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 10px 20px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
     letter-spacing: 0.5px;
     text-shadow: none;
-    color: #333;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-}
-
-#hudProgress:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); /* Ombre plus sombre au survol */
+    color: #222;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* --- STATUT DE BATAILLE --- */
@@ -334,20 +329,19 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.5%;
-    width: 32%; 
-    max-width: 420px;
+    gap: 15px;
+    width: 440px; 
     aspect-ratio: 1;
-    bottom: 65px; /* Collée à la barre de pied de page (min-height 60px) */
+    bottom: 90px;
     transform: none;
 }
 
 #player-grid {
-    left: 25%;
+    left: 80px;
 }
 
 #enemy-grid {
-    right: 25%;
+    right: 80px;
 }
 
 /* --- SLOTS D'UNITÉ --- */
@@ -439,19 +433,14 @@ body {
 }
 
 .sprite {
-    width: 6.5%;
-    height: 6.5%;
-    min-width: 48px;
-    min-height: 48px;
+    width: 120px;
+    height: 120px;
     z-index: 2;
-    
-    max-width: 90%;
-    max-height: 90%;
     object-fit: contain;
     animation: float-idle 5s infinite ease-in-out;
     transform-origin: center 85%;
     will-change: transform;
-    transform: var(--transform-base, scaleX(1)); /* Assure que la transformation de base est toujours appliquée */
+    transform: var(--transform-base, scaleX(1));
 }
 
 .unit.is-attacking .sprite {
@@ -536,18 +525,17 @@ body {
 /* --- BARRES DE STATUT SUR L'UNITÉ --- */
 .hp-box {
     position: absolute;
-    top: -4%; 
+    top: -40px; 
     left: 50%;
     transform: translateX(-50%);
-    width: 7.5%;
-    min-width: 85px; /* Réduit pour éviter le chevauchement */
+    width: 110px;
     background: rgba(0, 0, 0, 0.85); 
-    padding: 3px 5px;
-    border-radius: 5px;
+    padding: 4px 8px;
+    border-radius: 6px;
     z-index: 10;
     display: flex;
     align-items: center;
-    gap: 6px; /* Augmenté légèrement */
+    gap: 8px;
     border: 1px solid rgba(255,255,255,0.4);
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
@@ -696,9 +684,8 @@ body {
 }
 
 .banner-pokemon img {
-    width: 48px;
-    height: 48px;
-    
+    width: 64px;
+    height: 64px;
 }
 
 .banner-pokemon.selected {
@@ -1129,24 +1116,23 @@ body {
 .move-btn,
 .boost-btn {
     width: 100%;
-    padding: 6px 5px; /* Padding horizontal réduit */
+    padding: 10px 8px; 
     font-family: 'Inter', sans-serif;
-    font-size: 10px; /* Taille de police réduite */
-    font-weight: 600;
+    font-size: 13px; 
+    font-weight: 700;
     text-transform: none;
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.1s, outline-color 0.2s;
     background: var(--type-color, rgba(255, 255, 255, 0.7));
     color: white;
     border: none;
-    border-radius: 5px;
-    border-bottom: 2px solid rgba(0,0,0,0.2);
+    border-radius: 8px;
+    border-bottom: 3px solid rgba(0,0,0,0.3);
     white-space: nowrap; 
-    overflow: visible; /* Permet à la vignette Z de déborder */
-    text-overflow: ellipsis;
-    outline: 1px solid transparent; /* Bordure plus fine */
-    outline-offset: 2px;
-    position: relative; /* Pour le positionnement de la vignette Z */
+    min-height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -1365,13 +1351,12 @@ body {
 } /* Légèrement plus petit */
 
 .turn-order-sidebar .timeline-unit {
-    width: 20px; /* Taille de sprite réduite */
-    height: 20px; /* Taille de sprite réduite */
-    background: rgba(255, 255, 255, 0.6);
+    width: 32px; /* Taille de sprite augmentée */
+    height: 32px; /* Taille de sprite augmentée */
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
-    border: 1px solid white; /* Bordure plus fine */
-    
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 2px solid white; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .turn-order-sidebar .timeline-unit.player {
@@ -1429,25 +1414,26 @@ body {
 /* --- BOUTONS DE VITESSE --- */
 .speed-controls {
     display: flex;
-    gap: 4px;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 3px;
-    border-radius: 20px;
-    margin-right: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 6px;
+    border-radius: 30px;
+    margin-right: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .speed-btn {
     background: none;
     border: none;
-    color: #aaa;
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 15px;
+    color: #eee;
+    font-size: 14px;
+    padding: 8px 15px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.2s;
     font-family: var(--font-pixel);
+    min-width: 45px;
 }
 
 .speed-btn.active {
