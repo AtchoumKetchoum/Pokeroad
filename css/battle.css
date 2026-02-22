@@ -643,7 +643,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0;
-    transform: translateY(-1px); /* Décale les barres vers le haut pour aligner leur milieu avec le texte */
+    position: relative;
+    z-index: 1;
 }
 
 .hp-bar-bg {
@@ -665,28 +666,28 @@ body {
 
 .lvl-badge {
     flex-shrink: 0;
-    height: 10px; /* Même hauteur que le bloc central */
-    display: flex;
-    align-items: center;
     font-size: 10px;
     font-weight: 900;
     color: #FFD700;
     text-shadow: 1px 1px 2px #000;
-    margin-right: 4px; /* Espace équilibré */
-    line-height: 1;
+    margin-right: 6px;
+    position: relative;
+    top: 0; /* Ajustement manuel si besoin */
+    display: flex;
+    align-items: center;
 }
 
 .charge-text {
     flex-shrink: 0;
-    height: 10px; /* Même hauteur que le bloc central */
-    display: flex;
-    align-items: center;
     font-size: 10px;
     font-weight: 800;
     color: #00e5ff;
     text-shadow: 1px 1px 2px #000;
-    margin-left: 4px; /* Espace équilibré */
-    line-height: 1;
+    margin-left: 6px;
+    position: relative;
+    top: 0; /* Ajustement manuel si besoin */
+    display: flex;
+    align-items: center;
 }
 
 /* Status Icons déportées au dessus */
