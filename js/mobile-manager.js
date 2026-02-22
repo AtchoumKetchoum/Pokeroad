@@ -1,27 +1,20 @@
 /**
  * mobile-manager.js
- * Gère l'orientation, le mode plein écran et la mise à l'échelle automatique.
+ * Gère l'orientation, le mode plein écran et le remplissage total de l'écran.
  */
 
 const MobileManager = (() => {
   let overlayCreated = false;
-  let hasBeenShown = false;
-  // Résolution de référence (format 16:9 standard)
+  let hasBeenShown = localStorage.getItem('pokerode_mobile_overlay_shown') === 'true';
+  
   const DESIGN_WIDTH = 1280;
   const DESIGN_HEIGHT = 720;
 
   function init() {
-    if (overlayCreated) {
-        updateScaling();
-        return;
-    }
-
-    // Créer l'overlay s'il n'existe pas
     if (!document.getElementById("orientation-overlay")) {
       createOverlay();
     }
 
-    // Écouter les changements d'orientation et de taille
     window.addEventListener("resize", () => {
         checkOrientation();
         updateScaling();
@@ -31,7 +24,6 @@ const MobileManager = (() => {
         updateScaling();
     });
 
-    // Vérification initiale
     checkOrientation();
     updateScaling();
     overlayCreated = true;
@@ -41,39 +33,40 @@ const MobileManager = (() => {
       const scaler = document.getElementById("scaler-view");
       if (!scaler) return;
 
-      // On définit une taille fixe pour l'espace de travail interne
+      // On définit la taille interne fixe
       scaler.style.width = DESIGN_WIDTH + "px";
       scaler.style.height = DESIGN_HEIGHT + "px";
 
       const winW = window.innerWidth;
       const winH = window.innerHeight;
       
-      // Calcul du scale pour faire tenir le 1280x720 dans l'écran actuel
+      // Calcul du scale pour REMPLIR 100% (étirement si nécessaire pour supprimer les bordures)
       const scaleX = winW / DESIGN_WIDTH;
       const scaleY = winH / DESIGN_HEIGHT;
-      const scale = Math.min(scaleX, scaleY);
       
-      // Centrage et scaling
+      // On applique un scale indépendant sur X et Y pour ne laisser AUCUNE bordure noire
       scaler.style.position = "absolute";
       scaler.style.left = "50%";
       scaler.style.top = "50%";
-      scaler.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      scaler.style.transform = `translate(-50%, -50%) scale(${scaleX}, ${scaleY})`;
       scaler.style.transformOrigin = "center center";
   }
 
   function createOverlay() {
     const overlay = document.createElement("div");
     overlay.id = "orientation-overlay";
+    overlay.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:white;font-family:sans-serif;padding:20px;box-sizing:border-box;";
+    
     overlay.innerHTML = `
-            <div class="icon">📱</div>
-            <h2>Expérience Mobile</h2>
-            <p>Ce jeu est conçu pour être joué en <b>mode paysage</b> pour une meilleure expérience.</p>
-            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px;">
-                <button class="fullscreen-btn" onclick="MobileManager.requestFullscreen()">Passer en Plein Écran</button>
-                <button class="fullscreen-btn" style="background: #666; box-shadow: 0 4px 0 #444;" onclick="MobileManager.hideOverlay()">Jouer</button>
+            <div style="font-size: 50px; margin-bottom: 20px;">🎮</div>
+            <h2 style="color: #ffc107; text-transform: uppercase; margin-bottom: 10px;">PokeRoad Fullscreen</h2>
+            <p style="margin-bottom: 30px; line-height: 1.5;">Pour une immersion totale et supprimer les barres de navigation, passez en plein écran.</p>
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 300px;">
+                <button onclick="MobileManager.requestFullscreen()" style="background: #3498db; color: white; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; box-shadow: 0 4px 0 #2980b9;">ACTIVER LE PLEIN ÉCRAN</button>
+                <button onclick="MobileManager.hideOverlay()" style="background: #444; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 14px;">JOUER DANS LE NAVIGATEUR</button>
             </div>
-            <p style="margin-top: 20px; font-size: 10px; color: #ffc107;" id="orientation-warning">
-                ⚠️ Veuillez faire pivoter votre appareil
+            <p id="orientation-warning" style="margin-top: 30px; color: #ff5252; font-weight: bold; display: none;">
+                🔄 VEUILLEZ PIVOTER EN MODE PAYSAGE
             </p>
         `;
     document.body.appendChild(overlay);
@@ -84,64 +77,33 @@ const MobileManager = (() => {
     const warning = document.getElementById("orientation-warning");
     if (!overlay) return;
 
-    const isMobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent,
-      );
-
-    if (!isMobile) {
-        overlay.style.display = "none";
-        return;
-    }
-
     const isPortrait = window.innerHeight > window.innerWidth;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // Si on est en portrait, on force l'overlay
-    if (isPortrait) {
-      overlay.style.display = "flex";
-      if (warning) warning.style.display = "block";
+    if (isPortrait && isMobile) {
+        overlay.style.display = "flex";
+        warning.style.display = "block";
+    } else if (!hasBeenShown) {
+        overlay.style.display = "flex";
+        warning.style.display = "none";
     } else {
-      // Si on est en paysage
-      if (!hasBeenShown) {
-          // Si c'est la première fois, on montre quand même pour le plein écran
-          overlay.style.display = "flex";
-          if (warning) warning.style.display = "none";
-      } else {
-          overlay.style.display = "none";
-      }
+        overlay.style.display = "none";
     }
   }
 
   function requestFullscreen() {
-    const doc = window.document;
-    const docEl = doc.documentElement;
-
-    const requestFullScreen =
-      docEl.requestFullscreen ||
-      docEl.mozRequestFullScreen ||
-      docEl.webkitRequestFullScreen ||
-      docEl.msRequestFullscreen;
-
-    if (requestFullScreen) {
-      requestFullScreen
-        .call(docEl)
-        .then(() => {
-          hasBeenShown = true;
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation
-              .lock("landscape")
-              .catch((e) => console.log("Lock orientation failed:", e));
-          }
-          hideOverlay();
-        })
-        .catch((err) => {
-          console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-          hasBeenShown = true;
-          hideOverlay();
-        });
-    } else {
-        hasBeenShown = true;
+    const docEl = document.documentElement;
+    const fn = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    
+    if (fn) {
+      fn.call(docEl).then(() => {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock("landscape").catch(() => {});
+        }
         hideOverlay();
+      }).catch(hideOverlay);
+    } else {
+      hideOverlay();
     }
   }
 
@@ -149,14 +111,10 @@ const MobileManager = (() => {
     const overlay = document.getElementById("orientation-overlay");
     if (overlay) overlay.style.display = "none";
     hasBeenShown = true;
+    localStorage.setItem('pokerode_mobile_overlay_shown', 'true');
   }
 
-  return {
-    init,
-    requestFullscreen,
-    hideOverlay,
-  };
+  return { init, requestFullscreen, hideOverlay };
 })();
 
-// Auto-initialisation au chargement
 document.addEventListener("DOMContentLoaded", MobileManager.init);
