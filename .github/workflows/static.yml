@@ -16,13 +16,11 @@ permissions:
   id-token: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
@@ -35,16 +33,10 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Create index.html at root (Redirect or Copy)
-        run: |
-          # On crée un index.html à la racine qui redirige vers maps/home.html
-          # C'est la solution la plus simple pour garder la structure maps/
-          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=maps/home.html"></head></html>' > index.html
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
+          # Déploie tout le projet incluant le nouvel index.html et le dossier maps/
           path: ".maps/"
 
       - name: Deploy to GitHub Pages
