@@ -628,30 +628,27 @@ body {
 
 .status-main-row {
     display: flex;
-    align-items: center; /* Centrage vertical de tous les éléments de la ligne */
+    align-items: center;
     justify-content: space-between;
     width: 100%;
     gap: 0;
     padding: 0;
     background: transparent;
-    height: 10px; /* Force la hauteur HP (6) + ATB (4) */
 }
 
 .hp-container-minimal {
     flex: 1;
-    height: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* ATB en haut, HP en bas */
     gap: 0;
-    position: relative;
-    z-index: 1;
 }
 
 .hp-bar-bg {
     width: 100%;
-    height: 5px; /* Équilibré avec l'ATB */
+    height: 6px;
+    box-sizing: border-box;
     background: rgba(0,0,0,0.6);
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 2px 2px; /* Arrondi bas pour le collage */
     border: 1px solid rgba(255,255,255,0.2);
     border-top: none; 
     overflow: hidden;
@@ -670,11 +667,12 @@ body {
     font-weight: 900;
     color: #FFD700;
     text-shadow: 1px 1px 2px #000;
-    margin-right: 6px;
-    position: relative;
-    top: 0; /* Ajustement manuel si besoin */
-    display: flex;
-    align-items: center;
+    background: #333;
+    padding: 1px 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    line-height: 1;
+    transform: translateY(2px); /* Calage visuel pour centrer sur la jonction */
 }
 
 .charge-text {
@@ -683,11 +681,12 @@ body {
     font-weight: 800;
     color: #00e5ff;
     text-shadow: 1px 1px 2px #000;
-    margin-left: 6px;
-    position: relative;
-    top: 0; /* Ajustement manuel si besoin */
-    display: flex;
-    align-items: center;
+    background: #333;
+    padding: 1px 4px;
+    border-radius: 2px;
+    margin-left: 4px;
+    line-height: 1;
+    transform: translateY(2px); /* Calage visuel pour centrer sur la jonction */
 }
 
 /* Status Icons déportées au dessus */
@@ -705,11 +704,12 @@ body {
 .ap-bar {
     position: relative;
     width: 100%;
-    height: 5px; /* Équilibré avec la Vie */
+    height: 6px;
+    box-sizing: border-box;
     background: rgba(0,0,0,0.5);
     border: 1px solid rgba(255,255,255,0.15);
-    border-bottom: none; /* Fusion parfaite avec la barre de vie */
-    border-radius: 2px 2px 0 0;
+    border-bottom: none;
+    border-radius: 2px 2px 0 0; /* Arrondi haut */
     overflow: hidden;
     margin-top: 0;
 }

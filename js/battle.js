@@ -1025,7 +1025,16 @@ function buildActorsFromDom() {
 
     const level = parseInt(slot.querySelector('.lvl-badge')?.textContent.replace('Lv.', '') || '5');
     
-    const stats = calculateStats(srcPk.stats, level);
+    // BUG FIX: Utiliser les stats pré-calculées de l'instance pour le joueur
+    // car elles contiennent déjà IVs, EVs, Natures et Raffinements.
+    const stats = {
+        maxHp: srcPk.stats.hp,
+        attack: srcPk.stats.atk,
+        defense: srcPk.stats.def,
+        spatk: srcPk.stats.spatk,
+        spdef: srcPk.stats.spdef,
+        speed: srcPk.stats.speed
+    };
     const resolvedTypes = getTypesFromPokedex(srcPk);
     
     const actor = {
@@ -1074,7 +1083,7 @@ function buildActorsFromDom() {
     const level = parseInt(slot.querySelector('.lvl-badge')?.textContent.replace('Lv.', '') || getEnemyLevel());
     const srcPk = (pokemonId && PokedexDB) ? PokedexDB[pokemonId] : null;
 
-    const stats = calculateStats(srcPk?.stats, level);
+    const stats = calculateStats(srcPk?.stats, level, pokemonId);
     const resolvedTypes = srcPk ? getTypesFromPokedex(srcPk) : ['normal'];
 
     const actor = {
@@ -2490,22 +2499,38 @@ async function checkWinCondition() {
     
     const droppedItems = [];
     
+    // Fonction helper pour obtenir le nom français propre (incluant le contenu des CT)
+    const getCleanItemNameFr = (id) => {
+        const item = GameData.getItem(id);
+        if (!item) return id.toUpperCase();
+        let name = item.name_fr || item.name || id;
+        
+        // Si c'est une CT, on essaie d'extraire le nom de la capacité pour plus de clarté
+        if (id.startsWith('tm') && item.effect_fr) {
+            const match = item.effect_fr.match(/Apprend (.*?) à un Pokémon/);
+            if (match && match[1]) {
+                name = `${name} - ${match[1]}`;
+            }
+        }
+        return name;
+    };
+    
     // 1 Objet garanti
     const randomItem = dropableItems[Math.floor(Math.random() * dropableItems.length)];
     GameData.addItem(randomItem, 1);
-    droppedItems.push({ id: randomItem, name: GameData.getItem(randomItem)?.name || randomItem, icon: '📦' });
+    droppedItems.push({ id: randomItem, name: getCleanItemNameFr(randomItem), icon: '📦' });
     
     // 1 Baie garantie
     const randomBerry = dropableBerries[Math.floor(Math.random() * dropableBerries.length)];
     GameData.addItem(randomBerry, 1);
-    droppedItems.push({ id: randomBerry, name: GameData.getItem(randomBerry)?.name || randomBerry, icon: '🍒' });
+    droppedItems.push({ id: randomBerry, name: getCleanItemNameFr(randomBerry), icon: '🍒' });
 
     // CT drop chance (fixed 20%)
     let droppedTM = null;
     if (Math.random() < 0.2) {
         const tmId = `tm${Math.floor(Math.random() * 50) + 1}`; 
         GameData.addItem(tmId, 1);
-        droppedTM = { id: tmId, name: GameData.getItem(tmId)?.name || tmId.toUpperCase().replace('TM', 'CT'), icon: '💿' };
+        droppedTM = { id: tmId, name: getCleanItemNameFr(tmId), icon: '💿' };
     }
 
     let finalEggCount = 0;
@@ -2613,11 +2638,23 @@ function getEnemyLevel() {
     return ((zoneIndex - 1) * 100) + ((waveIndex - 1) * 10) + battleIndex;
 }
 
-function calculateStats(baseStats, level) {
-    // Utilisation des formules de stats standards de Pokémon (sans IVs/EVs/Natures)
+function calculateStats(baseStats, level, pokemonId = null) {
+    // Utilisation des formules de stats standards de Pokémon (Cas Général Gen 3+)
+    // Stat = floor( ((2 * Base + IV + floor(EV/4)) * Niv / 100) + 5 )
+    // PV = floor( ((2 * Base + IV + floor(EV/4)) * Niv / 100) ) + Niv + 10
+    // Pour les ennemis, on considère IV=0 et EV=0 pour la simplicité.
     const safeBase = baseStats || { hp: 30, atk: 30, def: 30, spatk: 30, spdef: 30, speed: 30 };
 
-    const calcStat = (base) => Math.floor( ( (2 * base) * level / 100 ) + 5 );
+    if (pokemonId === 292 || pokemonId === "292") return {
+        maxHp: 1,
+        attack: Math.floor((2 * (safeBase.atk || 0) * level / 100) + 5),
+        defense: Math.floor((2 * (safeBase.def || 0) * level / 100) + 5),
+        spatk: Math.floor((2 * (safeBase.spatk || 0) * level / 100) + 5),
+        spdef: Math.floor((2 * (safeBase.spdef || 0) * level / 100) + 5),
+        speed: Math.floor((2 * (safeBase.speed || 0) * level / 100) + 5),
+    };
+
+    const calcStat = (base) => Math.floor( ( (2 * (base || 0)) * level / 100 ) + 5 );
 
     const calculated = {
         attack: calcStat(safeBase.atk),
@@ -2627,8 +2664,7 @@ function calculateStats(baseStats, level) {
         speed: calcStat(safeBase.speed),
     };
     
-    // La formule des PV est différente
-    calculated.maxHp = Math.floor( ( (2 * safeBase.hp) * level / 100 ) + level + 10 );
+    calculated.maxHp = Math.floor( ( (2 * (safeBase.hp || 0)) * level / 100 ) + level + 10 );
 
     return calculated;
 }

@@ -39,8 +39,7 @@ const Refinement = (() => {
         stars = Math.max(0, Math.min(MAX_STARS, stars));
         
         // Niveau: 100% à 200% (1.0 à 2.0) pour niveau 1-100
-        // Puis 200% à 300% (2.0 à 3.0) pour niveau 101-200
-        const levelMultiplier = 1.0 + (level / 100);
+        const levelMultiplier = 1.0 + ((level - 1) / 100);
         
         // Étoiles: +20% par étoile (0.2 par étoile)
         const starMultiplier = 1.0 + (stars * 0.2);

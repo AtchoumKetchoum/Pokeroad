@@ -38,12 +38,14 @@ const ProgressionManager = {
         if (!updatedMainPoke) return { success: false, reason: "Erreur critique lors de la fusion." };
 
         updatedMainPoke.grade = currentGrade + 1;
+        // On augmente les étoiles de raffinement pour un boost persistant
+        updatedMainPoke.refinementStars = (updatedMainPoke.refinementStars || 0) + 1;
+        
         // On ne reset pas le niveau, mais on augmente le plafond
         updatedMainPoke.maxLevel = this.CONFIG.MAX_LEVEL_BASE + (updatedMainPoke.grade * this.CONFIG.LEVELS_PER_GRADE);
         
-        // Boost de stats significatif
-        updatedMainPoke.stats.hp = Math.floor(updatedMainPoke.stats.hp * 1.2);
-        updatedMainPoke.stats.atk = Math.floor(updatedMainPoke.stats.atk * 1.2);
+        // Recalcul complet et propre des stats avec la nouvelle formule
+        updatedMainPoke.stats = GameData.calculateStats(updatedMainPoke);
 
         GameData._save(data);
         return { success: true, newGrade: updatedMainPoke.grade };
@@ -85,6 +87,9 @@ const ProgressionManager = {
         // Appliquer les changements
         data.money -= totalCost;
         pokemon.level = finalLevel;
+        
+        // Recalculer les stats suite au gain de niveau
+        pokemon.stats = GameData.calculateStats(pokemon);
 
         GameData._save(data);
         return { success: true, newLevel: pokemon.level, cost: totalCost };

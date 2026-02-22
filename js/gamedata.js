@@ -256,14 +256,24 @@ const GameData = (() => {
             speed: Math.floor((ev.speed + (evRefStats.speed || 0)) * evMult)
         };
 
-        // Calculer les stats avec les IVs/EVs raffinés
+        // Calculer les stats selon la nouvelle logique demandée :
+        // Chaque niveau apporte +1/50 Base + 1/100 (IV + EV)
+        const calcValue = (baseVal, ivVal, evVal, isHP) => {
+            const growth = (baseVal / 50) + ((ivVal + evVal) / 100);
+            if (isHP) {
+                return Math.floor(10 + level + (level * growth));
+            } else {
+                return Math.floor(5 + (level * growth));
+            }
+        };
+
         const rawStats = {
-            hp: Math.floor(((2 * (base.hp || 0) + effectiveIV.hp + Math.floor(effectiveEV.hp / 4)) * level) / 100) + level + 10,
-            atk: Math.floor((Math.floor(((2 * (base.atk || 0) + effectiveIV.atk + Math.floor(effectiveEV.atk / 4)) * level) / 100) + 5) * getNatureMult('atk')),
-            def: Math.floor((Math.floor(((2 * (base.def || 0) + effectiveIV.def + Math.floor(effectiveEV.def / 4)) * level) / 100) + 5) * getNatureMult('def')),
-            spatk: Math.floor((Math.floor(((2 * (base.spatk || 0) + effectiveIV.spatk + Math.floor(effectiveEV.spatk / 4)) * level) / 100) + 5) * getNatureMult('spatk')),
-            spdef: Math.floor((Math.floor(((2 * (base.spdef || 0) + effectiveIV.spdef + Math.floor(effectiveEV.spdef / 4)) * level) / 100) + 5) * getNatureMult('spdef')),
-            speed: Math.floor((Math.floor(((2 * (base.speed || 0) + effectiveIV.speed + Math.floor(effectiveEV.speed / 4)) * level) / 100) + 5) * getNatureMult('speed'))
+            hp: calcValue(base.hp || 0, effectiveIV.hp, effectiveEV.hp, true),
+            atk: Math.floor(calcValue(base.atk || 0, effectiveIV.atk, effectiveEV.atk, false) * getNatureMult('atk')),
+            def: Math.floor(calcValue(base.def || 0, effectiveIV.def, effectiveEV.def, false) * getNatureMult('def')),
+            spatk: Math.floor(calcValue(base.spatk || 0, effectiveIV.spatk, effectiveEV.spatk, false) * getNatureMult('spatk')),
+            spdef: Math.floor(calcValue(base.spdef || 0, effectiveIV.spdef, effectiveEV.spdef, false) * getNatureMult('spdef')),
+            speed: Math.floor(calcValue(base.speed || 0, effectiveIV.speed, effectiveEV.speed, false) * getNatureMult('speed'))
         };
         
         // Appliquer le multiplicateur de raffinement du Pokémon aux stats finales
@@ -617,11 +627,13 @@ const GameData = (() => {
                         pk.berries = [];
                         needsSave = true;
                     }
-                    // Vérifie si un Pokémon en soin a terminé
-                    if (pk && pk.status === 'healing' && pk.healingEndTime && Date.now() >= pk.healingEndTime) {
-                        pk.status = 'ready';
-                        pk.healingEndTime = null;
-                        needsSave = true;
+                    // Recalcul forcé des statistiques pour appliquer la nouvelle formule à tous les Pokémon possédés
+                    if (pk) {
+                        const originalStats = JSON.stringify(pk.stats);
+                        pk.stats = calculateStats(pk);
+                        if (originalStats !== JSON.stringify(pk.stats)) {
+                            needsSave = true;
+                        }
                     }
                 });
 
@@ -2268,6 +2280,7 @@ const GameData = (() => {
         getRefinementResourceCount,
         addPlayerExp,
         getPlayerStats,
-        isFeatureUnlocked
+        isFeatureUnlocked,
+        calculateStats
     };
 })();
