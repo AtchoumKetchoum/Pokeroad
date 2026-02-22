@@ -11,21 +11,27 @@
     <link rel="stylesheet" href="../css/worldmap.css">
 </head>
 <body>
-    <div id="map-screen">
-        <div class="map-header">
-            <button class="back-btn" onclick="goBack()">RETOUR</button>
-            <div class="map-title">Phase 1 : L'Éveil</div>
-            <div style="width: 80px;"></div> <!-- Spacer -->
-        </div>
+    <div id="game-screen">
+        <div id="scaler-view" class="worldmap-viewport">
+            <div class="map-header">
+                <button class="back-btn" onclick="goBack()">RETOUR</button>
+                <div class="map-title">Phase 1 : L'Éveil</div>
+                <div style="width: 80px;"></div> <!-- Spacer -->
+            </div>
 
-        <div id="map-container">
-            <!-- Pins générés par worldmap.js -->
+            <div id="map-container">
+                <!-- Pins générés par worldmap.js -->
+            </div>
         </div>
     </div>
 
+    <script>
+        function goBack() { window.location.href = 'home.html'; }
+    </script>
     <!-- JavaScript -->
     <script src="../js/storage.js"></script>
     <script src="../js/gamedata.js"></script>
     <script src="../js/worldmap.js"></script>
+    <script src="../js/mobile-manager.js"></script>
 </body>
 </html>

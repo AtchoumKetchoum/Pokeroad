@@ -42,7 +42,7 @@
 
 body {
   background: radial-gradient(circle at top, #ffffff 0%, #f7d9ff 100%);
-  min-height: 100vh;
+  min-height: 100%;
   font-family: 'Inter', sans-serif; /* Proche de la police utilisée */
   margin: 0;
   padding: 0;

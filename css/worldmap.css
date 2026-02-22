@@ -1,11 +1,9 @@
 /* worldmap.css */
 
-#map-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+.worldmap-viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     background: #000;
 }
@@ -14,8 +12,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url('/assets/zones/map_1.png');
-    background-size: 100% 100%;
+    background-image: url('../assets/zones/map_1.png');
+    background-size: cover;
     background-position: center;
 }
 
@@ -160,13 +158,12 @@
     top: -20px;
     width: 24px;
     height: 24px;
-    background-image: url('/assets/player_head.png'); /* S'assurer que cette image existe ou utiliser un emoji */
+    background-image: url('../assets/player_head.png');
     background-size: contain;
     background-repeat: no-repeat;
     animation: bounce 1s infinite alternate;
 }
 
-/* Si l'image n'existe pas, on met un emoji en fallback */
 .player-mini-marker::before {
     content: "🧑‍🚀";
     display: block;
@@ -196,14 +193,4 @@
 
 .map-pin.unlocked:not(.completed) .pin-marker {
     animation: bounce 1.5s infinite ease-in-out;
-}
-/* Texte clignotant explosif */
-.explosive-text {
-    animation: text-explode 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards;
-}
-
-@keyframes text-explode {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.5); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
 }

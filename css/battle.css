@@ -6,7 +6,7 @@
 body {
     margin: 0;
     background-color: #111;
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,12 +55,12 @@ body {
 /* --- CONTENEUR HUD HAUT-GAUCHE --- */
 .top-left-container {
     position: absolute;
-    top: 2vh;
-    left: 2vw;
+    top: 2%;
+    left: 2%;
     z-index: 71;
     display: flex;
     align-items: center;
-    gap: 1vw;
+    gap: 1%;
 }
 
 /* Positionnement des boutons de fin de combat */
@@ -219,14 +219,14 @@ body {
 /* --- ARÈNE 1V1 --- */
 #battleArena {
     position: absolute;
-    top: 10vh;
+    top: 10%;
     left: 0;
     width: 100%;
-    height: 75vh;
+    height: 75%;
     display: none;
     align-items: center;
     justify-content: center;
-    gap: 5vw;
+    gap: 5%;
     z-index: 40;
     pointer-events: none;
 }
@@ -250,8 +250,8 @@ body {
 }
 
 #battleArena .sprite {
-    width: 25vmin;
-    height: 25vmin;
+    width: 25%;
+    height: 25%;
     
     transform-origin: center;
     filter: drop-shadow(0 12px 0 rgba(0, 0, 0, 0.25));
@@ -334,8 +334,8 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.5vw;
-    width: 32vw; 
+    gap: 0.5%;
+    width: 32%; 
     max-width: 420px;
     aspect-ratio: 1;
     bottom: 65px; /* Collée à la barre de pied de page (min-height 60px) */
@@ -439,8 +439,8 @@ body {
 }
 
 .sprite {
-    width: 6.5vw;
-    height: 6.5vw;
+    width: 6.5%;
+    height: 6.5%;
     min-width: 48px;
     min-height: 48px;
     z-index: 2;
@@ -492,7 +492,7 @@ body {
 /* --- ICÔNES DE STATUT --- */
 .status-icons {
     position: absolute;
-    top: -24px; /* Collé juste au dessus de la hp-box (qui est à -4vh) */
+    top: -24px; /* Collé juste au dessus de la hp-box (qui est à -4%) */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -536,10 +536,10 @@ body {
 /* --- BARRES DE STATUT SUR L'UNITÉ --- */
 .hp-box {
     position: absolute;
-    top: -4vh; 
+    top: -4%; 
     left: 50%;
     transform: translateX(-50%);
-    width: 7.5vw;
+    width: 7.5%;
     min-width: 85px; /* Réduit pour éviter le chevauchement */
     background: rgba(0, 0, 0, 0.85); 
     padding: 3px 5px;
@@ -597,10 +597,10 @@ body {
 /* Barre de Points d'Action (ATB) */
 .ap-bar {
     position: absolute;
-    top: -1.2vh; 
+    top: -1.2%; 
     left: 50%;
     transform: translateX(-50%);
-    width: 7.5vw;
+    width: 7.5%;
     min-width: 85px;
     height: 5px;
     background: rgba(0,0,0,0.85);
@@ -630,10 +630,10 @@ body {
 /* Postionnement dynamique par ligne pour éviter le chevauchement (perspective) */
 /* Ligne 2 (Milieu) : slots 4, 5, 6 */
 .unit-slot:nth-child(4) .hp-box, .unit-slot:nth-child(5) .hp-box, .unit-slot:nth-child(6) .hp-box {
-    top: -1.5vh;
+    top: -1.5%;
 }
 .unit-slot:nth-child(4) .ap-bar, .unit-slot:nth-child(5) .ap-bar, .unit-slot:nth-child(6) .ap-bar {
-    top: 1.3vh;
+    top: 1.3%;
 }
 .unit-slot:nth-child(4) .status-icons, .unit-slot:nth-child(5) .status-icons, .unit-slot:nth-child(6) .status-icons {
     top: -20px;
@@ -641,10 +641,10 @@ body {
 
 /* Ligne 3 (Devant) : slots 7, 8, 9 */
 .unit-slot:nth-child(7) .hp-box, .unit-slot:nth-child(8) .hp-box, .unit-slot:nth-child(9) .hp-box {
-    top: 1vh;
+    top: 1%;
 }
 .unit-slot:nth-child(7) .ap-bar, .unit-slot:nth-child(8) .ap-bar, .unit-slot:nth-child(9) .ap-bar {
-    top: 3.8vh;
+    top: 3.8%;
 }
 .unit-slot:nth-child(7) .status-icons, .unit-slot:nth-child(8) .status-icons, .unit-slot:nth-child(9) .status-icons {
     top: 25px; /* Ajusté pour suivre la hp-box descendue */
@@ -802,9 +802,9 @@ body {
 /* --- PANNEAU D'INFORMATIONS GÉNÉRAL --- */
 #infoDisplayPanel {
     position: absolute;
-    top: 10vh;
-    left: 5vw;
-    right: 5vw;
+    top: 10%;
+    left: 5%;
+    right: 5%;
     z-index: 70;
 
     /* Style Glassmorphisme */
