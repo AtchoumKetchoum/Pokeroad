@@ -30,8 +30,14 @@ body {
 
 @keyframes screen-shake-dynamic {
     0%, 100% { transform: translate(-50%, -50%) translate(0, 0); }
-    25%, 75% { transform: translate(-50%, -50%) translate(var(--shake-intensity, 2px), 0); }
-    50% { transform: translate(-50%, -50%) translate(calc(var(--shake-intensity, 2px) * -1), 0); }
+    25%, 75% { transform: translate(-50%, -50%) translate(var(--shake-intensity, 5px), 0); }
+    50% { transform: translate(-50%, -50%) translate(calc(var(--shake-intensity, 5px) * -1), 0); }
+}
+
+@keyframes unit-shake-dynamic {
+    0%, 100% { transform: var(--transform-base, scaleX(1)) translate(0, 0); }
+    25%, 75% { transform: var(--transform-base, scaleX(1)) translate(var(--shake-intensity, 8px), 0); }
+    50% { transform: var(--transform-base, scaleX(1)) translate(calc(var(--shake-intensity, 8px) * -1), 0); }
 }
 
 /* Style de base pour les éléments de verre */
@@ -78,19 +84,111 @@ body {
     bottom: 20%; /* Plus bas pour le bouton Rejouer */
 }
 
-/* --- HUD DE PROGRESSION --- */
+/* --- SYSTÈME DE STYLE UNIFIÉ POUR HUD --- */
+.unified-hud-style, 
+#hudProgress, 
+.turn-order-sidebar, 
+#infoDisplayPanel, 
+.speed-controls, 
+.pk-btn-action, 
+#top-right-actions .exit-btn {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
 #hudProgress {
-    position: relative;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 10px 20px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    text-shadow: none;
-    color: #222;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+
+.speed-controls {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    gap: 2px;
+}
+
+.speed-btn {
+    height: 32px;
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #888;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.speed-btn.active {
+    background: #3498db;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+}
+
+#top-right-actions {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 200;
+}
+
+#top-right-actions .exit-btn, 
+#auto-battle-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    padding: 0;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#auto-battle-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    padding: 0;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+#auto-battle-btn.active {
+    background: #e74c3c;
+    color: #fff;
+    border-color: #c0392b;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
 }
 
 /* --- STATUT DE BATAILLE --- */
@@ -99,15 +197,13 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 80;
+    z-index: 500;
     font-weight: 700;
-    padding: 15px 25px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 5px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: none; /* Caché par défaut */
+    padding: 20px 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    display: none;
 }
 
 #battleStatus:hover {
@@ -330,12 +426,14 @@ body {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     column-gap: 20px;
-    row-gap: 60px; /* Plus d'espace vertical pour éviter les chevauchements HP */
-    width: 35%; 
-    max-width: 440px;
-    aspect-ratio: 0.8; /* Légèrement plus haut que large pour compenser le gap vertical */
-    bottom: 110px;
+    row-gap: 30px; 
+    width: 38%; 
+    max-width: 480px;
+    top: 180px; /* Redescendu pour être sous la timeline/info */
+    bottom: 110px; /* S'arrête juste au dessus du footer réduit */
+    height: auto;
     transform: none;
+    z-index: 5;
 }
 
 #player-grid {
@@ -480,20 +578,7 @@ body {
     animation: status-glow-anim 0.5s ease-in-out;
 }
 
-/* --- ICÔNES DE STATUT --- */
-.status-icons {
-    position: absolute;
-    top: -24px; /* Collé juste au dessus de la hp-box (qui est à -4%) */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-wrap: wrap; 
-    justify-content: center; 
-    gap: 3px; 
-    width: 120px; 
-    z-index: 11;
-    pointer-events: none;
-}
+
 
 .status-icon {
     min-width: 18px;
@@ -525,79 +610,107 @@ body {
 .status-icon.v-stat.debuff { background-color: #f44336; } /* red */
 
 /* --- BARRES DE STATUT SUR L'UNITÉ --- */
+/* --- AFFICHAGE STATUT UNITÉ CONDENSÉ --- */
 .hp-box {
     position: absolute;
-    top: -45px; 
+    top: 0;
     left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    background: rgba(0, 0, 0, 0.85);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
-    padding: 3px 6px;
+    transform: translateX(-50%) translateY(-100%);
+    width: 120px; /* Largeur exacte du slot */
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
-    z-index: 20;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    gap: 0;
+    z-index: 50;
+    pointer-events: none;
 }
 
-.lvl-badge {
-    position: absolute;
-    left: -12px;
-    top: -8px;
-    background: #FFD700;
-    color: #333;
-    font-size: 11px;
-    font-weight: 800;
-    padding: 2px 5px;
-    border-radius: 4px;
-    border: 2px solid #fff;
+.status-main-row {
+    display: flex;
+    align-items: center; /* Centrage vertical de tous les éléments de la ligne */
+    justify-content: space-between;
+    width: 100%;
+    gap: 0;
+    padding: 0;
+    background: transparent;
+    height: 10px; /* Force la hauteur HP (6) + ATB (4) */
 }
 
-.charge-text {
-    font-size: 11px;
-    font-weight: bold;
-    color: #00e5ff;
+.hp-container-minimal {
+    flex: 1;
+    height: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transform: translateY(-1px); /* Décale les barres vers le haut pour aligner leur milieu avec le texte */
 }
 
 .hp-bar-bg {
-    flex-grow: 1;
-    height: 8px; /* Plus épais */
-    background: #222;
-    border-radius: 4px;
-    border: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+    height: 5px; /* Équilibré avec l'ATB */
+    background: rgba(0,0,0,0.6);
+    border-radius: 0 0 2px 2px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-top: none; 
     overflow: hidden;
+    position: relative;
 }
 
 .hp-fill {
     height: 100%;
-    background: #4caf50; /* Vert */
-    width: 100%;
-    transition: width 0.5s ease-out, background-color 0.3s;
-    border-radius: 2px;
+    background: #2ecc71;
+    transition: width 0.4s cubic-bezier(0.1, 0.7, 1.0, 0.1);
 }
 
-.hp-fill.midHp { background: #ffc107; } /* Jaune */
-.hp-fill.lowHp { background: #f44336; } /* Rouge */
-.hp-fill.hp-flash-damage { animation: hp-flash-anim 0.2s ease-out; }
+.lvl-badge {
+    flex-shrink: 0;
+    height: 10px; /* Même hauteur que le bloc central */
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px #000;
+    margin-right: 4px; /* Espace équilibré */
+    line-height: 1;
+}
 
-/* Barre de Points d'Action (ATB) */
+.charge-text {
+    flex-shrink: 0;
+    height: 10px; /* Même hauteur que le bloc central */
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 800;
+    color: #00e5ff;
+    text-shadow: 1px 1px 2px #000;
+    margin-left: 4px; /* Espace équilibré */
+    line-height: 1;
+}
+
+/* Status Icons déportées au dessus */
+.status-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 2px;
+    width: 100%;
+    min-height: 18px; /* Réserve l'espace pour une ligne */
+}
+
+/* Barre d'ATB (AP) ultra-fine juste en dessous */
 .ap-bar {
-    position: absolute;
-    top: -1.2%; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 7.5%;
-    min-width: 85px;
-    height: 5px;
-    background: rgba(0,0,0,0.85);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 3px;
+    position: relative;
+    width: 100%;
+    height: 5px; /* Équilibré avec la Vie */
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-bottom: none; /* Fusion parfaite avec la barre de vie */
+    border-radius: 2px 2px 0 0;
     overflow: hidden;
-    z-index: 10;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    margin-top: 0;
 }
 
 .ap-fill {
@@ -608,7 +721,6 @@ body {
 }
 
 .ap-fill-update {
-    /* Animation de flash pour montrer la mise à jour */
     animation: ap-flash 0.2s ease-out;
 }
 
@@ -616,27 +728,18 @@ body {
     50% { filter: brightness(1.5); }
 }
 
-/* Postionnement dynamique par ligne pour éviter le chevauchement (perspective) */
-/* Ligne 2 (Milieu) : slots 4, 5, 6 */
-.unit-slot:nth-child(4) .hp-box, .unit-slot:nth-child(5) .hp-box, .unit-slot:nth-child(6) .hp-box {
-    top: -35px; /* Valeur fixe pour éviter le chevauchement sur mobile */
-}
-.unit-slot:nth-child(4) .ap-bar, .unit-slot:nth-child(5) .ap-bar, .unit-slot:nth-child(6) .ap-bar {
-    top: 5px;
-}
-.unit-slot:nth-child(4) .status-icons, .unit-slot:nth-child(5) .status-icons, .unit-slot:nth-child(6) .status-icons {
-    top: -55px;
-}
 
-/* Ligne 3 (Devant) : slots 7, 8, 9 */
-.unit-slot:nth-child(7) .hp-box, .unit-slot:nth-child(8) .hp-box, .unit-slot:nth-child(9) .hp-box {
-    top: -25px; /* Un peu plus bas car en avant-plan */
-}
-.unit-slot:nth-child(7) .ap-bar, .unit-slot:nth-child(8) .ap-bar, .unit-slot:nth-child(9) .ap-bar {
-    top: 15px;
-}
-.unit-slot:nth-child(7) .status-icons, .unit-slot:nth-child(8) .status-icons, .unit-slot:nth-child(9) .status-icons {
-    top: -45px;
+
+
+
+.hp-fill.midHp { background: #f1c40f; }
+.hp-fill.lowHp { background: #e74c3c; }
+.hp-fill.hp-flash-damage { animation: hp-flash-anim 0.2s ease-out; }
+
+@keyframes hp-flash-anim {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(2); }
+    100% { filter: brightness(1); }
 }
 
 /* --- BANDEAU DE SÉLECTION --- */
@@ -701,24 +804,41 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.95); /* Plus opaque pour mobile */
-    border-top: 4px solid #fff;
-    padding: 15px 25px;
+    background: rgba(255, 255, 255, 0.9);
+    border-top: 2px solid rgba(0, 0, 0, 0.05);
+    padding: 10px 20px;
     border-radius: 0;
     box-sizing: border-box;
-    z-index: 150; /* Au-dessus de tout */
+    z-index: 200; 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 120px; /* Plus grand pour mobile */
-    gap: 20px;
-    box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+    min-height: 80px;
+    gap: 15px;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05); /* Plus discret */
 }
 
 /* On force cet aspect sur mobile pour éviter les coupures */
 @media (max-width: 900px) {
     #battle-footer {
-        padding-bottom: 30px; /* Marge pour la barre home de l'iPhone */
+        padding-bottom: 25px;
+    }
+    .sprite {
+        width: 100px;
+        height: 100px;
+    }
+    .hp-box {
+        width: 110px;
+        top: 0;
+        transform: translateX(-50%) translateY(-100%);
+        background: transparent;
+        border: none;
+    }
+    .team-grid {
+        column-gap: 10px;
+        row-gap: 25px;
+        top: 170px;
+        bottom: 100px;
     }
 }
 
@@ -795,38 +915,31 @@ body {
     transition: opacity 0.3s;
 }
 
-/* --- PANNEAU D'INFORMATIONS GÉNÉRAL --- */
 #infoDisplayPanel {
     position: absolute;
-    top: 10%;
-    left: 5%;
-    right: 5%;
-    z-index: 70;
-
-    /* Style Glassmorphisme */
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 5px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-
-    padding: 12px 20px;
+    top: 75px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    min-width: 280px;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
     box-sizing: border-box;
     color: #333;
-    text-shadow: none;
-    
-    /* Animation d'apparition */
     opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease;
     pointer-events: none;
     display: flex; 
-    min-height: 50px;
+    min-height: 45px;
     align-items: center;
 }
 
 #infoDisplayPanel.visible {
     opacity: 1;
-    transform: translateY(0);
     pointer-events: auto;
 }
 
@@ -1298,52 +1411,11 @@ body {
     animation: none;
 }
 
-/* Indicateur Z-Move sur le terrain */
-.z-move-indicator {
-    position: absolute;
-    top: -12px; 
-    left: calc(50% + 31px); 
-    transform: translateY(-50%); 
-    width: 18px;
-    height: 18px;
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border-radius: 50%;
-    display: none; /* CHANGÉ : Caché par défaut pour éviter les reliques */
-    align-items: center;
-    justify-content: center;
-    font-size: 8px;
-    font-weight: 700;
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    z-index: 12; /* Au dessus des barres */
-    transition: all 0.3s ease;
-}
 
-.z-move-indicator.ready {
-    background: #ffeb3b;
-    color: #333;
-    font-size: 10px;
-    font-weight: 900;
-    border-color: white;
-    animation: z-ready-border-pulse 1.5s infinite;
-}
 
 
 /* --- TIMELINE DES TOURS --- */
-.turn-order-sidebar {
-    position: relative;
-    display: none; /* Caché par défaut, affiché via .combat-active */
-    flex-direction: row;
-    gap: 5px;
-    padding: 4px 6px; /* Padding réduit */
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 5px;
-    border: 1px solid white;
-    width: auto;
-    height: 30px; /* Hauteur réduite pour correspondre aux autres éléments */
-    align-items: center;
-}
+/* Styles gérés dans .top-left-container plus haut */
 
 .combat-active .turn-order-sidebar {
     display: flex !important;

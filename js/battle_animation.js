@@ -103,20 +103,25 @@ const BattleAnimation = (() => {
         const intensity = Math.min(3, Math.max(1, (power || 40) / 40));
         const screen = document.getElementById('scaler-view');
         if (screen) {
-            screen.style.transformOrigin = 'center center';
-            screen.style.transition = 'transform 0.05s ease-out';
+            const originalTransform = screen.style.transform; // Sauvegarde pour la fin
+            screen.style.transition = 'none';
 
-            const shake = () => {
-                const rx = (Math.random() - 0.5) * intensity * 2;
-                const ry = (Math.random() - 0.5) * intensity * 2;
-                screen.style.transform = `translate(${rx}px, ${ry}px)`;
-            };
-
-            const interval = setInterval(shake, 50);
-            setTimeout(() => {
-                clearInterval(interval);
-                screen.style.transform = 'none';
-            }, 300);
+            let count = 0;
+            const maxTicks = 10;
+            const interval = setInterval(() => {
+                const rx = (Math.random() - 0.5) * intensity * 8;
+                const ry = (Math.random() - 0.5) * intensity * 8;
+                
+                // On récupère le transform actuel (qui peut avoir changé via MobileManager)
+                // mais pour plus de robustesse pendant l'anim, on utilise celui capturé au début.
+                screen.style.transform = `${originalTransform} translate(${rx}px, ${ry}px)`;
+                
+                count++;
+                if (count >= maxTicks) {
+                    clearInterval(interval);
+                    screen.style.transform = originalTransform; 
+                }
+            }, 30);
         }
     }
     

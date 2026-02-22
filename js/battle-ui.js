@@ -166,14 +166,17 @@ function placePokemonOnBoard(pokemon, bannerElement, slotElement) {
     const name = (typeof pokemon.name === 'object') ? (pokemon.name.french || pokemon.name.en) : pokemon.name;
     const sprite = pokemon.sprite; // Utilise le sprite statique
     unit.innerHTML = `
-        <div class="status-icons"></div>
         <div class="hp-box">
-          <span class="lvl-badge">Lv.${pokemon.level}</span>
-          <div class="hp-bar-bg"><div class="hp-fill" style="width: 100%;"></div></div>
-          <span class="charge-text">0%</span>
+            <div class="status-icons"></div>
+            <div class="status-main-row">
+                <span class="lvl-badge">Lv.${pokemon.level}</span>
+                <div class="hp-container-minimal">
+                    <div class="ap-bar"><div class="ap-fill" style="width: 0%;"></div></div>
+                    <div class="hp-bar-bg"><div class="hp-fill" style="width: 100%;"></div></div>
+                </div>
+                <span class="charge-text">0%</span>
+            </div>
         </div>
-        <div class="z-move-indicator"></div>
-        <div class="ap-bar"><div class="ap-fill"></div></div>
         <div class="shadow"></div>
         <img src="${sprite}" class="sprite" alt="${name}" style="--transform-base: scaleX(-1);">
     `;
@@ -314,6 +317,7 @@ function startBattle() {
 
     // On lance le combat !
     console.log("[DEBUG] Creating new Battle instance");
+    window.isRunning = false; // Reset de sécurité avant nouvelle instance
     battle = new Battle();
     console.log("[DEBUG] Calling battle.start()");
     battle.start();

@@ -1,8 +1,8 @@
-// Système de combat simplifié
-
-let isRunning = false;
-let globalTurnCount = 0;
-var currentTurnUnit = null; // Unité dont c'est actuellement le tour
+// On utilise window.isRunning pour assurer une visibilité totale entre tous les fichiers
+window.isRunning = false; 
+window.globalTurnCount = 0;
+window.currentTurnUnit = null; 
+window.isAutoBattle = false;
 
 let dom = {
   battleStatus: null,
@@ -701,7 +701,7 @@ function updateHud() {
   }
 
   if (hud) {
-    hud.innerHTML = `${zoneDisplay} | Vague <span id="hudWave">${waveIndex}</span> | Combat <span id="hudBattle">${battleIndex}</span>`;
+    hud.innerHTML = `${zoneDisplay} | Vague : <span id="hudWave">${waveIndex}</span> | Combat : <span id="hudBattle">${battleIndex}</span>`;
   }
 
   const battleScreen = document.getElementById('scaler-view') || document.getElementById('game-screen');
@@ -1483,12 +1483,10 @@ function updateZMoveIndicators() {
         const slotEl = getSlotEl(unit._side, unit._index);
         if (!slotEl) return;
 
-        const indicatorEl = slotEl.querySelector('.z-move-indicator');
         const unitEl = slotEl.querySelector('.unit');
         
         // Cacher tout si KO
         if (unit.isKO) {
-            if (indicatorEl) indicatorEl.style.display = 'none';
             // Cacher aussi les status-icons si présent dans unitEl
             if (unitEl) {
                 const icons = unitEl.querySelector('.status-icons');
@@ -1496,7 +1494,7 @@ function updateZMoveIndicators() {
             }
             return;
         }
-        const displayPercent = Math.min(100, chargePercent);
+        const displayPercent = Math.min(100, unit.boostGauge || 0);
 
         // Mise à jour du texte de charge persistant dans le HUD (le nôtre)
         if (unitEl) {
@@ -1504,25 +1502,6 @@ function updateZMoveIndicators() {
             if (chargeText) {
                 chargeText.textContent = `${displayPercent}%`;
             }
-        }
-
-        if (!indicatorEl) return;
-        
-        // Si le Pokémon est K.O. ou n'a pas de capacité Z, on cache l'indicateur
-        if (unit.isKO || !unit._boostedMoveId) {
-            indicatorEl.style.display = 'none';
-            return;
-        }
-
-        indicatorEl.style.display = 'flex';
-        const isReady = unit.boostGauge >= 50;
-
-        if (isReady) {
-            indicatorEl.textContent = 'Z';
-            indicatorEl.classList.add('ready');
-        } else {
-            indicatorEl.textContent = `${displayPercent}%`;
-            indicatorEl.classList.remove('ready');
         }
     });
 }
@@ -1992,10 +1971,17 @@ function setupPredefinedEnemyTeam(team) {
             const name = safeName(pokemon);
             const sprite = pokemon.sprite;
             unit.innerHTML = `
-                <div class="status-icons"></div>
-                <div class="hp-box"><span class="lvl-badge">Lv.${level}</span><div class="hp-bar-bg"><div class="hp-fill"></div></div><span class="charge-text">0%</span></div>
-                <div class="z-move-indicator"></div>
-                <div class="ap-bar"><div class="ap-fill"></div></div>
+                <div class="hp-box">
+                    <div class="status-icons"></div>
+                    <div class="status-main-row">
+                        <span class="lvl-badge">Lv.${level}</span>
+                        <div class="hp-container-minimal">
+                            <div class="ap-bar"><div class="ap-fill" style="width: 0%;"></div></div>
+                            <div class="hp-bar-bg"><div class="hp-fill" style="width: 100%;"></div></div>
+                        </div>
+                        <span class="charge-text">0%</span>
+                    </div>
+                </div>
                 <div class="shadow"></div>
                 <img src="${sprite}" class="sprite" alt="${name}" style="--transform-base: scaleX(1);">`;
             slot.appendChild(unit);
@@ -2038,10 +2024,17 @@ function setupRandomEnemyTeam() {
             const name = safeName(enemy);
             const sprite = enemy.sprite;
             unit.innerHTML = `
-                <div class="status-icons"></div>
-                <div class="hp-box"><span class="lvl-badge">Lv.${level}</span><div class="hp-bar-bg"><div class="hp-fill"></div></div><span class="charge-text">0%</span></div>
-                <div class="z-move-indicator"></div>
-                <div class="ap-bar"><div class="ap-fill"></div></div>
+                <div class="hp-box">
+                    <div class="status-icons"></div>
+                    <div class="status-main-row">
+                        <span class="lvl-badge">Lv.${level}</span>
+                        <div class="hp-container-minimal">
+                            <div class="ap-bar"><div class="ap-fill" style="width: 0%;"></div></div>
+                            <div class="hp-bar-bg"><div class="hp-fill" style="width: 100%;"></div></div>
+                        </div>
+                        <span class="charge-text">0%</span>
+                    </div>
+                </div>
                 <div class="shadow"></div>
                 <img src="${sprite}" class="sprite" alt="${name}" style="--transform-base: scaleX(1);">`;
             slot.appendChild(unit);
@@ -2214,11 +2207,14 @@ async function handleStartOfTurnEffects(unit) {
 }
 
 async function runCombatLoop() {
-    while (isRunning) {
+    console.log("[DEBUG] runCombatLoop: enter, window.isRunning =", window.isRunning);
+    while (window.isRunning) {
+        console.log("[DEBUG] runCombatLoop: iteration start");
         const playerAlive = aliveOnSide('player');
         const enemyAlive = aliveOnSide('enemy');
 
         if (playerAlive.length === 0 || enemyAlive.length === 0) {
+            console.log("[DEBUG] runCombatLoop: someone is dead, stopping loop");
             break;
         }
 
@@ -2248,7 +2244,9 @@ async function runCombatLoop() {
 
             allUnits.forEach(u => {
                 if (!u.isKO) {
-                    u.actionPoints += u.effectiveSpeed * (ticks > 0 ? ticks : 1);
+                    const speed = u.effectiveSpeed || 50; // Fallback sécurité
+                    u.actionPoints += speed * (ticks > 0 ? ticks : 1);
+                    if (u._side === 'player') console.log(`[DEBUG] ${u.name} AP: ${u.actionPoints}`);
                     updateActionPointsUI(u);
                 }
             });
@@ -2326,18 +2324,21 @@ async function runCombatLoop() {
     }
 
     await checkWinCondition();
-    isRunning = false;
+    window.isRunning = false;
+    currentTurnUnit = null;
     console.log("[DIAGNOSTIC] Boucle de combat terminée");
     clearActionUI(); // Nettoyer l'UI à la fin
 }
 
 async function beginBattleSequence() {
     console.log("[DEBUG] beginBattleSequence() called");
-    if (isRunning) {
-        console.log("[DEBUG] Combat already running, aborting");
-        return;
+    if (window.isRunning) {
+        console.warn("[DEBUG] window.isRunning was already true, force reset");
+        window.isRunning = false;
+        await sleep(100);
     }
-    isRunning = true;
+    window.isRunning = true;
+    console.log("[DEBUG] window.isRunning is now true");
 
     // 1. Charger toutes les données nécessaires avec gestion d'erreurs individuelle
     console.log("[DEBUG] Loading databases...");
@@ -2397,12 +2398,15 @@ async function beginBattleSequence() {
     };
 
     // 4. Construire les objets "acteurs" à partir du DOM maintenant prêt
-    console.log("[DEBUG] Building actors from DOM");
+    console.log("[DEBUG] Building actors from DOM...");
     buildActorsFromDom();
+    console.log("[DEBUG] Grid player length:", grid.player.filter(u => u !== null).length);
+    console.log("[DEBUG] Grid enemy length:", grid.enemy.filter(u => u !== null).length);
+    
     [...grid.player, ...grid.enemy].forEach(unit => {
         if (unit) {
             unit.effectiveSpeed = getEffectiveSpeed(unit);
-            console.log(`[DEBUG] Unit: ${unit.name}, Side: ${unit._side}, Speed: ${unit.effectiveSpeed}`);
+            console.log(`[DEBUG] Actor ready: ${unit.name} (${unit._side}) Speed: ${unit.effectiveSpeed}`);
         }
     });
 
@@ -2415,14 +2419,14 @@ async function beginBattleSequence() {
 
     if (playerUnits.length === 0) {
         console.error("Combat annulé : Aucun Pokémon joueur valide sur le terrain après initialisation.");
-        isRunning = false;
+        window.isRunning = false;
         setCombatActive(false); // Annuler le mode combat
         alert("Erreur critique : Impossible de démarrer le combat, aucun combattant valide trouvé.");
         return;
     }
     if (enemyUnits.length === 0) {
         console.error("Combat annulé : Aucun Pokémon ennemi valide sur le terrain après initialisation.");
-        isRunning = false;
+        window.isRunning = false;
         setCombatActive(false);
         alert("Erreur critique : Impossible de générer les ennemis. Vérifiez que les fichiers de données (pokedex.json) sont accessibles.");
         return;
@@ -2432,9 +2436,9 @@ async function beginBattleSequence() {
     updateZMoveIndicators(); // Initialiser les indicateurs Z-Move
 
     // Lancer la boucle de combat
-    console.log("[DEBUG] Starting combat loop");
-    await runCombatLoop();
-    console.log("[DEBUG] Combat loop finished");
+    console.log("[DEBUG] Starting runCombatLoop...");
+    runCombatLoop(); // On ne l'attend pas forcément ici si on veut rendre la main à l'UI
+    console.log("[DEBUG] beginBattleSequence() finished.");
 }
 
 async function checkWinCondition() {
@@ -2669,17 +2673,18 @@ class Battle {
 
   async start() {
     console.log("[DEBUG] Battle.start() method called");
+    window.isRunning = false; // Reset propre avant de commencer
+    await sleep(50);
     initGlobals();
     setCombatActive(true);
     this.log("Le combat commence !");
     console.log("[DEBUG] Initializing battle view");
     initBattleView();
-    await sleep(150);
+    await sleep(200); // Laisse le temps au DOM de se stabiliser
     console.log("[DEBUG] Calling beginBattleSequence()");
     await beginBattleSequence();
-    updateZMoveIndicators(); // Mettre à jour les Z-Moves après le début du combat
-    console.log("[DEBUG] Battle.start() method completed");
-}
+    console.log("[DEBUG] Battle.start() completed");
+  }
 
   log(message) {
     try { console.log(message); } catch {}
