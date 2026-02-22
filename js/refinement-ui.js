@@ -1036,7 +1036,7 @@ const RefinementUI = (() => {
                         return `
                         <div class="pokemon-card" onclick="RefinementUI.selectItem('${tm.id}')">
                             <div class="pokemon-sprite">
-                                <img src="../assets/item_ct.png" alt="${tm.name}" onerror="this.src='/assets/bag.png'">
+                                <img src="../assets/item_ct.png" alt="${tm.name}" onerror="this.src='../assets/bag.png'">
                             </div>
                             <div class="item-owned-count">x${tm.quantity}</div>
                             <div class="pokemon-info">

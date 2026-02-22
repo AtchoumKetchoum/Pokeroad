@@ -169,9 +169,9 @@ function displayIncubator() {
                     slot.classList.add('ready');
                     slot.innerHTML = `
                         <div class="incubator-base">
-                            <img src="/assets/incubateur.png" class="incubator-img">
+                            <img src="../assets/incubateur.png" class="incubator-img">
                             <div class="egg-container ready-glow">
-                                <img src="${eggSprite}" class="egg-img floating" onerror="this.src='/assets/egg.png'">
+                                <img src="${eggSprite}" class="egg-img floating" onerror="this.src='../assets/egg.png'">
                             </div>
                         </div>
                         <div class="slot-status ready-text">PRÊT !</div>
@@ -184,9 +184,9 @@ function displayIncubator() {
                     
                     slot.innerHTML = `
                         <div class="incubator-base">
-                            <img src="/assets/incubateur.png" class="incubator-img incubating">
+                            <img src="../assets/incubateur.png" class="incubator-img incubating">
                             <div class="egg-container">
-                                <img src="${eggSprite}" class="egg-img rotating" onerror="this.src='/assets/egg.png'">
+                                <img src="${eggSprite}" class="egg-img rotating" onerror="this.src='../assets/egg.png'">
                             </div>
                         </div>
                         <div class="progress-container">
@@ -199,7 +199,7 @@ function displayIncubator() {
                 slot.classList.add('empty');
                 slot.innerHTML = `
                     <div class="incubator-base">
-                        <img src="/assets/incubateur.png" class="incubator-img empty">
+                        <img src="../assets/incubateur.png" class="incubator-img empty">
                     </div>
                     <div class="slot-status">VIDE</div>
                 `;
@@ -211,7 +211,7 @@ function displayIncubator() {
             const cost = COSTS[i] || 0;
             slot.innerHTML = `
                 <div class="incubator-base">
-                    <img src="/assets/incubateur.png" class="incubator-img locked">
+                    <img src="../assets/incubateur.png" class="incubator-img locked">
                     <div class="lock-shine"></div>
                 </div>
                 <div class="lock-details">
@@ -308,7 +308,7 @@ function renderEggRarityFilters() {
         const normalizedRarity = normalizeRarity(r);
         html += `
             <div class="egg-filter-item ${currentEggRarityFilter === r ? 'active' : ''}" onclick="setEggBagFilter('${r}')" title="Œufs de rareté ${r}">
-                <img src="/assets/egg_${normalizedRarity}.png" alt="Œuf ${r}" class="egg-sprite" onerror="this.src='/assets/egg_commun.png'">
+                <img src="../assets/egg_${normalizedRarity}.png" alt="Œuf ${r}" class="egg-sprite" onerror="this.src='../assets/egg_commun.png'">
                 <div class="egg-filter-name">${r}</div>
                 <div class="egg-filter-count">${counts[r] || 0}</div>
             </div>
@@ -354,7 +354,7 @@ function renderEggSelectionGrid() {
         card.className = `egg-pick-card rarity-${rarityClass}`;
 
         card.innerHTML = `
-            <img src="/assets/egg_${rarityClass}.png" alt="Œuf ${egg.rarity}" class="egg-sprite" onerror="this.src='/assets/egg_commun.png'">
+            <img src="../assets/egg_${rarityClass}.png" alt="Œuf ${egg.rarity}" class="egg-sprite" onerror="this.src='../assets/egg_commun.png'">
             <div class="egg-rarity-pill bg-${rarityClass}">${egg.rarity}</div>
             <h5>Œuf ${egg.rarity}</h5>
             <button class="pk-btn-action small" onclick="startIncubation('${egg.instanceId}')">Incuber</button>

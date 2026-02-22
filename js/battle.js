@@ -24,9 +24,9 @@ async function loadMovesDB() {
   if (MovesDB) return MovesDB;
   try {
     const [statusRes, specialRes, physicalRes] = await Promise.all([
-      fetch('/data/status_moves.json'),
-      fetch('/data/special_moves.json'),
-      fetch('/data/physical_moves.json')
+      fetch('../data/status_moves.json'),
+      fetch('../data/special_moves.json'),
+      fetch('../data/physical_moves.json')
     ]);
 
     const statusMoves = await statusRes.json();
@@ -55,7 +55,7 @@ let RulesDB = null;
 async function loadRulesDB() {
   if (RulesDB) return RulesDB;
   try {
-    const res = await fetch('/data/Rules.json');
+    const res = await fetch('../data/Rules.json');
     const rawRules = (await res.json()).game_effects;
     // Aplatir l'objet pour un accès direct par ID d'effet
     RulesDB = {};
@@ -126,7 +126,7 @@ let TypesDB = null;
 async function loadTypesDB() {
   if (TypesDB) return TypesDB;
   try {
-    const res = await fetch('/data/types.json');
+    const res = await fetch('../data/types.json');
     TypesDB = await res.json();
   } catch (e) {
     console.error("Failed to load types.json", e);
@@ -139,7 +139,7 @@ let AoeDB = null;
 async function loadAoeDB() {
   if (AoeDB) return AoeDB;
   try {
-    const res = await fetch('/data/aoe.json');
+    const res = await fetch('../data/aoe.json');
     AoeDB = await res.json();
   } catch (e) {
     console.error("Failed to load aoe.json", e);
@@ -707,7 +707,7 @@ function updateHud() {
   const battleScreen = document.getElementById('scaler-view') || document.getElementById('game-screen');
   if (battleScreen) {
     const backgroundUrl = `/assets/zones/zone_${zoneIndex}.png`;
-    const fallbackUrl = '/assets/zones/zone_1.png';
+    const fallbackUrl = '../assets/zones/zone_1.png';
     const img = new Image();
     img.onload = () => {
       battleScreen.style.backgroundImage = `url('${backgroundUrl}')`;
@@ -1965,7 +1965,7 @@ let BattleLevelsDB = null;
 async function loadBattleLevelsDB() {
     if (BattleLevelsDB) return BattleLevelsDB;
     try {
-        const res = await fetch('/data/battle_levels.json');
+        const res = await fetch('../data/battle_levels.json');
         BattleLevelsDB = await res.json();
     } catch (e) {
         console.warn("Could not load battle_levels.json, will use random generation.", e);
@@ -2506,7 +2506,7 @@ async function checkWinCondition() {
                 </div>
                 ${finalEggCount > 0 ? `
                 <div class="reward-item">
-                    <img src="/assets/egg.png" class="reward-egg-icon" />
+                    <img src="../assets/egg.png" class="reward-egg-icon" />
                     <span class="reward-amount">+${finalEggCount} Œuf${finalEggCount > 1 ? 's' : ''}</span>
                 </div>
                 ` : ''}
@@ -2575,7 +2575,7 @@ let PokedexDB = null;
 async function loadPokedexDB() {
     if (PokedexDB) return PokedexDB;
     try {
-        const res = await fetch('/data/pokedex.json');
+        const res = await fetch('../data/pokedex.json');
         const pokedexArray = await res.json();
         // Convert array to object with ID as key for quick lookup
         PokedexDB = pokedexArray.reduce((acc, p) => {
