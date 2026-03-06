@@ -240,31 +240,11 @@
     color: #333;
 }
 
-/* On smaller screens, modals take more space and adjust layout */
+/* On smaller screens or on mobile, modals take more space and adjust layout */
 @media (max-width: 900px) {
-    .modal {
-        padding: 0;
-    }
-    .modal-content {
-        width: 100% !important;
-        height: 100% !important;
-        max-height: 100% !important;
-        max-width: 100% !important;
-        border-radius: 0;
-        padding: 60px 15px 15px 15px !important;
-        border: none;
-    }
-    
-    .close-btn {
-        top: 15px !important;
-        right: 20px !important;
-        font-size: 40px !important;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    .modal { padding: 0; }
+    .modal-content { width: 100% !important; height: 100% !important; max-height: 100% !important; max-width: 100% !important; border-radius: 0; padding: 60px 15px 15px 15px !important; border: none; }
+    .close-btn { top: 15px !important; right: 20px !important; font-size: 40px !important; width: 60px !important; height: 60px !important; display: flex; justify-content: center; align-items: center; }
 
     /* Adapt egg bag for mobile */
     .egg-bag-layout {
@@ -302,6 +282,17 @@
         padding: 10px !important;
     }
 }
+
+/* Also apply these to is-mobile even on larger screens */
+body.is-mobile .modal { padding: 0; }
+body.is-mobile .modal-content { width: 100% !important; height: 100% !important; max-height: 100% !important; max-width: 100% !important; border-radius: 0; padding: 60px 15px 15px 15px !important; border: none; }
+body.is-mobile .close-btn { top: 15px !important; right: 20px !important; font-size: 40px !important; width: 60px !important; height: 60px !important; display: flex; justify-content: center; align-items: center; }
+body.is-mobile .egg-bag-layout { flex-direction: column; }
+body.is-mobile #egg-bag-sidebar { width: 100% !important; height: auto !important; padding: 10px !important; display: flex; flex-direction: row !important; align-items: center; gap: 10px; overflow-x: auto; border-right: none !important; border-bottom: 1px solid #eee; }
+body.is-mobile #egg-bag-sidebar h3 { display: none; }
+body.is-mobile #egg-rarity-filters { flex-direction: row !important; gap: 5px !important; }
+body.is-mobile .egg-filter-item { padding: 5px 10px !important; white-space: nowrap; }
+body.is-mobile #egg-bag-main { padding: 10px !important; }
 
 /* Specific landscape adjustments for very short screens */
 @media (max-height: 500px) {
