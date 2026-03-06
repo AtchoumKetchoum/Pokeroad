@@ -70,13 +70,17 @@ const BattleAnimation = (() => {
 
     function getElementCenter(el) {
         const screen = document.getElementById('scaler-view');
-        if (!screen || !el) return { x: 0, y: 0 }; // Sécurité
+        if (!screen || !el) return { x: 0, y: 0 };
         const screenRect = screen.getBoundingClientRect();
         const elRect = el.getBoundingClientRect();
         
+        // Calculer l'échelle actuelle appliquée par MobileManager
+        const scaleX = screenRect.width / screen.offsetWidth;
+        const scaleY = screenRect.height / screen.offsetHeight;
+        
         return {
-            x: elRect.left + elRect.width / 2 - screenRect.left,
-            y: elRect.top + elRect.height / 2 - screenRect.top
+            x: (elRect.left + elRect.width / 2 - screenRect.left) / (scaleX || 1),
+            y: (elRect.top + elRect.height / 2 - screenRect.top) / (scaleY || 1)
         };
     }
 

@@ -111,13 +111,16 @@ function getTypes(p) {
 function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
 
 function getElementCenter(el) {
-    const screen = document.getElementById('game-screen');
+    const screen = document.getElementById('scaler-view') || document.getElementById('game-screen');
     if (!screen || !el) return { x: 0, y: 0 };
     const screenRect = screen.getBoundingClientRect();
     const elRect = el.getBoundingClientRect();
+    const scaleX = screenRect.width / screen.offsetWidth;
+    const scaleY = screenRect.height / screen.offsetHeight;
+    
     return {
-        x: elRect.left + elRect.width / 2 - screenRect.left,
-        y: elRect.top + elRect.height / 2 - screenRect.top
+        x: (elRect.left + elRect.width / 2 - screenRect.left) / (scaleX || 1),
+        y: (elRect.top + elRect.height / 2 - screenRect.top) / (scaleY || 1)
     };
 }
 
@@ -2568,47 +2571,40 @@ async function checkWinCondition() {
                     ` : ''}
                 </div>
             </div>
+            <div id="end-battle-nav-win" style="position:relative; bottom:auto; left:auto; transform:none; margin-top:20px;">
+                <button class="pk-btn-action" title="Combat Suivant" onclick="nextBattleProgression()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
         `;
         dom.battleStatus.classList.remove('lose');
         dom.battleStatus.classList.add('win');
         dom.battleStatus.style.display = 'block';
     }
     clearActionUI();
-    if (sideActions) sideActions.innerHTML = ''; // Vider les anciens boutons
-
-    const navWin = document.createElement('div');
-    navWin.id = 'end-battle-nav-win';
-    const nextBtn = document.createElement('button');
-    nextBtn.className = 'pk-btn-action';
-    nextBtn.title = 'Combat Suivant';
-    nextBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
-    nextBtn.addEventListener('click', nextBattleProgression, { once: true });
-    navWin.appendChild(nextBtn);
-    if (battleScreen) battleScreen.appendChild(navWin);
+    if (sideActions) sideActions.innerHTML = ''; 
     cleanupTurnIndicator();
-    updateZMoveIndicators(); // Mettre à jour l'état des Z-Moves après le combat
+    updateZMoveIndicators();
   } else if (playerAlive === 0) {
     // Défaite
     if (dom.battleStatus) {
-      dom.battleStatus.textContent = 'PERDU';
+      dom.battleStatus.innerHTML = `
+        <div class="status-title" style="color:#e74c3c;">DÉFAITE...</div>
+        <p style="color:#666; margin-bottom:20px;">Votre équipe a été mise KO.</p>
+        <div id="end-battle-nav-lose" style="position:relative; bottom:auto; left:auto; transform:none;">
+            <button class="pk-btn-action" title="Rejouer" onclick="fleeBattle()">
+                Rejouer <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+            </button>
+        </div>
+      `;
       dom.battleStatus.classList.remove('win');
       dom.battleStatus.classList.add('lose');
       dom.battleStatus.style.display = 'block';
     }
     clearActionUI();
-    if (sideActions) sideActions.innerHTML = ''; // Vider les anciens boutons
-
-    const navLose = document.createElement('div');
-    navLose.id = 'end-battle-nav-lose';
-    const replayBtn = document.createElement('button');
-    replayBtn.className = 'pk-btn-action';
-    replayBtn.title = 'Rejouer';
-    replayBtn.innerHTML = `Rejouer <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>`;
-    replayBtn.addEventListener('click', fleeBattle, { once: true });
-    navLose.appendChild(replayBtn);
-    if (battleScreen) battleScreen.appendChild(navLose);
+    if (sideActions) sideActions.innerHTML = ''; 
     cleanupTurnIndicator();
-    updateZMoveIndicators(); // Mettre à jour l'état des Z-Moves après le combat
+    updateZMoveIndicators();
   } else {
     // Combat non terminé (sécurité)
     if (dom.battleStatus) dom.battleStatus.style.display = 'none';
