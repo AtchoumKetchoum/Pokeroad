@@ -70,6 +70,8 @@ const MobileManager = (() => {
 
         scalers.forEach(scaler => {
             scaler.style.position = "absolute";
+            scaler.style.width = "1280px";
+            scaler.style.height = "720px";
             scaler.style.left = "50%";
             scaler.style.top = "50%";
             scaler.style.transform = `translate(-50%, -50%) scale(${finalScale})`;

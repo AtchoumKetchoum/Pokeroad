@@ -6,9 +6,10 @@
 /* Body styles moved to base.css */
 
 .home-viewport {
-  background-image: url("../assets/home.png");
+  background-image: url("../assets/home.png") !important;
   background-color: #65d676;
-  background-size: 100% 100%;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat;
 }
 
 /* --- HITBOXES (ZONES CLIQUABLES) --- */

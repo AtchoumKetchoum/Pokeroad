@@ -169,14 +169,18 @@ body {
 }
 
 /* Zone de rendu à l'échelle (Adaptative) */
-.scaler-view, #scaler-view {
-  position: absolute;
-  width: 1280px;
-  height: 720px;
+.scaler-view {
+  position: absolute !important;
+  width: 1280px !important;
+  height: 720px !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%); /* Base centering, JS might refine scale */
   background-size: 100% 100%;
   background-position: center;
   overflow: hidden;
   transform-origin: center center;
+  display: block !important; /* Prevent flex centering from parents */
 }
 
 /* On mobile, we might want to scale the content to fit the aspect ratio */
