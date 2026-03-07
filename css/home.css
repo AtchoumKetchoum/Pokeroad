@@ -1387,27 +1387,51 @@ body.is-mobile #mission-btn {
 
 /* --- OVERRIDES MOBILES REELS --- */
 body.is-mobile .road-btn {
-  padding: 12px 20px !important;
-  font-size: 14px !important;
-  bottom: 25px !important;
-  left: 25px !important;
+  padding: 10px 15px !important;
+  font-size: 12px !important;
+  bottom: 100px !important;
+  left: 20px !important;
   transform: none !important;
-  border-width: 4px !important;
+  border-width: 3px !important;
+  z-index: 10 !important;
 }
 
 body.is-mobile #mission-btn {
   right: auto !important;
   left: 210px !important;
   top: 15px !important;
-  min-width: 120px !important;
-  height: 50px !important;
-  font-size: 12px !important;
+  min-width: 100px !important;
+  height: 45px !important;
+  font-size: 11px !important;
   border-width: 3px !important;
-  padding: 0 10px !important;
+  padding: 0 5px !important;
 }
 
 body.is-mobile #mission-btn-label {
   font-size: 10px !important;
+}
+
+body.is-mobile #home-main-layout {
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+body.is-mobile #side-actions {
+  bottom: 20px !important;
+  right: 20px !important;
+  gap: 10px !important;
+  z-index: 10 !important;
+}
+
+body.is-mobile .map-btn.secondary {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+body.is-mobile .map-btn.secondary img {
+  width: 30px !important;
+  height: 30px !important;
 }
 
 body.is-mobile .modal {

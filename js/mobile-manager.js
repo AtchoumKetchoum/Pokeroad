@@ -50,14 +50,23 @@ const MobileManager = (() => {
     if (isMobile) {
         document.body.classList.add('is-mobile');
         
-        // Force native fullscreen on first interaction
-        const autoFullscreen = () => {
+        // Force native fullscreen on first interaction and try to keep it locked
+        const tryFullscreen = () => {
              requestFullscreen();
-             document.removeEventListener("touchstart", autoFullscreen, true);
-             document.removeEventListener("click", autoFullscreen, true);
+             // We don't remove the listener, we want to ensure any click keeps us in fullscreen
+             // if the user somehow exited it (e.g., swiped down).
         };
-        document.addEventListener("touchstart", autoFullscreen, true);
-        document.addEventListener("click", autoFullscreen, true);
+        
+        document.addEventListener("touchstart", tryFullscreen, { capture: true, passive: true });
+        document.addEventListener("click", tryFullscreen, { capture: true, passive: true });
+        
+        // Also re-trigger if visibility changes (e.g., locking and unlocking phone)
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === 'visible' && !isFullscreenActive()) {
+                // Cannot auto-trigger without interaction reliably, but we try mini-btn
+                updateMiniBtnVisibility();
+            }
+        });
     }
     
     overlayCreated = true;
@@ -116,17 +125,26 @@ const MobileManager = (() => {
     document.body.appendChild(btn);
   }
 
+  function isFullscreenActive() {
+    return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+  }
+
   function updateMiniBtnVisibility() {
     const btn = document.getElementById("fullscreen-mini-btn");
     if (!btn) return;
 
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 
-    // Si on est sur mobile et qu'on n'est pas en plein écran, on montre le bouton
-    // On le montre toujours si wantsFullscreen était vrai, comme rappel
-    if (isMobile && !isFullscreen) {
+    if (isMobile && !isFullscreenActive()) {
       btn.style.display = "flex";
+      // Pulse animation to draw attention
+      btn.style.animation = "pulse-fs 2s infinite";
+      if (!document.getElementById("fs-style")) {
+        const style = document.createElement("style");
+        style.id = "fs-style";
+        style.innerHTML = `@keyframes pulse-fs { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); } 70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); } }`;
+        document.head.appendChild(style);
+      }
     } else {
       btn.style.display = "none";
     }
