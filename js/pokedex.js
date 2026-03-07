@@ -2,7 +2,7 @@
  * pokedex.js - Logique de la page du Pokédex
  */
 
-document.addEventListener('DOMContentLoaded', async () => {
+window.initPokedex = async () => {
     try {
         console.log("Pokédex: Initialisation...");
         const grid = document.getElementById('pokedex-grid');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const grid = document.getElementById('pokedex-grid');
         if (grid) grid.innerHTML = `<p class='empty-pokedex-message'>Erreur: ${error.message}<br>Veuillez rafraîchir la page.</p>`;
     }
-});
+};
 
 // --- STATE & DATA ---
 let allPokemon = []; // Liste de tous les pokémons du pokedex.json
@@ -46,7 +46,7 @@ async function loadPokedexData() {
 
     // Charger les données des objets pour les noms d'évolution
     try {
-        const itemsResponse = await fetch('../data/items.json');
+        const itemsResponse = await fetch('data/items.json');
         if (itemsResponse.ok) {
             allItems = await itemsResponse.json();
         } else {
@@ -133,7 +133,7 @@ function setupFilters() {
         const normalizedRarity = normalizeRarity(rarity);
         const eggVisual = document.createElement('div');
         eggVisual.className = `egg-visual`;
-        eggVisual.innerHTML = `<img src="../assets/egg_${normalizedRarity}.png" alt="Oeuf ${rarity}" onerror="this.src='../assets/egg_commun.png'">`;
+        eggVisual.innerHTML = `<img src="assets/egg_${normalizedRarity}.png" alt="Oeuf ${rarity}" onerror="this.src='assets/egg_commun.png'">`;
 
         label.appendChild(eggVisual);
         rarityFilterContainer.appendChild(label);
@@ -270,7 +270,7 @@ function getEvolutionMethodText(evo) {
 }
 
 function openPokemonDetailModal(pokemon) {
-    const modal = document.getElementById('pokemon-detail-modal');
+    const modal = document.getElementById('pokedex-pokemon-detail-modal');
     const content = document.getElementById('pokemon-detail-content');
     if (!modal || !content) {
         console.error("Modal elements for Pokémon detail not found!");
@@ -346,7 +346,7 @@ function createPokedexEntry(pokemon) {
         bottomInfoHtml = `
             <div class="egg-type" title="Obtenable par Œuf">
                 <div class="egg-visual">
-                    <img src="../assets/egg_${normalizedRarity}.png" alt="Œuf ${pokemon.rarity}" onerror="this.src='../assets/egg_commun.png'">
+                    <img src="assets/egg_${normalizedRarity}.png" alt="Œuf ${pokemon.rarity}" onerror="this.src='assets/egg_commun.png'">
                 </div>
                 <span class="evolution-text">${pokemon.rarity || 'Commun'}</span>
             </div>
@@ -358,7 +358,7 @@ function createPokedexEntry(pokemon) {
         
         if (preEvolution && preEvolution.evolution) {
             const evo = preEvolution.evolution;
-            const preEvoSprite = preEvolution.sprite || '../assets/egg.png';
+            const preEvoSprite = preEvolution.sprite || 'assets/egg.png';
             const evolutionMethodText = getEvolutionMethodText(evo);
             const preEvoName = (typeof preEvolution.name === 'object' ? preEvolution.name.french : preEvolution.name) || pokemon.evolves_from.name;
 

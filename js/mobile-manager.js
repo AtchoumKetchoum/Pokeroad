@@ -28,16 +28,16 @@ const MobileManager = (() => {
 
         document.addEventListener("fullscreenchange", () => {
             if (isMobile) updateOverlayVisibility();
+            updateScaling();
         });
         document.addEventListener("webkitfullscreenchange", () => {
             if (isMobile) updateOverlayVisibility();
+            updateScaling();
         });
 
         updateScaling();
         if (isMobile) updateOverlayVisibility();
 
-        // Persistent interaction listener to re-catch fullscreen if lost
-        // This is the "no concession" part
         document.addEventListener("touchstart", (e) => {
             if (isMobile && !isFullscreenActive()) {
                 requestFullscreen();
@@ -52,8 +52,9 @@ const MobileManager = (() => {
     }
 
     function updateScaling() {
-        const scaler = document.getElementById("scaler-view");
-        if (!scaler) return;
+        // Target all scalers (multi-view support)
+        const scalers = document.querySelectorAll(".scaler-view, #scaler-view");
+        if (scalers.length === 0) return;
 
         const winW = window.innerWidth;
         const winH = window.innerHeight;
@@ -62,11 +63,13 @@ const MobileManager = (() => {
         const scaleY = winH / DESIGN_HEIGHT;
         const finalScale = Math.min(scaleX, scaleY);
 
-        scaler.style.position = "absolute";
-        scaler.style.left = "50%";
-        scaler.style.top = "50%";
-        scaler.style.transform = `translate(-50%, -50%) scale(${finalScale})`;
-        scaler.style.transformOrigin = "center center";
+        scalers.forEach(scaler => {
+            scaler.style.position = "absolute";
+            scaler.style.left = "50%";
+            scaler.style.top = "50%";
+            scaler.style.transform = `translate(-50%, -50%) scale(${finalScale})`;
+            scaler.style.transformOrigin = "center center";
+        });
     }
 
     function createMandatoryOverlay() {
@@ -136,13 +139,15 @@ const MobileManager = (() => {
                     screen.orientation.lock("landscape").catch(() => {});
                 }
                 updateOverlayVisibility();
+                setTimeout(updateScaling, 100);
             }).catch(err => {
                 console.warn("Fullscreen error", err);
             });
         }
     }
 
-    return { init, requestFullscreen };
+    return { init, requestFullscreen, updateScaling };
 })();
 
 document.addEventListener("DOMContentLoaded", MobileManager.init);
+window.MobileManager = MobileManager;

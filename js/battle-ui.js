@@ -11,7 +11,7 @@ var isAutoBattle = false; // Variable globale pour le combat auto
 // Variables globales pour la progression, pour qu'elles soient accessibles depuis battle.js
 var zoneIndex, waveIndex, battleIndex;
 
-document.addEventListener('DOMContentLoaded', async () => {
+window.initBattle = async () => {
     // Initialisation des données et de l'interface de pré-combat
     try {
         console.log("Initialisation de la page de combat...");
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // On lance le préchargement de l'image de fond dès que possible pour
         // qu'elle soit prête lorsque l'interface l'affichera.
         const bgImage = new Image();
-        bgImage.src = `../assets/zones/zone_${zoneIndex}.png`;
+        bgImage.src = `assets/zones/zone_${zoneIndex}.png`;
 
         createGrids();
         renderSelectionBanner(allPlayerPokemons);
@@ -103,10 +103,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         console.log("Interface de pré-combat prête.");
     } catch (error) {
-        console.error("Erreur lors de l'initialisation de la page de combat:", error);
-        alert("Une erreur est survenue lors du chargement de la page. Veuillez réessayer.");
+        console.error("Erreur lors de l'initialisation de la vue de combat:", error);
     }
-});
+};
 
 function createGrids() {
     const playerGrid = document.getElementById('player-grid');
@@ -330,7 +329,7 @@ function startBattle() {
 
 function goToHome() {
     localStorage.removeItem('pokerode_current_zone');
-    window.location.href = 'home.html';
+    ViewManager.show('home');
 }
 
 function fleeBattle() {
@@ -338,5 +337,5 @@ function fleeBattle() {
         isRunning = false; // Stop the combat loop if it's running
         battle = null;
     }
-    window.location.reload(); // The simplest way to reset the state and go back to selection
+    ViewManager.show('battle'); // Reload the battle view via ViewManager
 }

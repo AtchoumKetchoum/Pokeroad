@@ -734,8 +734,8 @@ function updateHud() {
 
   const battleScreen = document.getElementById('scaler-view') || document.getElementById('game-screen');
   if (battleScreen) {
-    const backgroundUrl = `/assets/zones/zone_${zoneIndex}.png`;
-    const fallbackUrl = '../assets/zones/zone_1.png';
+    const backgroundUrl = `assets/zones/zone_${zoneIndex}.png`;
+    const fallbackUrl = 'assets/zones/zone_1.png';
     const img = new Image();
     img.onload = () => {
       battleScreen.style.backgroundImage = `url('${backgroundUrl}')`;
@@ -2586,7 +2586,7 @@ async function checkWinCondition() {
                 </div>
                 ${finalEggCount > 0 ? `
                 <div class="reward-item">
-                    <img src="../assets/egg.png" class="reward-egg-icon" />
+                    <img src="assets/egg.png" class="reward-egg-icon" />
                     <span class="reward-amount">+${finalEggCount} Œuf${finalEggCount > 1 ? 's' : ''}</span>
                 </div>
                 ` : ''}

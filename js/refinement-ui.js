@@ -138,7 +138,7 @@ const RefinementUI = (() => {
                     ${pokemons.map(p => `
                         <div class="pokemon-card" onclick="RefinementUI.selectPokemon('${p.instanceId}')">
                             <div class="pokemon-sprite">
-                                <img src="${p.sprite || '../assets/pokedex.png'}" alt="${p.name}" onerror="this.src='../assets/pokedex.png'">
+                                <img src="${p.sprite || 'assets/pokedex.png'}" alt="${p.name}" onerror="this.src='assets/pokedex.png'">
                             </div>
                             <div class="pokemon-info">
                                 <div class="pokemon-name">${p.name}</div>
@@ -169,7 +169,7 @@ const RefinementUI = (() => {
         return `
             <div class="refinement-options">
                 <div class="pokemon-header">
-                    <img src="${selectedPokemon.sprite || '../assets/pokedex.png'}" alt="${selectedPokemon.name}" class="pokemon-sprite-large" onerror="this.src='../assets/pokedex.png'">
+                    <img src="${selectedPokemon.sprite || 'assets/pokedex.png'}" alt="${selectedPokemon.name}" class="pokemon-sprite-large" onerror="this.src='assets/pokedex.png'">
                     <div class="pokemon-details">
                         <h3>${selectedPokemon.name}</h3>
                         <div class="refinement-display">
@@ -255,7 +255,7 @@ const RefinementUI = (() => {
         // Nous avons besoin du sprite de la forme de base pour l'affichage
         const baseFormId = GameData.getBaseFormId(selectedPokemon.id);
         const basePkData = GameData.getPokedexSubset().find(p => p.id === baseFormId);
-        const baseSprite = basePkData ? basePkData.sprite : '../assets/pokedex.png';
+        const baseSprite = basePkData ? basePkData.sprite : 'assets/pokedex.png';
 
         const data = GameData._load();
         const copies = data.pokemons.filter(p => 
@@ -322,7 +322,7 @@ const RefinementUI = (() => {
                                 const isSelected = selectedFoodIds.includes(p.instanceId);
                                 return `
                                 <div class="food-item ${isSelected ? 'selected' : ''}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:1px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
-                                    <img src="${p.sprite || '../assets/pokedex.png'}" style="width:100%; height:auto;">
+                                    <img src="${p.sprite || 'assets/pokedex.png'}" style="width:100%; height:auto;">
                                     <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.7); font-size:9px; padding:0 2px;">L.${p.level}</div>
                                 </div>
                                 `;
@@ -689,7 +689,7 @@ const RefinementUI = (() => {
                             const isSelected = selectedFoodIds.includes(p.instanceId);
                             return `
                             <div class="food-item ${isSelected ? 'selected' : ''}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:2px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
-                                <img src="${p.sprite || '../assets/pokedex.png'}" style="width:100%; height:auto;">
+                                <img src="${p.sprite || 'assets/pokedex.png'}" style="width:100%; height:auto;">
                                 <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.7); font-size:10px; padding:0 2px;">L.${p.level}</div>
                             </div>
                             `;
@@ -860,7 +860,7 @@ const RefinementUI = (() => {
                         return `
                         <div class="pokemon-card" onclick="RefinementUI.selectItem('${item.id}')">
                             <div class="pokemon-sprite">
-                                <img src="${item.sprite || '../assets/bag.png'}" alt="${item.name}" onerror="this.src='../assets/bag.png'">
+                                <img src="${item.sprite || 'assets/bag.png'}" alt="${item.name}" onerror="this.src='assets/bag.png'">
                             </div>
                             <div class="item-owned-count">${item.quantity} + ${item.heldCount} tenu(s)</div>
                             <div class="pokemon-info">
@@ -903,7 +903,7 @@ const RefinementUI = (() => {
         return `
             <div class="refinement-options">
                  <div class="pokemon-header">
-                    <img src="${item.sprite || '../assets/bag.png'}" alt="${item.name}" class="pokemon-sprite-large" onerror="this.src='../assets/bag.png'">
+                    <img src="${item.sprite || 'assets/bag.png'}" alt="${item.name}" class="pokemon-sprite-large" onerror="this.src='assets/bag.png'">
                     <div class="pokemon-details">
                         <h3>${item.name}</h3>
                         <div class="refinement-display">
@@ -1036,7 +1036,7 @@ const RefinementUI = (() => {
                         return `
                         <div class="pokemon-card" onclick="RefinementUI.selectItem('${tm.id}')">
                             <div class="pokemon-sprite">
-                                <img src="../assets/item_ct.png" alt="${tm.name}" onerror="this.src='../assets/bag.png'">
+                                <img src="assets/item_ct.png" alt="${tm.name}" onerror="this.src='assets/bag.png'">
                             </div>
                             <div class="item-owned-count">x${tm.quantity}</div>
                             <div class="pokemon-info">

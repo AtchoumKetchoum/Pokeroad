@@ -15,12 +15,15 @@ function formatTypeLabel(code) { return TYPE_FR[code.toLowerCase()] || code; }
 let missionTeamSelection = [];
 let missionUpdateInterval;
 
-document.addEventListener('DOMContentLoaded', async () => {
-    // Initialisation des données de jeu puis mise à jour du HUD
+window.initHome = async () => {
+    // Initialisation des données de jeu (appelé une fois globalement, mais sécurisé ici)
     const gameState = await GameData.init();
     updateHud(gameState.data);
     updateHomeHUD();
-});
+};
+
+// Suppression du listener automatique pour éviter le double appel en SPA
+// document.addEventListener('DOMContentLoaded', window.initHome);
 
 function updateHud(data) {
     if (!data) return;
@@ -414,10 +417,10 @@ function renderMissionReport() {
     
         Object.entries(eggGroups).forEach(([rarity, count]) => {
             const rarityKey = rarity.toLowerCase().replace(/ /g, '').replace(/[éèê]/g, 'e');
-            const eggSprite = `/assets/egg_${rarityKey}.png`;
+            const eggSprite = `assets/egg_${rarityKey}.png`;
             rewardsHtml += `
                 <div class="reward-item">
-                    <img src="${eggSprite}" class="reward-icon" onerror="this.src='../assets/egg_commun.png'">
+                    <img src="${eggSprite}" class="reward-icon" onerror="this.src='assets/egg_commun.png'">
                     <span>${rarity} x${count}</span>
                 </div>
             `;
@@ -501,7 +504,7 @@ function renderEggRarityFilters() {
         const normalizedRarity = normalizeRarity(r);
         html += `
             <div class="egg-filter-item ${currentEggRarityFilter === r ? 'active' : ''}" onclick="setEggBagFilter('${r}')" title="Œufs de rareté ${r}">
-                <img src="../assets/egg_${normalizedRarity}.png" alt="Œuf ${r}" class="egg-sprite" onerror="this.src='../assets/egg_commun.png'">
+                <img src="assets/egg_${normalizedRarity}.png" alt="Œuf ${r}" class="egg-sprite" onerror="this.src='assets/egg_commun.png'">
                 <div class="egg-filter-name">${r}</div>
                 <div class="egg-filter-count">${counts[r] || 0}</div>
             </div>
@@ -546,7 +549,7 @@ function renderEggSelectionGrid() {
         card.className = `egg-pick-card rarity-${rarityClass}`;
 
         card.innerHTML = `
-            <img src="../assets/egg_${rarityClass}.png" alt="Œuf ${egg.rarity}" class="egg-sprite" onerror="this.src='../assets/egg_commun.png'">
+            <img src="assets/egg_${rarityClass}.png" alt="Œuf ${egg.rarity}" class="egg-sprite" onerror="this.src='assets/egg_commun.png'">
             <div class="egg-rarity-pill bg-${rarityClass}">${egg.rarity}</div>
             <h5>Œuf ${egg.rarity}</h5>
             <button class="pk-btn-action small" onclick="startIncubation('${egg.instanceId}')">Incuber</button>
@@ -610,12 +613,12 @@ function renderItemBag() {
     grid.innerHTML = pocketItems.map(item => {
         const count = inventory[item.id] || 0;
         const isLocked = count === 0;
-        const sprite = item.sprite || '../assets/bag.png';
+        const sprite = item.sprite || 'assets/bag.png';
         
         return `
             <div class="item-card-home ${isLocked ? 'locked' : ''}" onclick="showItemInfo('${item.id}')" style="cursor: pointer;">
                 <div class="item-owned-count">x${count}</div>
-                <img src="${sprite}" alt="${item.name_fr}" class="item-sprite-home" onerror="this.src='../assets/bag.png'">
+                <img src="${sprite}" alt="${item.name_fr}" class="item-sprite-home" onerror="this.src='assets/bag.png'">
                 <p class="item-name-home">${item.name_fr || item.id}</p>
             </div>
         `;
@@ -632,10 +635,10 @@ function showItemInfo(itemId) {
 
     const inventory = GameData.getInventory().items || {};
     const count = inventory[itemId] || 0;
-    const sprite = item.sprite || '../assets/bag.png';
+    const sprite = item.sprite || 'assets/bag.png';
 
     content.innerHTML = `
-        <img src="${sprite}" alt="${item.name_fr}" style="width: 64px; height: 64px; margin-bottom: 15px;" onerror="this.src='../assets/bag.png'">
+        <img src="${sprite}" alt="${item.name_fr}" style="width: 64px; height: 64px; margin-bottom: 15px;" onerror="this.src='assets/bag.png'">
         <h3 style="margin-bottom: 5px;">${item.name_fr}</h3>
         <p style="color: #666; font-size: 12px; margin-bottom: 15px;">${item.category} | ${POCKET_LABELS[item.pocket] || item.pocket}</p>
         <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 15px;">
@@ -686,7 +689,7 @@ function updateHud(data) {
     
     const avatarImg = document.getElementById('player-avatar-img');
     if (avatarImg) {
-        avatarImg.src = data.playerGender === 'girl' ? '../assets/girl.png' : '../assets/boy.png';
+        avatarImg.src = data.playerGender === 'girl' ? 'assets/girl.png' : 'assets/boy.png';
     }
 }
 
@@ -916,10 +919,10 @@ async function renderShop() {
         }
 
         grid.innerHTML = shopItems.map(item => {
-            const sprite = item.sprite || '../assets/bag.png';
+            const sprite = item.sprite || 'assets/bag.png';
             return `
                 <div class="shop-item-card" onclick="showItemInfo('${item.id}')" style="cursor: pointer;">
-                    <img src="${sprite}" class="item-icon" loading="lazy" onerror="this.src='../assets/bag.png'">
+                    <img src="${sprite}" class="item-icon" loading="lazy" onerror="this.src='assets/bag.png'">
                     <div class="item-name">${item.name_fr || item.id}</div>
                     <div class="item-desc" style="font-size: 10px; margin: 10px 0;">${(item.description_fr || item.effect_fr || 'Pas de description.').substring(0, 60)}...</div>
                     <div class="item-price">${(item.cost || 1000).toLocaleString('fr-FR')} $</div>

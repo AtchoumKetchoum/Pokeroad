@@ -39,13 +39,13 @@ let itemCategories = [];
 // --- STATE ---
 let healUpdateInterval;
 
-document.addEventListener('DOMContentLoaded', async () => {
+window.initCenter = async () => {
     const fetchMoves = async () => {
         try {
             const [statusRes, specialRes, physicalRes] = await Promise.all([
-                fetch('../data/status_moves.json'),
-                fetch('../data/special_moves.json'),
-                fetch('../data/physical_moves.json')
+                fetch('data/status_moves.json'),
+                fetch('data/special_moves.json'),
+                fetch('data/physical_moves.json')
             ]);
             const statusMoves = await statusRes.json();
             const specialMoves = await specialRes.json();
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Direct initialization
     renderPCView();
     renderHealingSidebar();
-});
+};
 
 function renderPCView() {
     const pokemons = GameData.getPokemons();
@@ -147,7 +147,7 @@ async function displayLocker() {
 
     if (!allItemsData) {
         try {
-            const response = await fetch('../data/items.json');
+            const response = await fetch('data/items.json');
             if (!response.ok) {
                 throw new Error(`Le fichier items.json est introuvable ou inaccessible (statut: ${response.status})`);
             }
@@ -188,7 +188,7 @@ async function displayLocker() {
  * Redirige l'utilisateur vers la page d'accueil.
  */
 function goToHome() {
-    window.location.href = '../maps/home.html';
+    ViewManager.show('home');
 }
 
 function renderLockerGrid() {
@@ -229,11 +229,11 @@ function renderLockerGrid() {
         card.className = 'item-card';
         if (ownedCount === 0) card.classList.add('unowned');
 
-        const sprite = item.sprite || '../assets/pokeball_icon.png';
+        const sprite = item.sprite || 'assets/pokeball_icon.png';
 
         card.innerHTML = `
             ${ownedCount > 0 ? `<div class="item-owned-count">x${ownedCount}</div>` : ''}
-            <img src="${sprite}" alt="${item.name_fr}" class="item-sprite" onerror="this.src='../assets/pokeball_icon.png'">
+            <img src="${sprite}" alt="${item.name_fr}" class="item-sprite" onerror="this.src='assets/pokeball_icon.png'">
             <p class="item-name">${item.name_fr}</p>
         `;
         
@@ -517,7 +517,7 @@ function openPokemonDetail(pokemon) {
 
     document.getElementById('detail-evolution').textContent = evoText;
 
-    document.getElementById('pokemon-detail-modal').style.display = 'flex';
+    document.getElementById('center-pokemon-detail-modal').style.display = 'flex';
     } catch (e) {
         console.error("Erreur openPokemonDetail:", e);
         alert("Erreur lors de l'ouverture du détail: " + e.message);
@@ -776,7 +776,7 @@ function renderHeldItem(itemId) {
     const item = GameData.getItem(itemId); // Use GameData's getItem
     if (!item) return `<span class="none">${itemId}</span>`;
     return `
-        <img src="${item.sprite || '../assets/pokeball_icon.png'}" style="width:24px; vertical-align:middle;">
+        <img src="${item.sprite || 'assets/pokeball_icon.png'}" style="width:24px; vertical-align:middle;">
         <span>${item.name_fr}</span>
     `;
 }
@@ -804,7 +804,7 @@ async function pickItemForEquip(instanceId) {
         const item = GameData.getItem(id); // Use GameData's getItem
         return `
             <div class="item-pick-option" onclick="confirmEquip('${instanceId}', '${id}')">
-                <img src="${item.sprite || '../assets/pokeball_icon.png'}" style="width:32px;">
+                <img src="${item.sprite || 'assets/pokeball_icon.png'}" style="width:32px;">
                 <span>${item.name_fr} (x${count})</span>
             </div>
         `;

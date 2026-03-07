@@ -533,7 +533,7 @@ const GameData = (() => {
         } else {
             // Si une sauvegarde existe, on charge le Pokédex complet pour l'enrichir
             try {
-                const response = await fetch('../data/pokedex.json');
+                const response = await fetch('data/pokedex.json');
                 pokedexSubset = await response.json();
             } catch (e) {
                 console.warn("Source Pokédex indisponible à l'initialisation. Le jeu pourrait ne pas fonctionner correctement.", e);
@@ -542,7 +542,7 @@ const GameData = (() => {
 
             // Charger le catalogue d'objets
             try {
-                const itemsResponse = await fetch('../data/items.json');
+                const itemsResponse = await fetch('data/items.json');
                 if (itemsResponse.ok) {
                     itemsCatalog = await itemsResponse.json();
                     categorizeItems();

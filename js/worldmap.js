@@ -16,11 +16,11 @@ const PHASE_1_ZONES = [
     { name: "Sanctuaire du Ciel", x: 72, y: 12, types: ["Légendaire", "Dragon", "Psy"] }
 ];
 
-document.addEventListener('DOMContentLoaded', async () => {
+window.initWorldmap = async () => {
     // Initialiser les données de jeu
     await GameData.init();
     renderMap();
-});
+};
 
 function renderMap() {
     const mapContainer = document.getElementById('map-container');
@@ -83,11 +83,10 @@ function renderMap() {
 }
 
 function launchBattle(zoneIndex) {
-    // Sauvegarder la zone sélectionnée pour battle.html
     localStorage.setItem('pokerode_current_zone', zoneIndex);
-    window.location.href = 'battle.html';
+    ViewManager.show('battle');
 }
 
 function goBack() {
-    window.location.href = 'home.html';
+    ViewManager.show('home');
 }
