@@ -81,6 +81,31 @@
             </div>
         </div>
 
+        <!-- Modal Settings -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeSettings()">&times;</span>
+                <h2>Paramètres</h2>
+                <div class="profile-edit">
+                    <input type="text" id="edit-player-name" placeholder="Votre nom" style="padding:10px; border-radius:5px; border:1px solid #ccc; width:100%; box-sizing:border-box;">
+                    <div class="gender-selection">
+                        <label><input type="radio" name="player-gender" value="boy"> Garçon</label>
+                        <label><input type="radio" name="player-gender" value="girl"> Fille</label>
+                    </div>
+                    <button class="pk-btn-action small" onclick="saveProfile()">Enregistrer Profil</button>
+                </div>
+                <div class="settings-group">
+                    <h3>Données</h3>
+                    <button class="pk-btn-action small" onclick="exportSave()">Exporter Sauvegarde</button>
+                    <label class="pk-btn-action small" style="text-align:center; display:block; cursor:pointer;">
+                        Importer Sauvegarde
+                        <input type="file" id="import-save-btn" onchange="importSave(event)" style="display:none;" accept=".json">
+                    </label>
+                    <button class="pk-btn-action small danger-btn" onclick="eraseData()">Effacer les données</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal Missions -->
         <div id="mission-modal" class="modal">
             <div class="modal-content mission-content">

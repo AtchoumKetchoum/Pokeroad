@@ -462,7 +462,7 @@ function getTypeModifier(attackerType, defenderType) {
   return 1.0; // Pas de modificateur par défaut
 }
 
-const STAT_MOD_PERCENT_PER_STACK = 0.15;
+const STAT_MOD_PERCENT_PER_STACK = 0.20;
 
 function getStatMultiplier(stage) {
     const rule = RulesDB['MOD_STAT'] || { max_stacks: 6 }; // fallback à 6 cumuls max
@@ -476,6 +476,31 @@ function getZPower(basePower) {
     // Exemple : une base de 60 donnera environ 90
     // Une base de 100 donnera 150
     return Math.min(200, Math.ceil(basePower * 1.5 / 10) * 10);
+}
+
+function getEffectiveSpeed(unit) {
+    const baseSpeed = unit.speed || 0;
+    const slotIndex = unit._index || 0;
+    let modifier = 1.0;
+
+    if (unit._side === 'player') {
+        if ([2, 5, 8].includes(slotIndex)) modifier = 1.1;
+        else if ([0, 3, 6].includes(slotIndex)) modifier = 0.9;
+    } else { // enemy
+        if ([0, 3, 6].includes(slotIndex)) modifier = 1.1;
+        else if ([2, 5, 8].includes(slotIndex)) modifier = 0.9;
+    }
+    
+    // Multiplicateur supplémentaire (ex: baie Sailak)
+    const extraMult = unit.speedMultiplier || 1.0;
+    let finalSpeed = baseSpeed * modifier * extraMult;
+
+    // Appliquer paralysie
+    if (unit.activeEffects && unit.activeEffects.some(e => e.id === 'STAT_PAR')) {
+        finalSpeed *= 0.7; // Réduction de 30%
+    }
+
+    return finalSpeed;
 }
 
 // --- Dégâts (style Pokémon) ---
@@ -923,17 +948,43 @@ function applyDamageGrid(target) {
   target.hp = Math.max(0, target.hp - pendingDamage);
   const newHp = target.hp;
 
-  // Berries check (Heal)
-  if (target.heldItem === 'sitrus-berry' && newHp > 0 && newHp <= (target.maxHp || 0) * 0.5) {
-      const heal = Math.floor(target.maxHp * 0.25);
-      target.hp = Math.min(target.maxHp, target.hp + heal);
-      spawnEffectText(target, "Baie Sitrus", 'buff');
-      target.heldItem = null;
-  } else if (target.heldItem === 'oran-berry' && newHp > 0 && newHp <= (target.maxHp || 0) * 0.5) {
-      const heal = 10;
-      target.hp = Math.min(target.maxHp, target.hp + heal);
-      spawnEffectText(target, "Baie Oran", 'buff');
-      target.heldItem = null;
+  // Berries check (Trigger at 50% HP or less)
+  if (target.heldItem && newHp > 0 && newHp <= (target.maxHp || 0) * 0.5) {
+      const berry = target.heldItem;
+      let used = false;
+
+      if (berry === 'sitrus-berry') {
+          const heal = Math.floor(target.maxHp * 0.20); // 20% as requested
+          target.hp = Math.min(target.maxHp, target.hp + heal);
+          spawnEffectText(target, "Baie Sitrus", 'buff');
+          used = true;
+      } else if (berry === 'liechi-berry') {
+          target.statMods.ATK = clamp((target.statMods.ATK || 0) + 1, -6, 6);
+          spawnEffectText(target, "+ATT Baie", 'buff');
+          used = true;
+      } else if (berry === 'ganlon-berry') {
+          target.statMods.DEF = clamp((target.statMods.DEF || 0) + 1, -6, 6);
+          spawnEffectText(target, "+DEF Baie", 'buff');
+          used = true;
+      } else if (berry === 'petaya-berry') {
+          target.statMods.SPA = clamp((target.statMods.SPA || 0) + 1, -6, 6);
+          spawnEffectText(target, "+ATK SP Baie", 'buff');
+          used = true;
+      } else if (berry === 'apicot-berry') {
+          target.statMods.SPD = clamp((target.statMods.SPD || 0) + 1, -6, 6);
+          spawnEffectText(target, "+DEF SP Baie", 'buff');
+          used = true;
+      } else if (berry === 'salac-berry') {
+          target.speedMultiplier = (target.speedMultiplier || 1.0) * 1.15; // 15% increase
+          target.effectiveSpeed = getEffectiveSpeed(target);
+          spawnEffectText(target, "+VIT Baie", 'buff');
+          used = true;
+      }
+
+      if (used) {
+          target.heldItem = null; // Berry consumed
+          updateStatusIcons(target);
+      }
   }
 
   // Met à jour la barre de vie visuellement
@@ -2387,28 +2438,6 @@ async function beginBattleSequence() {
     // 3. Réinitialiser le compteur de tour pour la nouvelle bataille
     globalTurnCount = 0;
 
-    const getEffectiveSpeed = (unit) => {
-        const baseSpeed = unit.speed || 0;
-        const slotIndex = unit._index || 0;
-        let modifier = 1.0;
-
-        if (unit._side === 'player') {
-            if ([2, 5, 8].includes(slotIndex)) modifier = 1.1;
-            else if ([0, 3, 6].includes(slotIndex)) modifier = 0.9;
-        } else { // enemy
-            if ([0, 3, 6].includes(slotIndex)) modifier = 1.1;
-            else if ([2, 5, 8].includes(slotIndex)) modifier = 0.9;
-        }
-        let finalSpeed = baseSpeed * modifier;
-
-        // Appliquer paralysie
-        if (unit.activeEffects && unit.activeEffects.some(e => e.id === 'STAT_PAR')) {
-            finalSpeed *= 0.7; // Réduction de 30%
-        }
-
-        return finalSpeed;
-    };
-
     // 4. Construire les objets "acteurs" à partir du DOM maintenant prêt
     console.log("[DEBUG] Building actors from DOM...");
     buildActorsFromDom();
@@ -2493,11 +2522,14 @@ async function checkWinCondition() {
         'silk-scarf', 'charcoal', 'mystic-water', 'miracle-seed', 'sharp-beak', 
         'poison-barb', 'soft-sand', 'hard-stone', 'magnet', 'never-melt-ice', 
         'black-belt', 'dragon-fang', 'spell-tag', 'metal-coat', 'twisted-spoon', 
-        'silver-powder', 'leftovers', 'life-orb', 'focus-sash', 'rocky-helmet', 'expert-belt'
+        'silver-powder', 'leftovers', 'life-orb', 'focus-sash', 'rocky-helmet', 'expert-belt',
+        // Objets d'évolution
+        'sun-stone', 'moon-stone', 'fire-stone', 'water-stone', 'thunder-stone', 'leaf-stone', 
+        'shiny-stone', 'dawn-stone', 'dusk-stone', 'ice-stone', 'dragon-scale', 'up-grade', 
+        'electirizer', 'protector', 'magmarizer', 'dubious-disc', 'reaper-cloth', 'prism-scale'
     ];
     const dropableBerries = [
-        'oran-berry', 'sitrus-berry', 'lum-berry', 'leppa-berry',
-        'pomeg-berry', 'kelpsy-berry', 'qualot-berry', 'hondew-berry', 'grepa-berry', 'tamato-berry'
+        'liechi-berry', 'ganlon-berry', 'petaya-berry', 'apicot-berry', 'sitrus-berry', 'salac-berry'
     ];
     
     const droppedItems = [];

@@ -61,7 +61,11 @@ body {
 }
 
 @media (max-width: 768px) {
-  #side-actions { bottom: 15px; right: 15px; gap: 12px; }
+  #side-actions {
+    bottom: 15px;
+    right: 15px;
+    gap: 12px;
+  }
 }
 body.is-mobile #side-actions {
   bottom: 15px;
@@ -337,9 +341,9 @@ body.is-mobile #side-actions {
 
 /* Fix mobile overlap with Player HUD */
 body.is-mobile #mission-btn {
-    left: 20px;
-    top: 80px; /* Place it below the HUD */
-    min-width: 160px;
+  left: 200px;
+  top: 15px; /* Place it next to the HUD */
+  min-width: 140px;
 }
 
 .mission-hud-content {

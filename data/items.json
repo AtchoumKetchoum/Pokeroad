@@ -1,121 +1,69 @@
 {
-  "pomeg-berry": {
-    "id": 146,
-    "name_fr": "Baie Grena",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/pomeg-berry.png",
-    "category": "Diminution d'effort",
+  "liechi-berry": {
+    "id": 136,
+    "name_fr": "Baie Ligia",
+    "cost": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/liechi-berry.png",
+    "category": "Statistiques",
     "pocket": "berries",
-    "attributes": [],
-    "effect_fr": "Diminue les EV de PV de 10 et augmente le bonheur.",
-    "description_fr": "Une Baie qui rend les Pokémon plus amicaux, mais baisse leurs PV de base."
+    "attributes": ["holdable-active"],
+    "effect_fr": "Tenu : Augmente l'Attaque de 20% si les PV sont inférieurs à 50%.",
+    "description_fr": "Une Baie mystérieuse qui renforce l'Attaque en cas de besoin."
   },
-  "kelpsy-berry": {
-    "id": 147,
-    "name_fr": "Baie Alga",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/kelpsy-berry.png",
-    "category": "Diminution d'effort",
+  "ganlon-berry": {
+    "id": 137,
+    "name_fr": "Baie Lingan",
+    "cost": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ganlon-berry.png",
+    "category": "Statistiques",
     "pocket": "berries",
-    "attributes": [],
-    "effect_fr": "Diminue les EV d'Attaque de 10 et augmente le bonheur.",
-    "description_fr": "Une Baie qui rend les Pokémon plus amicaux, mais baisse leur Attaque de base."
+    "attributes": ["holdable-active"],
+    "effect_fr": "Tenu : Augmente la Défense de 20% si les PV sont inférieurs à 50%.",
+    "description_fr": "Une Baie rare qui durcit le corps et augmente la Défense."
   },
-  "qualot-berry": {
-    "id": 148,
-    "name_fr": "Baie Qualot",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/qualot-berry.png",
-    "category": "Diminution d'effort",
+  "petaya-berry": {
+    "id": 138,
+    "name_fr": "Baie Pitaya",
+    "cost": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/petaya-berry.png",
+    "category": "Statistiques",
     "pocket": "berries",
-    "attributes": [],
-    "effect_fr": "Diminue les EV de Défense de 10 et augmente le bonheur.",
-    "description_fr": "Une Baie qui rend les Pokémon plus amicaux, mais baisse leur Défense de base."
+    "attributes": ["holdable-active"],
+    "effect_fr": "Tenu : Augmente l'Attaque Spéciale de 20% si les PV sont inférieurs à 50%.",
+    "description_fr": "Une Baie qui libère le potentiel mystique pour booster l'Attaque Spéciale."
   },
-  "hondew-berry": {
-    "id": 149,
-    "name_fr": "Baie Lonme",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/hondew-berry.png",
-    "category": "Diminution d'effort",
+  "apicot-berry": {
+    "id": 139,
+    "name_fr": "Baie Abricot",
+    "cost": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/apicot-berry.png",
+    "category": "Statistiques",
     "pocket": "berries",
-    "attributes": [],
-    "effect_fr": "Diminue les EV d'Attaque Spéciale de 10 et augmente le bonheur.",
-    "description_fr": "Une Baie qui rend les Pokémon plus amicaux, mais baisse leur Attaque Spéciale de base."
-  },
-  "grepa-berry": {
-    "id": 150,
-    "name_fr": "Baie Résin",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/grepa-berry.png",
-    "category": "Diminution d'effort",
-    "pocket": "berries",
-    "attributes": [],
-    "effect_fr": "Diminue les EV de Défense Spéciale de 10 et augmente le bonheur.",
-    "description_fr": "Une Baie qui rend les Pokémon plus amicaux, mais baisse leur Défense Spéciale de base."
-  },
-  "tamato-berry": {
-    "id": 151,
-    "name_fr": "Baie Tamato",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tamato-berry.png",
-    "category": "Diminution d'effort",
-    "pocket": "berries",
-    "attributes": [],
-    "effect_fr": "Diminue les EV de Vitesse de 10 et augmente le bonheur.",
-    "description_fr": "Une Baie qui rend les Pokémon plus amicaux, mais baisse leur Vitesse de base."
-  },
-  "leppa-berry": {
-    "id": 131,
-    "name_fr": "Baie Mepo",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/leppa-berry.png",
-    "category": "Médicament",
-    "pocket": "berries",
-    "attributes": [
-      "holdable-active"
-    ],
-    "effect_fr": "Tenu: Consommé quand une capacité est à court de PP pour restaurer ses PP de 10.",
-    "description_fr": "Une Baie qui restaure 10 PP lorsqu’elle est tenue par un Pokémon."
-  },
-  "oran-berry": {
-    "id": 132,
-    "name_fr": "Baie Oran",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/oran-berry.png",
-    "category": "Médicament",
-    "pocket": "berries",
-    "attributes": [
-      "holdable-active"
-    ],
-    "effect_fr": "Tenu: Consommé à 1/2 des PV max pour regagner 10 PV.",
-    "description_fr": "Une Baie qui restaure 10 PV lorsqu’elle est tenue par un Pokémon."
-  },
-  "lum-berry": {
-    "id": 134,
-    "name_fr": "Baie Prine",
-    "cost": 80,
-    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lum-berry.png",
-    "category": "Médicament",
-    "pocket": "berries",
-    "attributes": [
-      "holdable-active"
-    ],
-    "effect_fr": "Tenu: Consomme pour soigner n'importe quelle condition de statut ou la confusion.",
-    "description_fr": "Une Baie qui soigne toutes les altérations de statut lorsqu’elle est tenue par un Pokémon."
+    "attributes": ["holdable-active"],
+    "effect_fr": "Tenu : Augmente la Défense Spéciale de 20% si les PV sont inférieurs à 50%.",
+    "description_fr": "Une Baie dont le parfum apaisant renforce la Défense Spéciale."
   },
   "sitrus-berry": {
     "id": 135,
     "name_fr": "Baie Sitrus",
-    "cost": 80,
+    "cost": 100,
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sitrus-berry.png",
     "category": "Médicament",
     "pocket": "berries",
-    "attributes": [
-      "holdable-active"
-    ],
-    "effect_fr": "Tenu: Consommé à 1/2 des PV max pour regagner 1/4 des PV max.",
-    "description_fr": "Une Baie qui restaure quelques PV lorsqu’elle est tenue par un Pokémon."
+    "attributes": ["holdable-active"],
+    "effect_fr": "Tenu : Restaure 20% des PV max si les PV passent sous 50%.",
+    "description_fr": "Une Baie savoureuse qui soigne les blessures en combat."
+  },
+  "salac-berry": {
+    "id": 140,
+    "name_fr": "Baie Sailak",
+    "cost": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/salac-berry.png",
+    "category": "Statistiques",
+    "pocket": "berries",
+    "attributes": ["holdable-active"],
+    "effect_fr": "Tenu : Augmente la vitesse d'attaque de 15% si les PV passent sous 50%.",
+    "description_fr": "Une Baie très légère qui donne un élan de vitesse incroyable."
   },
   "sun-stone": {
     "id": 80,
@@ -124,9 +72,7 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sun-stone.png",
     "category": "Évolution",
     "pocket": "misc",
-    "attributes": [
-      "underground"
-    ],
+    "attributes": ["underground"],
     "effect_fr": "Fait évoluer un Doudouvet en Farfaduvet, un Ortide en Joliflor, un Chlorobule en Farfaduvet ou un Tournegrin en Héliatronc.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est rouge comme le soleil couchant."
   },
@@ -137,9 +83,7 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/fire-stone.png",
     "category": "Évolution",
     "pocket": "misc",
-    "attributes": [
-      "underground"
-    ],
+    "attributes": ["underground"],
     "effect_fr": "Fait évoluer un Évoli en Pyroli, un Caninos en Arcanin, un Flamajou en Flamoutan, ou un Goupix en Feunard.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est jaune et orange."
   },
@@ -150,9 +94,7 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/moon-stone.png",
     "category": "Évolution",
     "pocket": "misc",
-    "attributes": [
-      "underground"
-    ],
+    "attributes": ["underground"],
     "effect_fr": "Fait évoluer un Mélofée en Mélodelfe, un Rondoudou en Grodoudou, un Munna en Mushana, un Nidorina en Nidoqueen, un Nidorino en Nidoking, ou un Skitty en Delcatty.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est sombre comme la nuit."
   },
@@ -163,9 +105,7 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/water-stone.png",
     "category": "Évolution",
     "pocket": "misc",
-    "attributes": [
-      "underground"
-    ],
+    "attributes": ["underground"],
     "effect_fr": "Fait évoluer un Évoli en Aquali, un Lombre en Ludicolo, un Flotajou en Flotoutan, un Têtarte en Tartard, un Kokiyas en Crustabri, ou un Stari en Staross.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est de couleur bleue."
   },
@@ -176,9 +116,7 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/thunder-stone.png",
     "category": "Évolution",
     "pocket": "misc",
-    "attributes": [
-      "underground"
-    ],
+    "attributes": ["underground"],
     "effect_fr": "Fait évoluer un Lampéroie en Ohmassacre, un Évoli en Voltali, ou un Pikachu en Raichu.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Un éclair est dessiné dessus."
   },
@@ -200,9 +138,7 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/leaf-stone.png",
     "category": "Évolution",
     "pocket": "misc",
-    "attributes": [
-      "underground"
-    ],
+    "attributes": ["underground"],
     "effect_fr": "Fait évoluer un Noeunoeuf en Noadkoko, un Ortide en Rafflesia, un Pifeuil en Tengalice, un Feuillajou en Feuiloutan, ou un Boustiflor en Empiflor.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Une feuille est dessinée dessus."
   },
@@ -246,9 +182,7 @@
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/oval-stone.png",
     "category": "Évolution",
     "pocket": "misc",
-    "attributes": [
-      "underground"
-    ],
+    "attributes": ["underground"],
     "effect_fr": "Montée de niveau pendant le Jour sur un Ptiravi : Le porteur évolue en Leveinard.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle a la forme d’un œuf."
   },

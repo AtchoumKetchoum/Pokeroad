@@ -49,6 +49,15 @@ const MobileManager = (() => {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
         document.body.classList.add('is-mobile');
+        
+        // Force native fullscreen on first interaction
+        const autoFullscreen = () => {
+             requestFullscreen();
+             document.removeEventListener("touchstart", autoFullscreen);
+             document.removeEventListener("click", autoFullscreen);
+        };
+        document.addEventListener("touchstart", autoFullscreen);
+        document.addEventListener("click", autoFullscreen);
     }
     
     overlayCreated = true;
@@ -91,28 +100,7 @@ const MobileManager = (() => {
   }
 
   function createOverlay() {
-    const overlay = document.createElement("div");
-    overlay.id = "orientation-overlay";
-    overlay.style.cssText =
-      "position:fixed;top:0;left:0;width:100%;height:100%;background:#1a1a1a;z-index:99999;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:white;font-family:sans-serif;padding:20px;box-sizing:border-box;";
-
-    overlay.innerHTML = `
-            <div style="font-size: 60px; margin-bottom: 20px; animation: bounce 2s infinite;">🎮</div>
-            <h2 style="color: #ffc107; text-transform: uppercase; margin-bottom: 10px; font-size: 24px; letter-spacing: 2px;">PokeRoad Mobile</h2>
-            <p style="margin-bottom: 30px; line-height: 1.5; font-size: 16px; max-width: 400px; color: #ddd;">Pour une meilleure expérience, utilisez le mode plein écran et le mode paysage.</p>
-            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
-                <button onclick="MobileManager.requestFullscreen()" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; padding: 18px; border-radius: 15px; cursor: pointer; font-weight: bold; font-size: 18px; box-shadow: 0 6px 0 #1c5980; transition: transform 0.1s;">ACTIVER LE PLEIN ÉCRAN</button>
-                <button onclick="MobileManager.hideOverlay()" style="background: #444; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; font-size: 14px; opacity: 0.8;">JOUER AINSI</button>
-            </div>
-            <p id="orientation-warning" style="margin-top: 30px; color: #ff5252; font-weight: bold; font-size: 18px; animation: pulse 1s infinite;">
-                🔄 PIVOTEZ VOTRE APPAREIL
-            </p>
-            <style>
-                @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-                @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-            </style>
-        `;
-    document.body.appendChild(overlay);
+    // Overlay désactivé, passage en plein écran natif forcé
   }
 
   function createMiniBtn() {
@@ -145,26 +133,7 @@ const MobileManager = (() => {
   }
 
   function checkOrientation() {
-    const overlay = document.getElementById("orientation-overlay");
-    const warning = document.getElementById("orientation-warning");
-    if (!overlay) return;
-
-    const isPortrait = window.innerHeight > window.innerWidth;
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (isMobile) {
-        if (isPortrait) {
-            overlay.style.display = "flex";
-            warning.style.display = "block";
-        } else if (!hasBeenShown) {
-            overlay.style.display = "flex";
-            warning.style.display = "none";
-        } else {
-            overlay.style.display = "none";
-        }
-    } else {
-        overlay.style.display = "none";
-    }
+    // Plus d'overlay à afficher
   }
 
   function requestFullscreen() {

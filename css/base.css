@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap");
+
 /* ============================================
    BASE.CSS - Variables et styles de base
    ============================================ */
@@ -291,43 +293,54 @@ body.is-mobile .pk-btn-action,
 body.is-mobile .landmark-btn,
 body.is-mobile .map-btn,
 body.is-mobile button {
-    min-width: 44px;
-    min-height: 44px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 /* Sur mobile, on agrandit les landmarks car ils sont durs à cliquer */
 body.is-mobile .landmark-btn {
-    padding: 8px 16px !important;
-    font-size: 13px !important;
-    border-radius: 25px !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+  border-radius: 25px !important;
+  white-space: nowrap !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+  background: #fff !important;
+  border: 3px solid #333 !important;
 }
 
 /* On force certains éléments à être plus grands pour la visibilité */
 body.is-mobile .pk-btn-action {
-    font-size: 18px !important;
-    padding: 15px 30px !important;
+  font-size: 18px !important;
+  padding: 15px 30px !important;
 }
 
 /* Bouton mini-fullscreen pulsant pour attirer l'attention si besoin */
 #fullscreen-mini-btn {
-    animation: mini-btn-pulse 2s infinite ease-in-out;
+  animation: mini-btn-pulse 2s infinite ease-in-out;
 }
 
 @keyframes mini-btn-pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-    50% { transform: scale(1.1); box-shadow: 0 6px 15px rgba(52, 152, 219, 0.5); }
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.5);
+  }
 }
 
 /* HUD plus lisible sur mobile */
 body.is-mobile #player-hud {
-    padding: 8px 12px !important;
-    min-width: auto !important;
+  padding: 8px 12px !important;
+  min-width: auto !important;
 }
 
 body.is-mobile #player-name {
-    font-size: 14px !important;
+  font-size: 14px !important;
 }
 
 body.is-mobile #player-money {
-    font-size: 12px !important;
+  font-size: 12px !important;
 }
