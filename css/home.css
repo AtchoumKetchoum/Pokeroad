@@ -3,15 +3,9 @@
    ============================================ */
 
 /* --- CORPS DE PAGE --- */
-body {
-  margin: 0;
-  background-color: #111;
-  height: 100%;
-  font-family: var(--font-pixel);
-  overflow: hidden;
-}
+/* Body styles moved to base.css */
 
-#scaler-view {
+.home-viewport {
   background-image: url("../assets/home.png");
   background-color: #65d676;
   background-size: 100% 100%;
@@ -341,8 +335,9 @@ body.is-mobile #side-actions {
 
 /* Fix mobile overlap with Player HUD */
 body.is-mobile #mission-btn {
-  left: 200px;
-  top: 15px; /* Place it next to the HUD */
+  left: auto;
+  right: 15px;
+  top: 15px; /* Place it at the right of avatar */
   min-width: 140px;
 }
 
@@ -634,25 +629,25 @@ body.is-mobile #mission-btn {
 }
 
 .egg-sprite.rarity-commun {
-  background-image: url("/assets/egg_commun.png");
+  background-image: url("../assets/egg_commun.png");
 }
 .egg-sprite.rarity-peu-commun {
-  background-image: url("/assets/egg_peucommun.png");
+  background-image: url("../assets/egg_peucommun.png");
 }
 .egg-sprite.rarity-rare {
-  background-image: url("/assets/egg_rare.png");
+  background-image: url("../assets/egg_rare.png");
 }
 .egg-sprite.rarity-bébé {
-  background-image: url("/assets/egg_baby.png");
+  background-image: url("../assets/egg_bebe.png");
 }
 .egg-sprite.rarity-très-rare {
-  background-image: url("/assets/egg_tresrare.png");
+  background-image: url("../assets/egg_tresrare.png");
 }
 .egg-sprite.rarity-légendaire {
-  background-image: url("/assets/egg_legendaire.png");
+  background-image: url("../assets/egg_legendaire.png");
 }
 .egg-sprite.rarity-mythique {
-  background-image: url("/assets/egg_mythique.png");
+  background-image: url("../assets/egg_mythique.png");
 }
 
 /* Sac à œufs */

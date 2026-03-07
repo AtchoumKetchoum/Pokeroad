@@ -14,6 +14,11 @@ const MobileManager = (() => {
             document.body.classList.add('is-mobile');
             document.documentElement.classList.add('is-mobile');
             createMandatoryOverlay();
+            updateOverlayVisibility();
+        } else {
+            // Ensure overlay is hidden on desktop
+            const overlay = document.getElementById("mandatory-fs-overlay");
+            if (overlay) overlay.style.display = "none";
         }
 
         window.addEventListener("resize", () => {

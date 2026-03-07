@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- Global CSS -->
-    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="css/styles.css?v=1.2">
     <link rel="stylesheet" href="css/base.css?v=1.2">
     <link rel="stylesheet" href="css/components.css?v=1.2">
     <link rel="stylesheet" href="css/refinement.css?v=1.2">
@@ -26,51 +26,19 @@
     <link rel="stylesheet" href="css/worldmap.css?v=1.2">
 
     <style>
-        /* Mobile mandatory fullscreen overlay */
-        #mandatory-fs-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.95);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
-        }
-        #mandatory-fs-overlay h2 { margin-bottom: 20px; color: #f39c12; }
-        #mandatory-fs-overlay .fs-btn {
-            background: #f39c12;
-            color: black;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(243, 156, 18, 0.4);
-        }
-        
         /* View Manager Display Logic */
         .spa-view { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
-        .spa-view.active { display: block; }
+        .spa-view.active { display: block !important; }
         #views-container { width: 100vw; height: 100vh; overflow: hidden; position: relative; }
-        #game-screen { width: 100vw; height: 100vh; overflow: hidden; }
+        #game-screen { width: 100vw; height: 100vh; overflow: hidden; background: #000; }
+        
+        /* Ensure modals are on top of everything */
+        .modal { z-index: 10001 !important; }
     </style>
 </head>
 <body class="is-spa">
-    <!-- Overlay plein écran obligatoire sur mobile -->
-    <div id="mandatory-fs-overlay">
-        <h2>Prêt pour l'aventure ?</h2>
-        <p>Touchez le bouton pour lancer PokéRoad en plein écran (recommandé sur mobile).</p>
-        <button class="fs-btn" id="start-fs-btn">C'EST PARTI !</button>
-    </div>
+    <!-- Le MobileManager injectera l'overlay s'il n'est pas déjà là, 
+         on peut aussi le mettre ici pour qu'il soit stylé dès le départ si on veut. -->
 
     <div id="game-screen">
         <div id="views-container">
@@ -98,11 +66,11 @@
 
                     <div id="zone-center" class="hitbox" onclick="ViewManager.show('center')" title="Centre Pokémon"></div>
                     <div id="zone-labo" class="hitbox" onclick="ViewManager.show('labo')" title="Laboratoire"></div>
-                    <div id="zone-refinement" class="hitbox" onclick="RefinementUI.open()" title="Atelier de Raffinement"></div>
+                    <div id="zone-refinement" class="hitbox" onclick="ViewManager.show('atelier')" title="Atelier de Raffinement"></div>
 
                     <button class="landmark-btn" id="btn-landmark-center" onclick="ViewManager.show('center')"><span>Centre</span></button>
                     <button class="landmark-btn" id="btn-landmark-lab" onclick="ViewManager.show('labo')"><span>Laboratoire</span></button>
-                    <button class="landmark-btn" id="btn-landmark-refinement" onclick="RefinementUI.open()"><span>Atelier</span></button>
+                    <button class="landmark-btn" id="btn-landmark-refinement" onclick="ViewManager.show('atelier')"><span>Atelier</span></button>
                     <button class="landmark-btn" id="btn-landmark-shop" onclick="openShopModal()"><span>Boutique</span></button>
 
                     <button class="road-btn" onclick="ViewManager.show('worldmap')">
@@ -122,11 +90,106 @@
                 </div>
                 
                 <!-- Modals Home -->
-                <div id="settings-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeSettings()">&times;</span><h2>Paramètres</h2><div id="settings-content"></div></div></div>
-                <div id="mission-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeMissionModal()">&times;</span><h2>Missions en cours</h2><div id="mission-content"></div></div></div>
-                <div id="egg-bag-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeEggBagModal()">&times;</span><h2>Sac à Œufs</h2><div id="egg-bag-grid"></div></div></div>
-                <div id="item-bag-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeItemBagModal()">&times;</span><h2>Sac à Objets</h2><div id="item-bag-grid"></div></div></div>
-                <div id="shop-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeShopModal()">&times;</span><h2>Boutique</h2><div id="shop-grid"></div></div></div>
+                <div id="settings-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeSettings()">&times;</span>
+                        <h2>Paramètres</h2>
+                        <div class="profile-edit">
+                            <input type="text" id="edit-player-name" placeholder="Votre nom" style="padding:10px; border-radius:5px; border:1px solid #ccc; width:100%; box-sizing:border-box;">
+                            <div class="gender-selection">
+                                <label><input type="radio" name="player-gender" value="boy"> Garçon</label>
+                                <label><input type="radio" name="player-gender" value="girl"> Fille</label>
+                            </div>
+                            <button class="pk-btn-action small" onclick="saveProfile()">Enregistrer Profil</button>
+                        </div>
+                        <div class="settings-group">
+                            <h3>Données</h3>
+                            <button class="pk-btn-action small" onclick="exportSave()">Exporter Sauvegarde</button>
+                            <label class="pk-btn-action small" style="text-align:center; display:block; cursor:pointer;">
+                                Importer Sauvegarde
+                                <input type="file" id="import-save-btn" onchange="importSave(event)" style="display:none;" accept=".json">
+                            </label>
+                            <button class="pk-btn-action small danger-btn" onclick="eraseData()">Effacer les données</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="mission-modal" class="modal">
+                    <div class="modal-content mission-content">
+                        <span class="close-btn" onclick="closeMissionModal()">&times;</span>
+                        <h2>Tableau des Missions</h2>
+                        <div id="mission-board-view">
+                            <div id="active-mission-status" style="display:none; margin-bottom: 20px;">
+                                <div class="active-mission-banner">
+                                    <h3>Mission en cours : <span id="active-mission-name"></span></h3>
+                                    <div class="mission-timer-large" id="mission-timer-large">00:00:00</div>
+                                    <button class="pk-btn-action" id="mission-return-btn" style="display:none;" onclick="completeMission()">Rapport de Mission</button>
+                                </div>
+                            </div>
+                            <div id="mission-cards-container" class="mission-cards-container"></div>
+                        </div>
+                        <div id="mission-team-view" style="display:none;">
+                            <div class="mission-header"><button class="modal-back-btn" onclick="backToMissionBoard()">⬅</button><h3 id="selected-mission-title" style="margin-left: 40px;">Mission : ...</h3></div>
+                            <div class="mission-affinity-info"><span id="mission-affinity-badge">Biome : Forêt</span><small>Recommandé : <span id="mission-affinity-types">Plante, Insecte</span></small></div>
+                            <div id="mission-selection-grid"></div>
+                            <div class="mission-footer"><div id="team-preview-bar"></div><button id="start-mission-btn" class="pk-btn-action" onclick="confirmStartMission()" disabled>Départ !</button></div>
+                        </div>
+                        <div id="mission-report-view" style="display:none;">
+                            <h3>Rapport de Mission</h3>
+                            <h4>Équipe de Mission :</h4>
+                            <div id="mission-report-team" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;"></div>
+                            <div id="mission-logs" class="mission-logs"></div>
+                            <div class="mission-rewards"><h4>Récompenses</h4><div id="mission-rewards-list"></div></div>
+                            <button class="pk-btn-action" onclick="claimRewardsAndClose()">Récupérer & Fermer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="egg-bag-modal" class="modal">
+                    <div class="modal-content egg-bag-content">
+                        <span class="close-btn" onclick="closeEggBagModal()">&times;</span>
+                        <div class="egg-bag-layout">
+                            <div id="egg-bag-sidebar"><h3>Inventaire</h3><div id="egg-rarity-filters"></div></div>
+                            <div id="egg-bag-main">
+                                <div class="egg-bag-header">
+                                    <div class="header-main"><h2>Sélectionner un œuf</h2><div id="egg-bag-total-count">0 œuf(s)</div></div>
+                                    <button class="pk-btn-action small" onclick="ViewManager.show('labo')">🧪 Aller au Labo</button>
+                                </div>
+                                <div id="egg-selection-grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="item-bag-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeItemBagModal()">&times;</span>
+                        <h2>Sac à Objets</h2>
+                        <div id="item-bag-pockets" class="shop-pockets" style="margin-bottom: 15px;"></div>
+                        <div id="item-bag-grid" class="item-grid-home"></div>
+                    </div>
+                </div>
+
+                <div id="shop-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeShopModal()">&times;</span>
+                        <h2>Boutique Pokémon</h2>
+                        <div id="shop-categories" class="shop-tabs">
+                            <button class="shop-tab active" onclick="switchShopTab('upgrades')">Améliorations</button>
+                            <button class="shop-tab" onclick="switchShopTab('eggs')">Œufs</button>
+                            <button class="shop-tab" onclick="switchShopTab('items')">Objets</button>
+                        </div>
+                        <div id="shop-pockets" class="shop-pockets" style="display:none;"></div>
+                        <div id="shop-grid" class="shop-grid"></div>
+                    </div>
+                </div>
+
+                <div id="item-info-modal" class="modal" style="z-index: 20000;">
+                    <div class="modal-content" style="max-width: 400px; padding: 20px;">
+                        <span class="close-btn" onclick="closeItemInfoModal()">&times;</span>
+                        <div id="item-info-content" style="text-align: center;"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- VIEW: BATTLE -->
@@ -173,7 +236,12 @@
                     <div id="pokedex-filters"></div>
                     <div id="pokedex-grid"></div>
                 </div>
-                <div id="pokedex-pokemon-detail-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="document.getElementById('pokedex-pokemon-detail-modal').style.display='none'">&times;</span><div id="pokedex-pokemon-detail-content"></div></div></div>
+                <div id="pokedex-pokemon-detail-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="document.getElementById('pokedex-pokemon-detail-modal').style.display='none'">&times;</span>
+                        <div id="pokemon-detail-content"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- VIEW: CENTER -->
@@ -222,7 +290,6 @@
                     </div>
                 </div>
                 <div id="incubator-modal" class="modal"><div class="modal-content glass-premium"><div class="modal-header"><h2>Incubateur</h2><span class="close-btn" onclick="closeCurrentModal()">&times;</span></div><div id="incubator-slots-container"></div></div></div>
-                <div id="egg-bag-modal-lab" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeEggBagModal()">&times;</span><div id="egg-selection-grid"></div></div></div>
             </div>
 
             <!-- VIEW: WORLDMAP -->
@@ -230,6 +297,25 @@
                 <div class="scaler-view worldmap-viewport">
                     <div class="map-header"><button class="back-btn" onclick="ViewManager.show('home')">RETOUR</button><div class="map-title">Carte</div></div>
                     <div id="map-container"></div>
+                </div>
+            </div>
+            
+            <!-- VIEW: ATELIER -->
+            <div id="view-atelier" class="spa-view">
+                <div class="scaler-view atelier-viewport">
+                    <div id="top-right-actions"><button class="exit-btn" onclick="ViewManager.show('home')">🏠</button></div>
+                    <h1 style="color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 20px; font-size: 2em; text-align: center;">Atelier d'Artisanat</h1>
+                    <div class="atelier-menu" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; padding: 20px;">
+                        <div class="atelier-card" onclick="RefinementUI.open(null, 'items')" style="background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 30px; cursor: pointer; text-align: center;">
+                            <div style="font-size: 48px;">🔧</div>
+                            <div style="font-size: 20px; font-weight: bold; color: #f39c12;">Améliorer Objets</div>
+                            <div style="font-size: 14px; color: #aaa;">Augmentez l'efficacité de vos objets de combat et baies.</div>
+                        </div>
+                        <div class="atelier-card" style="opacity: 0.5; cursor: not-allowed; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 30px; text-align: center;">
+                            <div style="font-size: 48px;">⚗️</div>
+                            <div style="font-size: 20px; font-weight: bold; color: #f39c12;">Fabriquer (Bientôt)</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -254,25 +340,5 @@
     <script src="js/home.js"></script>
     <script src="js/mobile-manager.js"></script>
     <script src="js/view-manager.js"></script>
-
-    <script>
-        // Start initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("Pokeroad SPA Initializing...");
-            // Initialize ViewManager
-            if (typeof ViewManager !== 'undefined') {
-                ViewManager.init();
-                ViewManager.show('home');
-            }
-            // Mandatory Fullscreen button
-            const fsBtn = document.getElementById('start-fs-btn');
-            if (fsBtn && typeof MobileManager !== 'undefined') {
-                fsBtn.addEventListener('click', () => {
-                    MobileManager.requestFullscreen();
-                    document.getElementById('mandatory-fs-overlay').style.display = 'none';
-                });
-            }
-        });
-    </script>
 </body>
 </html>

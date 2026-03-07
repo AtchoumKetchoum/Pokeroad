@@ -78,7 +78,7 @@ const ViewManager = (() => {
                 if (window.initCenter) window.initCenter();
                 break;
             case 'worldmap':
-                if (window.initWorldMap) window.initWorldMap();
+                if (window.initWorldmap) window.initWorldmap();
                 break;
         }
     }

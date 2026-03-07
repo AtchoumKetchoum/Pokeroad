@@ -3,19 +3,10 @@
    ============================================ */
 
 /* --- CORPS DE PAGE --- */
-body {
-    margin: 0;
-    background-color: #111;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: var(--font-pixel);
-    overflow: hidden;
-}
+/* Body styles moved to base.css */
 
 /* --- ÉCRAN DE JEU (COMBAT) --- */
-#scaler-view.battle-bg {
+.scaler-view.battle-bg {
     background-color: #5c94d4; 
 }
 

@@ -92,15 +92,13 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #000;
   overflow: hidden;
   touch-action: none;
   user-select: none;
   margin: 0;
   padding: 0;
+  display: block; /* SPA should use block and rely on ViewManager positioning */
 }
 
 /* Overlay Orientation Mobile */
@@ -171,16 +169,13 @@ body {
 }
 
 /* Zone de rendu à l'échelle (Adaptative) */
-#scaler-view {
+.scaler-view, #scaler-view {
   position: absolute;
   width: 1280px;
   height: 720px;
   background-size: 100% 100%;
   background-position: center;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   transform-origin: center center;
 }
 
