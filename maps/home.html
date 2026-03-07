@@ -7,42 +7,43 @@
     <link rel="icon" type="image/png" href="../assets/favicon.png.png">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/components.css">
-    <link rel="stylesheet" href="../css/battle.css">
-    <link rel="stylesheet" href="../css/home.css">
-    <link rel="stylesheet" href="../css/refinement.css">
+    <link rel="stylesheet" href="../css/base.css?v=1.1">
+    <link rel="stylesheet" href="../css/components.css?v=1.1">
+    <link rel="stylesheet" href="../css/battle.css?v=1.1">
+    <link rel="stylesheet" href="../css/home.css?v=1.1">
+    <link rel="stylesheet" href="../css/refinement.css?v=1.1">
 </head>
 <body>
     <div id="game-screen">
         <div id="scaler-view">
-            <!-- HUD Joueur -->
-            <div class="top-left-container">
+            <!-- HUD Joueur & Missions -->
+            <div class="top-left-container" id="main-hud-row">
                 <div id="player-hud">
                     <div id="player-avatar-container">
                         <img id="player-avatar-img" src="../assets/boy.png" alt="Avatar">
                     </div>
                     <div id="player-info">
-                        <span id="player-name" style="display: block; margin-bottom: 2px;"></span>
+                        <span id="player-name"></span>
                         <span id="player-money"></span>
                     </div>
                 </div>
+                
+                <button id="mission-btn" class="map-btn mission-hud" onclick="openMissionModal()">
+                    <div id="mission-btn-team-preview" class="team-preview-mini"></div>
+                    <div class="mission-hud-content">
+                        <div id="mission-btn-label">Missions</div>
+                        <div id="mission-btn-timer" class="timer-mini"></div>
+                    </div>
+                </button>
             </div>
 
             <!-- Hitboxes (zones cliquables) -->
-            <button id="mission-btn" class="map-btn mission-hud" onclick="openMissionModal()">
-                <div id="mission-btn-team-preview" class="team-preview-mini"></div>
-                <div class="mission-hud-content">
-                    <div id="mission-btn-label">Missions</div>
-                    <div id="mission-btn-timer" class="timer-mini"></div>
-                </div>
-            </button>
             <div id="zone-center" class="hitbox" onclick="ouvrirCentrePokemon()" title="Centre Pokémon" style="transform: none;"></div>
             <div id="zone-labo" class="hitbox" onclick="allerAuLabo()" title="Laboratoire" style="transform: none;"></div>
             <div id="zone-refinement" class="hitbox" onclick="RefinementUI.open()" title="Atelier de Raffinement" style="transform: none;"></div>
 
             <!-- Boutons de repères sur la carte -->
-            <button class="landmark-btn" id="btn-landmark-center" onclick="openCenter()">
+            <button class="landmark-btn" id="btn-landmark-center" onclick="ouvrirCentrePokemon()">
                 <span>Centre</span>
             </button>
             <button class="landmark-btn" id="btn-landmark-lab" onclick="allerAuLabo()">
@@ -244,10 +245,10 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="../js/storage.js"></script>
-    <script src="../js/gamedata.js"></script>
-    <script src="../js/refinement.js"></script>
-    <script src="../js/refinement-ui.js"></script>
-    <script src="../js/home.js"></script>
-    <script src="../js/mobile-manager.js"></script></body>
+    <script src="../js/storage.js?v=1.1"></script>
+    <script src="../js/gamedata.js?v=1.1"></script>
+    <script src="../js/refinement.js?v=1.1"></script>
+    <script src="../js/refinement-ui.js?v=1.1"></script>
+    <script src="../js/home.js?v=1.1"></script>
+    <script src="../js/mobile-manager.js?v=1.1"></script></body>
 </html>

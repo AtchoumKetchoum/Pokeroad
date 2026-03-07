@@ -13,82 +13,70 @@ const MobileManager = (() => {
   const DESIGN_WIDTH = 1280;
   const DESIGN_HEIGHT = 720;
 
-  function init() {
-    if (!document.getElementById("orientation-overlay")) {
-      createOverlay();
+    // Détecter si on est sur mobile de façon plus robuste (UserAgent + Largeur écran)
+    function detectMobile() {
+        const isUserAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isWidthMobile = window.innerWidth <= 900 || screen.width <= 900;
+        return isUserAgentMobile || isWidthMobile;
     }
-    if (!document.getElementById("fullscreen-mini-btn")) {
-      createMiniBtn();
-    }
 
-    window.addEventListener("resize", () => {
-      checkOrientation();
-      updateScaling();
-      updateMiniBtnVisibility();
-    });
-    window.addEventListener("orientationchange", () => {
-      checkOrientation();
-      updateScaling();
-      updateMiniBtnVisibility();
-    });
-
-    // Détecter les changements de plein écran
-    document.addEventListener("fullscreenchange", updateMiniBtnVisibility);
-    document.addEventListener(
-      "webkitfullscreenchange",
-      updateMiniBtnVisibility,
-    );
-
-    checkOrientation();
-    updateScaling();
-    
-    // Si l'utilisateur voulait le plein écran, on montre le bouton mini s'il ne l'est pas
-    updateMiniBtnVisibility();
-    
-    // Marquer le body si on est sur mobile pour les styles CSS
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-        document.body.classList.add('is-mobile');
+    function init() {
+        const isMobile = detectMobile();
         
-        // Force native fullscreen on first interaction and try to keep it locked
-        const tryFullscreen = (e) => {
-             // Let the click happen naturally but request fullscreen
-             requestFullscreen();
-             
-             // If this is a link or a button that navigates via location.href, we can try to intercept
-             let current = e.target;
-             while (current && current !== document.body) {
-                 if (current.tagName === 'A' && current.href) {
-                     e.preventDefault();
-                     const target = current.href;
-                     // Give the browser 50ms to trigger the fullscreen before leaving
-                     setTimeout(() => window.location.href = target, 50);
-                     return;
-                 }
-                 if (current.onclick && current.onclick.toString().includes('location.href')) {
-                     // Very hard to intercept inline onclick safely, but requestFullscreen will fire.
-                 }
-                 current = current.parentElement;
-             }
-        };
-        
-        document.addEventListener("touchstart", tryFullscreen, { capture: true, passive: false });
-        document.addEventListener("click", tryFullscreen, { capture: true, passive: false });
-        
-        // Auto-attempt if we know user previously accepted fullscreen
-        if (wantsFullscreen && document.visibilityState === 'visible') {
-            // Note: browser might block this if no user gesture, but we try anyway
-            setTimeout(requestFullscreen, 100);
+        if (!document.getElementById("orientation-overlay")) {
+            createOverlay();
         }
-        
-        // Also re-trigger if visibility changes (e.g., locking and unlocking phone)
-        document.addEventListener("visibilitychange", () => {
-            if (document.visibilityState === 'visible' && !isFullscreenActive()) {
-                // Cannot auto-trigger without interaction reliably, but we try mini-btn
-                updateMiniBtnVisibility();
-            }
+        if (!document.getElementById("fullscreen-mini-btn")) {
+            createMiniBtn();
+        }
+
+        window.addEventListener("resize", () => {
+            checkOrientation();
+            updateScaling();
+            updateMiniBtnVisibility();
         });
-    }
+        window.addEventListener("orientationchange", () => {
+            checkOrientation();
+            updateScaling();
+            updateMiniBtnVisibility();
+        });
+
+        // Détecter les changements de plein écran
+        document.addEventListener("fullscreenchange", updateMiniBtnVisibility);
+        document.addEventListener("webkitfullscreenchange", updateMiniBtnVisibility);
+
+        checkOrientation();
+        updateScaling();
+        updateMiniBtnVisibility();
+        
+        if (isMobile) {
+            document.body.classList.add('is-mobile');
+            document.documentElement.classList.add('is-mobile'); // Double security
+            
+            // Force native fullscreen on interaction and keep it locked
+            const tryFullscreen = (e) => {
+                requestFullscreen();
+                
+                // Navigation interception
+                let current = e.target;
+                while (current && current !== document.body) {
+                    if (current.tagName === 'A' && current.href) {
+                        e.preventDefault();
+                        const target = current.href;
+                        setTimeout(() => window.location.href = target, 100);
+                        return;
+                    }
+                    current = current.parentElement;
+                }
+            };
+            
+            document.addEventListener("touchstart", tryFullscreen, { capture: true, passive: false });
+            document.addEventListener("click", tryFullscreen, { capture: true, passive: false });
+            
+            if (wantsFullscreen && document.visibilityState === 'visible') {
+                setTimeout(requestFullscreen, 500);
+            }
+        }
     
     overlayCreated = true;
   }
