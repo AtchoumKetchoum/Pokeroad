@@ -51,14 +51,35 @@ const MobileManager = (() => {
         document.body.classList.add('is-mobile');
         
         // Force native fullscreen on first interaction and try to keep it locked
-        const tryFullscreen = () => {
+        const tryFullscreen = (e) => {
+             // Let the click happen naturally but request fullscreen
              requestFullscreen();
-             // We don't remove the listener, we want to ensure any click keeps us in fullscreen
-             // if the user somehow exited it (e.g., swiped down).
+             
+             // If this is a link or a button that navigates via location.href, we can try to intercept
+             let current = e.target;
+             while (current && current !== document.body) {
+                 if (current.tagName === 'A' && current.href) {
+                     e.preventDefault();
+                     const target = current.href;
+                     // Give the browser 50ms to trigger the fullscreen before leaving
+                     setTimeout(() => window.location.href = target, 50);
+                     return;
+                 }
+                 if (current.onclick && current.onclick.toString().includes('location.href')) {
+                     // Very hard to intercept inline onclick safely, but requestFullscreen will fire.
+                 }
+                 current = current.parentElement;
+             }
         };
         
-        document.addEventListener("touchstart", tryFullscreen, { capture: true, passive: true });
-        document.addEventListener("click", tryFullscreen, { capture: true, passive: true });
+        document.addEventListener("touchstart", tryFullscreen, { capture: true, passive: false });
+        document.addEventListener("click", tryFullscreen, { capture: true, passive: false });
+        
+        // Auto-attempt if we know user previously accepted fullscreen
+        if (wantsFullscreen && document.visibilityState === 'visible') {
+            // Note: browser might block this if no user gesture, but we try anyway
+            setTimeout(requestFullscreen, 100);
+        }
         
         // Also re-trigger if visibility changes (e.g., locking and unlocking phone)
         document.addEventListener("visibilitychange", () => {

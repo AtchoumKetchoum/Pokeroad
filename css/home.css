@@ -1389,22 +1389,23 @@ body.is-mobile #mission-btn {
 body.is-mobile .road-btn {
   padding: 10px 15px !important;
   font-size: 12px !important;
-  bottom: 100px !important;
-  left: 20px !important;
-  transform: none !important;
+  bottom: 25px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important; /* Forces true center alignment */
   border-width: 3px !important;
   z-index: 10 !important;
 }
 
 body.is-mobile #mission-btn {
   right: auto !important;
-  left: 210px !important;
+  left: 170px !important; /* Immediately touches the right edge of avatar hud */
   top: 15px !important;
-  min-width: 100px !important;
+  min-width: unset !important;
+  width: auto !important;
   height: 45px !important;
   font-size: 11px !important;
   border-width: 3px !important;
-  padding: 0 5px !important;
+  padding: 0 10px !important; /* Add proper padding inside the button */
 }
 
 body.is-mobile #mission-btn-label {
