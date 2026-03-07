@@ -371,41 +371,78 @@ h1 {
 
 /* --- MOBILE OPTIMIZATIONS --- */
 @media (max-width: 900px) {
+  .pokedex-viewport {
+    padding: 10px 5px;
+    -webkit-overflow-scrolling: touch;
+  }
+
   h1 {
-    font-size: 2.5em;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
   
+  #pokedex-filters {
+    max-width: 100%;
+    margin-bottom: 10px;
+    gap: 8px;
+    padding: 5px;
+  }
+
   .filter-btn {
-    padding: 12px 25px;
-    font-size: 16px;
+    padding: 6px 10px;
+    font-size: 10px;
   }
   
   .rarity-filter-label {
-    width: 48px;
-    height: 48px;
-  }
-  
-  .rarity-filter-label .egg-visual {
     width: 32px;
     height: 32px;
   }
   
+  .rarity-filter-label .egg-visual {
+    width: 20px;
+    height: 20px;
+  }
+  
+  #pokedex-grid {
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    gap: 10px;
+    padding: 5px;
+    max-width: 100%;
+  }
+
+  .pokedex-entry {
+    padding: 5px;
+  }
+
   .pokedex-entry h3 {
-    font-size: 1.5em;
+    font-size: 10px;
+    margin-bottom: 2px;
   }
   
   .pokedex-entry p {
-    font-size: 1.2em;
+    font-size: 8px;
   }
   
   .owned-count {
-    padding: 4px 8px;
-    font-size: 14px;
+    padding: 2px 4px;
+    font-size: 9px;
   }
   
   .pokedex-entry img {
-    width: 120px;
-    height: 120px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .pokedex-entry .evolution-method,
+  .pokedex-entry .egg-type {
+    height: auto;
+    font-size: 8px;
+  }
+
+  .pokedex-entry .evolution-method .evolution-sprite {
+    width: 16px;
+    height: 16px;
   }
 }
 

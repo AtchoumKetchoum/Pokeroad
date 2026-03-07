@@ -53,11 +53,11 @@ const MobileManager = (() => {
         // Force native fullscreen on first interaction
         const autoFullscreen = () => {
              requestFullscreen();
-             document.removeEventListener("touchstart", autoFullscreen);
-             document.removeEventListener("click", autoFullscreen);
+             document.removeEventListener("touchstart", autoFullscreen, true);
+             document.removeEventListener("click", autoFullscreen, true);
         };
-        document.addEventListener("touchstart", autoFullscreen);
-        document.addEventListener("click", autoFullscreen);
+        document.addEventListener("touchstart", autoFullscreen, true);
+        document.addEventListener("click", autoFullscreen, true);
     }
     
     overlayCreated = true;

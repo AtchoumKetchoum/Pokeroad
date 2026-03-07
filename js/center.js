@@ -28,6 +28,8 @@ const MOVES_FR_FALLBACK = {
 let CURRENT_POKEMON = null;
 let CURRENT_AVAILABLE_MOVES = [];
 const selectionState = { selected: [], boosted: null };
+let MOVES_FR = {};
+let allItemsData = null;
 
 // --- LOCKER STATE ---
 let currentItemSort = 'category';

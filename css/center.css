@@ -203,11 +203,35 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+    #center-main-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
+    #center-sidebar {
+        display: none; /* Cache la sidebar en mode mobile direct (sera dans les soins) */
+    }
+
+    #center-content {
+        flex-grow: 1;
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        box-sizing: border-box;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+
     #pokemon-list {
-        width: 95%;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 10px;
+        width: 100%;
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px;
+        padding-right: 2px;
     }
 }
 
@@ -396,18 +420,64 @@ body {
 
 @media (max-width: 768px) {
     #pokemon-detail-modal .modal-content {
-        width: 95%;
-        padding: 15px;
+        width: 100vw;
+        height: 100dvh;
+        max-width: 100vw;
+        max-height: 100dvh;
+        padding: 40px 10px 10px 10px;
+        box-sizing: border-box;
+        border-radius: 0;
+        margin: 0;
     }
 
     .detail-header {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        text-align: center;
+        text-align: left;
+        margin-bottom: 5px;
     }
 
     .detail-header img {
-        margin-bottom: 15px;
+        margin-bottom: 0;
+        width: 64px;
+        height: 64px;
+    }
+
+    #pokemon-detail-card {
+        width: 100vw;
+        height: 100dvh;
+        max-width: 100vw;
+        max-height: 100dvh;
+        border: none;
+        border-radius: 0;
+        padding: 40px 10px 10px 10px;
+        box-sizing: border-box;
+    }
+
+    .desc {
+        display: none; /* Cache la description Pokedex sur mobile pour gagner de la place */
+    }
+
+    .section-title {
+        margin: 5px 0;
+    }
+
+    .moves-manager {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+    .moves-list-container {
+        height: 150px;
+    }
+
+    #item-management-section {
+        margin-top: 5px;
+    }
+
+    .stats-table th, .stats-table td {
+        padding: 3px 4px;
+        font-size: 9px;
     }
 }
 

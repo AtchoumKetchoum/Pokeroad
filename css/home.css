@@ -488,19 +488,24 @@ body.is-mobile #mission-btn {
 
 #player-info {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 #player-name {
   font-weight: bold;
-  font-size: 14px;
-  color: #2c3e50;
+  font-size: 16px;
+  color: #fff;
 }
 
 #player-money {
-  font-size: 12px;
-  color: #27ae60;
+  font-size: 15px;
+  color: #ffd700;
   font-weight: bold;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+  font-family: var(--font-pixel);
 }
 
 .profile-edit {
@@ -1382,16 +1387,18 @@ body.is-mobile #mission-btn {
 
 /* --- OVERRIDES MOBILES REELS --- */
 body.is-mobile .road-btn {
-  padding: 12px 30px !important;
+  padding: 12px 20px !important;
   font-size: 14px !important;
-  bottom: 8% !important;
+  bottom: 25px !important;
+  left: 25px !important;
+  transform: none !important;
   border-width: 4px !important;
 }
 
 body.is-mobile #mission-btn {
-  left: auto !important;
-  right: 15px !important;
-  top: 85px !important; /* Sous les boutons actions en haut à droite */
+  right: auto !important;
+  left: 210px !important;
+  top: 15px !important;
   min-width: 120px !important;
   height: 50px !important;
   font-size: 12px !important;
