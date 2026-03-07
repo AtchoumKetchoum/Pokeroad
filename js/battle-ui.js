@@ -25,10 +25,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const selectedZone = localStorage.getItem('pokerode_current_zone');
         if (selectedZone !== null) {
             zoneIndex = parseInt(selectedZone); 
-            waveIndex = 1;
-            battleIndex = 1;
-            // On peut optionnellement vider l'override pour que la suite suive la progression normale
-            // localStorage.removeItem('pokerode_current_zone');
+            if (zoneIndex === progression.zone) {
+                waveIndex = progression.wave;
+                battleIndex = progression.battle;
+            } else {
+                waveIndex = 1;
+                battleIndex = 1;
+            }
+            // On vide l'override pour que les rechargements (ex: en cas de défaite) suivent la progression en cours
+            localStorage.removeItem('pokerode_current_zone');
         } else {
             zoneIndex = progression.zone;
             waveIndex = progression.wave;

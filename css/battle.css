@@ -831,9 +831,11 @@ body {
 body.is-mobile #battle-footer { padding: 5px 10px !important; min-height: 60px !important; }
 body.is-mobile #start-battle-btn { padding: 12px 24px !important; font-size: 16px !important; min-width: 140px !important; }
 body.is-mobile .sprite { width: 100px; height: 100px; }
-body.is-mobile .hp-box { width: 125px; top: 0; transform: translateX(-50%) translateY(-100%); background: transparent; border: none; }
-body.is-mobile .status-main-row { flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding-bottom: 4px; }
-body.is-mobile .hp-container-minimal { width: 100%; }
+body.is-mobile .hp-box { width: 105px !important; top: 0; transform: translateX(-50%) translateY(-100%); background: transparent; border: none; }
+body.is-mobile .status-main-row { display: flex !important; flex-wrap: wrap !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; gap: 2px !important; padding-bottom: 2px !important; }
+body.is-mobile .lvl-badge { order: 1 !important; font-size: 9px !important; }
+body.is-mobile .charge-text { order: 2 !important; font-size: 9px !important; color: #111 !important; text-shadow: 1px 1px 0 #fff !important; }
+body.is-mobile .hp-container-minimal { width: 100% !important; order: 3 !important; }
 body.is-mobile .team-grid { column-gap: 15px !important; row-gap: 20px !important; top: 160px !important; }
 
 /* --- PANNEAU DE COMBAT --- */

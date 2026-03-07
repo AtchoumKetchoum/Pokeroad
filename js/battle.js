@@ -2619,6 +2619,9 @@ async function checkWinCondition() {
     updateZMoveIndicators();
   } else if (playerAlive === 0) {
     // Défaite
+    // On revient au début de la vague (battleIndex = 1)
+    GameData.setProgression(zoneIndex, waveIndex, 1);
+    
     if (dom.battleStatus) {
       dom.battleStatus.innerHTML = `
         <div class="status-title" style="color:#e74c3c;">DÉFAITE...</div>
