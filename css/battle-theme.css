@@ -1,0 +1,217 @@
+/* ==========================================================================
+   battle-theme.css — Arène de combat (charte anime / Pokémon)
+   Surcharge l'apparence de battle.css sans toucher à sa mise en page.
+   ========================================================================== */
+
+#view-battle { --type-normal: var(--t-normal); --type-fire: var(--t-fire); --type-water: var(--t-water); --type-electric: var(--t-electric);
+  --type-grass: var(--t-grass); --type-ice: var(--t-ice); --type-fighting: var(--t-fighting); --type-poison: var(--t-poison);
+  --type-ground: var(--t-ground); --type-flying: var(--t-flying); --type-psychic: var(--t-psychic); --type-bug: var(--t-bug);
+  --type-rock: var(--t-rock); --type-ghost: var(--t-ghost); --type-dragon: var(--t-dragon); --type-dark: var(--t-dark);
+  --type-steel: var(--t-steel); --type-fairy: var(--t-fairy); --type-shadow: var(--t-shadow); }
+
+#view-battle #ambient-effects { display: none; }
+#view-battle .scaler-view.battle-bg { background: #95bad0; }
+#view-battle #battle-scene { z-index: 0; }
+
+/* --- Barre du haut --- */
+#view-battle #battle-top-bar { position: absolute; top: 14px; left: 16px; right: 16px; z-index: 210; display: flex; align-items: center; gap: 12px; height: 60px; }
+#view-battle #hudProgress {
+  height: auto !important; padding: 6px 8px 6px 18px !important;
+  background: var(--paper) !important; border: var(--outline-thick) !important; border-radius: 999px !important; box-shadow: var(--pop) !important;
+  display: flex; align-items: center; gap: 10px; font-family: var(--font-body); color: var(--ink);
+}
+#view-battle .hud-zone { font-family: var(--font-title); font-size: 20px; text-transform: uppercase; }
+#view-battle .hud-step { background: var(--ink); color: #f7ecdc; font-weight: 800; font-size: 14px; border-radius: 999px; padding: 3px 12px; }
+#view-battle .hud-step b { color: var(--yellow); font-size: 16px; }
+#view-battle .hud-step.boss { background: var(--red); font-family: var(--font-title); font-size: 16px; letter-spacing: 1px; animation: badge-pop 1.2s infinite; }
+
+#view-battle #turnOrderContainer { flex: 1; display: flex; justify-content: center; min-width: 0; }
+#view-battle .turn-order-sidebar {
+  height: auto !important; padding: 6px 12px !important; gap: 6px; display: flex;
+  background: rgba(27, 31, 59, .8) !important; border: 3px solid #f7ecdc !important; border-radius: 999px !important; box-shadow: none !important;
+}
+#view-battle .timeline-unit-container { position: relative; width: 44px; height: 44px; border-radius: 50%; background: #f7ecdc; border: 3px solid var(--ink); display: grid; place-items: center; overflow: visible; }
+#view-battle .timeline-unit-container:first-child { width: 52px; height: 52px; border-color: var(--yellow); box-shadow: 0 0 0 3px var(--ink); }
+#view-battle .timeline-unit { width: 120%; height: 120%; object-fit: contain; border: none !important; background: none !important; }
+#view-battle .timeline-unit.enemy { filter: drop-shadow(0 0 0 transparent); }
+#view-battle .timeline-unit-container:has(.timeline-unit.enemy) { background: #e7bbb4; }
+#view-battle .timeline-unit-container:has(.timeline-unit.player) { background: #c1cfda; }
+#view-battle .timeline-boost-gauge { position: absolute; bottom: -6px; left: 4px; right: 4px; height: 6px; background: var(--ink); border-radius: 3px; overflow: hidden; }
+#view-battle .timeline-boost-fill { height: 100%; background: var(--yellow); }
+
+#view-battle #top-right-actions { position: static !important; display: flex; gap: 10px; align-items: center; flex-direction: row !important; }
+#view-battle .speed-controls {
+  height: auto !important; padding: 4px !important; gap: 4px; flex-direction: row !important;
+  background: var(--ink) !important; border: 3px solid var(--ink) !important; border-radius: 999px !important; box-shadow: var(--pop-sm) !important;
+}
+#view-battle .speed-btn { height: 36px; min-width: 46px; width: auto !important; border-radius: 999px; font-family: var(--font-title); font-size: 16px; color: #f7ecdc; background: transparent; }
+#view-battle .speed-btn.active { background: var(--yellow); color: var(--ink); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .2); }
+#view-battle #auto-battle-btn {
+  width: auto !important; height: 46px !important; padding: 0 14px !important; gap: 6px;
+  border-radius: 999px !important; border: var(--outline) !important; box-shadow: var(--pop-sm) !important;
+  background: var(--paper) !important; color: var(--ink) !important; font-family: var(--font-title); font-size: 16px;
+}
+#view-battle #auto-battle-btn.active { background: var(--green) !important; color: #f7ecdc !important; }
+#view-battle #auto-battle-btn.active .art-icon { animation: hub-spin 1.6s linear infinite; }
+
+/* --- Grilles : plateformes d'herbe --- */
+#view-battle .team-grid .unit-slot { background: none !important; border: none !important; }
+#view-battle .team-grid .unit-slot::before {
+  content: ''; position: absolute; left: 6%; right: 6%; bottom: 4%; height: 34%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 35%, rgba(255, 255, 255, .55), rgba(255, 255, 255, .12) 60%, rgba(27, 31, 59, .18));
+  border: 3px solid rgba(27, 31, 59, .45);
+  z-index: 0; transition: background .15s, border-color .15s;
+}
+#view-battle #player-grid .unit-slot::before { border-color: rgba(59, 76, 202, .55); }
+#view-battle #enemy-grid .unit-slot::before { border-color: rgba(238, 21, 21, .45); }
+#view-battle .unit-slot.drag-over::before, #view-battle .unit-slot:hover::before { background: radial-gradient(ellipse, rgba(255, 228, 102, .9), rgba(255, 203, 5, .35)); border-color: var(--ink); }
+#view-battle .unit-slot.targetable::before { background: radial-gradient(ellipse, rgba(255, 90, 90, .8), rgba(238, 21, 21, .25)); border-color: var(--red); animation: badge-pop 1s infinite; }
+#view-battle .unit-slot.aoe-highlight::before { background: radial-gradient(ellipse, rgba(255, 140, 60, .95), rgba(255, 138, 61, .3)); border-color: var(--ink); }
+
+#view-battle .shadow { width: 64px; height: 14px; background: rgba(27, 31, 59, .35); bottom: 10%; }
+#view-battle .sprite { filter: drop-shadow(0 3px 0 rgba(27, 31, 59, .55)) drop-shadow(0 0 1px var(--ink)); }
+#view-battle .unit.is-current-turn .sprite { filter: drop-shadow(0 0 0 #f7ecdc) drop-shadow(0 0 8px var(--yellow)) drop-shadow(0 3px 0 var(--ink)); }
+#view-battle .unit.is-current-turn::after {
+  content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 0; transform: translateX(-50%);
+  border: 10px solid transparent; border-bottom: 14px solid var(--yellow); filter: drop-shadow(0 2px 0 var(--ink));
+  animation: pin-hop 0.8s ease-in-out infinite;
+}
+
+/* --- Jauge PV / AP / Z --- */
+#view-battle .unit .hp-box {
+  background: var(--paper) !important; border: 3px solid var(--ink) !important; border-radius: 10px !important;
+  box-shadow: 0 3px 0 var(--ink) !important; padding: 3px 5px !important; min-width: 108px;
+}
+#view-battle .lvl-badge {
+  background: var(--ink) !important; color: #f7ecdc !important; border-radius: 6px !important; padding: 1px 5px !important;
+  font-family: var(--font-title) !important; font-size: 11px !important; letter-spacing: .3px;
+}
+#view-battle .unit .hp-bar-bg, #view-battle .hp-bar-bg { height: 9px !important; background: #54505e !important; border: 2px solid var(--ink) !important; border-radius: 5px !important; overflow: hidden; }
+#view-battle .unit .hp-fill, #view-battle .hp-fill { background: linear-gradient(180deg, #95cb89, #5da063) !important; border-radius: 0 !important; }
+#view-battle .unit .hp-fill.midHp, #view-battle .hp-fill.midHp { background: linear-gradient(180deg, #d7be70, #bd9635) !important; }
+#view-battle .unit .hp-fill.lowHp, #view-battle .hp-fill.lowHp { background: linear-gradient(180deg, #da827c, #b34c46) !important; animation: badge-pop .8s infinite; }
+#view-battle .ap-bar { height: 4px !important; background: rgba(27, 31, 59, .25) !important; border-radius: 2px !important; margin-bottom: 2px; }
+#view-battle .ap-fill { background: var(--blue-light) !important; }
+#view-battle .charge-text {
+  font-family: var(--font-title) !important; font-size: 11px !important; color: var(--ink) !important; text-shadow: none !important;
+  background: var(--yellow); border: 2px solid var(--ink); border-radius: 6px; padding: 0 4px;
+}
+
+/* --- Pied de page --- */
+#view-battle #battle-footer {
+  left: 16px !important; right: 16px !important; bottom: 14px !important;
+  min-height: 96px !important; padding: 10px 14px !important;
+  background: var(--paper) !important; border: var(--outline-thick) !important; border-radius: 22px !important;
+  box-shadow: var(--pop) !important;
+}
+#view-battle #selection-banner { gap: 10px; }
+#view-battle #selection-banner h4, #view-battle #pokemon-counter { font-family: var(--font-title); font-size: 16px !important; color: var(--ink) !important; }
+#view-battle .banner-pokemon {
+  width: 74px; height: 74px; border-radius: 16px; flex: none;
+  background: linear-gradient(180deg, #f7ecdc, #ccd1dd); border: 3px solid var(--ink); box-shadow: 0 3px 0 var(--ink);
+  display: grid; place-items: center;
+}
+#view-battle .banner-pokemon img { width: 66px !important; height: 66px !important; object-fit: contain; }
+#view-battle .banner-lvl-badge { background: var(--ink) !important; font-family: var(--font-title); font-size: 11px !important; border-radius: 6px !important; padding: 0 5px !important; bottom: -6px !important; right: -6px !important; border: 2px solid #f7ecdc; }
+#view-battle .banner-pokemon.selected { filter: grayscale(.9) opacity(.45); transform: scale(.92); }
+
+#view-battle #start-battle-btn {
+  font-size: 26px !important; padding: 14px 34px !important; min-width: 220px !important;
+  background: linear-gradient(180deg, #d56f69, var(--red) 55%, var(--red-dark)) !important; color: #f7ecdc !important;
+  text-shadow: 0 3px 0 var(--ink) !important; border-radius: 18px !important;
+  animation: hub-breathe 1.8s ease-in-out infinite;
+}
+#view-battle #start-battle-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; }
+#view-battle #start-battle-btn .art-icon { flex: none; fill: currentColor; filter: drop-shadow(0 3px 0 var(--ink)); }
+
+#view-battle #combat-panel { gap: 14px; }
+#view-battle #turn-unit-display {
+  background: var(--ink); border-radius: 16px; padding: 6px 14px 6px 6px; color: #f7ecdc;
+}
+#view-battle #turn-unit-display img { width: 58px !important; height: 58px !important; background: #f7ecdc; border-radius: 12px; border: 3px solid #f7ecdc; }
+#view-battle #turn-unit-display .turn-unit-name { font-family: var(--font-title); font-size: 18px !important; color: #f7ecdc !important; text-shadow: none !important; }
+#view-battle #turn-unit-display .turn-unit-hp { font-size: 13px !important; color: var(--yellow) !important; font-weight: 800; }
+#view-battle .target-prompt { font-family: var(--font-title); font-size: 20px !important; color: var(--ink) !important; text-shadow: none !important; text-transform: uppercase; }
+
+#view-battle .movesRow { display: grid !important; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+#view-battle .move-btn {
+  position: relative; min-height: 58px;
+  font-family: var(--font-title) !important; font-size: 17px !important; letter-spacing: .3px; color: #f7ecdc !important;
+  background: var(--type-color, var(--t-normal)) !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .35), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, .15)) !important;
+  border: var(--outline) !important; border-radius: 14px !important; box-shadow: var(--pop) !important;
+  text-shadow: 0 2px 0 var(--ink), 1px 0 0 var(--ink), -1px 0 0 var(--ink) !important;
+  cursor: pointer; transition: transform .08s;
+}
+#view-battle .move-btn:hover, #view-battle .move-btn.is-hovered { transform: translateY(-3px); }
+#view-battle .move-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink) !important; }
+#view-battle .move-btn.is-z-move-base::after {
+  content: 'Z'; position: absolute; top: -10px; right: -8px; width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--yellow); color: var(--ink); border: 3px solid var(--ink);
+  font-size: 13px; text-shadow: none;
+}
+
+/* --- Panneau d'informations --- */
+#view-battle #infoDisplayPanel {
+  background: var(--paper) !important; border: var(--outline-thick) !important; border-radius: 18px !important; box-shadow: var(--pop) !important;
+  color: var(--ink) !important; height: auto !important;
+}
+
+/* --- Textes flottants façon comic --- */
+.damage-float-number {
+  font-family: var(--font-title) !important; font-size: 40px !important; color: #f7ecdc !important;
+  -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill;
+  text-shadow: 0 4px 0 var(--ink) !important;
+}
+.damage-float-number.heal { color: #95cb89 !important; }
+.move-name-float-text {
+  font-family: var(--font-title) !important; font-size: 26px !important; color: var(--yellow) !important;
+  -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; text-shadow: 0 3px 0 var(--ink) !important;
+  text-transform: uppercase; white-space: nowrap;
+}
+
+/* --- Résultat --- */
+#view-battle #battleStatus {
+  min-width: 460px; padding: 26px 36px 30px !important; text-align: center;
+  background: var(--paper) !important; border: 5px solid var(--ink) !important; border-radius: 28px !important;
+  box-shadow: 0 10px 0 var(--ink), 0 0 0 9999px rgba(27, 31, 59, .45) !important;
+  color: var(--ink) !important;
+  animation: toast-in .35s cubic-bezier(.2, 1.5, .4, 1) both;
+}
+#view-battle #battleStatus:hover { transform: translate(-50%, -50%); }
+#view-battle #battleStatus .status-title {
+  font-family: var(--font-title); font-size: 64px !important; letter-spacing: 2px; margin: -70px auto 10px !important; line-height: 1;
+  color: var(--yellow) !important; -webkit-text-stroke: 5px var(--ink); paint-order: stroke fill; text-shadow: 0 7px 0 var(--ink);
+  transform: rotate(-3deg);
+}
+#view-battle #battleStatus.lose .status-title { color: #99999a !important; }
+#view-battle #battleStatus p { font-weight: 800; font-size: 18px; color: var(--ink-soft) !important; }
+#view-battle .rewards-summary { border-top: 3px dashed rgba(27, 31, 59, .2) !important; }
+#view-battle .reward-item { font-family: var(--font-title) !important; font-size: 24px !important; }
+#view-battle .reward-badge { background: #f7ecdc !important; border: 2.5px solid var(--ink) !important; border-radius: 999px !important; font-weight: 800; font-size: 13px !important; color: var(--ink) !important; padding: 4px 10px !important; box-shadow: 0 2px 0 var(--ink); }
+#view-battle .reward-badge.tm { background: #c1cfda !important; }
+#view-battle #end-battle-nav-win .pk-btn-action, #view-battle #end-battle-nav-lose .pk-btn-action { font-size: 22px; padding: 12px 30px !important; }
+#view-battle .turn-order-sidebar:empty { display: none !important; }
+
+/* Textes d'effet (statuts, buffs, critiques) */
+.effect-float-text {
+  position: absolute; transform: translateX(-50%); white-space: nowrap; z-index: 400; pointer-events: none;
+  font-family: var(--font-title) !important; font-size: 22px !important; letter-spacing: .3px;
+  color: #f7ecdc !important; -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; text-shadow: 0 3px 0 var(--ink) !important;
+}
+.effect-float-text.buff { color: #95cb89 !important; }
+.effect-float-text.debuff { color: var(--orange) !important; }
+.effect-float-text.status { color: #cf9ed4 !important; }
+.effect-float-text.info { color: #f7ecdc !important; }
+
+#view-battle #battleStatus * { text-shadow: none; }
+#view-battle .reward-main { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+#view-battle .reward-chip {
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  font-family: var(--font-title); font-size: 26px; color: var(--ink);
+  background: #e4d5a8; border: 3px solid var(--ink); border-radius: 999px; padding: 4px 16px 4px 8px; box-shadow: 0 3px 0 var(--ink);
+}
+#view-battle .reward-chip.egg { background: #ccd7dd; }
+#view-battle .reward-chip .coin { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e1d39d, var(--yellow) 55%, var(--yellow-dark)); border: 3px solid var(--ink); }
+#view-battle .reward-chip .art-egg { width: 26px; height: auto; }

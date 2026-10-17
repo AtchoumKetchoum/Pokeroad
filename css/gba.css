@@ -1,0 +1,232 @@
+/* ==========================================================================
+   gba.css — Rendu « Game Boy Advance » (chargé en dernier)
+   Police pixel, cadres de menu façon Rouge Feu / Vert Feuille, couleurs à plat,
+   décors en basse résolution agrandis sans lissage, légère trame LCD.
+   ========================================================================== */
+
+:root {
+  --font-title: 'Pixelify Sans', 'Lilita One', monospace;
+  --font-body: 'Pixelify Sans', 'Nunito', monospace;
+  --font-pixel: var(--font-body);
+
+  --gba-frame: #45434e;      /* contour sombre des cadres */
+  --gba-rim: #a5a8b6;        /* liseré intérieur */
+  --gba-paper: #ded8d2;
+  --gba-shadow: rgba(16, 20, 40, .45);
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --pop: 4px 4px 0 var(--gba-shadow);
+  --pop-sm: 3px 3px 0 var(--gba-shadow);
+}
+
+html, body { -webkit-font-smoothing: none; font-smooth: never; }
+body, button, input, select, textarea { font-family: var(--font-body); }
+
+/* Décors et bâtiments pixelisés */
+.pixel-canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+canvas.art-scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.hub .hub-building canvas { width: 100%; height: auto; display: block; }
+img.sprite, .pokemon-item img, .pokedex-entry > img, .banner-pokemon img, .timeline-unit { image-rendering: auto; }
+
+/* Trame LCD très légère sur tout l'écran de jeu */
+.scaler-view::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 9000;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .05) 0 1px, transparent 1px 4px);
+  mix-blend-mode: multiply;
+}
+
+/* ---------- Cadres façon menus GBA ---------- */
+.modal-content, .panel-pop, #battle-footer, #center-sidebar, #center-content, .lab-column, .atelier-card,
+#view-battle #hudProgress, .hub .hub-hud, .hub .hub-mission, .map-title, .view-title, .toast,
+#view-battle #battleStatus, #view-battle #infoDisplayPanel {
+  border: 4px solid var(--gba-frame) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: inset 0 0 0 2px #f7ecdc, inset 0 0 0 4px var(--gba-rim), var(--pop) !important;
+  background-image: none !important;
+}
+#view-battle #battleStatus { box-shadow: inset 0 0 0 2px #f7ecdc, inset 0 0 0 4px var(--gba-rim), 6px 6px 0 var(--gba-shadow), 0 0 0 9999px rgba(16, 20, 40, .45) !important; }
+.modal { backdrop-filter: none !important; background: rgba(16, 20, 40, .55) !important; }
+.modal-content { background: var(--gba-paper) !important; }
+.modal-content::before {
+  background-color: var(--red) !important;
+  background-image: repeating-conic-gradient(rgba(255, 255, 255, .14) 0 25%, transparent 0 50%) !important;
+  background-size: 8px 8px !important;
+  border-bottom: 4px solid var(--gba-frame) !important;
+  border-radius: 6px 6px 0 0;
+}
+.modal-content > h2:first-of-type, .modal-content .modal-header h2, .refinement-header h2 {
+  font-weight: 700; letter-spacing: 1px;
+  text-shadow: 2px 2px 0 var(--gba-frame) !important;
+}
+
+/* Titres : gros pixels avec ombre portée dure */
+h1, h2, h3, h4 { font-weight: 700 !important; }
+.pokedex-viewport > h1, .atelier-viewport > h1, .title-screen .title-logo, .hub .hub-adventure-text,
+#view-battle #battleStatus .status-title {
+  text-shadow: 4px 4px 0 var(--gba-frame) !important;
+  -webkit-text-stroke: 0 !important;
+  letter-spacing: 2px;
+}
+.title-screen .title-logo { font-size: min(110px, 20vh); }
+.map-pin .pin-number { text-shadow: 2px 2px 0 var(--ink) !important; }
+
+/* ---------- Boutons : couleurs à plat, reflet en haut ---------- */
+.pk-btn-action, .btn-pop, .move-btn, .refine-btn, .hatch-all-premium {
+  background-image: none !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .45), inset 0 -3px 0 rgba(0, 0, 0, .18), var(--pop-sm) !important;
+}
+.pk-btn-action { background-color: var(--yellow) !important; }
+.pk-btn-action.danger-btn, .btn-pop.red, #view-battle #start-battle-btn, .hub .hub-adventure { background: var(--red) !important; }
+.btn-pop.green, .refine-btn, .hatch-all-premium { background: var(--green) !important; }
+.pk-btn-action:active, .btn-pop:active, .move-btn:active { box-shadow: inset 0 2px 0 rgba(0, 0, 0, .2) !important; }
+.hub .hub-adventure { border-radius: 14px; box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), inset 0 -4px 0 rgba(0, 0, 0, .2), 6px 6px 0 var(--gba-shadow); }
+.move-btn { text-shadow: 2px 2px 0 rgba(16, 20, 40, .7) !important; font-size: 18px !important; }
+.hub .hub-label, .map-pin .pin-name { border-radius: 6px; font-weight: 700; letter-spacing: .5px; }
+.chip, .type-badge { border-radius: 6px !important; font-weight: 700 !important; text-shadow: 1px 1px 0 rgba(0, 0, 0, .35); }
+
+/* ---------- Combat ---------- */
+/* Boîte de dialogue en bas, texte machine à écrire */
+#view-battle .target-prompt.gba-say {
+  font-family: var(--font-body) !important; font-size: 24px !important; font-weight: 600;
+  text-transform: none !important; text-align: left; color: var(--gba-frame) !important;
+  min-height: 34px; padding-left: 8px; position: relative;
+}
+#view-battle .target-prompt.gba-say::after {
+  content: '▼'; position: absolute; right: 8px; bottom: 0; font-size: 14px; color: var(--red);
+  animation: gba-blink .8s steps(1) infinite;
+}
+@keyframes gba-blink { 50% { opacity: 0; } }
+
+/* Barres de PV : étiquette « PV » et barre à contour sombre */
+#view-battle .unit .hp-box { border-radius: 6px !important; border-width: 3px !important; border-color: var(--gba-frame) !important; box-shadow: 2px 2px 0 var(--gba-shadow) !important; }
+#view-battle .hp-container-minimal { position: relative; }
+#view-battle .unit .hp-bar-bg, #view-battle .hp-bar-bg { border-radius: 3px !important; background: #514e55 !important; border-color: var(--gba-frame) !important; }
+#view-battle .unit .hp-fill, #view-battle .hp-fill { background: #71ad6e !important; box-shadow: inset 0 2px 0 #a5ce99; }
+#view-battle .unit .hp-fill.midHp, #view-battle .hp-fill.midHp { background: #cbaa53 !important; box-shadow: inset 0 2px 0 #d6c685; }
+#view-battle .unit .hp-fill.lowHp, #view-battle .hp-fill.lowHp { background: #c66653 !important; box-shadow: inset 0 2px 0 #d79a8a; animation: none !important; }
+#view-battle .lvl-badge, #view-battle .charge-text { border-radius: 3px !important; }
+
+/* Plateformes : ellipses à plat façon GBA */
+#view-battle .team-grid .unit-slot::before { background: rgba(255, 255, 255, .28) !important; border-width: 3px !important; box-shadow: inset 0 -5px 0 rgba(16, 20, 40, .12); }
+#view-battle .unit-slot.targetable::before { background: rgba(240, 80, 56, .55) !important; }
+
+/* Coup reçu : clignotement + recul par paliers */
+.unit.gba-hit .sprite { animation: gba-flicker var(--gba-hit-duration, 480ms) steps(1) both !important; }
+.unit.gba-hit { animation: gba-knock var(--gba-hit-duration, 480ms) steps(1) both; }
+@keyframes gba-flicker {
+  0%, 25%, 50%, 75% { opacity: 0; }
+  12.5%, 37.5%, 62.5%, 100% { opacity: 1; }
+}
+@keyframes gba-knock {
+  0% { translate: 0 0; } 15% { translate: 6px 0; } 30% { translate: -4px 0; } 45% { translate: 4px 0; } 60% { translate: -2px 0; } 75%, 100% { translate: 0 0; }
+}
+#view-battle[data-side] .unit.gba-hit { animation-name: gba-knock; }
+
+/* Secousse des coups marquants : le décor et les équipes, pas l'interface */
+.scaler-view.gba-quake #battle-scene, .scaler-view.gba-quake .team-grid { animation: gba-quake var(--gba-quake-duration, 320ms) steps(1) both; }
+@keyframes gba-quake {
+  0% { translate: 0 0; } 12% { translate: -8px 0; } 25% { translate: 8px 0; } 37% { translate: -6px 0; } 50% { translate: 6px 0; } 62% { translate: -3px 0; } 75% { translate: 3px 0; } 87%, 100% { translate: 0 0; }
+}
+
+/* Éclat d'impact pixel art */
+.gba-burst {
+  position: absolute; z-index: 380; pointer-events: none;
+  width: var(--gba-burst-size, 90px); height: var(--gba-burst-size, 90px);
+  transform: translate(-50%, -50%);
+  animation: gba-burst var(--gba-burst-duration, 360ms) steps(4) both;
+}
+.gba-burst svg { width: 100%; height: 100%; display: block; }
+@keyframes gba-burst {
+  0% { transform: translate(-50%, -50%) scale(.4); opacity: 1; }
+  60% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+}
+
+/* Textes flottants : police pixel, ombre dure, sans contour flou */
+.damage-float-number, .move-name-float-text, .effect-float-text {
+  -webkit-text-stroke: 0 !important;
+  text-shadow: 3px 3px 0 var(--gba-frame), -2px 0 0 var(--gba-frame), 0 -2px 0 var(--gba-frame), 2px 0 0 var(--gba-frame), 0 2px 0 var(--gba-frame) !important;
+  font-weight: 700 !important;
+}
+.damage-float-number { font-size: 42px !important; }
+
+/* Le fond de la scène ne se lisse plus quand le jeu est agrandi */
+#view-battle .sprite.pmd-sprite .pmd-frame { image-rendering: pixelated; }
+
+/* Écran de résultat : textes nets (aucune ombre héritée) */
+#view-battle #battleStatus, #view-battle #battleStatus *:not(.status-title) { text-shadow: none !important; -webkit-text-stroke: 0 !important; filter: none; }
+#view-battle .reward-chip { font-family: var(--font-body) !important; font-weight: 700; font-size: 26px; color: var(--gba-frame) !important; letter-spacing: .5px; }
+#view-battle .reward-badge { font-family: var(--font-body) !important; font-weight: 600 !important; font-size: 15px !important; }
+#view-battle #battleStatus .pk-btn-action { font-family: var(--font-body) !important; color: var(--gba-frame) !important; }
+
+/* Image de glisser-déposer : taille contenue, pixel art net */
+#drag-ghost img { width: 96px; height: 96px; object-fit: contain; }
+#drag-ghost canvas { image-rendering: pixelated; display: block; }
+#view-battle #turn-unit-display:empty { display: none !important; }
+
+/* Fin de combat : deux choix côte à côte */
+#view-battle .end-battle-actions { display: flex !important; gap: 14px; justify-content: center; }
+#view-battle .pk-btn-action.secondary-btn { background: #f7ecdc !important; }
+
+/* ---------- Lecture stratégique de la formation ---------- */
+#view-battle .row-labels {
+  position: absolute; display: flex; pointer-events: none; z-index: 6;
+}
+#view-battle .row-label {
+  flex: 1; text-align: center; font-family: var(--font-body); font-weight: 700; font-size: 13px; letter-spacing: 1px;
+  color: #f7ecdc; text-transform: uppercase; text-shadow: 2px 2px 0 var(--gba-frame);
+}
+#view-battle .row-label.row-front { color: #d7be70; }
+
+/* Badge de rôle au-dessus de la barre de PV */
+#view-battle .role-badge {
+  display: inline-flex; align-items: center; gap: 3px; margin: 0 auto 2px;
+  font-family: var(--font-body); font-weight: 700; font-size: 10px; line-height: 1; letter-spacing: .3px;
+  color: #f7ecdc; background: var(--gba-frame); border-radius: 4px; padding: 2px 5px 2px 3px;
+  width: max-content;
+}
+#view-battle .unit .hp-box { display: flex; flex-direction: column; align-items: stretch; }
+#view-battle .role-badge .art-icon { width: 11px; height: 11px; }
+#view-battle .role-badge.role-tank { background: #687491; }
+#view-battle .role-badge.role-attacker { background: #a7624e; }
+#view-battle .role-badge.role-caster { background: #8c66a1; }
+#view-battle .role-badge.role-speedster { background: #ab8931; }
+#view-battle .role-badge.role-support { background: #5a855f; }
+#view-battle .role-badge.misplaced { filter: grayscale(.85) brightness(1.05); opacity: .75; }
+#view-battle .role-badge.well-placed { box-shadow: 0 0 0 2px #e1d39d; }
+
+/* Synergies des deux équipes (positions : portrait.css) */
+#view-battle .synergy-panel {
+  position: absolute; top: 86px; z-index: 205; max-width: 330px;
+  display: flex; flex-direction: column; gap: 4px;
+  background: rgba(248, 248, 248, .93); border: 3px solid var(--gba-frame); border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--gba-shadow); padding: 6px 8px;
+}
+#view-battle .synergy-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--gba-frame); }
+#view-battle .synergy-chip { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gba-frame); }
+#view-battle .synergy-chip .chip { font-size: 11px !important; padding: 0 6px !important; }
+#view-battle .synergy-chip b { font-size: 14px; }
+#view-battle .synergy-desc { font-weight: 600; opacity: .85; }
+#view-battle .synergy-empty { font-size: 11px; font-weight: 600; color: #6a686e; max-width: 260px; }
+/* Boss : sprite agrandi et halo */
+#view-battle .unit.is-boss .sprite { filter: drop-shadow(0 0 6px #d46962) drop-shadow(0 3px 0 var(--gba-frame)); }
+
+/* Sprites : un peu plus grands, et l'illustration de secours suit la même échelle de taille */
+.pmd-sprite { --pmd-scale: 4.8; }
+
+.pmd-sprite .pmd-fallback { transform: scale(var(--pmd-size, 1)); transform-origin: 50% 85%; }
+/* Les rangées de devant passent devant celles de derrière (profondeur) */
+#view-battle .team-grid .unit-slot:nth-child(n+4) { z-index: 2; }
+#view-battle .team-grid .unit-slot:nth-child(n+7) { z-index: 3; }
+
+/* Victoire : l'équipe repart vers le haut de l'écran, sur la PokéRoad */
+#view-battle .unit.victory-walk { animation: victory-walk 3.4s linear var(--walk-delay, 0s) forwards !important; z-index: 450; }
+#view-battle .unit.victory-walk .hp-box { opacity: 0; transition: opacity .3s; }
+@keyframes victory-walk {
+  0% { translate: 0 0; }
+  100% { translate: 0 -1400px; }
+}

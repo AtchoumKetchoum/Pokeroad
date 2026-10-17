@@ -1,0 +1,735 @@
+/* ============================================
+   COMPONENTS.CSS - Composants réutilisables
+   ============================================ */
+
+/* --- HUD BAR (Barre supérieure) --- */
+.hud-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: white;
+    z-index: 100;
+    text-shadow: 2px 2px 0 #231c16;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    background: #c38937;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.money {
+    color: #c3a837;
+    font-size: 10px;
+}
+
+/* --- BOUTONS D'ACTION PRINCIPAUX --- */
+.pk-btn-action {
+    background: var(--pk-grad-blue);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    font-family: var(--font-pixel);
+    padding: 18px 35px;
+    font-size: 16px;
+    text-transform: none;
+    box-shadow: 0 6px 0px #5181ab;
+    transition: transform 0.1s, box-shadow 0.1s;
+    cursor: pointer;
+}
+
+.pk-btn-action:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0px #5181ab;
+}
+
+.pk-btn-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* --- BOUTONS LATÉRAUX --- */
+.side-btn {
+    padding: 8px 12px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: white;
+    border: 3px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    transition: transform 0.1s, box-shadow 0.1s;
+    flex-grow: 1;
+    max-width: 200px;
+    text-align: center;
+}
+
+.side-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Variantes de couleur */
+.side-btn.btn-green,
+#start-battle-btn {
+    background-color: #69945e;
+}
+
+.side-btn.btn-red,
+#back-btn {
+    background-color: #c85f52;
+}
+
+#next-battle-btn {
+    background: linear-gradient(135deg, #78a16e, #587d4d);
+    box-shadow: 0 4px 0px #4f7144;
+}
+
+#next-battle-btn:active {
+    box-shadow: 0 2px 0px #4f7144;
+}
+
+#leave-battle-btn {
+    background: linear-gradient(135deg, #c86962, #a44e48);
+    box-shadow: 0 4px 0px #9a453f;
+}
+
+#leave-battle-btn:active {
+    box-shadow: 0 2px 0px #9a453f;
+}
+
+/* --- BOUTONS ICÔNES --- */
+.icon-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 3px solid #635c56;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    transition: all 0.2s;
+    box-shadow: 0 4px 0 #49433d;
+}
+
+.icon-btn:hover {
+    background-color: #f7ecdc;
+}
+
+.icon-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #49433d;
+}
+
+.icon-btn img {
+    width: 28px;
+    height: 28px;
+    
+}
+
+.icon-btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* --- TOP-RIGHT ACTIONS (Standardized) --- */
+#top-right-actions {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    gap: 15px;
+    z-index: 150;
+}
+
+/* --- BOUTON DE SORTIE / RETOUR (PAGE LEVEL) --- */
+.exit-btn {
+    width: 60px;
+    height: 60px;
+    background: var(--pk-grad-red);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #9a453f;
+    transition: all 0.1s;
+}
+
+.exit-btn svg {
+    width: 32px;
+    height: 32px;
+}
+
+.exit-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #9a453f;
+}
+
+.exit-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* --- MODALS --- */
+.modal {
+    position: fixed;
+    z-index: 200;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #d9d6d5;
+    color: #49433d;
+    padding: 30px 20px 20px 20px;
+    border: 3px solid #49433d;
+    width: 95%;
+    max-width: 900px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    max-height: 85%;
+    overflow-y: auto;
+    border-radius: 15px;
+    text-shadow: none !important;
+    margin: auto; /* Force le centrage complet dans un flex container */
+}
+
+/* Force dark text for common elements inside modals to avoid white-on-light issues */
+.modal-content h1, 
+.modal-content h2, 
+.modal-content h3, 
+.modal-content h4, 
+.modal-content h5, 
+.modal-content p, 
+.modal-content span:not([class*="badge"]):not([class*="pill"]):not([class*="indicator"]),
+.modal-content div:not([class*="btn"]):not([class*="card"]):not([class*="slot"]):not([class*="badge"]) {
+    color: #49433d;
+}
+
+/* On smaller screens or on mobile, modals take more space and adjust layout */
+
+/* Also apply these to is-mobile even on larger screens */
+
+/* Specific landscape adjustments for very short screens */
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-top: 0;
+    border-bottom: 3px solid #cac3bd;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    font-family: var(--font-pixel);
+    text-transform: uppercase;
+}
+
+/* --- BOUTON FERMETURE MODALE (X) --- */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    background: #d46a64;
+    border: 2px solid #49433d;
+    border-radius: 8px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #a44e48;
+    z-index: 10;
+    transition: all 0.1s;
+}
+
+.close-btn:hover {
+    background: #cb4658;
+}
+
+.close-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #a44e48;
+}
+
+/* --- BOUTON RETOUR DANS MODALE (⬅) --- */
+.modal-back-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 32px;
+    height: 32px;
+    background: #5b8caa;
+    border: 2px solid #49433d;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #547990;
+    z-index: 10;
+    transition: all 0.1s;
+}
+
+.modal-back-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #547990;
+}
+
+/* --- BARRES DE VIE --- */
+.hp-box {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px;
+    border-radius: 3px;
+    text-align: center;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.hp-bar-bg {
+    flex-grow: 1;
+    height: 4px;
+    background: #635c56;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.hp-fill {
+    height: 100%;
+    background: var(--hp-green);
+    width: 100%;
+    transition: width 0.3s ease-out;
+}
+
+.hp-fill.midHp {
+    background: var(--hp-yellow);
+}
+
+.hp-fill.lowHp {
+    background: var(--hp-red);
+}
+
+.lvl-badge {
+    font-size: 8px;
+    line-height: 1;
+    color: #f7ecdc;
+    background: #49433d;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+/* --- BARRE DE POINTS D'ACTION --- */
+.ap-bar {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #3c3630;
+    border: 1px solid black;
+    border-radius: 2px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.ap-fill {
+    width: 0%;
+    height: 100%;
+    background: #6baeb2;
+    transition: width 0.1s linear;
+}
+
+/* --- BADGES DE TYPE --- */
+.chip,
+.type-badge {
+    font-size: 9px;
+    padding: 3px 6px;
+    border: 2px solid #49433d;
+    background: #d7d0ca;
+    text-transform: uppercase;
+    color: #f7ecdc;
+}
+
+/* Couleurs de types pour les badges */
+.chip.type-normal, .type-badge.type-normal { background: var(--type-normal); border-color: #716b55; }
+.chip.type-fire, .type-badge.type-fire { background: var(--type-fire); border-color: #915a3a; }
+.chip.type-water, .type-badge.type-water { background: var(--type-water); border-color: #5f6d91; }
+.chip.type-electric, .type-badge.type-electric { background: var(--type-electric); color: #49433d; border-color: #a08838; }
+.chip.type-grass, .type-badge.type-grass { background: var(--type-grass); border-color: #5e7142; }
+.chip.type-ice, .type-badge.type-ice { background: var(--type-ice); color: #49433d; border-color: #78a096; }
+.chip.type-fighting, .type-badge.type-fighting { background: var(--type-fighting); border-color: #753e35; }
+.chip.type-poison, .type-badge.type-poison { background: var(--type-poison); border-color: #63435a; }
+.chip.type-ground, .type-badge.type-ground { background: var(--type-ground); color: #49433d; border-color: #8f7a45; }
+.chip.type-flying, .type-badge.type-flying { background: var(--type-flying); border-color: #786893; }
+.chip.type-psychic, .type-badge.type-psychic { background: var(--type-psychic); border-color: #984d5b; }
+.chip.type-bug, .type-badge.type-bug { background: var(--type-bug); border-color: #6c7032; }
+.chip.type-rock, .type-badge.type-rock { background: var(--type-rock); border-color: #766839; }
+.chip.type-ghost, .type-badge.type-ghost { background: var(--type-ghost); border-color: #564752; }
+.chip.type-dragon, .type-badge.type-dragon { background: var(--type-dragon); border-color: #63488b; }
+.chip.type-dark, .type-badge.type-dark { background: var(--type-dark); border-color: #4e4036; }
+.chip.type-steel, .type-badge.type-steel { background: var(--type-steel); color: #49433d; border-color: #908a93; }
+.chip.type-fairy, .type-badge.type-fairy { background: var(--type-fairy); border-color: #8c5a6a; }
+.chip.type-shadow, .type-badge.type-shadow { background: var(--type-shadow); border-color: #493c45; }
+
+/* --- CONTENEUR DE CHIPS --- */
+.chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* --- EGG VISUALS --- */
+.egg-visual {
+    position: relative;
+    display: inline-block;
+}
+
+.egg-visual img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    
+}
+
+/* 'Bébé' is the default, no filter needed */
+.egg-visual.egg-bébé img {
+    filter: none;
+}
+
+.egg-visual.egg-commun img {
+    filter: hue-rotate(80deg) saturate(0.8); /* Green spots */
+}
+
+.egg-visual.egg-peu-commun img {
+    filter: hue-rotate(30deg) saturate(1.2); /* Orange spots */
+}
+
+.egg-visual.egg-rare img {
+    filter: hue-rotate(220deg) saturate(1.5); /* Purple spots */
+}
+
+.egg-visual.egg-très-rare img {
+    filter: hue-rotate(310deg) saturate(1.8); /* Red/Pink spots */
+}
+
+.egg-visual.egg-légendaire img {
+    animation: legendary-glow 1.5s infinite alternate;
+}
+
+.egg-visual.egg-mythique img {
+    animation: mythic-glow 2s infinite alternate;
+}
+
+@keyframes legendary-glow {
+    from { filter: hue-rotate(40deg) saturate(2) drop-shadow(0 0 5px gold); }
+    to { filter: hue-rotate(45deg) saturate(2.5) drop-shadow(0 0 12px yellow); }
+}
+
+@keyframes mythic-glow {
+    from { filter: brightness(1.2) drop-shadow(0 0 8px white); }
+    to { filter: brightness(1.5) drop-shadow(0 0 18px cyan) hue-rotate(20deg); }
+}
+/* --- BARRE DE NAVIGATION RAPIDE (GLOBAL) --- */
+#quick-nav-bar {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid #5b8caa;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.nav-item:hover, .nav-item.active {
+    transform: translateY(-5px) scale(1.1);
+    background: white;
+    box-shadow: 0 8px 15px rgba(52, 152, 219, 0.4);
+    border-color: #547990;
+}
+
+.nav-item.active {
+    background: #cad4da;
+    border-color: #5181ab;
+}
+
+.nav-item:active {
+    transform: translateY(2px) scale(0.95);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.nav-icon {
+    font-size: 20px;
+}
+
+.nav-label {
+    font-size: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #4f5358;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+/* --- NEW EGG BAG OVERHAUL --- */
+.egg-bag-content {
+    max-width: 950px !important;
+    background: #d6d6df !important;
+    padding: 0 !important;
+    overflow: hidden;
+    height: 80%;
+}
+
+.egg-bag-layout {
+    display: flex;
+    height: 100%;
+}
+
+#egg-bag-sidebar {
+    width: 250px;
+    background: #f7ecdc;
+    border-right: 1px solid #cccccc;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#egg-bag-sidebar h3 {
+    font-family: var(--font-pixel);
+    font-size: 14px;
+    color: #484b4f;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#egg-rarity-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.egg-filter-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: #e2dbd5;
+    border: 1px solid #d7d0ca;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.egg-filter-item:hover {
+    background: #d1d6de;
+    border-color: #5b8caa;
+    transform: translateX(5px);
+}
+
+.egg-filter-item.active {
+    background: #5b8caa;
+    border-color: #547990;
+    color: white;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.egg-filter-item .egg-sprite {
+    width: 24px;
+    height: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.egg-filter-item .egg-filter-name {
+    font-size: 11px;
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.egg-filter-item .egg-filter-count {
+    background: rgba(0,0,0,0.05);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.egg-filter-item.active .egg-filter-count {
+    background: rgba(255,255,255,0.2);
+}
+
+#egg-bag-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    overflow: hidden;
+}
+
+.egg-bag-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.egg-bag-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #484b4f;
+}
+
+#egg-bag-total-count {
+    font-size: 12px;
+    color: #84857f;
+    font-weight: 600;
+    background: #cccccc;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+#egg-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    flex-grow: 1;
+}
+
+.egg-pick-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #d7d0ca;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    cursor: default;
+}
+
+.egg-pick-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    border-color: #5b8caa;
+}
+
+.egg-pick-card .egg-sprite {
+    width: 64px;
+    height: 72px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    transition: transform 0.3s ease;
+}
+
+.egg-pick-card:hover .egg-sprite {
+    transform: rotate(5deg) scale(1.1);
+}
+
+.egg-pick-card h5 {
+    margin: 0;
+    font-size: 13px;
+    color: #484b4f;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Empty State */
+.egg-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    color: #959792;
+    text-align: center;
+    gap: 15px;
+}
+
+.egg-empty-state span {
+    font-size: 48px;
+    opacity: 0.5;
+}
+
+.bg-commun     { background-color: #b2afac; }
+.bg-peu-commun { background-color: #5aa26f; }
+.bg-rare       { background-color: #5b8caa; }
+.bg-bébé       { background-color: #bc9f3e; }
+.bg-très-rare  { background-color: #946996; }
+.bg-légendaire { background-color: #bb7d45; }
+.bg-mythique   { background-color: #c06455; }
+
+.egg-rarity-pill {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 8px;
+  font-weight: bold;
+}

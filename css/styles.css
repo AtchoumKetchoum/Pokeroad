@@ -1,0 +1,331 @@
+/* --- THEME GLOBAL & COMPOSANTS UI POKEMON POCKET --- */
+
+:root {
+  /* Palettes de base */
+  --pk-bg-main: #d6d5d4; /* Gris très clair bleuté */
+  --pk-white-glass: rgba(255, 255, 255, 0.7);
+  
+  /* Gradients signature (Boutons et Headers) */
+  --pk-grad-blue: linear-gradient(135deg, #6eb7c7, #5793c1);
+  --pk-grad-yellow: linear-gradient(135deg, #d1bf56, #c7a038);
+  --pk-grad-header: linear-gradient(to right, #69945e, #518bb8, #c85f52); /* Barre arc-en-ciel */
+
+  /* Effets de bordure et ombres */
+  --pk-shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.05);
+  --pk-border-radius: 18px; /* Coins très arrondis typiques mobile */
+
+  /* Glassmorphisme */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Couleurs par type */
+  --type-normal: #9d9676;
+  --type-fire: #c4804e;
+  --type-water: #7d8ec0;
+  --type-grass: #81a75f;
+  --type-electric: #caad4e;
+  --type-ice: #9bbab4;
+  --type-fighting: #a15248;
+  --type-poison: #8f5983;
+  --type-ground: #c1a870;
+  --type-flying: #a590c5;
+  --type-psychic: #d06d83;
+  --type-bug: #939441;
+  --type-rock: #9d8b51;
+  --type-ghost: #796781;
+  --type-dragon: #7f59bf;
+  --type-steel: #afa9b2;
+  --type-dark: #726051;
+  --type-fairy: #d1959b;
+}
+
+body {
+  background: radial-gradient(circle at top, #e3ddd7 0%, #e0bcdb 100%);
+  min-height: 100%;
+  font-family: 'Inter', sans-serif; /* Proche de la police utilisée */
+  margin: 0;
+  padding: 0;
+}
+
+/* --- COMPOSANTS UI --- */
+
+/* Header arc-en-ciel */
+.pk-header-rainbow {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #69945e 0%, #3d969c 33%, #d1bf56 66%, #c85f52 100%);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Conteneur principal avec effet "verre dépoli" */
+.pk-container-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--pk-border-radius);
+  box-shadow: 0 4px 6px var(--glass-shadow);
+  padding: 15px;
+  margin: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pk-container-glass:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+/* Boutons d'action principaux (forme pilule) */
+.pk-btn-action {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px; /* Coins arrondis pour l'uniformité */
+  color: #49433d;
+  font-weight: bold;
+  padding: 12px 25px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 6px var(--glass-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif; /* Police sans-serif grasse */
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+}
+
+.pk-btn-action:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+.pk-btn-action:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px var(--glass-shadow);
+}
+
+/* --- CLASSES UTILITAIRES (remplacement des styles en ligne) --- */
+
+.collection-title {
+  text-align: center;
+  color: #635c56;
+}
+
+.pk-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive */
+  gap: 10px;
+}
+
+.pk-fixed-bottom-container {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/*
+--- STYLES SPÉCIFIQUES AU COMBAT ---
+*/
+
+/* Panneaux principaux (HUD, actions, détails) */
+#battle-hud, #action-panel, #move-details-panel, #turn-order-sidebar {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--pk-border-radius);
+  box-shadow: 0 4px 6px var(--glass-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#battle-hud:hover, #action-panel:hover, #move-details-panel:hover, #turn-order-sidebar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+/* Panneau de détails des capacités/pokémon */
+#move-details-panel {
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+}
+#move-details-panel.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Message de victoire/défaite */
+#battleStatus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    font-family: 'Bangers', cursive;
+    font-weight: bold;
+    -webkit-text-stroke: 4px black;
+    text-shadow: 0 6px 10px rgba(0,0,0,0.5);
+    z-index: 500;
+}
+#battleStatus.win {
+    color: #d1bf56; /* Jaune */
+}
+#battleStatus.lose {
+    color: #9a948e; /* Gris */
+}
+
+/* Boutons de capacités */
+.movesRow {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.move-btn {
+    background: var(--type-color, var(--glass-bg));
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px var(--glass-shadow);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    font-weight: bold;
+    padding: 8px 12px;
+    text-transform: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    flex-grow: 1;
+    max-width: 200px;
+    text-align: center;
+}
+
+.move-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+.move-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 4px var(--glass-shadow);
+}
+
+/* Bouton Z-Move/Boosté */
+.move-btn.boosted-attack {
+    background: linear-gradient(135deg, #d1bf56, #c7a038);
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 6px rgba(255, 193, 7, 0.2);
+    animation: none;
+}
+
+.move-btn.boosted-attack:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(255, 193, 7, 0.3);
+}
+
+.move-btn.boosted-attack.charging {
+    background: linear-gradient(to right, rgba(255, 235, 59, 0.6) var(--charge-percent, 0%), var(--glass-bg) var(--charge-percent, 0%));
+    box-shadow: 0 4px 6px var(--glass-shadow);
+    color: #89837d;
+    animation: none;
+}
+
+/* Boutons d'action (Démarrer, Quitter, etc.) */
+#start-battle-btn {
+  /* Utilise le style par défaut de .pk-btn-action (bleu) */
+}
+
+/* Unités sur le terrain et ciblage */
+.unit-slot {
+    position: relative;
+    transition: background-color 0.3s, transform 0.2s ease;
+    border-radius: var(--pk-border-radius);
+}
+
+.unit-slot:hover {
+    transform: translateY(-5px);
+}
+
+.unit-slot.targetable {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 6px var(--glass-shadow);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.unit-slot.targetable:hover {
+    background-color: rgba(70, 130, 180, 0.6);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+/* Barres de vie */
+.unit .hp-box {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px var(--glass-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.unit .hp-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+.unit .hp-bar-bg {
+    background: #635c56;
+    border-radius: 10px;
+}
+
+.unit .hp-fill {
+    background: linear-gradient(to right, #69945e, #8ba35b);
+    transition: width 0.5s ease-out, background 0.3s ease;
+    border-radius: 10px;
+}
+
+.unit .hp-fill.midHp {
+    background: linear-gradient(to right, #c7a038, #d1bf56);
+}
+
+.unit .hp-fill.lowHp {
+    background: linear-gradient(to right, #c85f52, #c86962);
+}
+
+/* Ordre des tours (Timeline) */
+.timeline-unit-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    margin-bottom: 8px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px var(--glass-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.timeline-unit-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+.timeline-unit {
+    background: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    padding: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.timeline-unit:hover {
+    transform: scale(1.1);
+}

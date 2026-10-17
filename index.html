@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PokéRoad</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23fff' stroke='%231b1f3b' stroke-width='3'/%3E%3Cpath d='M2 20a18 18 0 0 1 36 0z' fill='%23ee1515' stroke='%231b1f3b' stroke-width='3'/%3E%3Ccircle cx='20' cy='20' r='6' fill='%23fff' stroke='%231b1f3b' stroke-width='3'/%3E%3C/svg%3E">
+    
+    <!-- PWA & Mobile Meta -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="css/styles.css?v=1.2">
+    <link rel="stylesheet" href="css/base.css?v=1.2">
+    <link rel="stylesheet" href="css/components.css?v=1.2">
+    <link rel="stylesheet" href="css/refinement.css?v=1.2">
+    
+    <!-- View Specific CSS -->
+    <link rel="stylesheet" href="css/home.css?v=1.2">
+    <link rel="stylesheet" href="css/battle.css?v=1.2">
+    <link rel="stylesheet" href="css/pokedex.css?v=1.2">
+    <link rel="stylesheet" href="css/center.css?v=1.2">
+    <link rel="stylesheet" href="css/labo.css?v=1.2">
+    <link rel="stylesheet" href="css/worldmap.css?v=1.2">
+
+    <!-- Nouvelle charte graphique (chargée en dernier) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800;900&family=Pixelify+Sans:wght@400..700&display=swap">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/hub.css">
+    <link rel="stylesheet" href="css/battle-theme.css">
+    <link rel="stylesheet" href="css/pmd-sprite.css">
+    <link rel="stylesheet" href="css/views-theme.css">
+    <link rel="stylesheet" href="css/sheet.css">
+    <link rel="stylesheet" href="css/gba.css">
+    <link rel="stylesheet" href="css/epic.css">
+    <link rel="stylesheet" href="css/portrait.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/readability.css">
+
+    <style>
+        /* View Manager Display Logic */
+        .spa-view { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        .spa-view.active { display: block !important; }
+        #views-container { width: 100vw; height: 100vh; overflow: hidden; position: relative; }
+        #game-screen { width: 100vw; height: 100vh; overflow: hidden; background: #000; }
+        
+        /* Ensure modals are on top of everything */
+        .modal { z-index: 10001 !important; }
+    </style>
+</head>
+<body class="is-spa">
+    <!-- Le MobileManager injectera l'overlay s'il n'est pas déjà là, 
+         on peut aussi le mettre ici pour qu'il soit stylé dès le départ si on veut. -->
+
+    <div id="game-screen">
+        <div id="views-container">
+            <!-- VIEW: HOME -->
+            <div id="view-home" class="spa-view active">
+                <div class="scaler-view home-viewport hub">
+                    <div class="scene-layer" data-scene="town" data-path="1"></div>
+
+                    <!-- Haut : HUD dresseur, paramètres, puis la pilule de mission -->
+                    <header class="hub-top">
+                        <div class="hub-top-row">
+                            <div class="hub-hud panel-pop" id="player-hud">
+                                <div class="hub-avatar" id="player-avatar"></div>
+                                <div class="hub-player">
+                                    <span id="player-name">---</span>
+                                    <span class="hub-money"><span class="coin"></span><span id="player-money">0 $</span></span>
+                                </div>
+                            </div>
+                            <button class="round-btn hub-settings" id="settings-btn" onclick="openSettings()" title="Paramètres"><span>Paramètres</span></button>
+                        </div>
+                        <button id="mission-btn" class="hub-mission panel-pop" onclick="openMissionModal()">
+                            <span class="hub-mission-icon" data-icon="scroll"></span>
+                            <span class="mission-hud-content">
+                                <span id="mission-btn-label">Missions</span>
+                                <span id="mission-btn-timer" class="timer-mini"></span>
+                            </span>
+                            <span id="mission-btn-team-preview" class="team-preview-mini"></span>
+                        </button>
+                    </header>
+
+                    <!-- Bâtiments du bourg, de part et d'autre de la route -->
+                    <div class="hub-town">
+                        <div class="hub-row">
+                            <button class="hub-building small" data-building="board" onclick="openMissionModal()"><span class="hub-label">Missions</span></button>
+                            <!-- Panneau au sommet de la route : elle monte vers la Route des Défis (autres modes de jeu) -->
+                            <button class="hub-gate" onclick="ViewManager.show('modes')">
+                                <span class="hub-gate-arrow" data-icon="back" data-size="26"></span>
+                                <span class="hub-gate-text">Route<br>des Défis</span>
+                            </button>
+                            <button class="hub-building" data-building="labo" onclick="ViewManager.show('labo')"><span class="hub-label">Laboratoire</span></button>
+                        </div>
+                        <div class="hub-row">
+                            <button class="hub-building" data-building="center" onclick="ViewManager.show('center')"><span class="hub-label">Centre Pokémon</span></button>
+                            <button class="hub-building" data-building="shop" onclick="openShopModal()"><span class="hub-label">Boutique</span></button>
+                        </div>
+                        <div class="hub-row">
+                            <button class="hub-building" data-building="dojo" onclick="openTraining()"><span class="hub-label">Entraînement</span></button>
+                            <button class="hub-building" data-building="atelier" onclick="ViewManager.show('atelier')"><span class="hub-label">Atelier</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Bas : raccourcis puis le bouton Aventure -->
+                    <footer class="hub-bottom">
+                        <div class="hub-dock">
+                            <button id="pokedex-btn" class="hub-dock-btn" onclick="ViewManager.show('pokedex')"><span data-icon="book" data-size="36"></span><small>Pokédex</small></button>
+                            <button id="egg-bag-btn" class="hub-dock-btn" onclick="openEggBagModal()"><span data-egg="commun" data-size="32"></span><small>Œufs</small></button>
+                            <button id="item-bag-btn" class="hub-dock-btn" onclick="openItemBagModal()"><span data-icon="bag" data-size="36"></span><small>Sac</small></button>
+                        </div>
+                        <button class="hub-adventure" onclick="ViewManager.show('worldmap')">
+                            <span class="hub-adventure-ball" data-pokeball="1"></span>
+                            <span class="hub-adventure-text">Aventure</span>
+                        </button>
+                    </footer>
+                </div>
+
+                <!-- Modals Home -->
+                <div id="settings-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeSettings()">&times;</span>
+                        <h2>Paramètres</h2>
+                        <div class="profile-edit">
+                            <input type="text" id="edit-player-name" placeholder="Votre nom" style="padding:10px; border-radius:5px; border:1px solid #ccc; width:100%; box-sizing:border-box;">
+                            <div class="gender-selection">
+                                <label><input type="radio" name="player-gender" value="boy"> Garçon</label>
+                                <label><input type="radio" name="player-gender" value="girl"> Fille</label>
+                            </div>
+                            <button class="pk-btn-action small" onclick="saveProfile()">Enregistrer Profil</button>
+                        </div>
+                        <div class="settings-group">
+                            <h3>Données</h3>
+                            <button class="pk-btn-action small" onclick="exportSave()">Exporter Sauvegarde</button>
+                            <label class="pk-btn-action small" style="text-align:center; display:block; cursor:pointer;">
+                                Importer Sauvegarde
+                                <input type="file" id="import-save-btn" onchange="importSave(event)" style="display:none;" accept=".json">
+                            </label>
+                            <button class="pk-btn-action small danger-btn" onclick="eraseData()">Effacer les données</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="mission-modal" class="modal">
+                    <div class="modal-content mission-content">
+                        <span class="close-btn" onclick="closeMissionModal()">&times;</span>
+                        <h2>Tableau des Missions</h2>
+                        <div id="mission-board-view">
+                            <div id="active-mission-status" style="display:none; margin-bottom: 20px;">
+                                <div class="active-mission-banner">
+                                    <h3>Mission en cours : <span id="active-mission-name"></span></h3>
+                                    <div class="mission-timer-large" id="mission-timer-large">00:00:00</div>
+                                    <button class="pk-btn-action" id="mission-return-btn" style="display:none;" onclick="completeMission()">Rapport de Mission</button>
+                                </div>
+                            </div>
+                            <div id="mission-cards-container" class="mission-cards-container"></div>
+                        </div>
+                        <div id="mission-team-view" style="display:none;">
+                            <div class="mission-header"><button class="modal-back-btn" onclick="backToMissionBoard()"><span data-icon="back" data-size="22"></span></button><h3 id="selected-mission-title" style="margin-left: 40px;">Mission : ...</h3></div>
+                            <div class="mission-affinity-info"><span id="mission-affinity-badge">Biome : Forêt</span><small>Recommandé : <span id="mission-affinity-types">Plante, Insecte</span></small></div>
+                            <div id="mission-selection-grid"></div>
+                            <div class="mission-footer"><div id="team-preview-bar"></div><button id="start-mission-btn" class="pk-btn-action" onclick="confirmStartMission()" disabled>Départ !</button></div>
+                        </div>
+                        <div id="mission-report-view" style="display:none;">
+                            <h3>Rapport de Mission</h3>
+                            <h4>Équipe de Mission :</h4>
+                            <div id="mission-report-team" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;"></div>
+                            <div id="mission-logs" class="mission-logs"></div>
+                            <div class="mission-rewards"><h4>Récompenses</h4><div id="mission-rewards-list"></div></div>
+                            <button class="pk-btn-action" onclick="claimRewardsAndClose()">Récupérer & Fermer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="item-bag-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeItemBagModal()">&times;</span>
+                        <h2>Sac à Objets</h2>
+                        <div id="item-bag-pockets" class="shop-pockets" style="margin-bottom: 15px;"></div>
+                        <div id="item-bag-grid" class="item-grid-home"></div>
+                    </div>
+                </div>
+
+                <div id="shop-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeShopModal()">&times;</span>
+                        <h2>Boutique Pokémon</h2>
+                        <div id="shop-categories" class="shop-tabs">
+                            <button class="shop-tab active" onclick="switchShopTab('upgrades')">Améliorations</button>
+                            <button class="shop-tab" onclick="switchShopTab('eggs')">Œufs</button>
+                            <button class="shop-tab" onclick="switchShopTab('items')">Objets</button>
+                        </div>
+                        <div id="shop-pockets" class="shop-pockets" style="display:none;"></div>
+                        <div id="shop-grid" class="shop-grid"></div>
+                    </div>
+                </div>
+
+                <div id="item-info-modal" class="modal" style="z-index: 20000;">
+                    <div class="modal-content" style="max-width: 400px; padding: 20px;">
+                        <span class="close-btn" onclick="closeItemInfoModal()">&times;</span>
+                        <div id="item-info-content" style="text-align: center;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: BATTLE -->
+            <div id="view-battle" class="spa-view">
+                <div class="scaler-view stage-fixed battle-bg">
+                    <div class="scene-layer" id="battle-scene" data-arena="1"></div>
+                    <div id="battle-top-bar">
+                        <div id="hudProgress"></div>
+                        <div id="turnOrderContainer"><div class="turn-order-sidebar" id="turnOrderSidebar"></div></div>
+                        <div id="top-right-actions" class="battle-actions">
+                            <div class="speed-controls">
+                                <button class="speed-btn active" data-speed="1" onclick="setBattleSpeed(1)">x1</button>
+                                <button class="speed-btn" data-speed="2" onclick="setBattleSpeed(2)">x2</button>
+                                <button class="speed-btn" data-speed="4" onclick="setBattleSpeed(4)">x4</button>
+                            </div>
+                            <button class="exit-btn" id="home-flee-btn" onclick="ViewManager.show('home')"><span>Accueil</span></button>
+                        </div>
+                    </div>
+                    <div id="battleArena">
+                        <div class="slot side-left"><div class="unit-slot"></div></div>
+                        <div class="slot side-right"><div class="unit-slot"></div></div>
+                    </div>
+                    <div id="player-grid" class="team-grid"></div>
+                    <div id="enemy-grid" class="team-grid"></div>
+                    <div id="infoDisplayPanel" class="glass-panel"></div>
+                    <div id="battleStatus"></div>
+                    <button id="pmd-credits-btn" type="button" onclick="PmdSprite.showCredits(document.getElementById('view-battle'))">Sprites : PMD Sprite Repository · CC BY-NC</button>
+                    <div id="battle-footer">
+                        <div id="selection-banner"></div>
+                        <div id="combat-panel">
+                            <div id="turn-unit-display"></div>
+                            <div id="actionPanel"><div id="movesRow" class="movesRow"></div><div id="targetPrompt" class="target-prompt"></div></div>
+                        </div>
+                        <div id="side-actions"><button class="pk-btn-action" id="start-battle-btn" onclick="startBattle()"><svg class="art-icon " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4l13 8-13 8V4z"/></svg><span>Démarrer le combat</span></button></div>
+                    </div>
+                </div>
+                <div id="drag-ghost"><img id="ghost-img" src="" alt="ghost"></div>
+                <div id="ambient-effects"></div>
+            </div>
+
+            <!-- VIEW: POKEDEX -->
+            <div id="view-pokedex" class="spa-view">
+                <div class="scaler-view pokedex-viewport view-flex">
+                    <header class="view-bar">
+                        <h1>Pokédex</h1>
+                        <button class="exit-btn" onclick="ViewManager.show('home')"><span>Accueil</span></button>
+                    </header>
+                    <div id="pokedex-filters"></div>
+                    <div id="pokedex-grid"></div>
+                </div>
+                <div id="pokedex-pokemon-detail-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="document.getElementById('pokedex-pokemon-detail-modal').style.display='none'">&times;</span>
+                        <div id="pokemon-detail-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: CENTER -->
+            <div id="view-center" class="spa-view">
+                <div class="scaler-view center-viewport view-flex">
+                    <header class="view-bar">
+                        <div class="view-title"><span class="view-title-icon" style="background: var(--red)" data-icon="heart"></span>Centre Pokémon</div>
+                        <button class="exit-btn" onclick="ViewManager.show('home')"><span>Accueil</span></button>
+                    </header>
+                    <div id="center-main-layout">
+                        <div id="center-sidebar">
+                            <div class="sidebar-header"><h3>Infirmerie</h3><button class="pk-btn-action small" onclick="healAllExhausted()">Tout soigner</button></div>
+                            <div id="heal-status-container"></div>
+                        </div>
+                        <div id="center-content">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h2 onclick="openLocker()" style="cursor:pointer; display: inline-block; margin: 0;">Boîte Pokémon</h2>
+                            </div>
+                            <div id="pokemon-list"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="pc-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closePCModal()">&times;</span><h2>Boîte Pokémon</h2><div id="pc-modal-list"></div></div></div>
+                <div id="center-pokemon-detail-modal" class="modal" style="display: none;">
+                    <div id="pokemon-detail-card" class="modal-content pk-sheet">
+                        <span class="close-btn" onclick="closePokemonDetail()">&times;</span>
+                        <h2 id="detail-title">Détails</h2>
+                        <div class="sheet-body">
+                            <aside class="sheet-left">
+                                <div class="sheet-portrait"><img id="detail-sprite" src="" alt=""></div>
+                                <div class="sheet-id">
+                                    <span id="detail-level"></span>
+                                    <div id="detail-types"></div>
+                                </div>
+                                <div id="detail-role" class="sheet-role"></div>
+                                <p id="detail-description"></p>
+                            </aside>
+                            <section class="sheet-right">
+                                <nav class="sheet-tabs">
+                                    <button class="sheet-tab active" data-tab="stats" onclick="switchDetailTab('stats')">Stats</button>
+                                    <button class="sheet-tab" data-tab="moves" onclick="switchDetailTab('moves')">Attaques</button>
+                                    <button class="sheet-tab" data-tab="item" onclick="switchDetailTab('item')">Objet</button>
+                                    <button class="sheet-tab" data-tab="evo" onclick="switchDetailTab('evo')">Évolution</button>
+                                </nav>
+                                <div class="sheet-panel active" data-panel="stats">
+                                    <div id="detail-stats-container"></div>
+                                    <div id="detail-boosters-container"></div>
+                                </div>
+                                <div class="sheet-panel" data-panel="moves">
+                                    <div class="moves-manager">
+                                        <div class="moves-column"><h4>Équipées (<span id="equipped-count">0</span>/4)</h4><div id="equipped-moves-list"></div></div>
+                                        <div class="moves-column"><h4>Disponibles</h4><div id="available-moves-list"></div></div>
+                                    </div>
+                                </div>
+                                <div class="sheet-panel" data-panel="item"><div class="detail-right"></div></div>
+                                <div class="sheet-panel" data-panel="evo">
+                                    <p id="detail-evolution" class="detail-evolution"></p>
+                                    <div id="evolution-actions"></div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div id="locker-modal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeLockerModal()">&times;</span><div id="locker-content"></div></div></div>
+            </div>
+
+            <!-- VIEW: LABO -->
+            <div id="view-labo" class="spa-view">
+                <div class="scaler-view lab-viewport view-flex">
+                    <header class="view-bar">
+                        <div class="view-title"><span class="view-title-icon" style="background: var(--blue)" data-icon="flask"></span>Laboratoire</div>
+                        <button class="exit-btn" onclick="ViewManager.show('home')"><span>Accueil</span></button>
+                    </header>
+                    <div class="lab-container">
+                        <div class="lab-column" onclick="openModal('incubator-modal')">
+                            <div class="lab-art" data-lab-art="incubator"></div>
+                            <div class="column-title"><h3>Incubateur</h3></div>
+                            <div class="lab-desc">Fais éclore tes œufs pour agrandir ton équipe.</div>
+                        </div>
+                        <div class="lab-column" onclick="openEggBagModal()">
+                            <div class="lab-art" data-lab-art="eggs"></div>
+                            <div class="column-title"><h3>Sac d'œufs</h3></div>
+                            <div class="lab-desc">Choisis les œufs à placer dans l'incubateur ou recycle les doublons.</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="incubator-modal" class="modal"><div class="modal-content glass-premium"><div class="modal-header"><h2>Incubateur</h2><span class="close-btn" onclick="closeCurrentModal()">&times;</span></div><div id="incubator-slots-container"></div></div></div>
+            </div>
+
+            <!-- VIEW: WORLDMAP -->
+            <div id="view-worldmap" class="spa-view">
+                <div class="scaler-view worldmap-viewport">
+                    <div class="map-header"><button class="exit-btn" onclick="ViewManager.show('home')" title="Retour au bourg"><span>Retour</span></button><div class="map-title">Carte</div></div>
+                    <div id="map-container"></div>
+                </div>
+            </div>
+
+            <!-- VIEW: ROUTE DES DÉFIS (2e carte : les modes de jeu en plus de l'Aventure) -->
+            <div id="view-modes" class="spa-view">
+                <div class="scaler-view modes-viewport view-flex">
+                    <div class="scene-layer" data-scene="route" data-path="1"></div>
+                    <header class="view-bar">
+                        <div class="view-title"><span class="view-title-icon" style="background: var(--orange)" data-icon="map"></span>Route des Défis</div>
+                    </header>
+                    <div id="modes-list" class="modes-list"></div>
+                    <button class="modes-back" onclick="ViewManager.show('home')">
+                        <span class="modes-back-arrow" data-icon="back" data-size="26"></span>
+                        <span>Redescendre au bourg</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW: ATELIER -->
+            <div id="view-atelier" class="spa-view">
+                <div class="scaler-view atelier-viewport view-flex">
+                    <header class="view-bar">
+                        <h1>Atelier</h1>
+                        <button class="exit-btn" onclick="ViewManager.show('home')"><span>Accueil</span></button>
+                    </header>
+                    <div class="atelier-menu">
+                        <div class="atelier-card" onclick="RefinementUI.open(null, 'items')">
+                            <div data-icon="hammer" data-size="64"></div>
+                            <div>Améliorer Objets</div>
+                            <div>Améliore l'efficacité de tes objets de combat et de tes baies.</div>
+                        </div>
+                        <div class="atelier-card disabled">
+                            <div data-icon="flask" data-size="64" style="background: #9aa4b2;"></div>
+                            <div>Fabriquer</div>
+                            <div>Bientôt disponible.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI: Raffinement (Global Modal) -->
+    <div id="refinement-modal" class="modal"></div>
+
+    <!-- Sac à œufs : ouvert depuis le bourg comme depuis le Labo -->
+    <div id="egg-bag-modal" class="modal">
+        <div class="modal-content egg-bag-content">
+            <span class="close-btn" onclick="closeEggBagModal()">&times;</span>
+            <div class="egg-bag-layout">
+                <div id="egg-bag-sidebar"><h3>Inventaire</h3><div id="egg-rarity-filters"></div></div>
+                <div id="egg-bag-main">
+                    <div class="egg-bag-header">
+                        <div class="header-main"><h2>Sélectionner un œuf</h2><div id="egg-bag-total-count">0 œuf(s)</div></div>
+                        <button class="pk-btn-action small" onclick="closeEggBagModal(); ViewManager.show('labo')"><span data-icon="flask" data-size="18"></span> Aller au Labo</button>
+                    </div>
+                    <div id="egg-selection-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/art.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/epic.js"></script>
+
+    <script src="js/gamedata.js"></script>
+    <script src="js/progression.js"></script>
+    <script src="js/refinement.js"></script>
+    <script src="js/refinement-ui.js"></script>
+    <script src="js/pmd-sprite.js"></script>
+    <script src="js/battle.js"></script>
+    <script src="js/battle_animation.js"></script>
+    <script src="js/battle-rules.js"></script>
+    <script src="js/enemy-gen.js"></script>
+    <script src="js/formation-ui.js"></script>
+    <script src="js/battle-ui.js"></script>
+    <script src="js/pokedex.js"></script>
+    <script src="js/labo.js"></script>
+    <script src="js/center.js"></script>
+    <script src="js/worldmap.js"></script>
+    <script src="js/modes.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/mobile-manager.js"></script>
+    <script src="js/view-manager.js"></script>
+</body>
+</html>

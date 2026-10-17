@@ -1,0 +1,311 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;700&display=swap");
+
+/* ============================================
+   BASE.CSS - Variables et styles de base
+   ============================================ */
+
+/* --- VARIABLES CSS GLOBALES --- */
+:root {
+  /* Police */
+  --font-pixel: "Press Start 2P", cursive;
+
+  /* Couleurs de base */
+  --pk-bg-main: #d6d5d4;
+  --pk-white-glass: rgba(255, 255, 255, 0.6);
+  --ui-bg: rgba(0, 0, 0, 0.8);
+
+  /* Couleurs HP */
+  --hp-green: #69945e;
+  --hp-yellow: #c39f37;
+  --hp-red: #c85f52;
+
+  /* Gradients */
+  --pk-grad-blue: linear-gradient(135deg, #6eb7c7, #5793c1);
+  --pk-grad-yellow: linear-gradient(135deg, #d1bf56, #c7a038);
+  --pk-grad-header: linear-gradient(to right, #69945e, #518bb8, #c85f52);
+
+  /* Effets et Bordures */
+  --pk-shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --pk-border-radius: 5px; /* Uniform border-radius */
+
+  /* Couleurs de types Pokémon */
+  --type-normal: #9d9676;
+  --type-fire: #c4804e;
+  --type-water: #7d8ec0;
+  --type-grass: #81a75f;
+  --type-electric: #caad4e;
+  --type-ice: #9bbab4;
+  --type-fighting: #a15248;
+  --type-poison: #8f5983;
+  --type-ground: #c1a870;
+  --type-flying: #a590c5;
+  --type-psychic: #d06d83;
+  --type-bug: #939441;
+  --type-rock: #9d8b51;
+  --type-ghost: #796781;
+  --type-dragon: #7f59bf;
+  --type-dark: #726051;
+  --type-steel: #afa9b2;
+  --type-fairy: #d1959b;
+  --type-shadow: #5e4e5c;
+}
+
+/* --- RESET ET STYLES DE BASE --- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-pixel);
+  overflow: hidden;
+}
+
+/* --- CLASSES UTILITAIRES --- */
+.hidden {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Image pixelisée */
+.pixelated {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Conteneur de jeu standard (Viewport) */
+#game-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #231c16;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  display: block; /* SPA should use block and rely on ViewManager positioning */
+}
+
+/* Overlay Orientation Mobile */
+#orientation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #36302a;
+  z-index: 9999;
+  display: none; /* Affiché via JS */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  padding: 30px;
+  box-sizing: border-box;
+  font-family: var(--font-pixel);
+}
+
+#orientation-overlay .icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  animation: rotateDevice 2s infinite;
+}
+
+@keyframes rotateDevice {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+#orientation-overlay h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #c7a038;
+}
+
+#orientation-overlay p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+#orientation-overlay .fullscreen-btn {
+  background: var(--pk-grad-blue);
+  border: none;
+  padding: 12px 20px;
+  color: white;
+  border-radius: 8px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #5181ab;
+}
+
+#orientation-overlay .fullscreen-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #5181ab;
+}
+
+/* Zone de rendu à l'échelle (Adaptative) */
+.scaler-view {
+  position: absolute !important;
+  width: 720px !important;
+  height: 1280px !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%); /* Base centering, JS might refine scale */
+  background-size: 100% 100%;
+  background-position: center;
+  overflow: hidden;
+  transform-origin: center center;
+  display: block !important; /* Prevent flex centering from parents */
+}
+
+/* On mobile, we might want to scale the content to fit the aspect ratio */
+
+/* --- HEADER ARC-EN-CIEL --- */
+.pk-header-rainbow {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    #69945e 0%,
+    #3d969c 33%,
+    #d1bf56 66%,
+    #c85f52 100%
+  );
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* --- CONTENEUR VERRE DÉPOLI --- */
+.pk-container-glass {
+  background: var(--pk-white-glass);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--pk-border-radius); /* Utilise la nouvelle variable */
+  box-shadow: var(--pk-shadow-soft);
+  padding: 15px;
+  margin: 10px;
+}
+
+/* --- GRILLE DE CARTES --- */
+.pk-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+/* --- CONTENEUR FIXE EN BAS --- */
+.pk-fixed-bottom-container {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+/* --- HUD JOUEUR --- */
+#player-hud {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  min-width: 280px;
+  color: white;
+}
+
+#player-avatar-container {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 15px;
+  border: 2px solid #f7ecdc;
+  flex-shrink: 0;
+}
+
+#player-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#player-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#player-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#player-money {
+  font-size: 14px;
+  color: #c7a038;
+  font-family: monospace;
+}
+
+.locked-feature {
+  filter: grayscale(1) opacity(0.7) !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* ============================================
+   MOBILE OPTIMIZATIONS (is-mobile)
+   ============================================ */
+
+/* Augmente la taille globale de la zone cliquable sur tous les boutons */
+
+/* Sur mobile, on agrandit les landmarks car ils sont durs à cliquer */
+
+/* On force certains éléments à être plus grands pour la visibilité */
+
+/* Bouton mini-fullscreen pulsant pour attirer l'attention si besoin */
+#fullscreen-mini-btn {
+  animation: mini-btn-pulse 2s infinite ease-in-out;
+}
+
+@keyframes mini-btn-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.5);
+  }
+}
+
+/* HUD plus lisible sur mobile */
+

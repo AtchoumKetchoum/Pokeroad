@@ -1,0 +1,184 @@
+/* ==========================================================================
+   portrait.css — Le jeu se tient à la verticale (chargé en dernier)
+   Scène fixe 720x1280 mise à l'échelle par mobile-manager.js, identique sur
+   téléphone et sur PC (centrée, bandes sombres sur les côtés).
+   Ici : le cadre commun (fenêtres, notifications, écran titre) et la mise en page
+   du combat, qui reprend des règles de battle.css, battle-theme.css et gba.css.
+   Combat : ennemis en haut (vus de face), équipe du joueur en bas (vue de dos).
+   Les autres écrans (bourg, carte, intérieurs, fiche) sont décrits dans leur feuille.
+   ========================================================================== */
+
+/* ---------- Fenêtres, notifications et écran titre : même cadre que la scène ---------- */
+.modal, #confirm-modal, #pmd-credits-modal, #toast-stack, #mandatory-fs-overlay.title-screen {
+  position: fixed !important; inset: auto !important; left: 50% !important; top: 50% !important;
+  width: 720px !important; height: 1280px !important; max-width: none !important; max-height: none !important;
+  transform: translate(-50%, -50%) scale(var(--stage-scale, 1)) !important; transform-origin: center center !important;
+  box-sizing: border-box;
+}
+.modal { padding: 28px 18px !important; align-items: center !important; justify-content: center !important; overflow: hidden; }
+.modal .modal-content, #confirm-modal .modal-content, #pmd-credits-modal .modal-content {
+  width: 100% !important; max-width: 684px; max-height: 100% !important; height: auto;
+  margin: auto !important; box-sizing: border-box; border-radius: var(--radius) !important;
+  padding: 72px 20px 22px !important; overflow-y: auto !important;
+}
+.modal .modal-content h2 { font-size: 24px; }
+.close-btn { top: 12px !important; right: 12px !important; width: 46px !important; height: 46px !important; font-size: 30px !important; display: flex; align-items: center; justify-content: center; z-index: 20; }
+.modal-back-btn { top: 12px !important; left: 12px !important; width: 46px !important; height: 46px !important; font-size: 22px !important; }
+#confirm-modal .modal-content { max-width: 560px; }
+/* Titre décalé quand un bouton retour occupe le coin */
+.modal-content:has(.modal-back-btn) > h2:first-of-type { padding-left: 52px; }
+
+#toast-stack { display: flex; flex-direction: column; justify-content: flex-start; padding-top: 22px; z-index: 30000; }
+#toast-stack .toast { width: 640px; max-width: 640px; font-size: 18px; }
+
+/* Écran titre */
+#mandatory-fs-overlay.title-screen { z-index: 10000; }
+.title-screen .title-content { margin-top: -160px; gap: 10px; }
+.title-screen .title-ball { width: 140px; }
+.title-screen .title-logo { font-size: 112px !important; }
+.title-screen .title-tap { font-size: 30px; padding: 10px 30px; margin-top: 26px; }
+.title-screen .title-hint { font-size: 16px; }
+
+/* ==========================================================================
+   COMBAT
+   ========================================================================== */
+#view-battle .scaler-view.battle-bg { background: #95bad0; }
+
+/* --- Barre du haut : progression + actions, puis l'ordre des tours sur toute la largeur --- */
+#view-battle #battle-top-bar {
+  top: 12px !important; left: 12px !important; right: 12px !important; width: auto !important; height: auto !important;
+  display: flex !important; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 0 !important;
+}
+/* Zone sur la première ligne, vague / combat / rang sur la seconde */
+#view-battle #hudProgress {
+  order: 1; flex: 1 1 0; min-width: 0; height: 56px !important; box-sizing: border-box;
+  padding: 4px 10px 4px 14px !important; gap: 2px 6px; overflow: hidden; white-space: nowrap;
+  flex-wrap: wrap; align-content: center;
+}
+#view-battle .hud-zone { flex: 1 1 100%; font-size: 15px; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#view-battle .hud-step { font-size: 12px; padding: 1px 8px; flex: none; }
+#view-battle .hud-step b { font-size: 13px; }
+#view-battle #hudProgress .rank-chip { flex: none; font-size: 11px; padding: 1px 6px 1px 3px; margin-left: 0; }
+#view-battle #top-right-actions { order: 2; flex: none; gap: 8px !important; }
+#view-battle .speed-btn { height: 36px; min-width: 42px; font-size: 15px; }
+#view-battle #auto-battle-btn { height: 46px !important; padding: 0 12px !important; }
+#view-battle #top-right-actions .exit-btn { width: 46px !important; height: 46px !important; }
+#view-battle #turnOrderContainer { order: 3; flex: 1 1 100%; height: 56px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+#view-battle .turn-order-sidebar { max-width: 100%; overflow: hidden; }
+
+/* --- Synergies : bandeaux compacts, ennemis en haut, joueur sous son équipe --- */
+#view-battle .synergy-panel {
+  flex-direction: row !important; flex-wrap: wrap; align-items: center; gap: 3px 10px;
+  max-width: none !important; padding: 4px 10px !important; box-sizing: border-box;
+}
+#view-battle .synergy-enemy { top: 146px !important; left: 12px !important; right: 196px !important; }
+#view-battle .synergy-player { top: auto !important; bottom: 230px !important; left: 12px !important; right: 12px !important; }
+#view-battle .synergy-title { font-size: 11px; }
+#view-battle .synergy-empty { max-width: none; }
+
+/* --- Grilles : ennemis en haut, joueur en bas, chacune en 3 lignes de profondeur --- */
+#view-battle .team-grid {
+  left: 64px !important; right: 40px !important; width: auto !important; max-width: none !important;
+  column-gap: 10px !important; row-gap: 4px !important;
+}
+#view-battle #enemy-grid { top: 232px !important; bottom: auto !important; height: 336px !important; }
+#view-battle #player-grid { top: 646px !important; bottom: auto !important; height: 372px !important; }
+
+/* Perspective : les lignes lointaines sont plus petites et se resserrent vers le centre */
+#view-battle .team-grid .unit-slot { transform: translate(var(--slot-x, 0px), 0) scale(var(--slot-scale, 1)) !important; --slot-x: 0px; }
+#view-battle #enemy-grid .unit-slot:nth-child(-n+3) { --slot-scale: .72; }
+#view-battle #enemy-grid .unit-slot:nth-child(n+4):nth-child(-n+6) { --slot-scale: .8; }
+#view-battle #enemy-grid .unit-slot:nth-child(n+7):nth-child(-n+9) { --slot-scale: .88; }
+#view-battle #enemy-grid .unit-slot:nth-child(1) { --slot-x: 34px; }
+#view-battle #enemy-grid .unit-slot:nth-child(3) { --slot-x: -34px; }
+#view-battle #enemy-grid .unit-slot:nth-child(4) { --slot-x: 22px; }
+#view-battle #enemy-grid .unit-slot:nth-child(6) { --slot-x: -22px; }
+#view-battle #enemy-grid .unit-slot:nth-child(7) { --slot-x: 10px; }
+#view-battle #enemy-grid .unit-slot:nth-child(9) { --slot-x: -10px; }
+#view-battle #player-grid .unit-slot:nth-child(-n+3) { --slot-scale: .94; }
+#view-battle #player-grid .unit-slot:nth-child(n+4):nth-child(-n+6) { --slot-scale: 1; }
+#view-battle #player-grid .unit-slot:nth-child(n+7):nth-child(-n+9) { --slot-scale: 1.06; }
+#view-battle #player-grid .unit-slot:nth-child(1) { --slot-x: 4px; }
+#view-battle #player-grid .unit-slot:nth-child(3) { --slot-x: -4px; }
+#view-battle #player-grid .unit-slot:nth-child(7) { --slot-x: -8px; }
+#view-battle #player-grid .unit-slot:nth-child(9) { --slot-x: 8px; }
+
+/* Étiquettes AVANT / CENTRE / ARRIÈRE à gauche de chaque ligne */
+#view-battle .row-labels {
+  left: -58px; top: 0; bottom: 0; width: 34px;
+  display: flex; flex-direction: column; pointer-events: none;
+}
+#view-battle .row-label {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  writing-mode: vertical-rl; transform: rotate(180deg); font-size: 12px; letter-spacing: 2px;
+}
+#view-battle #enemy-grid .row-label { padding-top: 14px; }
+#view-battle #player-grid .row-label { padding-top: 20px; }
+
+/* Barre de PV compacte au-dessus du sprite */
+#view-battle .unit .hp-box { min-width: 104px; width: 116px !important; }
+#view-battle .status-icons { min-height: 0; }
+
+/* --- Panneau d'informations : en haut, par-dessus l'ordre des tours, sans cacher les cibles ---
+   Il laisse passer les clics : on peut viser pendant qu'il est affiché. */
+#view-battle #infoDisplayPanel {
+  top: 76px !important; left: 50% !important; transform: translateX(-50%) !important;
+  width: 696px !important; min-width: 0 !important; max-width: 696px; max-height: 150px; overflow: hidden;
+  box-sizing: border-box; z-index: 300 !important; padding: 8px 14px !important; pointer-events: none !important;
+}
+#view-battle #infoDisplayPanel .info-section { gap: 4px 14px; }
+#view-battle #infoDisplayPanel .info-item { font-size: 13px; }
+/* Météo et terrain : bandeau fin dans l'allée entre les deux camps */
+#view-battle #infoDisplayPanel.terrain-mode {
+  top: 574px !important; transform: translate(-50%, -50%) !important; width: auto !important; max-width: 600px;
+  min-height: 0 !important; padding: 3px 14px !important; border-width: 3px !important; opacity: .92;
+}
+#view-battle #infoDisplayPanel.terrain-mode .info-section { flex-wrap: nowrap; justify-content: center; white-space: nowrap; }
+#view-battle #infoDisplayPanel.terrain-mode .info-item { font-size: 12px; line-height: 1.3; }
+#view-battle #infoDisplayPanel .move-description { margin-top: 4px; padding-top: 4px; font-size: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* --- Pied de page : choix de l'équipe, puis les attaques en 2 × 2 --- */
+#view-battle #battle-footer {
+  left: 12px !important; right: 12px !important; bottom: 12px !important; top: auto !important;
+  height: 206px; min-height: 0 !important; box-sizing: border-box; padding: 10px 12px !important;
+  display: flex !important; flex-direction: column !important; align-items: stretch !important; justify-content: center !important; gap: 10px !important;
+}
+#view-battle #selection-banner { flex: 0 0 auto !important; width: 100%; height: 96px !important; padding: 4px 2px !important; }
+#view-battle #side-actions { flex: none; justify-content: center !important; }
+#view-battle #start-battle-btn { width: 100%; min-width: 0 !important; font-size: 30px !important; padding: 14px 20px !important; }
+#view-battle #combat-panel {
+  height: 100%; padding: 0 !important; gap: 8px !important;
+  grid-template-columns: 1fr !important; grid-template-rows: auto 1fr; align-content: stretch;
+}
+body.combat-active #view-battle #combat-panel { display: grid !important; }
+#view-battle #turn-unit-display { padding: 4px 12px 4px 4px; gap: 10px; justify-self: stretch; }
+#view-battle #turn-unit-display img { width: 44px !important; height: 44px !important; }
+#view-battle #actionPanel { justify-content: flex-start; gap: 6px; }
+#view-battle .movesRow { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+#view-battle .move-btn { min-height: 54px; font-size: 18px !important; }
+#view-battle .target-prompt { font-size: 18px !important; }
+#view-battle .target-prompt.gba-say { font-size: 22px !important; }
+/* Tour de l'ennemi : seul le texte de la boîte de dialogue */
+#view-battle #actionPanel.enemy-turn { justify-content: center; }
+
+/* --- Résultat du combat --- */
+#view-battle #battleStatus { min-width: 0 !important; width: 600px; box-sizing: border-box; }
+#view-battle #battleStatus .status-title { font-size: 60px !important; }
+
+/* --- Écrans d'intensité (boss, attaques Z) --- */
+.boss-intro .boss-card { flex-direction: column; text-align: center; gap: 10px; }
+.boss-intro .boss-warning { top: 260px; }
+.boss-intro .boss-stripes { height: 520px; }
+.boss-intro .boss-name { font-size: 54px; }
+.z-cutin .z-band { height: 220px; gap: 16px; padding: 0 20px; }
+.z-cutin .z-band img { width: 150px; height: 150px; }
+.z-cutin .z-text span { font-size: 46px; }
+
+/* ==========================================================================
+   FENÊTRES DU BOURG
+   ========================================================================== */
+.egg-bag-layout { flex-direction: column !important; }
+#egg-bag-sidebar { width: 100% !important; height: auto !important; border-right: none !important; display: flex; flex-direction: row !important; align-items: center; gap: 10px; overflow-x: auto; }
+#egg-bag-sidebar h3 { display: none; }
+#egg-rarity-filters { flex-direction: row !important; flex-wrap: wrap; gap: 6px !important; }
+#incubator-grid-premium { grid-template-columns: repeat(3, 1fr) !important; }

@@ -1,0 +1,43 @@
+/* ==========================================================================
+   pmd-sprite.css — Sprites animés Donjon Mystère (js/pmd-sprite.js)
+   L'élément .sprite garde sa taille : la frame PMD est centrée sur un point
+   d'ancrage fixe, agrandie en pixel art et peut déborder (attaques larges).
+   ========================================================================== */
+
+.pmd-sprite {
+  position: relative;
+  --pmd-scale: 4.5;    /* agrandissement des pixels */
+  --pmd-fit: 1;        /* réduction des gros Pokémon, calculée par pmd-sprite.js */
+  --pmd-anchor-y: 58%; /* position verticale du centre des frames dans la boîte */
+}
+.pmd-sprite .pmd-fallback { display: block; width: 100%; height: 100%; object-fit: contain; }
+.pmd-sprite .pmd-frame {
+  display: none;
+  position: absolute; left: 50%; top: var(--pmd-anchor-y);
+  transform: translate(-50%, -50%) scale(calc(var(--pmd-scale) * var(--pmd-fit)));
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.pmd-sprite[data-pmd-state="ready"] .pmd-fallback { display: none; }
+.pmd-sprite[data-pmd-state="ready"] .pmd-frame { display: block; }
+
+/* Le sprite a sa propre animation de repos : pas de flottement CSS en plus */
+.sprite.pmd-sprite[data-pmd-state="ready"]:not(.hitFlash):not(.status-glow):not(.is-recoiling) { animation: none; }
+
+/* --- Crédits (licence CC BY-NC 4.0) --- */
+#view-battle #pmd-credits-btn {
+  position: absolute; right: 12px; top: 150px; z-index: 205;
+  padding: 3px 10px; border-radius: 999px; cursor: pointer;
+  background: rgba(27, 31, 59, .55); color: #f7ecdc; border: 2px solid rgba(255, 255, 255, .7);
+  font-family: var(--font-body); font-size: 10px; font-weight: 800; letter-spacing: .2px;
+}
+#view-battle #pmd-credits-btn:hover { background: rgba(27, 31, 59, .8); }
+
+#pmd-credits-modal { display: none; position: fixed; inset: 0; z-index: 30001; place-items: center; background: rgba(27, 31, 59, .6); }
+#pmd-credits-modal.open { display: grid; }
+#pmd-credits-modal .modal-content { width: min(560px, 92vw); max-height: 80vh; padding: 70px 24px 22px !important; text-align: left; font-size: 15px; line-height: 1.45; }
+#pmd-credits-modal h3 { margin: 16px 0 6px; font-family: var(--font-title); font-size: 18px; text-transform: uppercase; }
+#pmd-credits-modal a { color: var(--blue, #5775a7); font-weight: 800; }
+#pmd-credits-modal .pmd-credits-list { margin: 0; padding-left: 20px; }
+#pmd-credits-modal .pmd-credits-list li { margin: 3px 0; }

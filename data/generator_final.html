@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Données Pokémon Interactif</title>
+    <style>
+        :root {
+            --primary-color: #d32f2f;
+            --primary-hover: #b71c1c;
+            --secondary-color: #303f9f;
+            --secondary-hover: #1a237e;
+            --tertiary-color: #4CAF50;
+            --tertiary-hover: #388E3C;
+            --selected-bg: #ffebee;
+            --selected-border: #d32f2f;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body { font-family: var(--font-family); line-height: 1.6; padding: 20px; background-color: #f7f7f7; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1, h2 { color: var(--primary-color); border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+        h2 { color: var(--secondary-color); font-size: 1.2em; margin-top: 30px;}
+
+        #controls, #range-controls-wrapper { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; align-items: center; }
+        #filterInput { flex-grow: 1; min-width: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        button { background-color: var(--primary-color); color: white; border: none; padding: 10px 15px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: var(--primary-hover); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        
+        #range-controls-wrapper { margin-top: 10px; padding: 10px; background-color: #f0f0f0; border-radius: 8px; }
+        #range-controls-wrapper input[type="number"] { width: 80px; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+        #range-controls-wrapper button { background-color: var(--secondary-color); }
+        #range-controls-wrapper button:hover { background-color: var(--secondary-hover); }
+
+        #pokemon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; max-height: 500px; overflow-y: auto; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+        .pokemon-card { display: flex; flex-direction: column; align-items: center; padding: 10px; border: 2px solid transparent; border-radius: 8px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s; text-align: center; }
+        .pokemon-card:hover { background-color: #f0f0f0; }
+        .pokemon-card.selected { background-color: var(--selected-bg); border-color: var(--selected-border); }
+        .pokemon-card img { width: 96px; height: 96px;  }
+        .pokemon-card .name { font-weight: bold; text-transform: capitalize; }
+        .pokemon-card .number { font-size: 0.8em; color: #777; }
+
+        .generation-section { margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+        #status { font-weight: bold; color: #555; }
+        progress { width: 100%; height: 10px; margin-top: 10px; }
+        #allMovesBtn { background-color: var(--tertiary-color); }
+        #allMovesBtn:hover { background-color: var(--tertiary-hover); }
+        
+        #logs { margin-top: 15px; font-family: "Courier New", Courier, monospace; font-size: 12px; background: #333; color: #f0f0f0; border: 1px solid #444; border-radius: 8px; padding: 15px; height: 200px; overflow-y: scroll; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Données Pokémon</h1>
+
+        <h2>Étape 1 : Générer le dictionnaire de référence des attaques</h2>
+        <div class="generation-section">
+            <p>Ce processus va récupérer toutes les attaques du jeu (~900) et créer <code>moves.json</code>. <strong>Faites-le une seule fois.</strong></p>
+            <button id="allMovesBtn">📖 Générer le Dictionnaire Complet des Attaques</button>
+        </div>
+
+        <h2>Étape 2 : Sélectionner et générer les données du Pokédex</h2>
+        <div class="generation-section">
+            <p>Sélectionnez les Pokémon ci-dessous, puis lancez la génération pour créer <code>pokedex.json</code>.</p>
+            <div id="controls">
+                <input type="text" id="filterInput" placeholder="Chercher un Pokémon...">
+                <button id="selectAll">Tout Sélect.</button>
+                <button id="deselectAll">Tout Désélect.</button>
+                <button id="selectFiltered">Sélect. Filtrés</button>
+            </div>
+            <div id="range-controls-wrapper">
+                 <span>Sélectionner de </span>
+                <input type="number" id="rangeStart" placeholder="#" min="1">
+                <span>à</span>
+                <input type="number" id="rangeEnd" placeholder="#" min="1">
+                <button id="selectRangeBtn">Valider la Plage</button>
+            </div>
+
+            <div id="pokemon-grid-container">
+                <div id="pokemon-grid"><p id="initial-loader">Chargement de la liste des Pokémon...</p></div>
+            </div>
+            <button id="startButton" disabled>🚀 Lancer la Génération pour <span id="selection-count">0</span> Pokémon</button>
+        </div>
+        
+        <h2>Étape 3 : Générer le dictionnaire de référence des objets</h2>
+        <div class="generation-section">
+            <p>Ce processus va récupérer tous les objets du jeu (~2000) et créer <code>items.json</code>. <strong>Faites-le une seule fois ou pour mettre à jour.</strong></p>
+            <button id="allItemsBtn">📦 Générer le Dictionnaire Complet des Objets</button>
+        </div>
+
+        <div id="status-container" style="display: none;">
+            <div id="status">En attente...</div>
+            <progress id="progressBar" value="0" max="100"></progress>
+        </div>
+        <div id="logs" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        const filterInput = document.getElementById('filterInput'), selectAllBtn = document.getElementById('selectAll'), deselectAllBtn = document.getElementById('deselectAll'), selectFilteredBtn = document.getElementById('selectFiltered'), rangeStartInput = document.getElementById('rangeStart'), rangeEndInput = document.getElementById('rangeEnd'), selectRangeBtn = document.getElementById('selectRangeBtn'), grid = document.getElementById('pokemon-grid'), startButton = document.getElementById('startButton'), allMovesBtn = document.getElementById('allMovesBtn'), allItemsBtn = document.getElementById('allItemsBtn'), selectionCountSpan = document.getElementById('selection-count'), statusContainer = document.getElementById('status-container'), statusDiv = document.getElementById('status'), progressBar = document.getElementById('progressBar'), logsDiv = document.getElementById('logs'), initialLoader = document.getElementById('initial-loader');
+
+        // --- APP STATE ---
+        let allPokemon = [], selectedPokemon = new Set();
+        
+        // --- CONSTANTS ---
+        const API_BASE_URL = 'https://pokeapi.co/api/v2/', VERSION_GROUP_PRIORITY = ['scarlet-violet', 'sword-shield', 'ultra-sun-ultra-moon', 'sun-moon', 'omega-ruby-alpha-sapphire', 'x-y', 'black-2-white-2', 'black-white', 'heartgold-soulsilver', 'platinum', 'diamond-pearl'];
+
+        // --- UTILITIES ---
+        function log(message) { logsDiv.innerHTML += message + '\n'; logsDiv.scrollTop = logsDiv.scrollHeight; }
+        function downloadJSON(filename, data) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            log(`✅ Fichier <strong>${filename}</strong> prêt pour le téléchargement.`);
+        }
+        async function safeFetch(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) { log(`❌ Erreur sur ${url}: ${error.message}`); return null; }
+        }
+
+        // --- INITIALIZATION ---
+        async function initializeApp() {
+            attachEventListeners();
+            const pokemonList = await safeFetch(`${API_BASE_URL}pokemon?limit=1025`); // Gen 9
+            if(pokemonList) {
+                allPokemon = pokemonList.results.map(p => {
+                    const id = p.url.split('/').slice(-2, -1)[0];
+                    return { id: parseInt(id), name: p.name, spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png` };
+                });
+                renderPokemonGrid();
+            }
+        }
+
+        function attachEventListeners() {
+            filterInput.addEventListener('input', renderPokemonGrid);
+            selectAllBtn.addEventListener('click', selectAll);
+            deselectAllBtn.addEventListener('click', deselectAll);
+            selectFilteredBtn.addEventListener('click', selectFiltered);
+            selectRangeBtn.addEventListener('click', selectRange);
+            startButton.addEventListener('click', startGeneration);
+            allMovesBtn.addEventListener('click', generateAllMovesDictionary);
+            allItemsBtn.addEventListener('click', generateAllItemsDictionary);
+        }
+
+        // --- UI & SELECTION ---
+        function renderPokemonGrid() {
+            const filterText = filterInput.value.toLowerCase();
+            const filteredPokemon = allPokemon.filter(p => p.name.includes(filterText));
+            grid.innerHTML = '';
+            if (filteredPokemon.length === 0 && allPokemon.length > 0) grid.innerHTML = '<p>Aucun Pokémon ne correspond.</p>';
+            
+            filteredPokemon.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'pokemon-card'; card.dataset.id = p.id;
+                if (selectedPokemon.has(p.id)) card.classList.add('selected');
+                card.innerHTML = `<img src="${p.spriteUrl}" alt="${p.name}" loading="lazy"><span class="name">${p.name}</span><span class="number">#${String(p.id).padStart(4, '0')}</span>`;
+                card.addEventListener('click', () => toggleSelection(p.id, card));
+                grid.appendChild(card);
+            });
+            initialLoader.style.display = 'none';
+        }
+
+        function toggleSelection(id, cardElement) {
+            if (selectedPokemon.has(id)) { selectedPokemon.delete(id); cardElement.classList.remove('selected'); }
+            else { selectedPokemon.add(id); cardElement.classList.add('selected'); }
+            updateSelectionCount();
+        }
+
+        function updateSelectionCount() { selectionCountSpan.textContent = selectedPokemon.size; startButton.disabled = selectedPokemon.size === 0; }
+
+        function updateSelectionUI() {
+            document.querySelectorAll('.pokemon-card').forEach(card => {
+                const id = parseInt(card.dataset.id);
+                if (selectedPokemon.has(id)) card.classList.add('selected');
+                else card.classList.remove('selected');
+            });
+            updateSelectionCount();
+        }
+
+        function selectAll() { allPokemon.forEach(p => selectedPokemon.add(p.id)); updateSelectionUI(); }
+        function deselectAll() { selectedPokemon.clear(); updateSelectionUI(); }
+        function selectFiltered() {
+            document.querySelectorAll('.pokemon-card:not([style*="display: none"])').forEach(card => selectedPokemon.add(parseInt(card.dataset.id)));
+            updateSelectionUI();
+        }
+        function selectRange() {
+            const start = parseInt(rangeStartInput.value), end = parseInt(rangeEndInput.value);
+            if (!start || !end || start < 1 || end < start || end > allPokemon.length) { alert(`Plage valide: 1 - ${allPokemon.length}.`); return; }
+            for (let i = start; i <= end; i++) selectedPokemon.add(i);
+            updateSelectionUI();
+        }
+        
+        // --- DATA FETCHING & GENERATION ---
+        async function fetchPokemonDetails(id) {
+            const pokemonData = await safeFetch(`${API_BASE_URL}pokemon/${id}`);
+            if (!pokemonData) return null;
+            const speciesData = await safeFetch(pokemonData.species.url);
+            return { pokemonData, speciesData };
+        }
+
+        async function generateAllMovesDictionary() {
+            allMovesBtn.disabled = true;
+            startButton.disabled = true;
+            allItemsBtn.disabled = true;
+            logsDiv.innerHTML = ''; logsDiv.style.display = 'block';
+            statusContainer.style.display = 'block';
+            
+            log("Récupération de la liste complète des attaques...");
+            const moveListResponse = await safeFetch(`${API_BASE_URL}move?limit=1000`);
+            if (!moveListResponse) {
+                log("❌ Échec de la récupération de la liste d'attaques.");
+                allMovesBtn.disabled = false; startButton.disabled = selectedPokemon.size === 0;
+                return;
+            }
+
+            const movesUrls = moveListResponse.results.map(m => m.url);
+            const allMovesDictionary = {};
+            let processedCount = 0;
+
+            log(`Début du traitement de ${movesUrls.length} attaques...`);
+            // Traiter par lots pour ne pas surcharger le navigateur
+            const batchSize = 50;
+            for(let i = 0; i < movesUrls.length; i += batchSize) {
+                const batchUrls = movesUrls.slice(i, i + batchSize);
+                const batchPromises = batchUrls.map(async url => {
+                    const moveData = await safeFetch(url);
+                    if(!moveData) return;
+                    const frName = moveData.names.find(n => n.language.name === 'fr')?.name || moveData.name;
+
+                    const frenchFlavorTexts = moveData.flavor_text_entries.filter(ft => ft.language.name === 'fr');
+                    let description_fr = '';
+                    if (frenchFlavorTexts.length > 0) {
+                        description_fr = frenchFlavorTexts[0].flavor_text.replace(/[\n\f\r]/g, ' '); // Fallback
+                        for (const version of VERSION_GROUP_PRIORITY) {
+                            const entry = frenchFlavorTexts.find(ft => ft.version_group.name === version);
+                            if (entry) { description_fr = entry.flavor_text.replace(/[\n\f\r]/g, ' '); break; }
+                        }
+                    }
+
+                    allMovesDictionary[moveData.name] = { name_fr: frName, power: moveData.power, accuracy: moveData.accuracy, type: moveData.type.name, damage_class: moveData.damage_class.name, description_fr: description_fr };
+                    processedCount++;
+                });
+
+                await Promise.all(batchPromises);
+                progressBar.value = (processedCount / movesUrls.length) * 100;
+                statusDiv.textContent = `Compilation des attaques: ${processedCount}/${movesUrls.length}`;
+            }
+
+            progressBar.value = 100;
+            statusDiv.textContent = 'Dictionnaire d\'attaques terminé !';
+            log('\n🎉 Dictionnaire complet des attaques généré !');
+            downloadJSON('moves.json', allMovesDictionary);
+            
+            allMovesBtn.disabled = false;
+            startButton.disabled = selectedPokemon.size === 0;
+            allItemsBtn.disabled = false;
+        }
+
+        async function generateAllItemsDictionary() {
+            allMovesBtn.disabled = true; startButton.disabled = true; allItemsBtn.disabled = true;
+            logsDiv.innerHTML = ''; logsDiv.style.display = 'block'; statusContainer.style.display = 'block';
+            
+            log("Récupération de toutes les catégories d'objets...");
+            const categoryListResponse = await safeFetch(`${API_BASE_URL}item-category?limit=200`);
+            if (!categoryListResponse) {
+                log("❌ Échec de la récupération des catégories d'objets.");
+                allMovesBtn.disabled = false; startButton.disabled = selectedPokemon.size === 0; allItemsBtn.disabled = false;
+                return;
+            }
+
+            const categoryCache = {};
+            const itemUrls = new Set();
+
+            log("Récupération de tous les objets par catégorie...");
+            progressBar.value = 0;
+            statusDiv.textContent = `Analyse des catégories...`;
+
+            const categoryPromises = categoryListResponse.results.map(async (cat, index) => {
+                const catData = await safeFetch(cat.url);
+                if (catData) {
+                    const frCatName = catData.names.find(n => n.language.name === 'fr')?.name || catData.name;
+                    const pocketName = catData.pocket ? catData.pocket.name : 'other';
+                    
+                    // EXCLUSIONS demandées par l'utilisateur
+                    if (pocketName === 'key-items' || pocketName === 'mail' || pocketName === 'pokeballs' || pocketName === 'key') {
+                        log(`⚠️ Skipping category: ${frCatName} (Pocket: ${pocketName})`);
+                        return;
+                    }
+
+                    categoryCache[catData.name] = { 
+                        name_fr: frCatName, 
+                        pocket: pocketName 
+                    };
+                    log(`- Catégorie : ${frCatName} (${pocketName}) - ${catData.items.length} objets`);
+                    catData.items.forEach(item => itemUrls.add(item.url));
+                }
+                progressBar.value = ((index + 1) / categoryListResponse.results.length) * 100;
+            });
+            await Promise.all(categoryPromises);
+
+            const finalItemUrls = Array.from(itemUrls);
+            const allItems = {};
+            let processedCount = 0;
+
+            log(`\nDébut du traitement de ${finalItemUrls.length} objets...`);
+            
+            const batchSize = 50;
+            for (let i = 0; i < finalItemUrls.length; i += batchSize) {
+                const batchUrls = finalItemUrls.slice(i, i + batchSize);
+                const batchPromises = batchUrls.map(async url => {
+                    const itemData = await safeFetch(url);
+                    if (!itemData) return;
+
+                    const frName = itemData.names.find(n => n.language.name === 'fr')?.name || itemData.name;
+                    const frEffect = (itemData.effect_entries.find(e => e.language.name === 'fr')?.short_effect || itemData.effect_entries.find(e => e.language.name === 'en')?.short_effect || '').replace(/[\n\f\r]/g, ' ');
+                    
+                    const frenchFlavorTexts = itemData.flavor_text_entries.filter(ft => ft.language.name === 'fr');
+                    let description_fr = '';
+                    if (frenchFlavorTexts.length > 0) {
+                        for (const version of VERSION_GROUP_PRIORITY) {
+                            const entry = frenchFlavorTexts.find(ft => ft.version_group.name === version);
+                            if (entry) {
+                                description_fr = entry.text.replace(/[\n\f\r]/g, ' ');
+                                break;
+                            }
+                        }
+                        if (!description_fr && frenchFlavorTexts[0]) { // Fallback si aucune version prioritaire n'est trouvée
+                             description_fr = frenchFlavorTexts[0].text.replace(/[\n\f\r]/g, ' ');
+                        }
+                    }
+
+                    const categoryInfo = categoryCache[itemData.category.name] || { name_fr: itemData.category.name, pocket: 'other' };
+
+                    allItems[itemData.name] = {
+                        id: itemData.id,
+                        name_fr: frName,
+                        cost: itemData.cost,
+                        sprite: itemData.sprites.default,
+                        category: categoryInfo.name_fr,
+                        pocket: categoryInfo.pocket,
+                        attributes: itemData.attributes.map(a => a.name),
+                        effect_fr: frEffect,
+                        description_fr: description_fr
+                    };
+                    processedCount++;
+                });
+                await Promise.all(batchPromises);
+                progressBar.value = (processedCount / finalItemUrls.length) * 100;
+                statusDiv.textContent = `Compilation des objets: ${processedCount}/${finalItemUrls.length}`;
+            }
+
+            progressBar.value = 100; statusDiv.textContent = 'Dictionnaire d\'objets terminé !';
+            log('\n🎉 Dictionnaire d\'objets pertinents généré !');
+            downloadJSON('items.json', allItems);
+            
+            allMovesBtn.disabled = false; startButton.disabled = selectedPokemon.size === 0; allItemsBtn.disabled = false;
+        }
+
+        async function startGeneration() {
+            if (selectedPokemon.size === 0) { alert("Veuillez sélectionner au moins un Pokémon."); return; }
+
+            startButton.disabled = true; allMovesBtn.disabled = true; allItemsBtn.disabled = true;
+            logsDiv.innerHTML = ''; logsDiv.style.display = 'block';
+            statusContainer.style.display = 'block';
+            
+            const pokedex = [];
+            const pokemonToProcess = Array.from(selectedPokemon).sort((a, b) => a - b);
+            let processedCount = 0;
+
+            for (const id of pokemonToProcess) {
+                processedCount++;
+                progressBar.value = (processedCount / pokemonToProcess.length) * 100;
+                statusDiv.textContent = `Analyse du Pokémon ${processedCount}/${pokemonToProcess.length} (#${id})...`;
+                log(`--- Pokémon #${id} ---`);
+
+                const data = await fetchPokemonDetails(id);
+                if (!data || !data.speciesData) { log(`❌ Données introuvables pour #${id}.`); continue; }
+                const { pokemonData, speciesData } = data;
+
+                const evolves_from = speciesData.evolves_from_species ? {
+                    id: parseInt(speciesData.evolves_from_species.url.split('/').slice(-2, -1)[0]),
+                    name: speciesData.evolves_from_species.name
+                } : null;
+
+                const name = speciesData.names.find(n => n.language.name === 'fr')?.name || pokemonData.name;
+                const frenchFlavorTexts = speciesData.flavor_text_entries.filter(ft => ft.language.name === 'fr');
+                let description = frenchFlavorTexts[0]?.flavor_text.replace(/[\n\f\r]/g, ' ') || '';
+                for (const version of VERSION_GROUP_PRIORITY) {
+                    const entry = frenchFlavorTexts.find(ft => ft.version.name === version);
+                    if (entry) { description = entry.flavor_text.replace(/[\n\f\r]/g, ' '); break; }
+                }
+                
+                const moves = [];
+                for (const move of pokemonData.moves) {
+                    const levelUpDetails = move.version_group_details.filter(d => d.move_learn_method.name === 'level-up' && d.level_learned_at > 0);
+                    if (levelUpDetails.length === 0) continue;
+                    for (const vg of VERSION_GROUP_PRIORITY) {
+                        const detail = levelUpDetails.find(d => d.version_group.name === vg);
+                        if (detail) { moves.push({ name: move.move.name, level: detail.level_learned_at }); break; }
+                    }
+                }
+                
+                let evolution = null;
+                const evoChainData = await safeFetch(speciesData.evolution_chain.url);
+                 if (evoChainData) {
+                    let currentChainNode = evoChainData.chain;
+                    let found = false;
+                    const findPokemonInChain = (chainNode) => {
+                        if (chainNode.species.name === pokemonData.name) {
+                            found = true;
+                            if (chainNode.evolves_to.length > 0) {
+                                const nextEvo = chainNode.evolves_to[0];
+                                const details = nextEvo.evolution_details[0];
+                                if (details) {
+                                    evolution = {
+                                        targetId: parseInt(nextEvo.species.url.split('/').slice(-2, -1)[0]),
+                                        name: nextEvo.species.name,
+                                        method: details.trigger.name,
+                                    };
+                                    if (details.min_level) evolution.level = details.min_level;
+                                    if (details.item) evolution.item = details.item.name;
+                                    if (details.held_item) evolution.held_item = details.held_item.name;
+                                    if (details.known_move) evolution.known_move = details.known_move.name;
+                                    if (details.min_happiness) evolution.happiness = details.min_happiness;
+                                    if (details.time_of_day) evolution.time_of_day = details.time_of_day;
+                                    if (details.gender) evolution.gender = details.gender === 1 ? 'female' : (details.gender === 2 ? 'male' : null);
+                                    if (details.location) evolution.location = details.location.name;
+                                    if (details.trigger.name === 'trade' && details.trade_species) evolution.trade_with = details.trade_species.name;
+                                }
+                            }
+                        } else {
+                            for (const next of chainNode.evolves_to) { if (found) break; findPokemonInChain(next); }
+                        }
+                    };
+                    findPokemonInChain(evoChainData.chain);
+                }
+
+                const capture_rate = speciesData.capture_rate;
+                const growth_rate = speciesData.growth_rate.name;
+                let rarity;
+
+                if (speciesData.is_mythical) {
+                    rarity = "Mythique";
+                } else if (speciesData.is_legendary) {
+                    rarity = "Légendaire";
+                } else if (speciesData.is_baby) {
+                    rarity = "Bébé";
+                } else {
+                    let score = 0;
+
+                    // 1. Points basés sur le taux de capture (plus c'est bas, plus c'est rare)
+                    if (capture_rate <= 30) score += 4;
+                    else if (capture_rate <= 60) score += 3;
+                    else if (capture_rate <= 120) score += 2;
+                    else if (capture_rate <= 190) score += 1;
+
+                    // 2. Points basés sur la courbe d'expérience (plus c'est lent, plus c'est rare)
+                    switch (growth_rate) {
+                        case 'slow': score += 2; break;
+                        case 'medium-slow': score += 1; break;
+                        case 'fast': score -= 1; break;
+                        case 'fluctuating': score -= 2; break;
+                    }
+
+                    // 3. Points si c'est une forme finale ou un Pokémon sans évolution
+                    if (!evolution) {
+                        score += 2;
+                    }
+
+                    // 4. Assigner la rareté en fonction du score
+                    if (score >= 7) {
+                        rarity = "Très Rare";
+                    } else if (score >= 5) {
+                        rarity = "Rare";
+                    } else if (score >= 2) {
+                        rarity = "Peu Commun";
+                    } else {
+                        rarity = "Commun";
+                    }
+                }
+
+                const statMapping = {
+                    'hp': 'hp', 'attack': 'atk', 'defense': 'def',
+                    'special-attack': 'spatk', 'special-defense': 'spdef', 'speed': 'speed'
+                };
+                const stats = pokemonData.stats.reduce((acc, s) => {
+                    const statName = statMapping[s.stat.name];
+                    if (statName) acc[statName] = s.base_stat;
+                    return acc;
+                }, {});
+
+                const abilities = pokemonData.abilities.map(a => ({
+                    name: a.ability.name,
+                    is_hidden: a.is_hidden
+                }));
+
+                pokedex.push({
+                    id: pokemonData.id,
+                    name: name,
+                    types: pokemonData.types.map(t => t.type.name),
+                    base_experience: pokemonData.base_experience,
+                    stats: stats,
+                    abilities: abilities,
+                    growth_rate: speciesData.growth_rate.name,
+                    height: pokemonData.height / 10, // m
+                    weight: pokemonData.weight / 10, // kg
+                    evolves_from: evolves_from,
+                    rarity: rarity,
+                    sprite: pokemonData.sprites.other['official-artwork'].front_default,
+                    sprite_shiny: pokemonData.sprites.other.home.front_shiny,
+                    cry: pokemonData.cries.latest,
+                    description: description,
+                    moves: moves,
+                    evolution: evolution,
+                });
+                log(`Pokémon ${name} traité.`);
+            }
+            
+            statusDiv.textContent = 'Génération du Pokedex terminée !';
+            log('\n🎉 Pokedex généré !');
+            downloadJSON('pokedex.json', pokedex);
+
+            startButton.disabled = selectedPokemon.size === 0;
+            allMovesBtn.disabled = false; allItemsBtn.disabled = false;
+        }
+    </script>
+</body>
+</html>

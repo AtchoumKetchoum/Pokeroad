@@ -1,0 +1,54 @@
+/* ==========================================================================
+   readability.css — Lisibilité du texte et teinte des sprites (chargé en dernier)
+   La scène (720 px de large) est réduite à environ la moitié sur téléphone :
+   la police pixel devenait illisible (« C » lu comme « O »). On revient aux
+   polices du thème, plus nettes en petit, et on relève les plus petites tailles.
+   Les sprites des Pokémon prennent la teinte sépia du décor.
+   ========================================================================== */
+
+:root {
+  --font-title: 'Lilita One', 'Arial Black', sans-serif;
+  --font-body: 'Nunito', 'Segoe UI', sans-serif;
+  --font-pixel: var(--font-body);
+  --sprite-tone: sepia(.6) saturate(.85) contrast(1.05);
+}
+
+html, body { -webkit-font-smoothing: antialiased; font-smooth: auto; }
+body { font-weight: 700; }
+
+/* ---------- Plus petits textes : tailles minimales ---------- */
+/* Combat */
+#view-battle .hud-zone { font-size: 18px !important; }
+#view-battle .hud-step { font-size: 15px !important; }
+#view-battle .hud-step b { font-size: 16px !important; }
+#view-battle .rank-chip { font-size: 14px !important; }
+#view-battle .lvl-badge, #view-battle .charge-text { font-size: 13px !important; font-weight: 900 !important; }
+#view-battle .role-badge, #view-battle .role-badge span { font-size: 13px !important; font-weight: 800 !important; }
+#view-battle .row-label { font-size: 14px !important; font-weight: 900 !important; }
+#view-battle .synergy-title { font-size: 14px !important; font-weight: 900 !important; }
+#view-battle .synergy-empty, #view-battle .synergy-desc { font-size: 14px !important; font-weight: 700 !important; }
+#view-battle .banner-lvl-badge { font-size: 13px !important; font-weight: 800 !important; }
+#view-battle .speed-btn { font-size: 17px !important; }
+#view-battle .move-btn { font-size: 21px !important; font-weight: 900 !important; }
+#view-battle #infoDisplayPanel { height: auto !important; max-height: 220px !important; }
+#view-battle #infoDisplayPanel .info-item,#view-battle #infoDisplayPanel .info-item * { font-size: 16px !important; }
+#view-battle #infoDisplayPanel .move-description { font-size: 16px !important; line-height: 1.3; }
+#view-battle .turn-unit-hp { font-size: 16px !important; }
+
+/* Bourg, centre, Pokédex */
+.rank-chip { font-size: 14px !important; }
+.hub-dock-btn small { font-size: 15px !important; font-weight: 800 !important; }
+#view-center .pk-btn-action.small { font-size: 14px !important; }
+#view-center p { font-size: max(14px, 1em); }
+.pokemon-item .level-badge { font-size: 13px !important; font-weight: 900 !important; }
+.pokedex-entry h3 { font-size: 15px !important; }
+.pokedex-entry .owned-count { font-size: 13px !important; }
+.evolution-text { font-size: 13px !important; font-weight: 800 !important; }
+
+/* ---------- Sprites des Pokémon en sépia ---------- */
+/* Sprites animés (frames PMD) et toutes les illustrations PokeAPI ;
+   les filtres posés sur les conteneurs (ombres, flash de coup, K.O.) s'y ajoutent */
+.pmd-sprite .pmd-frame,
+img[src*="PokeAPI/sprites"] { filter: var(--sprite-tone); }
+#view-battle img.timeline-unit { filter: var(--sprite-tone) !important; }
+.pokemon-item img[src*="PokeAPI/sprites"] { filter: var(--sprite-tone) drop-shadow(0 2px 0 rgba(27, 31, 59, .35)); }

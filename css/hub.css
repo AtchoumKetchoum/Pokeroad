@@ -1,0 +1,115 @@
+/* ==========================================================================
+   hub.css — Le bourg (écran d'accueil, portrait 720x1280), entièrement dessiné en SVG
+   Bâtiments le long de la route qui monte ; raccourcis et bouton Aventure en bas.
+   ========================================================================== */
+
+.hub { background: #95bad0; }
+
+/* --- HUD dresseur --- */
+.hub .hub-hud {
+  position: absolute; left: 16px; top: 16px; z-index: 5;
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 20px 8px 8px !important;
+  border-radius: 999px !important;
+  background: var(--paper) !important;
+  width: auto !important; height: auto !important;
+}
+.hub .hub-avatar { width: 64px; height: 64px; }
+.hub .hub-player { display: flex; flex-direction: column; line-height: 1.1; }
+.hub #player-name {
+  font-family: var(--font-title); font-size: 24px; color: var(--ink);
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.hub .hub-money {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 4px;
+  background: var(--ink); color: var(--yellow);
+  border-radius: 999px; padding: 2px 12px 2px 4px; font-weight: 900; font-size: 16px;
+}
+.hub .coin {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e1d39d, var(--yellow) 55%, var(--yellow-dark));
+  border: 2px solid #fff3; box-shadow: inset 0 0 0 2px rgba(0,0,0,.15);
+}
+.hub #player-money { color: var(--yellow); font-size: 16px; }
+
+/* --- Pilule de mission --- */
+.hub .hub-mission {
+  position: absolute; left: 50%; top: 112px; transform: translateX(-50%); z-index: 5; max-width: 560px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 18px 8px 10px !important; border-radius: 999px !important;
+  background: var(--paper) !important; cursor: pointer;
+  font-family: var(--font-title); font-size: 18px; color: var(--ink);
+  min-width: 0 !important; height: auto !important;
+}
+.hub .hub-mission:active { transform: translate(-50%, 4px); box-shadow: 0 1px 0 var(--ink); }
+.hub .hub-mission-icon { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--orange); color: #f7ecdc; border: 3px solid var(--ink); }
+.hub .hub-mission .mission-hud-content { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; }
+.hub #mission-btn-label { font-family: var(--font-title); font-size: 18px; color: var(--ink); text-transform: uppercase; }
+.hub .timer-mini { font-family: var(--font-body); font-weight: 900; font-size: 14px; color: var(--blue); }
+.hub .hub-mission.active { background: #e4d5a8 !important; }
+.hub .hub-mission.finished { background: #c1e0b6 !important; animation: hub-wiggle 1.2s ease-in-out infinite; }
+.hub .hub-mission.finished .hub-mission-icon { background: var(--green); }
+.hub .team-preview-mini { display: flex; }
+.hub .team-preview-mini img { width: 34px; height: 34px; object-fit: contain; margin-left: -8px; filter: drop-shadow(0 2px 0 var(--ink)); }
+@keyframes hub-wiggle { 0%, 100% { transform: translateX(-50%) rotate(0); } 25% { transform: translateX(-50%) rotate(-2deg); } 75% { transform: translateX(-50%) rotate(2deg); } }
+
+.hub .hub-settings { position: absolute; right: 16px; top: 22px; z-index: 5; }
+
+/* --- Bâtiments --- */
+.hub .hub-building {
+  position: absolute; z-index: 2;
+  width: 236px; height: 226px; padding: 0; margin: 0;
+  background: none; border: none; cursor: pointer;
+  transition: transform .18s cubic-bezier(.3, 1.6, .5, 1);
+  filter: drop-shadow(0 6px 0 rgba(27, 31, 59, .25));
+}
+.hub .hub-building.small { width: 190px; height: 184px; }
+.hub .hub-building svg { width: 100%; height: auto; display: block; }
+.hub .hub-building:hover { transform: translateY(-8px) scale(1.04); }
+.hub .hub-building:active { transform: translateY(2px) scale(.97); }
+.hub .hub-label {
+  position: absolute; left: 50%; bottom: 2px; transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-title); font-size: 18px; color: #f7ecdc; letter-spacing: .5px;
+  background: var(--ink); padding: 4px 14px; border-radius: 999px;
+  border: 3px solid #f7ecdc; box-shadow: 0 3px 0 var(--ink);
+  text-transform: uppercase;
+}
+.hub .hub-building:hover .hub-label { background: var(--red); }
+
+/* --- Raccourcis --- */
+.hub .hub-dock {
+  position: absolute; left: 50%; bottom: 150px; transform: translateX(-50%); z-index: 5;
+  display: flex; gap: 16px;
+}
+.hub .hub-dock-btn {
+  position: relative;
+  width: 96px; height: 96px; border-radius: 22px;
+  background: var(--paper); border: var(--outline-thick); box-shadow: var(--pop);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  cursor: pointer; color: var(--ink); padding: 0;
+}
+.hub .hub-dock-btn small { font-family: var(--font-title); font-size: 14px; text-transform: uppercase; }
+.hub .hub-dock-btn:hover { background: #e4d5a8; }
+.hub .hub-dock-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.hub #pokedex-btn [data-icon] { color: var(--red); }
+.hub #item-bag-btn [data-icon] { color: var(--blue); }
+
+/* --- Bouton Aventure --- */
+.hub .hub-adventure {
+  position: absolute; left: 20px; right: 20px; bottom: 26px; z-index: 5;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  padding: 16px 20px; border-radius: 22px;
+  background: linear-gradient(180deg, #d56f69, var(--red) 55%, var(--red-dark));
+  border: var(--outline-thick); box-shadow: 0 7px 0 var(--ink), inset 0 4px 0 rgba(255, 255, 255, .35);
+  cursor: pointer; color: #f7ecdc;
+  animation: hub-breathe 2.2s ease-in-out infinite;
+}
+.hub .hub-adventure-ball { width: 58px; height: 58px; animation: hub-spin 6s linear infinite; }
+.hub .hub-adventure-text {
+  font-family: var(--font-title); font-size: 46px; text-transform: uppercase; letter-spacing: 1px;
+  text-shadow: 0 4px 0 var(--ink), 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 -3px 0 var(--ink);
+}
+.hub .hub-adventure:active { transform: translateY(6px); box-shadow: 0 1px 0 var(--ink); animation: none; }
+@keyframes hub-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+@keyframes hub-spin { to { transform: rotate(360deg); } }

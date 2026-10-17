@@ -1,0 +1,178 @@
+/* ==========================================================================
+   layout.css — Mises en page souples (chargé en dernier)
+   Hors combat, la scène fait 720 de large et sa hauteur suit l'écran
+   (--stage-h, calculée par mobile-manager.js, de 1280 à 1640). Les écrans
+   s'organisent donc en flexbox plutôt qu'en positions fixes en pixels :
+   une barre de titre, puis le contenu qui prend la place restante.
+   Le combat garde sa scène fixe 720x1280 (.stage-fixed).
+   ========================================================================== */
+
+/* Fenêtres, notifications et écran titre : même hauteur que la scène */
+.modal, #confirm-modal, #pmd-credits-modal, #toast-stack, #mandatory-fs-overlay.title-screen {
+  height: var(--stage-h, 1280px) !important;
+}
+
+/* ---------- Écrans en colonne : barre de titre + contenu ---------- */
+.scaler-view.view-flex {
+  display: flex !important; flex-direction: column !important; gap: 14px;
+  align-items: stretch !important; justify-content: flex-start !important;
+  padding: 16px !important; box-sizing: border-box;
+}
+.view-flex > .scene-layer { position: absolute; inset: 0; z-index: 0; }
+
+.view-bar {
+  position: relative; z-index: 40; flex: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 62px;
+}
+.view-bar .view-title { position: static; min-width: 0; }
+.view-bar > h1 {
+  position: static !important; margin: 0 !important;
+  font-size: 40px !important; color: #f7ecdc !important; text-transform: uppercase;
+  text-shadow: 0 5px 0 var(--ink), 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 -3px 0 var(--ink) !important;
+}
+.view-bar .exit-btn { flex: none; }
+
+/* Centre Pokémon : infirmerie puis boîte, la boîte prend le reste */
+#view-center #center-main-layout {
+  position: relative !important; inset: auto !important;
+  flex: 1 1 0; min-height: 0;
+}
+
+/* Laboratoire : incubateur et sac d'œufs se partagent la hauteur */
+.lab-viewport .lab-container {
+  position: relative !important; inset: auto !important;
+  flex: 1 1 0; min-height: 0; padding: 10px 24px 24px; box-sizing: border-box;
+}
+.lab-column { position: relative; }
+.lab-eggs { display: flex; align-items: flex-end; justify-content: center; gap: 6px; height: 100%; }
+.lab-eggs svg { width: auto; height: 120px; filter: drop-shadow(0 5px 0 rgba(27, 31, 59, .25)); }
+.lab-eggs svg:nth-child(2) { height: 160px; }
+
+/* Pokédex : filtres puis grille qui défile */
+#view-pokedex #pokedex-filters { position: relative !important; inset: auto !important; flex: none; }
+#view-pokedex #pokedex-grid { position: relative !important; inset: auto !important; flex: 1 1 0; min-height: 0; }
+
+/* Atelier : cartes empilées */
+.atelier-viewport .atelier-menu {
+  position: relative; inset: auto !important; flex: 1 1 0; min-height: 0;
+  display: flex !important; flex-direction: column; gap: 30px !important; padding: 10px 24px 24px !important;
+}
+.atelier-viewport .atelier-card { flex: 1 1 0; min-height: 0; padding: 30px; cursor: pointer; text-align: center; }
+.atelier-card.disabled { opacity: .5; cursor: not-allowed; }
+.atelier-card.disabled:hover { transform: none; background: var(--paper) !important; }
+
+/* ==========================================================================
+   LE BOURG : HUD en haut, bâtiments en trois rangées de part et d'autre
+   de la route, raccourcis et bouton Aventure en bas.
+   ========================================================================== */
+.hub.scaler-view {
+  display: flex !important; flex-direction: column;
+  padding: 16px 0 26px; box-sizing: border-box;
+}
+.hub > .scene-layer { position: absolute; inset: 0; z-index: 0; }
+
+.hub .hub-top {
+  position: relative; z-index: 5; flex: none;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 0 16px;
+}
+.hub .hub-top-row { align-self: stretch; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.hub .hub-top .hub-hud { position: relative; left: auto; top: auto; }
+.hub .hub-top .hub-settings { position: relative; right: auto; top: auto; margin-top: 6px; flex: none; }
+.hub .hub-top .hub-mission { position: relative; left: auto; top: auto; transform: none; max-width: 100%; }
+.hub .hub-top .hub-mission:active { transform: translateY(4px); }
+.hub .hub-top .hub-mission.finished { animation: hub-wiggle-flex 1.2s ease-in-out infinite; }
+@keyframes hub-wiggle-flex { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+
+/* Panneau en haut de la route : vers la Route des Défis */
+.hub-gate, .modes-back {
+  position: relative; z-index: 5; flex: none; align-self: center;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 18px 6px 8px; border-radius: 999px;
+  background: #af8a68; border: var(--outline-thick); box-shadow: var(--pop);
+  font-family: var(--font-title); font-size: 18px; color: #f7ecdc; text-transform: uppercase; letter-spacing: .5px;
+  text-shadow: 0 2px 0 var(--ink);
+  cursor: pointer; transition: transform .18s cubic-bezier(.3, 1.6, .5, 1);
+}
+/* Dans le bourg, le panneau est planté au sommet de la route, entre deux bâtiments */
+.hub .hub-gate {
+  flex-direction: column; gap: 4px; padding: 8px 12px 10px; border-radius: 18px;
+  font-size: 15px; line-height: 1.05; text-align: center; align-self: flex-start; margin-top: 4px;
+}
+.hub .hub-gate::after {
+  content: ''; position: absolute; left: 50%; top: 100%; width: 10px; height: 40px; transform: translateX(-50%);
+  background: #82634d; border: 3px solid var(--ink); border-top: none; z-index: -1;
+}
+.hub-gate:hover, .modes-back:hover { transform: translateY(-4px); background: #bc956e; }
+.hub-gate:active, .modes-back:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.hub-gate-arrow, .modes-back-arrow {
+  width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--yellow); color: var(--ink); border: 3px solid var(--ink);
+}
+.hub-gate-arrow svg { transform: rotate(90deg); }
+.modes-back-arrow svg { transform: rotate(-90deg); }
+.hub-gate-arrow { animation: gate-nudge 1.4s ease-in-out infinite; }
+@keyframes gate-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* Bâtiments : la rangée garde la route libre au centre, un bâtiment sur deux est décalé */
+.hub .hub-town {
+  position: relative; z-index: 2; flex: 1 1 0; min-height: 0;
+  display: flex; flex-direction: column; justify-content: space-evenly; padding: 0 10px;
+}
+.hub .hub-row { display: flex; align-items: flex-start; justify-content: space-between; }
+.hub .hub-row .hub-building { position: relative; left: auto; top: auto; flex: none; }
+.hub .hub-row:nth-child(odd) > .hub-building:first-child, .hub .hub-row:nth-child(even) > .hub-building:last-child { margin-top: 36px; }
+.hub .hub-row .hub-building.small { margin-left: 24px; }
+
+.hub .hub-bottom {
+  position: relative; z-index: 5; flex: none;
+  display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 0 20px;
+}
+.hub .hub-bottom .hub-dock { position: relative; left: auto; bottom: auto; transform: none; }
+.hub .hub-bottom .hub-adventure { position: relative; left: auto; right: auto; bottom: auto; align-self: stretch; }
+
+/* ==========================================================================
+   ROUTE DES DÉFIS : une étape par mode de jeu le long de la route
+   ========================================================================== */
+.modes-viewport { background: #d7a473; }
+.modes-viewport .view-bar { justify-content: center; }
+.modes-list {
+  position: relative; z-index: 2; flex: 1 1 0; min-height: 0;
+  display: flex; flex-direction: column; justify-content: space-evenly; padding: 0 4px;
+}
+.mode-stop {
+  display: flex; align-items: center; gap: 12px; max-width: 520px;
+  background: none; border: none; padding: 0; cursor: pointer; text-align: left;
+  transition: transform .18s cubic-bezier(.3, 1.6, .5, 1);
+}
+.mode-stop:nth-child(odd) { align-self: flex-end; flex-direction: row-reverse; text-align: right; }
+.mode-stop:nth-child(even) { align-self: flex-start; }
+.mode-stop:not(.locked):hover { transform: translateY(-6px) scale(1.03); }
+.mode-stop:not(.locked):active { transform: translateY(2px) scale(.98); }
+.mode-marker {
+  flex: none; width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--mode-color, var(--red)); color: #f7ecdc;
+  border: var(--outline-thick); box-shadow: 0 5px 0 var(--ink), inset 0 -6px 0 rgba(0, 0, 0, .15), inset 0 5px 0 rgba(255, 255, 255, .45);
+}
+.mode-stop:not(.locked) .mode-marker { animation: pin-pulse 1.4s ease-in-out infinite; }
+.mode-card {
+  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+  background: var(--paper); border: var(--outline-thick); border-radius: 18px; box-shadow: var(--pop);
+  padding: 10px 18px;
+}
+.mode-name { font-family: var(--font-title); font-size: 26px; color: var(--ink); text-transform: uppercase; line-height: 1.05; }
+.mode-desc { font-weight: 800; font-size: 15px; color: var(--ink-soft); }
+.mode-stop.locked { cursor: not-allowed; }
+.mode-stop.locked .mode-marker { background: #99999a; color: var(--ink); }
+.mode-stop.locked .mode-card { background: #d5d1d1; }
+.mode-stop.locked .mode-name { color: #6a686e; }
+.modes-back { margin-bottom: 6px; }
+
+/* ==========================================================================
+   Sprites d'objets Pokémon (Art.item) et étoiles (Art.stars) à la place des emojis
+   ========================================================================== */
+.item-ico { display: inline-block; vertical-align: middle; object-fit: contain; image-rendering: pixelated; flex: none; }
+.art-stars { display: inline-flex; gap: 1px; vertical-align: middle; }
+.art-star { display: block; }
+.tab-btn .item-ico, .tab-btn .art-stars, .shop-pockets .item-ico, .shop-tab .item-ico { margin-right: 4px; }
+.booster-emoji .item-ico { width: 32px; height: 32px; }

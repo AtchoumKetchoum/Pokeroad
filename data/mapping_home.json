@@ -1,0 +1,21 @@
+{
+  "mapName": "home",
+  "dimensions": { "width": 1024, "height": 512 },
+  "layers": {
+    "walkable": [
+      { "type": "path", "bounds": { "x": 440, "y": 280, "w": 140, "h": 232 } },
+      { "type": "grass_field", "bounds": { "x": 100, "y": 100, "w": 824, "h": 400 } }
+    ],
+    "collisions": [
+      { "name": "building", "x": 440, "y": 300, "w": 145, "h": 100 },
+      { "name": "cliffs_left", "x": 0, "y": 0, "w": 150, "h": 512 },
+      { "name": "cliffs_right", "x": 870, "y": 0, "w": 154, "h": 512 },
+      { "name": "forest_top", "x": 0, "y": 0, "w": 1024, "h": 120 }
+    ],
+    "trigger_zones": [
+      { "name": "wild_grass_1", "x": 150, "y": 350, "w": 120, "h": 80 },
+      { "name": "wild_grass_2", "x": 750, "y": 180, "w": 120, "h": 100 },
+      { "name": "pc_entrance", "x": 490, "y": 400, "w": 40, "h": 20, "target": "center_interior" }
+    ]
+  }
+}

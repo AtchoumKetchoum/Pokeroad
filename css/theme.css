@@ -1,0 +1,266 @@
+/* ==========================================================================
+   theme.css — Charte « anime vif, esprit Pokémon » (sans images bitmap)
+   Chargé en dernier : il redéfinit l'apparence de toutes les vues.
+   ========================================================================== */
+
+:root {
+  --ink: #2b2433;
+  --ink-soft: #4d4456;
+  --paper: #f6ecd9;
+  --paper-2: #efdfc2;
+  --red: #bc4640;
+  --red-dark: #963a34;
+  --yellow: #c6a437;
+  --yellow-dark: #a2832f;
+  --blue: #60629e;
+  --blue-light: #77a6c9;
+  --green: #68a25f;
+  --green-dark: #517a48;
+  --orange: #d18857;
+  --pink: #d87b9b;
+  --sky: #8cb7ce;
+
+  --outline: 3px solid var(--ink);
+  --outline-thick: 4px solid var(--ink);
+  --pop: 0 5px 0 var(--ink);
+  --pop-sm: 0 3px 0 var(--ink);
+  --radius: 18px;
+  --radius-sm: 12px;
+
+  --font-title: 'Lilita One', 'Arial Black', sans-serif;
+  --font-body: 'Nunito', 'Segoe UI', sans-serif;
+  --font-pixel: var(--font-body); /* ancienne police pixel remplacée partout */
+
+  /* Couleurs officielles des types */
+  --t-normal: #a8a878; --t-fire: #f08030; --t-water: #6890f0; --t-electric: #f8d030;
+  --t-grass: #78c850; --t-ice: #98d8d8; --t-fighting: #c03028; --t-poison: #a040a0;
+  --t-ground: #e0c068; --t-flying: #a890f0; --t-psychic: #f85888; --t-bug: #a8b820;
+  --t-rock: #b8a038; --t-ghost: #705898; --t-dragon: #7038f8; --t-dark: #705848;
+  --t-steel: #b8b8d0; --t-fairy: #ee99ac; --t-shadow: #4a3b6b;
+}
+
+html, body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+#game-screen { background: radial-gradient(circle at 50% 40%, #49475c, var(--ink)) !important; }
+
+h1, h2, h3, h4, .art-title {
+  font-family: var(--font-title);
+  font-weight: 400;
+  letter-spacing: .5px;
+}
+
+/* Toutes les vues sont désormais des scènes dessinées : fonds bitmap supprimés */
+.scaler-view { background-image: none !important; background-color: #95bad0; }
+
+.art-scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 0; }
+.scene-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+
+/* Motif « trame » façon manga */
+.halftone {
+  background-image: radial-gradient(rgba(255, 255, 255, .22) 2px, transparent 2.5px);
+  background-size: 16px 16px;
+}
+
+/* ---------- Boutons ---------- */
+.pk-btn-action, .btn-pop {
+  font-family: var(--font-title) !important;
+  font-size: 18px;
+  letter-spacing: .6px;
+  color: var(--ink) !important;
+  background: linear-gradient(180deg, #d7be70 0%, var(--yellow) 55%, #bb9735 100%) !important;
+  border: var(--outline) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--pop), inset 0 -4px 0 rgba(0, 0, 0, .12), inset 0 3px 0 rgba(255, 255, 255, .55) !important;
+  padding: 10px 20px !important;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform .08s ease, box-shadow .08s ease, filter .15s;
+  text-shadow: none !important;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.pk-btn-action:hover, .btn-pop:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.pk-btn-action:active, .btn-pop:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink), inset 0 -2px 0 rgba(0, 0, 0, .12) !important; }
+.pk-btn-action:disabled, .btn-pop:disabled { filter: grayscale(.9) brightness(.95); opacity: .65; cursor: not-allowed; transform: none; }
+.pk-btn-action.small { font-size: 14px; padding: 6px 12px !important; border-radius: 11px !important; box-shadow: var(--pop-sm) !important; }
+.pk-btn-action.danger-btn, .btn-pop.red { background: linear-gradient(180deg, #d56f69, var(--red) 60%, var(--red-dark)) !important; color: #f7ecdc !important; }
+.btn-pop.blue { background: linear-gradient(180deg, #89b7cd, var(--blue-light) 50%, #5987ad) !important; }
+.btn-pop.green { background: linear-gradient(180deg, #95c389, var(--green) 60%, var(--green-dark)) !important; color: #f7ecdc !important; }
+
+/* Bouton rond « Poké Ball » (retour accueil, paramètres) */
+.exit-btn, #settings-btn, .round-btn {
+  width: 58px !important; height: 58px !important;
+  border-radius: 50% !important;
+  border: var(--outline-thick) !important;
+  background: linear-gradient(180deg, #d56f69 0 47%, var(--ink) 47% 53%, #f7ecdc 53%) !important;
+  box-shadow: var(--pop) !important;
+  display: grid !important; place-items: center;
+  cursor: pointer; padding: 0 !important;
+  color: var(--ink) !important;
+  font-size: 0 !important;
+}
+:where(.exit-btn, #settings-btn, .round-btn) { position: relative; }
+.exit-btn::after, #settings-btn::after, .round-btn::after {
+  content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%;
+  background: #f7ecdc; border: 4px solid var(--ink); box-sizing: border-box;
+}
+.exit-btn > *, #settings-btn > *, .round-btn > * { display: none; }
+.exit-btn:active, #settings-btn:active, .round-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink) !important; }
+
+/* ---------- Fenêtres modales ---------- */
+.modal {
+  background: rgba(27, 31, 59, .55) !important;
+  backdrop-filter: blur(4px);
+}
+.modal-content {
+  background: var(--paper) !important;
+  border: var(--outline-thick) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 10px 0 var(--ink), 0 30px 60px rgba(0, 0, 0, .35) !important;
+  color: var(--ink) !important;
+  position: relative;
+  overflow: hidden auto;
+  padding-top: 70px !important;
+}
+.modal-content::before {
+  content: '';
+  position: absolute; left: 0; right: 0; top: 0; height: 52px;
+  background: var(--red);
+  border-bottom: var(--outline-thick);
+  background-image: radial-gradient(rgba(255, 255, 255, .25) 2px, transparent 2.5px);
+  background-size: 14px 14px;
+}
+.modal-content > h2:first-of-type, .modal-content .modal-header h2 {
+  position: absolute; top: 9px; left: 24px; margin: 0 !important;
+  color: #f7ecdc !important; font-size: 26px !important;
+  text-shadow: 0 3px 0 var(--ink), 2px 0 0 var(--ink), -2px 0 0 var(--ink), 0 -2px 0 var(--ink) !important;
+  z-index: 1; text-transform: uppercase;
+}
+.modal-content .modal-header { position: static !important; }
+.close-btn {
+  position: absolute !important; top: 8px !important; right: 12px !important;
+  width: 38px !important; height: 38px !important; border-radius: 50% !important;
+  background: #f7ecdc !important; color: var(--ink) !important;
+  border: var(--outline) !important; box-shadow: var(--pop-sm) !important;
+  display: grid !important; place-items: center !important;
+  font-size: 26px !important; line-height: 1 !important; font-weight: 900;
+  cursor: pointer; z-index: 2; padding: 0 !important;
+}
+.close-btn:active { transform: translateY(3px); box-shadow: none !important; }
+
+/* ---------- Badges de type ---------- */
+.chip, .type-badge {
+  font-family: var(--font-title) !important;
+  font-weight: 400 !important;
+  color: #f7ecdc !important;
+  border: 2.5px solid var(--ink) !important;
+  border-radius: 999px !important;
+  padding: 2px 10px !important;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .35);
+  box-shadow: 0 2px 0 var(--ink);
+  font-size: 13px !important;
+  letter-spacing: .4px;
+}
+.chip.type-normal, .type-badge.type-normal { background: var(--t-normal) !important; }
+.chip.type-fire, .type-badge.type-fire { background: var(--t-fire) !important; }
+.chip.type-water, .type-badge.type-water { background: var(--t-water) !important; }
+.chip.type-electric, .type-badge.type-electric { background: var(--t-electric) !important; color: var(--ink) !important; text-shadow: none; }
+.chip.type-grass, .type-badge.type-grass { background: var(--t-grass) !important; }
+.chip.type-ice, .type-badge.type-ice { background: var(--t-ice) !important; color: var(--ink) !important; text-shadow: none; }
+.chip.type-fighting, .type-badge.type-fighting { background: var(--t-fighting) !important; }
+.chip.type-poison, .type-badge.type-poison { background: var(--t-poison) !important; }
+.chip.type-ground, .type-badge.type-ground { background: var(--t-ground) !important; color: var(--ink) !important; text-shadow: none; }
+.chip.type-flying, .type-badge.type-flying { background: var(--t-flying) !important; }
+.chip.type-psychic, .type-badge.type-psychic { background: var(--t-psychic) !important; }
+.chip.type-bug, .type-badge.type-bug { background: var(--t-bug) !important; }
+.chip.type-rock, .type-badge.type-rock { background: var(--t-rock) !important; }
+.chip.type-ghost, .type-badge.type-ghost { background: var(--t-ghost) !important; }
+.chip.type-dragon, .type-badge.type-dragon { background: var(--t-dragon) !important; }
+.chip.type-dark, .type-badge.type-dark { background: var(--t-dark) !important; }
+.chip.type-steel, .type-badge.type-steel { background: var(--t-steel) !important; color: var(--ink) !important; text-shadow: none; }
+.chip.type-fairy, .type-badge.type-fairy { background: var(--t-fairy) !important; }
+.chip.type-shadow, .type-badge.type-shadow { background: var(--t-shadow) !important; }
+
+/* ---------- Pastilles de notification ---------- */
+.notification-badge {
+  position: absolute; top: -8px; right: -8px;
+  min-width: 26px; height: 26px; padding: 0 6px;
+  border-radius: 999px; background: var(--red); color: #f7ecdc;
+  border: 3px solid var(--ink);
+  font-family: var(--font-title); font-size: 14px;
+  display: grid; place-items: center;
+  box-shadow: 0 2px 0 var(--ink);
+  animation: badge-pop 1.6s ease-in-out infinite;
+  z-index: 3;
+}
+@keyframes badge-pop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+/* ---------- Panneaux / cartes génériques ---------- */
+.panel-pop {
+  background: var(--paper);
+  border: var(--outline-thick);
+  border-radius: var(--radius);
+  box-shadow: var(--pop);
+}
+
+.art-icon { display: block; flex: none; }
+.art-egg, .art-incubator, .art-trainer, .art-pokeball { display: block; }
+
+/* ---------- Notifications en jeu (remplacent alert) ---------- */
+#toast-stack {
+  position: fixed; left: 50%; top: 18px; transform: translateX(-50%);
+  display: flex; flex-direction: column; gap: 10px; align-items: center;
+  z-index: 30000; pointer-events: none; width: min(560px, 92vw);
+}
+.toast {
+  pointer-events: auto;
+  background: var(--paper); color: var(--ink);
+  border: var(--outline-thick); border-radius: 16px; box-shadow: var(--pop);
+  padding: 12px 18px 12px 14px; font-weight: 800; font-size: 16px;
+  display: flex; gap: 12px; align-items: center; width: 100%; box-sizing: border-box;
+  animation: toast-in .25s cubic-bezier(.2, 1.4, .4, 1) both;
+  white-space: pre-line;
+}
+.toast .toast-icon { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 3px solid var(--ink); flex: none; color: #f7ecdc; }
+.toast.success .toast-icon { background: var(--green); }
+.toast.error .toast-icon { background: var(--red); }
+.toast.info .toast-icon { background: var(--blue-light); }
+.toast.leaving { animation: toast-out .2s ease-in forwards; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(-16px) scale(.9); } }
+@keyframes toast-out { to { opacity: 0; transform: translateY(-12px) scale(.95); } }
+
+/* Boîte de confirmation (remplace confirm) */
+#confirm-modal { display: none; position: fixed; inset: 0; z-index: 30001; place-items: center; background: rgba(27, 31, 59, .6); }
+#confirm-modal.open { display: grid; }
+#confirm-modal .modal-content { width: min(480px, 90vw); padding: 70px 24px 22px !important; text-align: center; font-weight: 700; font-size: 17px; }
+#confirm-modal .confirm-actions { display: flex; gap: 14px; justify-content: center; margin-top: 20px; }
+
+/* Barres de défilement assorties */
+* { scrollbar-width: thin; scrollbar-color: var(--ink-soft) transparent; }
+
+/* ---------- Écran titre ---------- */
+.title-screen {
+  position: fixed; inset: 0; z-index: 10000; cursor: pointer;
+  flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  background: var(--sky); overflow: hidden;
+}
+.title-screen .title-scene { position: absolute; inset: 0; }
+.title-screen .title-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.title-screen .title-ball { animation: hub-spin 8s linear infinite; filter: drop-shadow(0 8px 0 var(--ink)); width: min(120px, 22vh); }
+.title-screen .title-ball svg { width: 100%; height: auto; }
+.title-screen .title-logo {
+  margin: 4px 0 0; font-size: min(96px, 18vh); line-height: 1; color: var(--yellow);
+  -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; text-shadow: 0 8px 0 var(--ink);
+  transform: rotate(-3deg);
+}
+.title-screen .title-logo span { color: #f7ecdc; }
+.title-screen .title-tap {
+  margin-top: 14px; font-family: var(--font-title); font-size: min(30px, 6.5vh); color: #f7ecdc; text-transform: uppercase;
+  background: var(--red); border: var(--outline-thick); border-radius: 999px; padding: 6px 26px; box-shadow: var(--pop);
+  animation: hub-breathe 1.4s ease-in-out infinite;
+}
+.title-screen .title-hint { font-weight: 800; color: var(--ink); background: rgba(255, 255, 255, .8); border-radius: 999px; padding: 2px 12px; margin-top: 8px; }
