@@ -83,13 +83,13 @@ function renderMap() {
     const toPoint = z => `${z.x * MAP_W / 100},${z.y * MAP_H / 100}`;
     const points = PHASE_1_ZONES.map(toPoint);
     const reached = PHASE_1_ZONES.slice(0, Math.min(PHASE_1_ZONES.length, currentZone + 1)).map(toPoint);
-    mapContainer.innerHTML = Art.mute(mapBackground() + `
+    mapContainer.innerHTML = Art.thin(Art.mute(mapBackground() + `
         <svg class="map-route" viewBox="0 0 ${MAP_W} ${MAP_H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <polyline points="${points.join(' ')}" fill="none" stroke="#1b1f3b" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity=".25"/>
             <polyline points="${points.join(' ')}" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="2 16" stroke-linecap="round"/>
             <polyline points="${reached.join(' ')}" fill="none" stroke="#ffcb05" stroke-width="8" stroke-dasharray="2 16" stroke-linecap="round"/>
-        </svg>`);
-    mapContainer.querySelectorAll('svg').forEach(svg => Art.pixelate(svg, 4));
+        </svg>`));
+    mapContainer.querySelectorAll('svg').forEach(svg => Art.pixelate(svg, 1));
 
     PHASE_1_ZONES.forEach((zone, index) => {
         const isVillage = index === 0;
@@ -114,7 +114,7 @@ function renderMap() {
             <span class="pin-marker">${badge}</span>
             <span class="pin-name">${zone.name}</span>`;
 
-        if (isUnlocked && !isVillage) pin.onclick = () => launchBattle(index);
+        if (isUnlocked && !isVillage) pin.onclick = () => openZone(index); // carte de la zone, puis combat
         else if (isVillage) pin.onclick = () => goBack();
         else pin.disabled = true;
 

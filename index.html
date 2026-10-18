@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="css/gba.css">
     <link rel="stylesheet" href="css/epic.css">
     <link rel="stylesheet" href="css/portrait.css">
+    <link rel="stylesheet" href="css/ambient.css">
+    <link rel="stylesheet" href="css/zonemap.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/readability.css">
 
@@ -62,6 +64,7 @@
             <div id="view-home" class="spa-view active">
                 <div class="scaler-view home-viewport hub">
                     <div class="scene-layer" data-scene="town" data-path="1"></div>
+                    <div class="ambient-layer" data-ambient="town"></div>
 
                     <!-- Haut : HUD dresseur, paramètres, puis la pilule de mission -->
                     <header class="hub-top">
@@ -75,14 +78,7 @@
                             </div>
                             <button class="round-btn hub-settings" id="settings-btn" onclick="openSettings()" title="Paramètres"><span>Paramètres</span></button>
                         </div>
-                        <button id="mission-btn" class="hub-mission panel-pop" onclick="openMissionModal()">
-                            <span class="hub-mission-icon" data-icon="scroll"></span>
-                            <span class="mission-hud-content">
-                                <span id="mission-btn-label">Missions</span>
-                                <span id="mission-btn-timer" class="timer-mini"></span>
-                            </span>
-                            <span id="mission-btn-team-preview" class="team-preview-mini"></span>
-                        </button>
+                        <!-- Les missions (minuteur, mission terminée) s'affichent en pastille sur le bâtiment Missions -->
                     </header>
 
                     <!-- Bâtiments du bourg, de part et d'autre de la route -->
@@ -220,7 +216,7 @@
                                 <button class="speed-btn" data-speed="2" onclick="setBattleSpeed(2)">x2</button>
                                 <button class="speed-btn" data-speed="4" onclick="setBattleSpeed(4)">x4</button>
                             </div>
-                            <button class="exit-btn" id="home-flee-btn" onclick="ViewManager.show('home')"><span>Accueil</span></button>
+                            <button class="exit-btn" id="home-flee-btn" onclick="leaveBattleToHome()" title="Retour à la carte de la zone"><span>Carte</span></button>
                         </div>
                     </div>
                     <div id="battleArena">
@@ -355,6 +351,22 @@
                 <div class="scaler-view worldmap-viewport">
                     <div class="map-header"><button class="exit-btn" onclick="ViewManager.show('home')" title="Retour au bourg"><span>Retour</span></button><div class="map-title">Carte</div></div>
                     <div id="map-container"></div>
+                    <div class="ambient-layer" data-ambient="map"></div>
+                </div>
+            </div>
+
+            <!-- VIEW: CARTE D'UNE ZONE (décor du biome, 10 vagues, boss) -->
+            <div id="view-zone" class="spa-view">
+                <div class="scaler-view zone-viewport">
+                    <div class="scene-layer" id="zone-scene" data-scene="plains" data-high="1"></div>
+                    <div class="zone-path" id="zone-path"></div>
+                    <div class="ambient-layer" id="zone-ambient"></div>
+                    <div class="map-header"><button class="exit-btn" onclick="ViewManager.show('worldmap')" title="Retour à la carte"><span>Retour</span></button><div class="map-title" id="zone-title"></div></div>
+                    <div id="zone-nodes"></div>
+                    <button id="zone-go" class="zone-go">
+                        <span class="zone-go-ball" data-pokeball="1" data-size="54"></span>
+                        <span class="zone-go-text"><span class="zone-go-main">Combattre</span><span class="zone-go-sub"></span></span>
+                    </button>
                 </div>
             </div>
 
@@ -362,6 +374,7 @@
             <div id="view-modes" class="spa-view">
                 <div class="scaler-view modes-viewport view-flex">
                     <div class="scene-layer" data-scene="route" data-path="1"></div>
+                    <div class="ambient-layer" data-ambient="route"></div>
                     <header class="view-bar">
                         <div class="view-title"><span class="view-title-icon" style="background: var(--orange)" data-icon="map"></span>Route des Défis</div>
                     </header>
@@ -438,7 +451,9 @@
     <script src="js/labo.js"></script>
     <script src="js/center.js"></script>
     <script src="js/worldmap.js"></script>
+    <script src="js/zonemap.js"></script>
     <script src="js/modes.js"></script>
+    <script src="js/ambient.js"></script>
     <script src="js/home.js"></script>
     <script src="js/mobile-manager.js"></script>
     <script src="js/view-manager.js"></script>

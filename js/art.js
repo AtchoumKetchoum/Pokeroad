@@ -128,64 +128,201 @@ const Art = (() => {
         const s = `stroke="${INK}" stroke-width="4" stroke-linejoin="round"`;
         const win = (x, y, w = 26, h = 22) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="#bfe7ff" ${s}/><path d="M${x + 5} ${y + 5}l8 0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
         const shadow = `<ellipse cx="110" cy="196" rx="100" ry="10" fill="${INK}" opacity=".2"/>`;
+        // Outils du style détaillé : dégradés, tuiles, vitres avec reflets, plantes en pot
+        const vGrad = (id, top, bottom, mid) => `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${top}"/>${mid ? `<stop offset=".55" stop-color="${mid}"/>` : ''}<stop offset="1" stop-color="${bottom}"/></linearGradient>`;
+        const glassGrad = (id) => `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dff5ff"/><stop offset=".55" stop-color="#8fd2f2"/><stop offset="1" stop-color="#5aa0cf"/></linearGradient>`;
+        const tilePattern = (id, color) => `<pattern id="${id}" width="12" height="8" patternUnits="userSpaceOnUse"><path d="M0 7.5h12M6 0v7.5" stroke="${color}" stroke-width="1.2" opacity=".35"/></pattern>`;
+        const pane = (gid, x, y, w, h) => { const k = Math.min(w, h); return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="url(#${gid})" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M${x + 5} ${y + h - 6}l${k * .45} -${k * .45}M${x + 5} ${y + h - 15}l${k * .25} -${k * .25}" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>`; };
+        const potPlant = (x) => { const o = `stroke="${INK}" stroke-width="3" stroke-linejoin="round"`; return `<rect x="${x - 7}" y="166" width="14" height="12" rx="2" fill="#c8814f" ${o}/>
+            <circle cx="${x - 5}" cy="161" r="7" fill="#4f9a4a" ${o}/><circle cx="${x + 5}" cy="160" r="7" fill="#5fae4a" ${o}/><circle cx="${x}" cy="153" r="7" fill="#6cc463" ${o}/>`; };
+        const groundShadow = `<ellipse cx="110" cy="197" rx="104" ry="8" fill="${INK}" opacity=".18"/>`;
         switch (kind) {
-            case 'center': return `<svg viewBox="0 0 220 205" class="art-building">${shadow}
-                <rect x="22" y="78" width="176" height="112" rx="6" fill="#fff6ee" ${s}/>
-                <path d="M10 84 110 22l100 62z" fill="#ee1515" ${s}/>
-                <path d="M40 66h140" stroke="#ff6b6b" stroke-width="5" stroke-linecap="round"/>
-                <rect x="88" y="128" width="44" height="62" rx="5" fill="#ffcb05" ${s}/><path d="M110 128v62" stroke="${INK}" stroke-width="3"/>
-                ${win(38, 104)}${win(156, 104)}
-                <g transform="translate(92 74)"><circle cx="18" cy="18" r="17" fill="#fff" ${s}/><path d="M1 18a17 17 0 0 1 34 0z" fill="#ee1515" ${s}/><circle cx="18" cy="18" r="5" fill="#fff" ${s}/></g>
+            // Centre Pokémon, version détaillée (essai de nouveau style) : dégradés, tuiles, vitres et portes coulissantes
+            case 'center': {
+                const g = nextId('pc');
+                const o = `stroke="${INK}" stroke-width="3" stroke-linejoin="round"`;
+                const glass = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="url(#${g}-glass)" ${o}/>
+                    <path d="M${x + 5} ${y + h - 6}l${Math.min(w, h) * .45} -${Math.min(w, h) * .45}M${x + 5} ${y + h - 15}l${Math.min(w, h) * .25} -${Math.min(w, h) * .25}" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>`;
+                const plant = (x) => `<rect x="${x - 7}" y="166" width="14" height="12" rx="2" fill="#c8814f" ${o}/>
+                    <circle cx="${x - 5}" cy="161" r="7" fill="#4f9a4a" ${o}/><circle cx="${x + 5}" cy="160" r="7" fill="#5fae4a" ${o}/><circle cx="${x}" cy="153" r="7" fill="#6cc463" ${o}/>`;
+                return `<svg viewBox="0 0 220 205" class="art-building">
+                <defs>
+                    <linearGradient id="${g}-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffaf3"/><stop offset="1" stop-color="#e6d6c2"/></linearGradient>
+                    <linearGradient id="${g}-roof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6a5e"/><stop offset=".55" stop-color="#e2302a"/><stop offset="1" stop-color="#b01d1a"/></linearGradient>
+                    <linearGradient id="${g}-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dff5ff"/><stop offset=".55" stop-color="#8fd2f2"/><stop offset="1" stop-color="#5aa0cf"/></linearGradient>
+                    <pattern id="${g}-tiles" width="12" height="8" patternUnits="userSpaceOnUse"><path d="M0 7.5h12M6 0v7.5" stroke="#8e1613" stroke-width="1.2" opacity=".35"/></pattern>
+                </defs>
+                <ellipse cx="110" cy="197" rx="104" ry="8" fill="${INK}" opacity=".18"/>
+                <rect x="20" y="88" width="180" height="102" rx="3" fill="url(#${g}-wall)" ${o}/>
+                <rect x="20" y="176" width="180" height="14" fill="#cdb79e" ${o}/>
+                <path d="M20 112h180" stroke="#d9c8b2" stroke-width="2"/>
+                <path d="M8 94Q11 62 40 54H180Q209 62 212 94Z" fill="url(#${g}-roof)" ${o}/>
+                <path d="M8 94Q11 62 40 54H180Q209 62 212 94Z" fill="url(#${g}-tiles)"/>
+                <path d="M26 66Q110 56 194 66" stroke="#ff9d92" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+                <rect x="8" y="92" width="204" height="7" rx="2" fill="#8c1916" ${o}/>
+                <path d="M62 56Q64 26 110 22Q156 26 158 56Z" fill="url(#${g}-roof)" ${o}/>
+                <path d="M62 56Q64 26 110 22Q156 26 158 56Z" fill="url(#${g}-tiles)"/>
+                <path d="M78 34Q110 26 142 34" stroke="#ff9d92" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+                <g transform="translate(110 54)">
+                    <circle r="17" fill="#ffffff" ${o}/><path d="M-17 0a17 17 0 0 1 34 0z" fill="#e2302a" ${o}/>
+                    <path d="M-17 0h34" stroke="${INK}" stroke-width="3"/><circle r="6" fill="#ffffff" ${o}/><circle r="2.5" fill="#e6d6c2"/>
+                    <path d="M-10 -9a12 12 0 0 1 8-4" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>
+                </g>
+                ${glass(30, 118, 44, 34)}<path d="M52 118v34M30 135h44" stroke="${INK}" stroke-width="2"/>
+                ${glass(146, 118, 44, 34)}<path d="M168 118v34M146 135h44" stroke="${INK}" stroke-width="2"/>
+                <rect x="86" y="101" width="48" height="13" rx="3" fill="#ffffff" ${o}/>
+                <text x="110" y="111.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="11" fill="#e2302a">P.C</text>
+                <rect x="84" y="118" width="52" height="58" rx="2" fill="#7b8797" ${o}/>
+                ${glass(88, 122, 21, 54)}${glass(111, 122, 21, 54)}
+                <rect x="80" y="176" width="60" height="6" rx="1" fill="#9c7a58" ${o}/>
+                ${plant(12)}${plant(208)}
             </svg>`;
-            case 'labo': return `<svg viewBox="0 0 220 205" class="art-building">${shadow}
-                <rect x="18" y="86" width="184" height="104" rx="6" fill="#eef3ff" ${s}/>
-                <path d="M60 86a50 46 0 0 1 100 0z" fill="#7ed3ff" ${s}/>
-                <path d="M78 70a32 30 0 0 1 22-20" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/>
-                <path d="M110 40V14" ${s}/><circle cx="110" cy="12" r="7" fill="#ffcb05" ${s}/>
-                <rect x="10" y="80" width="200" height="14" rx="4" fill="#3b4cca" ${s}/>
-                <rect x="90" y="132" width="40" height="58" rx="4" fill="#9aa4b2" ${s}/><path d="M110 132v58" stroke="${INK}" stroke-width="3"/>
-                ${win(30, 110, 44)}${win(146, 110, 44)}
+            }
+            // --- Bâtiments détaillés (même style que le Centre Pokémon) ---
+            case 'labo': {
+                const g = nextId('lab');
+                const o = `stroke="${INK}" stroke-width="3" stroke-linejoin="round"`;
+                return `<svg viewBox="0 0 220 205" class="art-building">
+                <defs>
+                    ${vGrad(`${g}-wall`, '#f6f9fd', '#d3dbe8')}${vGrad(`${g}-roof`, '#7d93e0', '#2f43b8', '#4a5fd0')}
+                    <linearGradient id="${g}-dome" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3f6ff"/><stop offset=".5" stop-color="#9ad6f4"/><stop offset="1" stop-color="#5b9fd0"/></linearGradient>
+                    ${glassGrad(`${g}-glass`)}
+                </defs>
+                ${groundShadow}
+                <rect x="18" y="96" width="184" height="94" rx="3" fill="url(#${g}-wall)" ${o}/>
+                <rect x="18" y="176" width="184" height="14" fill="#b8c1cf" ${o}/>
+                <path d="M18 120h184" stroke="#c9d2df" stroke-width="2"/>
+                <rect x="52" y="82" width="116" height="10" rx="2" fill="#9aa4b2" ${o}/>
+                <path d="M60 84A50 48 0 0 1 160 84Z" fill="url(#${g}-dome)" ${o}/>
+                <path d="M110 36v48M84 46q-6 18-4 38M136 46q6 18 4 38M64 72h92" stroke="#5b9fd0" stroke-width="2" fill="none" opacity=".8"/>
+                <path d="M78 58a36 30 0 0 1 22-16" stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".85"/>
+                <path d="M110 36V16" ${o}/><circle cx="110" cy="13" r="6" fill="#e8b64c" ${o}/>
+                <rect x="10" y="90" width="200" height="12" rx="3" fill="url(#${g}-roof)" ${o}/>
+                <rect x="10" y="100" width="200" height="4" fill="#24318f"/>
+                ${pane(`${g}-glass`, 28, 126, 50, 34)}<path d="M53 126v34" stroke="${INK}" stroke-width="2"/>
+                ${pane(`${g}-glass`, 142, 126, 50, 34)}<path d="M167 126v34" stroke="${INK}" stroke-width="2"/>
+                <rect x="84" y="107" width="52" height="14" rx="3" fill="#ffffff" ${o}/>
+                <text x="110" y="118" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="10.5" fill="#3b4cca">LABO</text>
+                <rect x="86" y="124" width="48" height="52" rx="2" fill="#7b8797" ${o}/>
+                ${pane(`${g}-glass`, 90, 128, 19, 48)}${pane(`${g}-glass`, 111, 128, 19, 48)}
+                <rect x="82" y="176" width="56" height="6" rx="1" fill="#8b95ad" ${o}/>
+                ${potPlant(12)}${potPlant(208)}
             </svg>`;
-            case 'atelier': return `<svg viewBox="0 0 220 205" class="art-building">${shadow}
-                <rect x="30" y="90" width="160" height="100" rx="6" fill="#ffe9c7" ${s}/>
-                <path d="M18 96 70 46h80l52 50z" fill="#c8662a" ${s}/>
-                <rect x="150" y="26" width="22" height="44" rx="3" fill="#8b5a3c" ${s}/>
-                <circle cx="166" cy="16" r="6" fill="#d7dbe4" opacity=".9"/><circle cx="176" cy="6" r="4" fill="#d7dbe4" opacity=".7"/>
-                <rect x="84" y="128" width="52" height="62" rx="5" fill="#8b5a3c" ${s}/>
-                <g transform="translate(110 72)"><circle r="16" fill="#ffcb05" ${s}/><circle r="5" fill="#fff" stroke="${INK}" stroke-width="3"/></g>
-                ${win(44, 116)}${win(150, 116)}
+            }
+            case 'shop': {
+                const g = nextId('mart');
+                const o = `stroke="${INK}" stroke-width="3" stroke-linejoin="round"`;
+                const shelf = (x) => `<path d="M${x + 4} 132h38M${x + 4} 144h38" stroke="#5a86b8" stroke-width="2"/>
+                    ${[0, 1, 2, 3].map(i => `<rect x="${x + 6 + i * 9}" y="125" width="6" height="7" rx="1" fill="${['#e2302a', '#e8b64c', '#6cc463', '#e9a3b4'][i]}"/><rect x="${x + 8 + i * 9}" y="137" width="6" height="7" rx="1" fill="${['#6cc463', '#e9a3b4', '#e2302a', '#e8b64c'][i]}"/>`).join('')}`;
+                return `<svg viewBox="0 0 220 205" class="art-building">
+                <defs>
+                    ${vGrad(`${g}-wall`, '#f6fbff', '#d6e4f0')}${vGrad(`${g}-roof`, '#7db0f3', '#2556a8', '#3a78dc')}
+                    ${tilePattern(`${g}-tiles`, '#1d4687')}${glassGrad(`${g}-glass`)}
+                    <pattern id="${g}-stripes" width="24" height="16" patternUnits="userSpaceOnUse"><rect width="12" height="16" fill="#3a78dc"/><rect x="12" width="12" height="16" fill="#f7fbff"/></pattern>
+                </defs>
+                ${groundShadow}
+                <rect x="22" y="94" width="176" height="96" rx="3" fill="url(#${g}-wall)" ${o}/>
+                <rect x="22" y="176" width="176" height="14" fill="#a9bccd" ${o}/>
+                <path d="M14 98L34 52H186L206 98Z" fill="url(#${g}-roof)" ${o}/>
+                <path d="M14 98L34 52H186L206 98Z" fill="url(#${g}-tiles)"/>
+                <path d="M38 60H182" stroke="#a9cdf8" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+                <rect x="66" y="60" width="88" height="26" rx="4" fill="#ffffff" ${o}/>
+                <text x="110" y="80" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" fill="#2f6fd6">MART</text>
+                <path d="M12 98h196v14H12z" fill="url(#${g}-stripes)" ${o}/>
+                <path d="M12 112${[...Array(14)].map((_, i) => `q7 9 14 0`).join('')}" fill="#3a78dc" ${o}/>
+                ${pane(`${g}-glass`, 28, 120, 50, 40)}${shelf(30)}
+                ${pane(`${g}-glass`, 142, 120, 50, 40)}${shelf(144)}
+                <rect x="86" y="124" width="48" height="52" rx="2" fill="#7b8797" ${o}/>
+                ${pane(`${g}-glass`, 90, 128, 19, 48)}${pane(`${g}-glass`, 111, 128, 19, 48)}
+                <rect x="82" y="176" width="56" height="6" rx="1" fill="#8b95ad" ${o}/>
+                <rect x="190" y="160" width="20" height="18" rx="2" fill="#c8915f" ${o}/><path d="M190 169h20M200 160v18" stroke="${INK}" stroke-width="2"/>
+                ${potPlant(12)}
             </svg>`;
-            case 'shop': return `<svg viewBox="0 0 220 205" class="art-building">${shadow}
-                <rect x="26" y="84" width="168" height="106" rx="6" fill="#f2fbff" ${s}/>
-                <path d="M16 90 36 40h148l20 50z" fill="#2f80ed" ${s}/>
-                <path d="M16 90h188v18H16z" fill="#fff" ${s}/>
-                <path d="M16 90h24v18H16zM64 90h24v18H64zM112 90h24v18h-24zM160 90h24v18h-24z" fill="#2f80ed"/>
-                <path d="M16 90h188v18H16z" fill="none" ${s}/>
-                <rect x="88" y="128" width="44" height="62" rx="5" fill="#bfe7ff" ${s}/>
-                ${win(38, 124, 34, 28)}${win(148, 124, 34, 28)}
-                <text x="110" y="74" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="26" fill="#fff" stroke="${INK}" stroke-width="2" paint-order="stroke">MART</text>
+            }
+            case 'atelier': {
+                const g = nextId('atl');
+                const o = `stroke="${INK}" stroke-width="3" stroke-linejoin="round"`;
+                const gear = `<g transform="translate(110 76)">${[...Array(8)].map((_, i) => `<rect x="-3.5" y="-17" width="7" height="8" rx="1" fill="#e8b64c" ${o} transform="rotate(${i * 45})"/>`).join('')}
+                    <circle r="12" fill="#e8b64c" ${o}/><circle r="4.5" fill="#fff8ec" ${o}/></g>`;
+                return `<svg viewBox="0 0 220 205" class="art-building">
+                <defs>
+                    ${vGrad(`${g}-wall`, '#f6dcb4', '#d2a46e')}${vGrad(`${g}-roof`, '#ec955c', '#a4501f', '#cf6a34')}
+                    ${tilePattern(`${g}-tiles`, '#7f3a14')}${glassGrad(`${g}-glass`)}
+                    <pattern id="${g}-planks" width="16" height="10" patternUnits="userSpaceOnUse"><path d="M15.5 0v10" stroke="#a87545" stroke-width="1.5" opacity=".7"/></pattern>
+                </defs>
+                ${groundShadow}
+                <circle cx="168" cy="14" r="7" fill="#e6e1d8" opacity=".85"/><circle cx="178" cy="4" r="5" fill="#e6e1d8" opacity=".65"/>
+                <rect x="154" y="22" width="22" height="46" rx="2" fill="#a24a34" ${o}/><rect x="150" y="18" width="30" height="8" rx="2" fill="#7f3a28" ${o}/>
+                <rect x="26" y="98" width="168" height="92" rx="3" fill="url(#${g}-wall)" ${o}/>
+                <rect x="26" y="98" width="168" height="92" fill="url(#${g}-planks)"/>
+                <rect x="26" y="176" width="168" height="14" fill="#9e9a92" ${o}/>
+                <path d="M12 102L64 48H156L208 102Z" fill="url(#${g}-roof)" ${o}/>
+                <path d="M12 102L64 48H156L208 102Z" fill="url(#${g}-tiles)"/>
+                <path d="M70 56H150" stroke="#f6b386" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+                <rect x="10" y="100" width="200" height="7" rx="2" fill="#7f3a14" ${o}/>
+                ${gear}
+                <rect x="76" y="118" width="68" height="58" rx="3" fill="#a8743f" ${o}/>
+                <path d="M76 130h68M76 142h68M76 154h68M76 166h68" stroke="#7f5228" stroke-width="2"/>
+                <rect x="104" y="146" width="12" height="5" rx="2" fill="#e8b64c" ${o}/>
+                ${pane(`${g}-glass`, 34, 120, 32, 28)}<path d="M50 120v28" stroke="${INK}" stroke-width="2"/>
+                ${pane(`${g}-glass`, 154, 120, 32, 28)}<path d="M170 120v28" stroke="${INK}" stroke-width="2"/>
+                <ellipse cx="200" cy="164" rx="10" ry="4" fill="#8a5a33" ${o}/><path d="M190 164v16q10 5 20 0v-16" fill="#a8743f" ${o}/><path d="M190 172q10 4 20 0" stroke="${INK}" stroke-width="2" fill="none"/>
+                <rect x="10" y="164" width="22" height="16" rx="2" fill="#c8915f" ${o}/><path d="M10 172h22" stroke="${INK}" stroke-width="2"/>
             </svg>`;
-            case 'board': return `<svg viewBox="0 0 220 205" class="art-building">${shadow}
-                <path d="M42 70v120M178 70v120" ${s} stroke-linecap="round"/>
-                <rect x="24" y="40" width="172" height="110" rx="8" fill="#c8915f" ${s}/>
-                <rect x="40" y="56" width="62" height="40" rx="3" fill="#fffdf5" ${s} transform="rotate(-4 71 76)"/>
-                <rect x="116" y="58" width="62" height="46" rx="3" fill="#fff4c2" ${s} transform="rotate(3 147 81)"/>
-                <rect x="70" y="102" width="70" height="38" rx="3" fill="#ffe0e0" ${s}/>
-                <circle cx="71" cy="58" r="4" fill="#ee1515"/><circle cx="147" cy="60" r="4" fill="#3b4cca"/><circle cx="105" cy="104" r="4" fill="#5bc452"/>
+            }
+            case 'dojo': {
+                const g = nextId('dojo');
+                const o = `stroke="${INK}" stroke-width="3" stroke-linejoin="round"`;
+                const lantern = (x) => `<path d="M${x} 108v6" stroke="${INK}" stroke-width="2"/><ellipse cx="${x}" cy="124" rx="8" ry="11" fill="#e2302a" ${o}/>
+                    <path d="M${x - 7} 120h14M${x - 7} 128h14" stroke="#a51d19" stroke-width="1.5"/><rect x="${x - 4}" y="134" width="8" height="3" fill="${INK}"/>`;
+                return `<svg viewBox="0 0 220 205" class="art-building">
+                <defs>
+                    ${vGrad(`${g}-wall`, '#fdf6e8', '#e3d1b4')}${vGrad(`${g}-roof`, '#cf5247', '#7a1f1a', '#a83129')}
+                    ${tilePattern(`${g}-tiles`, '#5e1612')}
+                </defs>
+                ${groundShadow}
+                <rect x="30" y="104" width="160" height="86" rx="2" fill="url(#${g}-wall)" ${o}/>
+                <rect x="30" y="176" width="160" height="14" fill="#b39b7a" ${o}/>
+                <path d="M30 104v72M66 104v72M154 104v72M190 104v72" stroke="#7a4e2c" stroke-width="7"/>
+                <rect x="78" y="124" width="64" height="52" fill="#fff8e8" ${o}/>
+                <path d="M110 124v52M94 124v52M126 124v52M78 141h64M78 158h64" stroke="#8a6a4a" stroke-width="2"/>
+                <path d="M4 110Q24 104 30 96L44 84H176L190 96Q196 104 216 110Q110 98 4 110Z" fill="url(#${g}-roof)" ${o}/>
+                <path d="M4 110Q24 104 30 96L44 84H176L190 96Q196 104 216 110Q110 98 4 110Z" fill="url(#${g}-tiles)"/>
+                <path d="M40 66Q60 62 66 54L76 44H144L154 54Q160 62 180 66Q110 56 40 66Z" fill="url(#${g}-roof)" ${o}/>
+                <path d="M40 66Q60 62 66 54L76 44H144L154 54Q160 62 180 66Q110 56 40 66Z" fill="url(#${g}-tiles)"/>
+                <rect x="70" y="38" width="80" height="7" rx="3" fill="#e8b64c" ${o}/>
+                <rect x="58" y="64" width="104" height="22" fill="url(#${g}-wall)" ${o}/>
+                <rect x="88" y="66" width="44" height="18" rx="2" fill="#5b3a22" ${o}/>
+                <g transform="translate(110 75)"><circle r="7" fill="#fff8e8" ${o}/><path d="M-4 4L4-4M2-6l4 4M-6 2l4 4" stroke="${INK}" stroke-width="2" stroke-linecap="round"/></g>
+                ${lantern(48)}${lantern(172)}
             </svg>`;
-            // Salle d'entraînement : dojo à double toit, portes coulissantes et enseigne à l'épée
-            case 'dojo': return `<svg viewBox="0 0 220 205" class="art-building">${shadow}
-                <rect x="30" y="100" width="160" height="90" rx="4" fill="#fff3e0" ${s}/>
-                <path d="M30 118h160" stroke="${INK}" stroke-width="3"/>
-                <path d="M8 104q102-26 204 0l-18-26H26z" fill="#b8322a" ${s}/>
-                <path d="M50 78l12-30h96l12 30z" fill="#8f2620" ${s}/>
-                <path d="M40 50q70-20 140 0l-12-14H52z" fill="#b8322a" ${s}/>
-                <rect x="96" y="20" width="28" height="18" rx="3" fill="#ffcb05" ${s}/>
-                <rect x="78" y="132" width="64" height="58" rx="3" fill="#f6e7c8" ${s}/>
-                <path d="M110 132v58M94 132v58M126 132v58M78 160h64" stroke="${INK}" stroke-width="2.5"/>
-                <g transform="translate(110 92)"><circle r="17" fill="#fff" ${s}/><path d="M-7 7 7-7M3-9l6 6M-9 3l6 6" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/></g>
-                ${win(42, 134, 26, 30)}${win(152, 134, 26, 30)}
+            }
+            case 'board': {
+                const g = nextId('board');
+                const o = `stroke="${INK}" stroke-width="3" stroke-linejoin="round"`;
+                const paper = (x, y, w, h, r, pin, fill = '#fffdf5') => `<g transform="rotate(${r} ${x + w / 2} ${y + h / 2})">
+                    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${fill}" ${o}/>
+                    <path d="M${x + 6} ${y + 12}h${w - 12}M${x + 6} ${y + 19}h${w - 16}M${x + 6} ${y + 26}h${w - 20}" stroke="#b9ab94" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="${x + w / 2}" cy="${y + 4}" r="3.5" fill="${pin}" ${o}/></g>`;
+                return `<svg viewBox="0 0 220 205" class="art-building">
+                <defs>
+                    ${vGrad(`${g}-roof`, '#86c46f', '#3c7f45', '#5aa65a')}${tilePattern(`${g}-tiles`, '#2c5f34')}
+                    ${vGrad(`${g}-cork`, '#d39d6a', '#a86f42')}
+                </defs>
+                ${groundShadow}
+                <rect x="36" y="58" width="10" height="132" rx="2" fill="#8b5a3c" ${o}/><rect x="174" y="58" width="10" height="132" rx="2" fill="#8b5a3c" ${o}/>
+                <path d="M16 64L40 36H180L204 64Z" fill="url(#${g}-roof)" ${o}/>
+                <path d="M16 64L40 36H180L204 64Z" fill="url(#${g}-tiles)"/>
+                <path d="M44 42H176" stroke="#b6e3a3" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+                <rect x="26" y="66" width="168" height="98" rx="4" fill="#7f5228" ${o}/>
+                <rect x="33" y="73" width="154" height="84" rx="2" fill="url(#${g}-cork)" ${o}/>
+                ${paper(42, 80, 46, 36, -5, '#e2302a')}${paper(96, 78, 42, 40, 3, '#3b4cca', '#fff4c2')}${paper(146, 82, 34, 32, -3, '#6cc463')}
+                ${paper(58, 120, 44, 32, 4, '#e8b64c', '#ffe9e4')}${paper(112, 122, 50, 30, -2, '#e2302a')}
+                <g transform="translate(170 130)"><circle r="11" fill="#e2302a" ${o}/><text y="5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="14" fill="#fff8ec">!</text></g>
+                <rect x="82" y="182" width="56" height="8" rx="2" fill="#9e9a92" ${o}/>
             </svg>`;
+            }
         }
         return '';
     }
@@ -265,13 +402,14 @@ const Art = (() => {
         return bits + tree(40, H - 90, 1.7) + tree(690, H - 150, 1.4, '#5bc452', '#3f9f4f');
     }
 
-    function scene(biomeName = 'plains', { withPath = false } = {}) {
+    // high : horizon haut (beaucoup de sol), pour poser des éléments sur la carte (bourg, cartes de zone)
+    function scene(biomeName = 'plains', { withPath = false, high = false } = {}) {
         const b = BIOMES[biomeName] || BIOMES.plains;
         const sky = nextId('sky');
         const dots = nextId('dots');
         const isTown = biomeName === 'town';
         const isRoute = biomeName === 'route';
-        const hz = isTown || isRoute ? 300 : 700; // haut des collines lointaines
+        const hz = isTown || isRoute || high ? 300 : 700; // haut des collines lointaines
         const accents = isTown || isRoute ? townAccents(hz)
             // Autres biomes : les détails du paysage, réduits et posés sur l'horizon, puis un premier plan fleuri
             : `<g transform="translate(0 ${hz - 380 * 0.5625}) scale(0.5625)">${accentLayer(b.accent, b)}</g>` + foreground(hz, b);
@@ -413,7 +551,7 @@ const Art = (() => {
 
     // Remplit les emplacements déclarés dans le HTML : data-scene, data-icon, data-egg, data-pokeball, data-building
     // --- RENDU « GBA » : un SVG est dessiné en basse résolution puis agrandi sans lissage ---
-    const PIXEL_FACTOR = { scene: 4, building: 3 };
+    const PIXEL_FACTOR = { scene: 1, building: 1 }; // taille d'un pixel du pixel art, en pixels de scène
 
     function rasterize(svgMarkup, width, height) {
         let markup = svgMarkup.trim();
@@ -451,7 +589,7 @@ const Art = (() => {
     function hydrate(root = document) {
         root.querySelectorAll('[data-scene]').forEach(el => {
             if (el.dataset.sceneDrawn === el.dataset.scene) return;
-            el.innerHTML = el.dataset.arena ? arena(el.dataset.scene) : scene(el.dataset.scene, { withPath: !!el.dataset.path });
+            el.innerHTML = el.dataset.arena ? arena(el.dataset.scene) : scene(el.dataset.scene, { withPath: !!el.dataset.path, high: !!el.dataset.high });
             el.dataset.sceneDrawn = el.dataset.scene;
             pixelate(el.querySelector('svg'), PIXEL_FACTOR.scene);
         });
@@ -504,7 +642,12 @@ const Art = (() => {
     const muted = fn => (...args) => mute(fn(...args));
     [pokeball, egg, incubator, trainer, building, scene, arena] = [pokeball, egg, incubator, trainer, building, scene, arena].map(muted);
 
-    return { icon, item, stars, mute, pokeball, egg, incubator, trainer, building, scene, arena, disc, biomeForTypes, hydrate, pixelate, rasterize, FALLBACK, BIOMES, EGG_COLORS };
+    // Traits deux fois plus fins sur les décors et les bâtiments (les gros contours restent pour l'interface).
+    // Les traits larges (route, chemins) ne sont pas touchés.
+    const thin = markup => markup.replace(/stroke-width="([\d.]+)"/g, (m, w) => +w <= 6 ? `stroke-width="${+w * 0.5}"` : m);
+    [building, scene, arena] = [building, scene, arena].map(fn => (...args) => thin(fn(...args)));
+
+    return { icon, item, stars, mute, thin, pokeball, egg, incubator, trainer, building, scene, arena, disc, biomeForTypes, hydrate, pixelate, rasterize, FALLBACK, BIOMES, EGG_COLORS };
 })();
 
 document.addEventListener('DOMContentLoaded', () => Art.hydrate());

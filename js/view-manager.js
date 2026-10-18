@@ -11,6 +11,7 @@ const ViewManager = (() => {
         labo: 'view-labo',
         center: 'view-center',
         worldmap: 'view-worldmap',
+        zone: 'view-zone',
         modes: 'view-modes',
         atelier: 'view-atelier'
     };
@@ -82,6 +83,9 @@ const ViewManager = (() => {
                 break;
             case 'worldmap':
                 if (window.initWorldmap) window.initWorldmap();
+                break;
+            case 'zone':
+                if (window.initZone) window.initZone();
                 break;
             case 'modes':
                 if (window.initModes) window.initModes();

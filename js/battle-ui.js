@@ -364,8 +364,9 @@ function startBattle() {
     battle.start();
 }
 
-// Quitte l'écran de combat pour le bourg. Après une victoire, la progression avance d'abord
-// pour que le prochain départ reprenne au combat suivant.
+// Quitte l'écran de combat pour la carte de la zone (js/zonemap.js), ou le bourg à défaut.
+// Après une victoire, la progression avance d'abord pour que le prochain départ reprenne au combat suivant
+// (après le boss de la zone, c'est la carte de la zone suivante qui s'ouvre).
 function leaveBattleToHome(afterVictory = false) {
     window.isRunning = false;
     if (afterVictory) {
@@ -377,7 +378,7 @@ function leaveBattleToHome(afterVictory = false) {
     const status = document.getElementById('battleStatus');
     if (status) { status.style.display = 'none'; status.className = ''; }
     if (typeof setCombatActive === 'function') setCombatActive(false);
-    goToHome();
+    if (typeof openZone === 'function') openZone(zoneIndex); else goToHome();
 }
 
 function fleeBattle() {

@@ -104,6 +104,7 @@ const MobileManager = (() => {
         overlay.style.display = "none";
         overlay.innerHTML = `
             <div class="title-scene" data-scene="plains" data-path="1"></div>
+            <div class="ambient-layer" data-ambient="title"></div>
             <div class="title-content">
                 <div class="title-ball">${Art.pokeball(120)}</div>
                 <h1 class="title-logo">Poké<span>Road</span></h1>

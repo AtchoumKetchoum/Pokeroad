@@ -1,0 +1,149 @@
+/* ==========================================================================
+   ambient.css — Vie du décor (js/ambient.js) : nuages, vent, herbes, Pokémon
+   Uniquement des transformations CSS (fluides sur téléphone). Coupé si l'appareil
+   demande moins d'animations.
+   ========================================================================== */
+.ambient-layer { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.title-screen .ambient-layer { z-index: 0; }
+
+/* Nuages : ils traversent lentement le ciel, de gauche à droite */
+.amb-cloud {
+  position: absolute; left: -240px; width: 200px; transform-origin: left top;
+  animation: amb-drift var(--dur) linear var(--delay) infinite;
+  opacity: .92;
+}
+.amb-cloud svg { display: block; width: 100%; height: auto; transform: scale(var(--s)); transform-origin: left top; }
+@keyframes amb-drift { to { transform: translateX(1200px); } }
+
+/* Touffes d'herbe : elles plient au vent depuis leur base */
+.amb-tuft {
+  position: absolute; width: 34px; transform-origin: 50% 100%;
+  animation: amb-sway var(--dur) ease-in-out var(--delay) infinite;
+}
+.amb-tuft svg { display: block; width: 100%; height: auto; }
+@keyframes amb-sway {
+  0%, 100% { transform: skewX(0deg); }
+  30% { transform: skewX(-9deg); }
+  60% { transform: skewX(4deg); }
+}
+
+/* Rafales de vent : des pétales filent en ondulant, par vagues */
+.amb-petal {
+  position: absolute; left: -30px; width: 16px; opacity: 0;
+  animation: amb-gust var(--dur) cubic-bezier(.35, .1, .6, 1) var(--delay) infinite;
+}
+.amb-petal-wobble { display: block; animation: amb-wobble 1.3s ease-in-out infinite; }
+.amb-petal svg { display: block; width: 100%; height: auto; }
+@keyframes amb-gust {
+  0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+  6% { opacity: 1; }
+  45% { transform: translate(380px, calc(var(--rise) * .6)) rotate(220deg); opacity: 1; }
+  60% { transform: translate(800px, var(--rise)) rotate(420deg); opacity: 0; }
+  100% { transform: translate(800px, var(--rise)) rotate(420deg); opacity: 0; }
+}
+@keyframes amb-wobble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+/* Pokémon qui traverse le ciel en battant des ailes */
+.amb-flyer {
+  position: absolute; left: -120px; width: 90px; height: 90px;
+  animation: amb-fly 22s linear 3s infinite;
+}
+.amb-flyer .pmd-sprite { position: relative; width: 100%; height: 100%; --pmd-scale: 2.6; animation: amb-bob 1.6s ease-in-out infinite; }
+@keyframes amb-fly {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(470px, 36px); }
+  100% { transform: translate(960px, -10px); }
+}
+@keyframes amb-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+
+/* Hautes herbes : elles frémissent puis un Pokémon sort la tête */
+.amb-grass { position: absolute; width: 110px; height: 150px; transform: translate(-50%, -100%); overflow: hidden; }
+.amb-grass-front {
+  position: absolute; left: 0; bottom: 0; width: 100%; height: auto; z-index: 2; transform-origin: 50% 100%;
+  animation: amb-rustle 9s ease-in-out var(--delay) infinite;
+}
+.amb-peek {
+  position: absolute; left: 50%; bottom: 0; width: 90px; height: 90px; z-index: 1;
+  transform: translate(-50%, 110%);
+  animation: amb-peek 9s ease-in-out var(--delay) infinite;
+}
+.amb-peek .pmd-sprite { position: relative; width: 100%; height: 100%; --pmd-scale: 2.4; }
+.ambient-layer .pmd-fallback { display: none !important; }
+@keyframes amb-rustle {
+  0%, 8%, 30%, 62%, 100% { transform: skewX(0); }
+  10%, 14%, 18% { transform: skewX(-7deg); }
+  12%, 16% { transform: skewX(6deg); }
+  64% { transform: skewX(5deg); }
+  66% { transform: skewX(-4deg); }
+}
+@keyframes amb-peek {
+  0%, 18% { transform: translate(-50%, 110%); }
+  26%, 52% { transform: translate(-50%, 22%); }
+  60%, 100% { transform: translate(-50%, 110%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-layer * { animation: none !important; }
+  .amb-petal, .amb-flyer, .amb-cloud { display: none; }
+}
+
+/* ==========================================================================
+   Notifications sur les bâtiments du bourg (js/home.js : setBuildingBadge)
+   ========================================================================== */
+.hub .hub-building .building-badge {
+  position: absolute; top: 22%; right: 6%; z-index: 4;
+  min-width: 40px; height: 40px; padding: 0 10px; box-sizing: border-box;
+  display: grid; place-items: center; border-radius: 999px;
+  background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 0 3px 0 var(--ink);
+  font-family: var(--font-title); font-size: 22px; line-height: 1;
+}
+.hub .hub-building .building-badge.timer { font-family: var(--font-body); font-weight: 900; font-size: 20px; color: var(--blue); }
+.hub .hub-building .building-badge.alert { background: var(--red); color: #f7ecdc; animation: badge-pop 1.4s ease-in-out infinite; }
+
+/* ==========================================================================
+   Carte du monde : vagues qui scintillent et Pokémon qui nagent le long des côtes
+   ========================================================================== */
+.worldmap-viewport > .ambient-layer { z-index: 2; }
+.amb-wave { position: absolute; width: 34px; opacity: .7; animation: amb-shimmer 4.5s ease-in-out var(--delay) infinite; }
+.amb-wave svg { display: block; width: 100%; height: auto; }
+@keyframes amb-shimmer {
+  0%, 100% { transform: translateX(0); opacity: .25; }
+  50% { transform: translateX(8px); opacity: .9; }
+}
+.amb-swim {
+  position: absolute; width: 80px; height: 80px; margin-left: -40px; top: var(--y0); opacity: 0;
+  animation: amb-swim var(--dur) linear var(--delay) infinite;
+}
+.amb-swim .pmd-sprite { position: relative; width: 100%; height: 100%; --pmd-scale: 2.2; }
+.amb-wake {
+  position: absolute; left: 50%; top: 62%; width: 70px; height: 26px; transform: translate(-50%, -50%);
+  border: 3px solid rgba(230, 243, 240, .8); border-radius: 50%;
+  animation: amb-wake 1.8s ease-out infinite;
+}
+/* Aller-retour : montée jusqu'à --y1 (sprite « aller »), demi-tour, retour à --y0 (sprite « retour ») */
+.amb-swim { opacity: 1; animation-timing-function: ease-in-out; }
+.amb-swim-go, .amb-swim-back { position: absolute; inset: 0; }
+.amb-swim-go { animation: amb-swim-go var(--dur) steps(1) var(--delay) infinite; }
+.amb-swim-back { animation: amb-swim-back var(--dur) steps(1) var(--delay) infinite; }
+@keyframes amb-swim {
+  0% { top: var(--y0); }
+  48%, 52% { top: var(--y1); }
+  100% { top: var(--y0); }
+}
+@keyframes amb-swim-go { 0% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes amb-swim-back { 0% { opacity: 0; } 50% { opacity: 1; } }
+@keyframes amb-wake {
+  0% { transform: translate(-50%, -50%) scale(.5); opacity: .9; }
+  100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+}
+
+/* Pokémon volant en aller-retour (carte du monde) */
+.amb-flyer.bounce { animation: amb-fly-bounce var(--dur) ease-in-out var(--delay) infinite; }
+.amb-flyer.bounce .amb-swim-go, .amb-flyer.bounce .amb-swim-back { position: absolute; inset: 0; }
+@keyframes amb-fly-bounce {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(420px, 40px); }
+  48%, 52% { transform: translate(860px, 0); }
+  75% { transform: translate(420px, -30px); }
+  100% { transform: translate(0, 0); }
+}

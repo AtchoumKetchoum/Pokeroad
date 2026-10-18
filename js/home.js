@@ -18,57 +18,44 @@ window.initHome = async () => {
 
 let missionHudInterval;
 
-function updateHomeHUD() {
-    const mission = GameData.getMission();
-    const missionBtn = document.getElementById('mission-btn');
-    const label = document.getElementById('mission-btn-label');
-    const teamPreview = document.getElementById('mission-btn-team-preview');
-    const timerEl = document.getElementById('mission-btn-timer');
-
-    if (!missionBtn) return;
-
-    if (mission && mission.active) {
-        missionBtn.classList.add('active');
-        
-        // Update Team Preview (only once or if changed)
-        if (teamPreview.children.length === 0) {
-            const allPokemons = GameData.getPokemons();
-            const teamMembers = mission.team
-                .map(id => allPokemons.find(p => p.instanceId === id))
-                .filter(p => p !== undefined);
-
-            teamPreview.innerHTML = teamMembers.map(pk => `<img src="${pk.sprite}" title="${pk.name}">`).join('');
-        }
-
-        const remaining = mission.endTime - Date.now();
-        if (remaining <= 0) {
-            missionBtn.classList.add('finished');
-            label.textContent = "CONCLURE LA MISSION";
-            timerEl.textContent = "TERMINÉE !";
-            if (missionHudInterval) {
-                 // We can keep it running if we want real-time updates for other things, 
-                 // but for this specific mission it's done.
-            }
-        } else {
-            missionBtn.classList.remove('finished');
-            label.textContent = "Mission en cours...";
-            timerEl.textContent = formatTime(remaining);
-            
-            // Start interval if not already running
-            if (!missionHudInterval) {
-                missionHudInterval = setInterval(updateHomeHUD, 1000);
-            }
-        }
-    } else {
-        missionBtn.classList.remove('active', 'finished');
-        label.textContent = "Missions";
-        teamPreview.innerHTML = '';
-        timerEl.textContent = '';
-        if (missionHudInterval) {
-            clearInterval(missionHudInterval);
-            missionHudInterval = null;
-        }
+// Pastille d'un bâtiment du bourg : texte court (nombre, minuteur, « ! ») ou rien ; 'alert' la fait pulser
+function setBuildingBadge(kind, text, { alert = false, timer = false } = {}) {
+    const building = document.querySelector(`.hub-building[data-building="${kind}"]`);
+    if (!building) return;
+    let badge = building.querySelector('.building-badge');
+    if (!text) { badge?.remove(); return; }
+    if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'building-badge';
+        building.appendChild(badge);
     }
+    badge.textContent = text;
+    badge.classList.toggle('alert', alert);
+    badge.classList.toggle('timer', timer);
+}
+
+// Notifications du bourg, affichées sur les bâtiments concernés (rafraîchies chaque seconde)
+function updateHomeHUD() {
+    // Missions : temps restant de la mission en cours, puis « ! » quand elle est terminée
+    const mission = GameData.getMission();
+    if (mission && mission.active) {
+        const remaining = mission.endTime - Date.now();
+        if (remaining <= 0) setBuildingBadge('board', '!', { alert: true });
+        else setBuildingBadge('board', formatTime(remaining), { timer: true });
+    } else {
+        setBuildingBadge('board', null);
+    }
+
+    // Laboratoire : œufs prêts à éclore dans l'incubateur
+    const incubator = GameData.getIncubatorEggs ? GameData.getIncubatorEggs() : [];
+    const ready = incubator.filter(egg => Date.now() >= egg.endTime).length;
+    setBuildingBadge('labo', ready ? String(ready) : null, { alert: true });
+
+    // Centre Pokémon : Pokémon épuisés à soigner
+    const exhausted = GameData.getPokemons().filter(p => p.status === 'exhausted').length;
+    setBuildingBadge('center', exhausted ? String(exhausted) : null);
+
+    if (!missionHudInterval) missionHudInterval = setInterval(updateHomeHUD, 1000);
 
     // Badge pour le sac à œufs (Keep existing logic)
     updateEggBagBadge();

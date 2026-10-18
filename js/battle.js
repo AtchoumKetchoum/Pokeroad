@@ -2446,7 +2446,7 @@ async function checkWinCondition() {
                 </div>
             </div>
             <div id="end-battle-nav-win" class="end-battle-actions" style="position:relative; bottom:auto; left:auto; transform:none; margin-top:20px;">
-                <button class="pk-btn-action secondary-btn" title="Retour au bourg" onclick="leaveBattleToHome(true)">${Art.icon('home', 20)} Bourg</button>
+                <button class="pk-btn-action secondary-btn" title="Retour à la carte de la zone" onclick="leaveBattleToHome(true)">${Art.icon('map', 20)} Carte</button>
                 <button class="pk-btn-action" title="Combat Suivant" onclick="nextBattleProgression()">
                     Combat suivant ${Art.icon('play', 20)}
                 </button>
@@ -2476,7 +2476,7 @@ async function checkWinCondition() {
         <div class="rewards-summary"><div class="reward-main"><span class="reward-chip money"><span class="coin"></span>+${consolation.toLocaleString('fr-FR')} $</span></div>
         <p style="margin:6px 0 16px; font-size:14px;">Récompense partielle (${enemiesDown}/${enemiesTotal} ennemis K.O.). Entraîne ton équipe ou change de stratégie !</p></div>
         <div id="end-battle-nav-lose" class="end-battle-actions" style="position:relative; bottom:auto; left:auto; transform:none;">
-            <button class="pk-btn-action secondary-btn" title="Retour au bourg" onclick="leaveBattleToHome()">${Art.icon('home', 20)} Bourg</button>
+            <button class="pk-btn-action secondary-btn" title="Retour à la carte de la zone" onclick="leaveBattleToHome()">${Art.icon('map', 20)} Carte</button>
             <button class="pk-btn-action" title="Rejouer" onclick="fleeBattle()">
                 Rejouer <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
             </button>
