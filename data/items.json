@@ -9,7 +9,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : Attaque +1 et sa prochaine attaque inflige +20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente l'Attaque d'un niveau quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "ganlon-berry": {
     "id": 137,
@@ -21,7 +22,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : Défense +1 et bouclier de 10 % des PV max. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la Défense d'un niveau quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "petaya-berry": {
     "id": 138,
@@ -33,7 +35,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : Att. Spé. +1 et sa prochaine attaque inflige +20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente l'Att. Spé. d'un niveau quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "apicot-berry": {
     "id": 139,
@@ -45,7 +48,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : Déf. Spé. +1 et bouclier de 10 % des PV max. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la Déf. Spé. d'un niveau quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "sitrus-berry": {
     "id": 135,
@@ -57,7 +61,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : soigne 25 % des PV max. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Restaure 1/4 des PV max quand les PV passent sous la moitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "salac-berry": {
     "id": 140,
@@ -69,7 +74,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : Vitesse +1 et jauge d'action +30 %. Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Augmente la Vitesse d'un niveau quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "sun-stone": {
     "id": 80,
@@ -454,7 +460,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Fée du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Fée."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Fée.",
+    "family": "degats"
   },
   "protein": {
     "id": 46,
@@ -5388,7 +5395,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Normal du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Normal."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Normal.",
+    "family": "degats"
   },
   "charcoal": {
     "id": 20001,
@@ -5399,7 +5407,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Feu du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Feu."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Feu.",
+    "family": "degats"
   },
   "mystic-water": {
     "id": 20002,
@@ -5410,7 +5419,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Eau du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Eau."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Eau.",
+    "family": "degats"
   },
   "miracle-seed": {
     "id": 20003,
@@ -5421,7 +5431,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Plante du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Plante."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Plante.",
+    "family": "degats"
   },
   "magnet": {
     "id": 20004,
@@ -5432,7 +5443,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Électrik du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Électrik."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Électrik.",
+    "family": "degats"
   },
   "never-melt-ice": {
     "id": 20005,
@@ -5443,7 +5455,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Glace du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Glace."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Glace.",
+    "family": "degats"
   },
   "black-belt": {
     "id": 20006,
@@ -5454,7 +5467,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Combat du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Combat."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Combat.",
+    "family": "degats"
   },
   "poison-barb": {
     "id": 20007,
@@ -5465,7 +5479,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Poison du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Poison."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Poison.",
+    "family": "degats"
   },
   "soft-sand": {
     "id": 20008,
@@ -5476,7 +5491,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Sol du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Sol."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Sol.",
+    "family": "degats"
   },
   "sharp-beak": {
     "id": 20009,
@@ -5487,7 +5503,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Vol du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Vol."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Vol.",
+    "family": "degats"
   },
   "twisted-spoon": {
     "id": 20010,
@@ -5498,7 +5515,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Psy du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Psy."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Psy.",
+    "family": "degats"
   },
   "silver-powder": {
     "id": 20011,
@@ -5509,7 +5527,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Insecte du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Insecte."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Insecte.",
+    "family": "degats"
   },
   "hard-stone": {
     "id": 20012,
@@ -5520,7 +5539,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Roche du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Roche."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Roche.",
+    "family": "degats"
   },
   "spell-tag": {
     "id": 20013,
@@ -5531,7 +5551,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Spectre du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Spectre."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Spectre.",
+    "family": "degats"
   },
   "dragon-fang": {
     "id": 20014,
@@ -5542,7 +5563,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Dragon du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Dragon."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Dragon.",
+    "family": "degats"
   },
   "black-glasses": {
     "id": 20015,
@@ -5553,7 +5575,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Ténèbres du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Ténèbres."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Ténèbres.",
+    "family": "degats"
   },
   "metal-coat": {
     "id": 20016,
@@ -5564,7 +5587,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques de type Acier du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente de 20 % la puissance des capacités de type Acier."
+    "description_fr": "Augmente de 20 % la puissance des capacités de type Acier.",
+    "family": "degats"
   },
   "flame-plate": {
     "id": 20017,
@@ -5576,7 +5600,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Feu pour les synergies d'équipe ; ses attaques Feu infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Feu (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "splash-plate": {
     "id": 20018,
@@ -5588,7 +5613,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Eau pour les synergies d'équipe ; ses attaques Eau infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Eau (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "zap-plate": {
     "id": 20019,
@@ -5600,7 +5626,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Électrik pour les synergies d'équipe ; ses attaques Électrik infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Électrik (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "meadow-plate": {
     "id": 20020,
@@ -5612,7 +5639,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Plante pour les synergies d'équipe ; ses attaques Plante infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Plante (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "icicle-plate": {
     "id": 20021,
@@ -5624,7 +5652,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Glace pour les synergies d'équipe ; ses attaques Glace infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Glace (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "fist-plate": {
     "id": 20022,
@@ -5636,7 +5665,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Combat pour les synergies d'équipe ; ses attaques Combat infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Combat (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "toxic-plate": {
     "id": 20023,
@@ -5648,7 +5678,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Poison pour les synergies d'équipe ; ses attaques Poison infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Poison (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "earth-plate": {
     "id": 20024,
@@ -5660,7 +5691,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Sol pour les synergies d'équipe ; ses attaques Sol infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Sol (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "sky-plate": {
     "id": 20025,
@@ -5672,7 +5704,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Vol pour les synergies d'équipe ; ses attaques Vol infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Vol (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "mind-plate": {
     "id": 20026,
@@ -5684,7 +5717,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Psy pour les synergies d'équipe ; ses attaques Psy infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Psy (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "insect-plate": {
     "id": 20027,
@@ -5696,7 +5730,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Insecte pour les synergies d'équipe ; ses attaques Insecte infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Insecte (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "stone-plate": {
     "id": 20028,
@@ -5708,7 +5743,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Roche pour les synergies d'équipe ; ses attaques Roche infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Roche (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "spooky-plate": {
     "id": 20029,
@@ -5720,7 +5756,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Spectre pour les synergies d'équipe ; ses attaques Spectre infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Spectre (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "draco-plate": {
     "id": 20030,
@@ -5732,7 +5769,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Dragon pour les synergies d'équipe ; ses attaques Dragon infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Dragon (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "dread-plate": {
     "id": 20031,
@@ -5744,7 +5782,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Ténèbres pour les synergies d'équipe ; ses attaques Ténèbres infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Ténèbres (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "iron-plate": {
     "id": 20032,
@@ -5756,7 +5795,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Acier pour les synergies d'équipe ; ses attaques Acier infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Acier (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "pixie-plate": {
     "id": 20033,
@@ -5768,7 +5808,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Fée pour les synergies d'équipe ; ses attaques Fée infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Fée (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "blank-plate": {
     "id": 20034,
@@ -5780,7 +5821,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Le porteur compte comme un Pokémon de type Normal pour les synergies d'équipe ; ses attaques Normal infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Augmente la puissance des capacités de type Normal (et change le type d'Arceus).",
-    "exclusive_group": "plaque"
+    "exclusive_group": "plaque",
+    "family": "degats"
   },
   "legend-plate": {
     "id": 20035,
@@ -5794,7 +5836,8 @@
     "description_fr": "Arceus : Jugement prend le type le plus efficace contre la cible et Arceus change de type.",
     "species_only": [493],
     "exclusive_group": "plaque",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "fire-gem": {
     "id": 20036,
@@ -5805,7 +5848,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Feu du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Feu. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Feu. Consommé.",
+    "family": "degats"
   },
   "water-gem": {
     "id": 20037,
@@ -5816,7 +5860,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Eau du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Eau. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Eau. Consommé.",
+    "family": "degats"
   },
   "electric-gem": {
     "id": 20038,
@@ -5827,7 +5872,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Électrik du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Électrik. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Électrik. Consommé.",
+    "family": "degats"
   },
   "grass-gem": {
     "id": 20039,
@@ -5838,7 +5884,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Plante du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Plante. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Plante. Consommé.",
+    "family": "degats"
   },
   "ice-gem": {
     "id": 20040,
@@ -5849,7 +5896,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Glace du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Glace. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Glace. Consommé.",
+    "family": "degats"
   },
   "fighting-gem": {
     "id": 20041,
@@ -5860,7 +5908,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Combat du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Combat. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Combat. Consommé.",
+    "family": "degats"
   },
   "poison-gem": {
     "id": 20042,
@@ -5871,7 +5920,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Poison du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Poison. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Poison. Consommé.",
+    "family": "degats"
   },
   "ground-gem": {
     "id": 20043,
@@ -5882,7 +5932,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Sol du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Sol. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Sol. Consommé.",
+    "family": "degats"
   },
   "flying-gem": {
     "id": 20044,
@@ -5893,7 +5944,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Vol du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Vol. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Vol. Consommé.",
+    "family": "degats"
   },
   "psychic-gem": {
     "id": 20045,
@@ -5904,7 +5956,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Psy du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Psy. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Psy. Consommé.",
+    "family": "degats"
   },
   "bug-gem": {
     "id": 20046,
@@ -5915,7 +5968,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Insecte du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Insecte. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Insecte. Consommé.",
+    "family": "degats"
   },
   "rock-gem": {
     "id": 20047,
@@ -5926,7 +5980,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Roche du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Roche. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Roche. Consommé.",
+    "family": "degats"
   },
   "ghost-gem": {
     "id": 20048,
@@ -5937,7 +5992,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Spectre du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Spectre. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Spectre. Consommé.",
+    "family": "degats"
   },
   "dragon-gem": {
     "id": 20049,
@@ -5948,7 +6004,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Dragon du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Dragon. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Dragon. Consommé.",
+    "family": "degats"
   },
   "dark-gem": {
     "id": 20050,
@@ -5959,7 +6016,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Ténèbres du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Ténèbres. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Ténèbres. Consommé.",
+    "family": "degats"
   },
   "steel-gem": {
     "id": 20051,
@@ -5970,7 +6028,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Acier du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Acier. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Acier. Consommé.",
+    "family": "degats"
   },
   "normal-gem": {
     "id": 20052,
@@ -5981,7 +6040,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Normal du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Normal. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Normal. Consommé.",
+    "family": "degats"
   },
   "fairy-gem": {
     "id": 20053,
@@ -5992,7 +6052,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première attaque de type Fée du porteur inflige +50 % de dégâts (une fois par combat). Amélioration à l'Atelier : jusqu'à 120.",
-    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Fée. Consommé."
+    "description_fr": "Augmente une seule fois la puissance d'une capacité de type Fée. Consommé.",
+    "family": "degats"
   },
   "sea-incense": {
     "id": 20054,
@@ -6003,7 +6064,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques Eau infligent +15 % ; sous la pluie, il régénère 3 % des PV max par tour. Amélioration à l'Atelier : jusqu'à 45.",
-    "description_fr": "Augmente la puissance des capacités de type Eau."
+    "description_fr": "Augmente la puissance des capacités de type Eau.",
+    "family": "degats"
   },
   "wave-incense": {
     "id": 20055,
@@ -6014,7 +6076,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques Eau infligent +15 % ; les cases secondaires de ses attaques de zone (Onde, Raz-de-marée, Balayage…) subissent 15 points de pourcentage de plus. Amélioration à l'Atelier : jusqu'à 45.",
-    "description_fr": "Augmente la puissance des capacités de type Eau."
+    "description_fr": "Augmente la puissance des capacités de type Eau.",
+    "family": "degats"
   },
   "odd-incense": {
     "id": 20056,
@@ -6025,7 +6088,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques Psy infligent +15 % et ont 10 % de chance de rendre la cible confuse. Amélioration à l'Atelier : jusqu'à 45.",
-    "description_fr": "Augmente la puissance des capacités de type Psy."
+    "description_fr": "Augmente la puissance des capacités de type Psy.",
+    "family": "degats"
   },
   "rock-incense": {
     "id": 20057,
@@ -6036,7 +6100,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques Roche infligent +15 % ; il commence le combat avec Défense +1. Amélioration à l'Atelier : jusqu'à 45.",
-    "description_fr": "Augmente la puissance des capacités de type Roche."
+    "description_fr": "Augmente la puissance des capacités de type Roche.",
+    "family": "degats"
   },
   "rose-incense": {
     "id": 20058,
@@ -6047,7 +6112,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques Plante infligent +15 % ; l'allié le plus blessé récupère 10 % des dégâts infligés. Amélioration à l'Atelier : jusqu'à 45.",
-    "description_fr": "Augmente la puissance des capacités de type Plante."
+    "description_fr": "Augmente la puissance des capacités de type Plante.",
+    "family": "degats"
   },
   "muscle-band": {
     "id": 20059,
@@ -6058,7 +6124,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques physiques du porteur infligent +10 % de dégâts. Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Augmente de 10 % la puissance des capacités physiques."
+    "description_fr": "Augmente de 10 % la puissance des capacités physiques.",
+    "family": "degats"
   },
   "wise-glasses": {
     "id": 20060,
@@ -6069,7 +6136,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les attaques spéciales du porteur infligent +10 % de dégâts. Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Augmente de 10 % la puissance des capacités spéciales."
+    "description_fr": "Augmente de 10 % la puissance des capacités spéciales.",
+    "family": "degats"
   },
   "choice-band": {
     "id": 20061,
@@ -6082,7 +6150,8 @@
     "effect_fr": "Attaque +50 %. Verrou : le porteur n'utilise que l'attaque de son 1er emplacement ; ses tactiques sont bloquées (les passifs restent actifs). Amélioration à l'Atelier : jusqu'à 100.",
     "description_fr": "Augmente l'Attaque de 50 %, mais le porteur ne peut utiliser qu'une seule capacité.",
     "exclusive_group": "choix",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "choice-specs": {
     "id": 20062,
@@ -6095,7 +6164,8 @@
     "effect_fr": "Att. Spé. +50 %. Verrou : le porteur n'utilise que l'attaque de son 1er emplacement ; ses tactiques sont bloquées (les passifs restent actifs). Amélioration à l'Atelier : jusqu'à 100.",
     "description_fr": "Augmente l'Attaque Spéciale de 50 %, mais le porteur ne peut utiliser qu'une seule capacité.",
     "exclusive_group": "choix",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "expert-belt": {
     "id": 20063,
@@ -6107,7 +6177,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Les attaques super efficaces du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente de 20 % la puissance des capacités super efficaces.",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "life-orb": {
     "id": 20064,
@@ -6119,7 +6190,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Les attaques du porteur infligent +30 % de dégâts ; il perd 10 % de ses PV max après chaque attaque qui touche (une fois par action). Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Augmente de 30 % la puissance des capacités, mais le porteur perd 10 % de ses PV à chaque attaque.",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "metronome": {
     "id": 20065,
@@ -6131,7 +6203,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Chaque utilisation consécutive de la même attaque ajoute +10 % de dégâts (5 cumuls max). Une autre capacité remet le compteur à zéro. Amélioration à l'Atelier : jusqu'à 25.",
     "description_fr": "Augmente la puissance d'une capacité utilisée plusieurs fois de suite.",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "scope-lens": {
     "id": 20066,
@@ -6143,7 +6216,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Critique +1 palier ; ses coups critiques infligent +10 % de dégâts. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Augmente le taux de critique du porteur d'un niveau.",
-    "exclusive_group": "critique_palier"
+    "exclusive_group": "critique_palier",
+    "family": "degats"
   },
   "razor-claw": {
     "id": 20067,
@@ -6155,7 +6229,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Critique +1 palier ; ses coups critiques ignorent 50 % du bouclier de la cible. Amélioration à l'Atelier : jusqu'à 100.",
     "description_fr": "Augmente le taux de critique du porteur d'un niveau.",
-    "exclusive_group": "critique_palier"
+    "exclusive_group": "critique_palier",
+    "family": "degats"
   },
   "kings-rock": {
     "id": 20068,
@@ -6166,7 +6241,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques ont 10 % de chance d'apeurer la cible principale (elle perd sa prochaine action). Amélioration à l'Atelier : jusqu'à 30.",
-    "description_fr": "Les capacités offensives ont 10 % de chance d'apeurer la cible."
+    "description_fr": "Les capacités offensives ont 10 % de chance d'apeurer la cible.",
+    "family": "degats"
   },
   "razor-fang": {
     "id": 20069,
@@ -6177,7 +6253,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Chaque cible touchée (zone comprise) a 8 % de chance de perdre 25 % de sa jauge d'action. Amélioration à l'Atelier : jusqu'à 25.",
-    "description_fr": "Les capacités offensives ont 10 % de chance d'apeurer la cible."
+    "description_fr": "Les capacités offensives ont 10 % de chance d'apeurer la cible.",
+    "family": "degats"
   },
   "wide-lens": {
     "id": 20070,
@@ -6188,7 +6265,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Précision +10 %. Amélioration à l'Atelier : jusqu'à 30.",
-    "description_fr": "Augmente de 10 % la précision des capacités du porteur."
+    "description_fr": "Augmente de 10 % la précision des capacités du porteur.",
+    "family": "degats"
   },
   "zoom-lens": {
     "id": 20071,
@@ -6199,7 +6277,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Contre une cible plus rapide que lui : précision +15 % et dégâts +15 %. Amélioration à l'Atelier : jusqu'à 40.",
-    "description_fr": "Augmente de 20 % la précision si le porteur agit après la cible."
+    "description_fr": "Augmente de 20 % la précision si le porteur agit après la cible.",
+    "family": "degats"
   },
   "loaded-dice": {
     "id": 20072,
@@ -6210,7 +6289,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques à coups multiples (Salve, Déluge, Doublé, Triplé) portent un coup supplémentaire à 50 % de puissance. Amélioration à l'Atelier : jusqu'à 100.",
-    "description_fr": "Les capacités qui frappent plusieurs fois touchent plus souvent."
+    "description_fr": "Les capacités qui frappent plusieurs fois touchent plus souvent.",
+    "family": "degats"
   },
   "punching-glove": {
     "id": 20073,
@@ -6221,7 +6301,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses attaques au contact ne sont plus au contact : elles peuvent viser n'importe quelle ligne et ignorent les effets de contact, mais n'infligent que 70 % de leurs dégâts. Amélioration à l'Atelier : jusqu'à 100.",
-    "description_fr": "Augmente la puissance des capacités de poing et évite le contact."
+    "description_fr": "Augmente la puissance des capacités de poing et évite le contact.",
+    "family": "degats"
   },
   "protective-pads": {
     "id": 20074,
@@ -6232,7 +6313,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ignore les effets de contact (Casque Brut, Piquants, gel au contact…) ; ses attaques au contact infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
-    "description_fr": "Protège des effets déclenchés par le contact avec la cible."
+    "description_fr": "Protège des effets déclenchés par le contact avec la cible.",
+    "family": "degats"
   },
   "power-bracer": {
     "id": 20075,
@@ -6245,7 +6327,8 @@
     "effect_fr": "Vitesse −50 %. Attaque +30 %. Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Augmente les EV de l'Attaque gagnés, mais divise la Vitesse par deux.",
     "exclusive_group": "pouvoir",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "power-belt": {
     "id": 20076,
@@ -6258,7 +6341,8 @@
     "effect_fr": "Vitesse −50 %. Défense +30 %. Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Augmente les EV de la Défense gagnés, mais divise la Vitesse par deux.",
     "exclusive_group": "pouvoir",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "power-lens": {
     "id": 20077,
@@ -6271,7 +6355,8 @@
     "effect_fr": "Vitesse −50 %. Att. Spé. +30 %. Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Augmente les EV de l'Att. Spé. gagnés, mais divise la Vitesse par deux.",
     "exclusive_group": "pouvoir",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "power-band": {
     "id": 20078,
@@ -6284,7 +6369,8 @@
     "effect_fr": "Vitesse −50 %. Déf. Spé. +30 %. Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Augmente les EV de la Déf. Spé. gagnés, mais divise la Vitesse par deux.",
     "exclusive_group": "pouvoir",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "power-weight": {
     "id": 20079,
@@ -6297,7 +6383,8 @@
     "effect_fr": "Vitesse −50 %. PV max +30 %. Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Augmente les EV de les PV gagnés, mais divise la Vitesse par deux.",
     "exclusive_group": "pouvoir",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "power-anklet": {
     "id": 20080,
@@ -6310,7 +6397,8 @@
     "effect_fr": "Vitesse −50 %. Chaque fois qu'il subit une attaque, sa jauge d'action gagne +15 %. Amélioration à l'Atelier : jusqu'à 40.",
     "description_fr": "Augmente les EV de la Vitesse gagnés, mais divise la Vitesse par deux.",
     "exclusive_group": "pouvoir",
-    "unique": true
+    "unique": true,
+    "family": "vitesse"
   },
   "macho-brace": {
     "id": 20081,
@@ -6323,7 +6411,8 @@
     "effect_fr": "Vitesse −50 %. Attaque, Défense, Att. Spé. et Déf. Spé. +12 %. Amélioration à l'Atelier : jusqu'à 35.",
     "description_fr": "Double les EV gagnés, mais divise la Vitesse par deux.",
     "exclusive_group": "pouvoir",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "assault-vest": {
     "id": 20082,
@@ -6335,7 +6424,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Déf. Spé. +50 %. Le porteur ne peut pas utiliser de tactiques (ses passifs restent actifs). Amélioration à l'Atelier : jusqu'à 100.",
     "description_fr": "Augmente la Défense Spéciale de 50 %, mais empêche d'utiliser des capacités de statut.",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "eviolite": {
     "id": 20083,
@@ -6347,7 +6437,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Défense et Déf. Spé. +50 % si le porteur peut encore évoluer. Amélioration à l'Atelier : jusqu'à 100.",
     "description_fr": "Augmente de 50 % la Défense et la Défense Spéciale d'un Pokémon qui peut encore évoluer.",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "air-balloon": {
     "id": 20084,
@@ -6358,7 +6449,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Immunisé contre le type Sol et les pièges au sol. Éclate au premier coup reçu et donne un bouclier de 8 % des PV max. Amélioration à l'Atelier : jusqu'à 25.",
-    "description_fr": "Le porteur flotte : immunisé contre le type Sol jusqu'à ce qu'il soit touché."
+    "description_fr": "Le porteur flotte : immunisé contre le type Sol jusqu'à ce qu'il soit touché.",
+    "family": "defense"
   },
   "heavy-duty-boots": {
     "id": 20085,
@@ -6369,7 +6461,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ignore les pièges du terrain (Picots, Piège de Roc, Pics Toxik, Toile Gluante) et les dégâts de collision ; Vitesse +5 %. Amélioration à l'Atelier : jusqu'à 15.",
-    "description_fr": "Le porteur ne subit plus les effets des pièges posés sur le terrain."
+    "description_fr": "Le porteur ne subit plus les effets des pièges posés sur le terrain.",
+    "family": "defense"
   },
   "safety-goggles": {
     "id": 20086,
@@ -6380,7 +6473,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Immunisé aux dégâts de météo et aux capacités Poudre ; subit 15 % de dégâts en moins sur les cases secondaires d'une zone. Amélioration à l'Atelier : jusqu'à 45.",
-    "description_fr": "Protège des capacités poudre et des dégâts de Grêle et de Tempête de sable."
+    "description_fr": "Protège des capacités poudre et des dégâts de Grêle et de Tempête de sable.",
+    "family": "defense"
   },
   "utility-umbrella": {
     "id": 20087,
@@ -6391,7 +6485,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La météo n'affecte ni ses attaques ni celles qu'il reçoit ; chaque nouvelle météo lui donne un bouclier de 8 % des PV max. Amélioration à l'Atelier : jusqu'à 25.",
-    "description_fr": "Protège le porteur des effets du soleil et de la pluie."
+    "description_fr": "Protège le porteur des effets du soleil et de la pluie.",
+    "family": "defense"
   },
   "bright-powder": {
     "id": 20088,
@@ -6403,7 +6498,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Les attaques visant le porteur ont 8 % de chances en moins de toucher. Amélioration à l'Atelier : jusqu'à 20.",
     "description_fr": "Diminue la précision des capacités adverses.",
-    "exclusive_group": "esquive"
+    "exclusive_group": "esquive",
+    "family": "defense"
   },
   "lax-incense": {
     "id": 20089,
@@ -6415,7 +6511,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Esquive +5 % ; chaque attaque esquivée lui donne +15 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 15.",
     "description_fr": "Diminue légèrement la précision des capacités adverses.",
-    "exclusive_group": "esquive"
+    "exclusive_group": "esquive",
+    "family": "defense"
   },
   "rocky-helmet": {
     "id": 20090,
@@ -6427,7 +6524,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Chaque attaque au contact reçue fait perdre à l'attaquant 16 % de ses PV max. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Un attaquant qui touche le porteur au contact perd 1/6 de ses PV max.",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "focus-sash": {
     "id": 20091,
@@ -6440,7 +6538,8 @@
     "effect_fr": "À PV pleins, survit à un coup fatal avec 1 PV puis gagne un bouclier de 10 % des PV max (une fois par combat). Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Si le porteur a tous ses PV, il survit à un coup fatal avec 1 PV. Consommé.",
     "exclusive_group": "survie",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "focus-band": {
     "id": 20092,
@@ -6453,7 +6552,8 @@
     "effect_fr": "10 % de chance de survivre à un coup fatal avec 1 PV. Amélioration à l'Atelier : jusqu'à 35.",
     "description_fr": "10 % de chance de survivre à un coup fatal avec 1 PV.",
     "exclusive_group": "survie",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "ring-target": {
     "id": 20093,
@@ -6465,7 +6565,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Les ennemis ciblent le porteur en priorité quand ils le peuvent ; il perd ses immunités de type ; bouclier de 10 % des PV max au début du combat. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Le porteur perd ses immunités de type.",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "smoke-ball": {
     "id": 20094,
@@ -6476,7 +6577,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : écran de fumée, Esquive +1 pour lui et ses voisins de ligne ; il gagne 20 % de jauge d'action (une fois par combat). Amélioration à l'Atelier : jusqu'à 50.",
-    "description_fr": "Permet de fuir à coup sûr un combat sauvage."
+    "description_fr": "Permet de fuir à coup sûr un combat sauvage.",
+    "family": "defense"
   },
   "everstone": {
     "id": 20095,
@@ -6488,7 +6590,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Ses paliers de stats ne peuvent ni monter ni baisser ; Défense et Déf. Spé. +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Empêche l'évolution du porteur.",
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "float-stone": {
     "id": 20096,
@@ -6499,7 +6602,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Chaque fois qu'il change de case (relais, échange, téléport, projection subie), gagne 15 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 40.",
-    "description_fr": "Divise le poids du porteur par deux."
+    "description_fr": "Divise le poids du porteur par deux.",
+    "family": "placement"
   },
   "leftovers": {
     "id": 20097,
@@ -6511,7 +6615,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Régénère 6,25 % des PV max au début de chacun de ses tours. Amélioration à l'Atelier : jusqu'à 15.",
     "description_fr": "Restaure 1/16 des PV max à chaque tour.",
-    "exclusive_group": "regen_passive"
+    "exclusive_group": "regen_passive",
+    "family": "soin"
   },
   "black-sludge": {
     "id": 20098,
@@ -6523,7 +6628,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Type Poison : régénère 10 % des PV max par tour. Autres types : perdent 12,5 % des PV max par tour. Amélioration à l'Atelier : jusqu'à 20.",
     "description_fr": "Restaure 1/16 des PV par tour à un Pokémon Poison ; inflige 1/8 des PV aux autres.",
-    "exclusive_group": "regen_passive"
+    "exclusive_group": "regen_passive",
+    "family": "soin"
   },
   "shell-bell": {
     "id": 20099,
@@ -6534,7 +6640,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Récupère 12,5 % des dégâts infligés à chaque attaque (toutes les cases d'une zone comptent). Amélioration à l'Atelier : jusqu'à 30.",
-    "description_fr": "Le porteur récupère 1/8 des dégâts qu'il inflige."
+    "description_fr": "Le porteur récupère 1/8 des dégâts qu'il inflige.",
+    "family": "soin"
   },
   "big-root": {
     "id": 20100,
@@ -6545,7 +6652,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Les soins par drain et par régénération reçus par le porteur sont augmentés de 30 %. Amélioration à l'Atelier : jusqu'à 80.",
-    "description_fr": "Augmente de 30 % les PV récupérés par drain, Racines et Anneau Hydro."
+    "description_fr": "Augmente de 30 % les PV récupérés par drain, Racines et Anneau Hydro.",
+    "family": "soin"
   },
   "soothe-bell": {
     "id": 20101,
@@ -6557,7 +6665,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au début de chacun de ses tours, ses alliés adjacents récupèrent 2 % de leurs PV max. Amélioration à l'Atelier : jusqu'à 6.",
     "description_fr": "Augmente le bonheur gagné par le porteur.",
-    "unique": true
+    "unique": true,
+    "family": "soin"
   },
   "cleanse-tag": {
     "id": 20102,
@@ -6569,7 +6678,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au début de chacun de ses tours : 20 % de chance de purifier l'altération d'un allié adjacent. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Éloigne les Pokémon sauvages.",
-    "unique": true
+    "unique": true,
+    "family": "statut"
   },
   "pure-incense": {
     "id": 20103,
@@ -6580,7 +6690,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Le porteur est immunisé contre les altérations pendant ses 2 premiers tours. Amélioration à l'Atelier : jusqu'à 5.",
-    "description_fr": "Éloigne les Pokémon sauvages."
+    "description_fr": "Éloigne les Pokémon sauvages.",
+    "family": "statut"
   },
   "full-incense": {
     "id": 20104,
@@ -6591,7 +6702,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Vitesse −25 % ; après chacune de ses actions, régénère 4 % des PV max. Amélioration à l'Atelier : jusqu'à 10.",
-    "description_fr": "Le porteur agit en dernier."
+    "description_fr": "Le porteur agit en dernier.",
+    "family": "soin"
   },
   "light-clay": {
     "id": 20105,
@@ -6603,7 +6715,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Ses murs (Protection, Mur Lumière, Voile Aurore) durent 3 tours de plus et ses boucliers sont renforcés de 20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Prolonge Protection, Mur Lumière et Voile Aurore (8 tours au lieu de 5).",
-    "unique": true
+    "unique": true,
+    "family": "bouclier"
   },
   "electric-seed": {
     "id": 20106,
@@ -6614,7 +6727,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Dès que le Champ Électrifié est actif : Défense +1 et bouclier de 15 % des PV max (une fois par combat). Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Consommée sur le Champ Électrifié : augmente la Défense d'un niveau."
+    "description_fr": "Consommée sur le Champ Électrifié : augmente la Défense d'un niveau.",
+    "family": "bouclier"
   },
   "grassy-seed": {
     "id": 20107,
@@ -6625,7 +6739,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Dès que le Champ Herbu est actif : Défense +1 et bouclier de 15 % des PV max (une fois par combat). Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Consommée sur le Champ Herbu : augmente la Défense d'un niveau."
+    "description_fr": "Consommée sur le Champ Herbu : augmente la Défense d'un niveau.",
+    "family": "bouclier"
   },
   "psychic-seed": {
     "id": 20108,
@@ -6636,7 +6751,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Dès que le Champ Psychique est actif : Déf. Spé. +1 et bouclier de 15 % des PV max (une fois par combat). Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Consommée sur le Champ Psychique : augmente la Déf. Spé. d'un niveau."
+    "description_fr": "Consommée sur le Champ Psychique : augmente la Déf. Spé. d'un niveau.",
+    "family": "bouclier"
   },
   "misty-seed": {
     "id": 20109,
@@ -6647,7 +6763,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Dès que le Champ Brumeux est actif : Déf. Spé. +1 et bouclier de 15 % des PV max (une fois par combat). Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Consommée sur le Champ Brumeux : augmente la Déf. Spé. d'un niveau."
+    "description_fr": "Consommée sur le Champ Brumeux : augmente la Déf. Spé. d'un niveau.",
+    "family": "bouclier"
   },
   "ability-shield": {
     "id": 20110,
@@ -6659,7 +6776,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Ses objets et baies ne peuvent être ni volés ni échangés, et ses passifs ne peuvent pas être neutralisés ; chaque tentative bloquée lui donne un bouclier de 10 % des PV max. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Empêche le talent du porteur d'être modifié.",
-    "unique": true
+    "unique": true,
+    "family": "bouclier"
   },
   "absorb-bulb": {
     "id": 20111,
@@ -6670,7 +6788,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Touché par une attaque Eau : Att. Spé. +1 et soigne 15 % des PV max (une fois par combat). Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Touché par une capacité de type Eau : augmente une stat d'un niveau. Consommé."
+    "description_fr": "Touché par une capacité de type Eau : augmente une stat d'un niveau. Consommé.",
+    "family": "soin"
   },
   "cell-battery": {
     "id": 20112,
@@ -6681,7 +6800,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Touché par une attaque Électrik : Attaque +1 et jauge d'action +25 % (une fois par combat). Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Touché par une capacité de type Électrik : augmente une stat d'un niveau. Consommé."
+    "description_fr": "Touché par une capacité de type Électrik : augmente une stat d'un niveau. Consommé.",
+    "family": "vitesse"
   },
   "luminous-moss": {
     "id": 20113,
@@ -6692,7 +6812,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Touché par une attaque Eau : Déf. Spé. +1 et bouclier de 15 % des PV max (une fois par combat). Amélioration à l'Atelier : jusqu'à 35.",
-    "description_fr": "Touché par une capacité de type Eau : augmente une stat d'un niveau. Consommé."
+    "description_fr": "Touché par une capacité de type Eau : augmente une stat d'un niveau. Consommé.",
+    "family": "bouclier"
   },
   "snowball": {
     "id": 20114,
@@ -6703,7 +6824,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Touché par une attaque Glace : Attaque +1 et jauge Z +25 % (une fois par combat). Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Touché par une capacité de type Glace : augmente une stat d'un niveau. Consommé."
+    "description_fr": "Touché par une capacité de type Glace : augmente une stat d'un niveau. Consommé.",
+    "family": "jauge_z"
   },
   "quick-claw": {
     "id": 20115,
@@ -6715,7 +6837,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au début du combat et après chacune de ses actions : 18,75 % de chance que sa jauge d'action reparte de 40 %. Amélioration à l'Atelier : jusqu'à 45.",
     "description_fr": "3/16 de chance d'agir en premier dans le tour.",
-    "unique": true
+    "unique": true,
+    "family": "vitesse"
   },
   "choice-scarf": {
     "id": 20116,
@@ -6728,7 +6851,8 @@
     "effect_fr": "Vitesse +50 %. Verrou : le porteur n'utilise que l'attaque de son 1er emplacement ; ses tactiques sont bloquées (les passifs restent actifs). Amélioration à l'Atelier : jusqu'à 100.",
     "description_fr": "Augmente la Vitesse de 50 %, mais le porteur ne peut utiliser qu'une seule capacité.",
     "exclusive_group": "choix",
-    "unique": true
+    "unique": true,
+    "family": "vitesse"
   },
   "lagging-tail": {
     "id": 20117,
@@ -6739,7 +6863,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Vitesse du porteur −30 %. Utile sous Distorsion ou à refiler à un ennemi (Passe-Passe, Tour de Magie). Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Le porteur agit toujours en dernier."
+    "description_fr": "Le porteur agit toujours en dernier.",
+    "family": "vitesse"
   },
   "iron-ball": {
     "id": 20118,
@@ -6751,7 +6876,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Vitesse −50 % et vulnérable au type Sol, mais ne peut plus être déplacé (projection, poussée, attraction, échange forcé) ; Défense +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Divise la Vitesse par deux et rend le porteur vulnérable au type Sol.",
-    "unique": true
+    "unique": true,
+    "family": "placement"
   },
   "adrenaline-orb": {
     "id": 20119,
@@ -6762,7 +6888,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première fois qu'un ennemi baisse ses stats : Vitesse +1 et jauge d'action +25 %. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Augmente la Vitesse quand le porteur subit Intimidation. Consommé."
+    "description_fr": "Augmente la Vitesse quand le porteur subit Intimidation. Consommé.",
+    "family": "vitesse"
   },
   "room-service": {
     "id": 20120,
@@ -6773,7 +6900,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Dès que Distorsion est active : Vitesse −1 et jauge d'action +30 % (une fois par combat). Amélioration à l'Atelier : jusqu'à 70.",
-    "description_fr": "Baisse la Vitesse du porteur quand Distorsion est active. Consommé."
+    "description_fr": "Baisse la Vitesse du porteur quand Distorsion est active. Consommé.",
+    "family": "vitesse"
   },
   "blunder-policy": {
     "id": 20121,
@@ -6784,7 +6912,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "La première fois qu'une attaque du porteur rate : Vitesse +2 et jauge d'action +25 %. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Si une capacité du porteur rate, sa Vitesse augmente de deux niveaux. Consommé."
+    "description_fr": "Si une capacité du porteur rate, sa Vitesse augmente de deux niveaux. Consommé.",
+    "family": "vitesse"
   },
   "exp-share": {
     "id": 20122,
@@ -6796,7 +6925,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Quand le porteur met un ennemi K.O., ses alliés adjacents gagnent 20 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Partage l'expérience gagnée avec le porteur.",
-    "unique": true
+    "unique": true,
+    "family": "vitesse"
   },
   "normalium-z--held": {
     "id": 20123,
@@ -6809,7 +6939,8 @@
     "effect_fr": "Ses attaques Normal remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Normal infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Normal.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "firium-z--held": {
     "id": 20124,
@@ -6822,7 +6953,8 @@
     "effect_fr": "Ses attaques Feu remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Feu infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Feu.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "waterium-z--held": {
     "id": 20125,
@@ -6835,7 +6967,8 @@
     "effect_fr": "Ses attaques Eau remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Eau infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Eau.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "electrium-z--held": {
     "id": 20126,
@@ -6848,7 +6981,8 @@
     "effect_fr": "Ses attaques Électrik remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Électrik infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Électrik.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "grassium-z--held": {
     "id": 20127,
@@ -6861,7 +6995,8 @@
     "effect_fr": "Ses attaques Plante remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Plante infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Plante.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "icium-z--held": {
     "id": 20128,
@@ -6874,7 +7009,8 @@
     "effect_fr": "Ses attaques Glace remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Glace infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Glace.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "fightinium-z--held": {
     "id": 20129,
@@ -6887,7 +7023,8 @@
     "effect_fr": "Ses attaques Combat remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Combat infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Combat.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "poisonium-z--held": {
     "id": 20130,
@@ -6900,7 +7037,8 @@
     "effect_fr": "Ses attaques Poison remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Poison infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Poison.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "groundium-z--held": {
     "id": 20131,
@@ -6913,7 +7051,8 @@
     "effect_fr": "Ses attaques Sol remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Sol infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Sol.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "flyinium-z--held": {
     "id": 20132,
@@ -6926,7 +7065,8 @@
     "effect_fr": "Ses attaques Vol remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Vol infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Vol.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "psychium-z--held": {
     "id": 20133,
@@ -6939,7 +7079,8 @@
     "effect_fr": "Ses attaques Psy remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Psy infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Psy.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "buginium-z--held": {
     "id": 20134,
@@ -6952,7 +7093,8 @@
     "effect_fr": "Ses attaques Insecte remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Insecte infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Insecte.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "rockium-z--held": {
     "id": 20135,
@@ -6965,7 +7107,8 @@
     "effect_fr": "Ses attaques Roche remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Roche infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Roche.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "ghostium-z--held": {
     "id": 20136,
@@ -6978,7 +7121,8 @@
     "effect_fr": "Ses attaques Spectre remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Spectre infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Spectre.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "dragonium-z--held": {
     "id": 20137,
@@ -6991,7 +7135,8 @@
     "effect_fr": "Ses attaques Dragon remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Dragon infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Dragon.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "darkinium-z--held": {
     "id": 20138,
@@ -7004,7 +7149,8 @@
     "effect_fr": "Ses attaques Ténèbres remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Ténèbres infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Ténèbres.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "steelium-z--held": {
     "id": 20139,
@@ -7017,7 +7163,8 @@
     "effect_fr": "Ses attaques Acier remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Acier infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Acier.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "fairium-z--held": {
     "id": 20140,
@@ -7030,7 +7177,8 @@
     "effect_fr": "Ses attaques Fée remplissent la jauge Z 50 % plus vite ; ses capacités Z de type Fée infligent +20 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Permet d'utiliser la capacité Z de type Fée.",
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "pikanium-z--held": {
     "id": 20141,
@@ -7044,7 +7192,8 @@
     "description_fr": "Permet à Pikachu d'utiliser sa capacité Z exclusive.",
     "species_only": [25],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "pikashunium-z--held": {
     "id": 20142,
@@ -7058,7 +7207,8 @@
     "description_fr": "Permet à Pikachu d'utiliser sa capacité Z exclusive.",
     "species_only": [25],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "aloraichium-z--held": {
     "id": 20143,
@@ -7072,7 +7222,8 @@
     "description_fr": "Permet à Raichu d'utiliser sa capacité Z exclusive.",
     "species_only": [26],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "decidium-z--held": {
     "id": 20144,
@@ -7086,7 +7237,8 @@
     "description_fr": "Permet à Archéduc d'utiliser sa capacité Z exclusive.",
     "species_only": [724],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "incinium-z--held": {
     "id": 20145,
@@ -7100,7 +7252,8 @@
     "description_fr": "Permet à Félinferno d'utiliser sa capacité Z exclusive.",
     "species_only": [727],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "primarium-z--held": {
     "id": 20146,
@@ -7114,7 +7267,8 @@
     "description_fr": "Permet à Oratoria d'utiliser sa capacité Z exclusive.",
     "species_only": [730],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "tapunium-z--held": {
     "id": 20147,
@@ -7128,7 +7282,8 @@
     "description_fr": "Permet à Tokorico, Tokopiyon, Tokotoro, Tokopisco d'utiliser sa capacité Z exclusive.",
     "species_only": [785, 786, 787, 788],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "marshadium-z--held": {
     "id": 20148,
@@ -7142,7 +7297,8 @@
     "description_fr": "Permet à Marshadow d'utiliser sa capacité Z exclusive.",
     "species_only": [802],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "snorlium-z--held": {
     "id": 20149,
@@ -7156,7 +7312,8 @@
     "description_fr": "Permet à Ronflex d'utiliser sa capacité Z exclusive.",
     "species_only": [143],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "eevium-z--held": {
     "id": 20150,
@@ -7170,7 +7327,8 @@
     "description_fr": "Permet à Évoli d'utiliser sa capacité Z exclusive.",
     "species_only": [133],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "mewnium-z--held": {
     "id": 20151,
@@ -7184,7 +7342,8 @@
     "description_fr": "Permet à Mew d'utiliser sa capacité Z exclusive.",
     "species_only": [151],
     "exclusive_group": "cristal_z",
-    "unique": true
+    "unique": true,
+    "family": "jauge_z"
   },
   "booster-energy": {
     "id": 20152,
@@ -7195,7 +7354,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Au début du combat : sa meilleure stat +1 et jauge Z +25 % (une fois par combat). Amélioration à l'Atelier : jusqu'à 50.",
-    "description_fr": "Active Paléosynthèse ou Charge Quantique : augmente la meilleure stat. Consommé."
+    "description_fr": "Active Paléosynthèse ou Charge Quantique : augmente la meilleure stat. Consommé.",
+    "family": "jauge_z"
   },
   "power-herb": {
     "id": 20153,
@@ -7206,7 +7366,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Sa première capacité en deux temps (Plongée, Lance-Soleil…) part sans délai ; sinon, sa première action donne +30 % de jauge Z. Amélioration à l'Atelier : jusqu'à 60.",
-    "description_fr": "Permet de lancer immédiatement une capacité en deux tours. Consommé."
+    "description_fr": "Permet de lancer immédiatement une capacité en deux tours. Consommé.",
+    "family": "jauge_z"
   },
   "throat-spray": {
     "id": 20154,
@@ -7217,7 +7378,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Sa première capacité sonore : Att. Spé. +1. Chaque capacité sonore donne ensuite +15 % de jauge Z. Amélioration à l'Atelier : jusqu'à 40.",
-    "description_fr": "Augmente l'Att. Spé. quand le porteur utilise une capacité sonore. Consommé."
+    "description_fr": "Augmente l'Att. Spé. quand le porteur utilise une capacité sonore. Consommé.",
+    "family": "jauge_z"
   },
   "weakness-policy": {
     "id": 20155,
@@ -7228,7 +7390,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Touché par une attaque super efficace : Attaque et Att. Spé. +2 et jauge Z +30 % (une fois par combat). Amélioration à l'Atelier : jusqu'à 100.",
-    "description_fr": "Touché par une capacité super efficace : Attaque et Att. Spé. +2. Consommé."
+    "description_fr": "Touché par une capacité super efficace : Attaque et Att. Spé. +2. Consommé.",
+    "family": "jauge_z"
   },
   "flame-orb": {
     "id": 20156,
@@ -7241,7 +7404,8 @@
     "effect_fr": "Brûle le porteur à la fin de son 1er tour. Tant qu'il a une altération, ses attaques infligent +30 % et la brûlure ne réduit plus ses dégâts. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Brûle le porteur à la fin du tour.",
     "exclusive_group": "orbe_statut",
-    "unique": true
+    "unique": true,
+    "family": "statut"
   },
   "toxic-orb": {
     "id": 20157,
@@ -7254,7 +7418,8 @@
     "effect_fr": "Empoisonne le porteur à la fin de son 1er tour ; le poison le soigne alors de 8 % des PV max par tour. Amélioration à l'Atelier : jusqu'à 15.",
     "description_fr": "Empoisonne gravement le porteur à la fin du tour.",
     "exclusive_group": "orbe_statut",
-    "unique": true
+    "unique": true,
+    "family": "statut"
   },
   "mental-herb": {
     "id": 20158,
@@ -7265,7 +7430,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit Provocation, Encore, Tourmente, Entrave ou la confusion : les retire et l'en protège pendant 2 tours. Amélioration à l'Atelier : jusqu'à 5.",
-    "description_fr": "Soigne l'attraction, Provocation, Encore, Tourmente et Entrave. Consommé."
+    "description_fr": "Soigne l'attraction, Provocation, Encore, Tourmente et Entrave. Consommé.",
+    "family": "statut"
   },
   "white-herb": {
     "id": 20159,
@@ -7276,7 +7442,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "À sa première baisse de stats : annule toutes ses baisses et gagne 15 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 40.",
-    "description_fr": "Annule les baisses de stats du porteur. Consommé."
+    "description_fr": "Annule les baisses de stats du porteur. Consommé.",
+    "family": "statut"
   },
   "mirror-herb": {
     "id": 20160,
@@ -7287,7 +7454,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Quand un ennemi gagne des bonus de stats, le porteur copie ces bonus (1 fois par combat). Amélioration à l'Atelier : jusqu'à 3.",
-    "description_fr": "Copie une fois les hausses de stats d'un adversaire. Consommé."
+    "description_fr": "Copie une fois les hausses de stats d'un adversaire. Consommé.",
+    "family": "statut"
   },
   "covert-cloak": {
     "id": 20161,
@@ -7299,7 +7467,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Insensible aux effets secondaires des attaques ennemies (altérations, peur, baisses de stats, projection) ; subit 5 % de dégâts en moins des attaques à effet secondaire. Amélioration à l'Atelier : jusqu'à 15.",
     "description_fr": "Protège des effets secondaires des capacités adverses.",
-    "unique": true
+    "unique": true,
+    "family": "statut"
   },
   "clear-amulet": {
     "id": 20162,
@@ -7311,7 +7480,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Ses stats ne peuvent pas être baissées par l'ennemi ; chaque baisse bloquée donne +10 % de jauge Z. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Empêche les autres Pokémon de baisser les stats du porteur.",
-    "unique": true
+    "unique": true,
+    "family": "statut"
   },
   "destiny-knot": {
     "id": 20163,
@@ -7323,7 +7493,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Quand un ennemi inflige une altération au porteur, 30 % de chance que cet ennemi la subisse aussi. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Si le porteur est séduit, l'adversaire l'est aussi.",
-    "unique": true
+    "unique": true,
+    "family": "statut"
   },
   "shed-shell": {
     "id": 20164,
@@ -7334,7 +7505,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Immunisé au piège (Étreinte, Ligotage…) et au blocage ; chaque tentative le visant lui donne 20 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 50.",
-    "description_fr": "Permet de quitter le combat même piégé."
+    "description_fr": "Permet de quitter le combat même piégé.",
+    "family": "placement"
   },
   "eject-button": {
     "id": 20165,
@@ -7345,7 +7517,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : échange sa place avec l'allié vivant le plus en arrière, qui gagne 30 % de jauge d'action (une fois par combat). Amélioration à l'Atelier : jusqu'à 70.",
-    "description_fr": "Touché par une attaque, le porteur est rappelé et remplacé. Consommé."
+    "description_fr": "Touché par une attaque, le porteur est rappelé et remplacé. Consommé.",
+    "family": "placement"
   },
   "red-card": {
     "id": 20166,
@@ -7356,7 +7529,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : l'attaquant est projeté de 2 lignes vers l'arrière (collision) et perd 20 % de sa jauge (une fois par combat). Amélioration à l'Atelier : jusqu'à 50.",
-    "description_fr": "Touché par une attaque, le porteur force l'attaquant à être remplacé. Consommé."
+    "description_fr": "Touché par une attaque, le porteur force l'attaquant à être remplacé. Consommé.",
+    "family": "placement"
   },
   "eject-pack": {
     "id": 20167,
@@ -7367,7 +7541,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "À sa première baisse de stats : recule en ligne arrière, efface ses baisses et gagne 20 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 50.",
-    "description_fr": "Si une stat du porteur baisse, il est rappelé et remplacé. Consommé."
+    "description_fr": "Si une stat du porteur baisse, il est rappelé et remplacé. Consommé.",
+    "family": "placement"
   },
   "sticky-barb": {
     "id": 20168,
@@ -7378,7 +7553,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Le porteur perd 12,5 % de ses PV max par tour. Au premier contact reçu, les Piquants passent à l'attaquant (s'il a un emplacement libre), qui perd aussitôt 12,5 % de ses PV max. Amélioration à l'Atelier : jusqu'à 25.",
-    "description_fr": "Inflige 1/8 des PV au porteur chaque tour ; passe à l'attaquant au contact."
+    "description_fr": "Inflige 1/8 des PV au porteur chaque tour ; passe à l'attaquant au contact.",
+    "family": "autre"
   },
   "grip-claw": {
     "id": 20169,
@@ -7389,7 +7565,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses pièges durent 2 tours de plus et la cible piégée perd 10 % de Vitesse. Amélioration à l'Atelier : jusqu'à 30.",
-    "description_fr": "Les capacités d'emprisonnement durent plus longtemps."
+    "description_fr": "Les capacités d'emprisonnement durent plus longtemps.",
+    "family": "autre"
   },
   "binding-band": {
     "id": 20170,
@@ -7400,7 +7577,8 @@
     "pocket": "battle",
     "attributes": ["holdable"],
     "effect_fr": "Ses pièges infligent 9 % des PV max par tour au lieu de 6 %. Amélioration à l'Atelier : jusqu'à 15.",
-    "description_fr": "Augmente les dégâts des capacités d'emprisonnement."
+    "description_fr": "Augmente les dégâts des capacités d'emprisonnement.",
+    "family": "autre"
   },
   "heat-rock": {
     "id": 20171,
@@ -7412,7 +7590,8 @@
     "attributes": ["holdable"],
     "effect_fr": "La météo Soleil lancée par le porteur dure 3 tours de plus. Sous soleil, ses attaques infligent +10 % de dégâts. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Prolonge Zénith lancé par le porteur (8 tours au lieu de 5).",
-    "exclusive_group": "roche_meteo"
+    "exclusive_group": "roche_meteo",
+    "family": "autre"
   },
   "damp-rock": {
     "id": 20172,
@@ -7424,7 +7603,8 @@
     "attributes": ["holdable"],
     "effect_fr": "La météo Pluie lancée par le porteur dure 3 tours de plus. Sous pluie, ses attaques infligent +10 % de dégâts. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Prolonge Danse Pluie lancé par le porteur (8 tours au lieu de 5).",
-    "exclusive_group": "roche_meteo"
+    "exclusive_group": "roche_meteo",
+    "family": "autre"
   },
   "smooth-rock": {
     "id": 20173,
@@ -7436,7 +7616,8 @@
     "attributes": ["holdable"],
     "effect_fr": "La météo Tempête de sable lancée par le porteur dure 3 tours de plus. Sous tempête de sable, ses attaques infligent +10 % de dégâts. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Prolonge Tempête de Sable lancé par le porteur (8 tours au lieu de 5).",
-    "exclusive_group": "roche_meteo"
+    "exclusive_group": "roche_meteo",
+    "family": "autre"
   },
   "icy-rock": {
     "id": 20174,
@@ -7448,7 +7629,8 @@
     "attributes": ["holdable"],
     "effect_fr": "La météo Grêle / Neige lancée par le porteur dure 3 tours de plus. Sous grêle ou neige, ses attaques infligent +10 % de dégâts. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Prolonge Grêle et Chant Glacé lancé par le porteur (8 tours au lieu de 5).",
-    "exclusive_group": "roche_meteo"
+    "exclusive_group": "roche_meteo",
+    "family": "autre"
   },
   "terrain-extender": {
     "id": 20175,
@@ -7460,7 +7642,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Ses champs durent 3 tours de plus ; sur un champ actif, ses attaques du type du champ infligent +10 %. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Prolonge les champs lancés par le porteur (8 tours au lieu de 5).",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "amulet-coin": {
     "id": 20176,
@@ -7473,7 +7656,8 @@
     "effect_fr": "Or gagné à la fin du combat +50 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Double l'argent gagné en combat.",
     "exclusive_group": "argent",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "luck-incense": {
     "id": 20177,
@@ -7486,7 +7670,8 @@
     "effect_fr": "Si le porteur termine le combat sans être K.O. : or gagné +80 %. Amélioration à l'Atelier : jusqu'à 200.",
     "description_fr": "Double l'argent gagné en combat.",
     "exclusive_group": "argent",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "lucky-egg": {
     "id": 20178,
@@ -7498,7 +7683,8 @@
     "attributes": ["holdable"],
     "effect_fr": "15 % de chance d'obtenir un butin supplémentaire (objet ou baie) à la fin du combat. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Augmente de 50 % l'expérience gagnée.",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "red-scarf": {
     "id": 20179,
@@ -7511,7 +7697,8 @@
     "effect_fr": "Le porteur prend le rôle Attaquant (au lieu de son rôle calculé) et le bonus de ce rôle est renforcé de 25 %. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Augmente la Sang-froid du porteur en concours.",
     "exclusive_group": "foulard",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "blue-scarf": {
     "id": 20180,
@@ -7524,7 +7711,8 @@
     "effect_fr": "Le porteur prend le rôle Rapide (au lieu de son rôle calculé) et le bonus de ce rôle est renforcé de 25 %. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Augmente la Beauté du porteur en concours.",
     "exclusive_group": "foulard",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "pink-scarf": {
     "id": 20181,
@@ -7537,7 +7725,8 @@
     "effect_fr": "Le porteur prend le rôle Soutien (au lieu de son rôle calculé) et le bonus de ce rôle est renforcé de 25 %. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Augmente la Grâce du porteur en concours.",
     "exclusive_group": "foulard",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "green-scarf": {
     "id": 20182,
@@ -7550,7 +7739,8 @@
     "effect_fr": "Le porteur prend le rôle Lanceur (au lieu de son rôle calculé) et le bonus de ce rôle est renforcé de 25 %. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Augmente la Intelligence du porteur en concours.",
     "exclusive_group": "foulard",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "yellow-scarf": {
     "id": 20183,
@@ -7563,7 +7753,8 @@
     "effect_fr": "Le porteur prend le rôle Tank (au lieu de son rôle calculé) et le bonus de ce rôle est renforcé de 25 %. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Augmente la Robustesse du porteur en concours.",
     "exclusive_group": "foulard",
-    "unique": true
+    "unique": true,
+    "family": "autre"
   },
   "light-ball": {
     "id": 20184,
@@ -7576,7 +7767,8 @@
     "effect_fr": "Pikachu : Attaque et Att. Spé. +100 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Double l'Attaque et l'Att. Spé. de Pikachu.",
     "species_only": [25],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "thick-club": {
     "id": 20185,
@@ -7589,7 +7781,8 @@
     "effect_fr": "Osselait, Ossatueur : Attaque +100 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Double l'Attaque d'Osselait et d'Ossatueur.",
     "species_only": [104, 105],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "stick": {
     "id": 20186,
@@ -7602,7 +7795,8 @@
     "effect_fr": "Canarticho, Palarticho : critique +2 paliers et coups critiques +20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente le taux de critique de Canarticho de deux niveaux.",
     "species_only": [83, 865],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "lucky-punch": {
     "id": 20187,
@@ -7615,7 +7809,8 @@
     "effect_fr": "Leveinard : critique +2 paliers ; chaque coup critique donne +20 % de jauge Z. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Augmente le taux de critique de Leveinard de deux niveaux.",
     "species_only": [113],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "metal-powder": {
     "id": 20188,
@@ -7628,7 +7823,8 @@
     "effect_fr": "Métamorph : Défense et Déf. Spé. +50 %. Amélioration à l'Atelier : jusqu'à 100.",
     "description_fr": "Augmente la Défense et la Déf. Spé. de Métamorph.",
     "species_only": [132],
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "quick-powder": {
     "id": 20189,
@@ -7641,7 +7837,8 @@
     "effect_fr": "Métamorph : Vitesse +100 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Double la Vitesse de Métamorph.",
     "species_only": [132],
-    "unique": true
+    "unique": true,
+    "family": "vitesse"
   },
   "deep-sea-tooth": {
     "id": 20190,
@@ -7654,7 +7851,8 @@
     "effect_fr": "Coquiperl : Att. Spé. +100 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Double l'Att. Spé. de Coquiperl.",
     "species_only": [366],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "deep-sea-scale": {
     "id": 20191,
@@ -7667,7 +7865,8 @@
     "effect_fr": "Coquiperl : Déf. Spé. +100 %. Amélioration à l'Atelier : jusqu'à 150.",
     "description_fr": "Double la Déf. Spé. de Coquiperl.",
     "species_only": [366],
-    "unique": true
+    "unique": true,
+    "family": "defense"
   },
   "soul-dew": {
     "id": 20192,
@@ -7680,7 +7879,8 @@
     "effect_fr": "Latias, Latios : attaques Psy et Dragon +20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente la puissance des capacités Psy et Dragon de Latias et Latios.",
     "species_only": [380, 381],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "adamant-orb": {
     "id": 20193,
@@ -7693,7 +7893,8 @@
     "effect_fr": "Dialga : attaques Dragon et Acier +20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente la puissance des capacités Dragon et Acier de Dialga.",
     "species_only": [483],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "lustrous-orb": {
     "id": 20194,
@@ -7706,7 +7907,8 @@
     "effect_fr": "Palkia : attaques Eau et Dragon +20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente la puissance des capacités Eau et Dragon de Palkia.",
     "species_only": [484],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "griseous-orb": {
     "id": 20195,
@@ -7719,7 +7921,8 @@
     "effect_fr": "Giratina (Forme Originelle) : attaques Spectre et Dragon +20 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente la puissance des capacités Spectre et Dragon de Giratina et le fait passer en Forme Originelle.",
     "species_only": [487],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "rusted-sword": {
     "id": 20196,
@@ -7732,7 +7935,8 @@
     "effect_fr": "Zacian : Attaque +30 % ; sa première attaque est un coup critique. Amélioration à l'Atelier : jusqu'à 70.",
     "description_fr": "Zacian prend sa Forme Épée Suprême.",
     "species_only": [888],
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "rusted-shield": {
     "id": 20197,
@@ -7745,7 +7949,8 @@
     "effect_fr": "Zamazenta : commence avec Défense +1 et un bouclier de 20 % des PV max. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Zamazenta prend sa Forme Bouclier Suprême.",
     "species_only": [889],
-    "unique": true
+    "unique": true,
+    "family": "bouclier"
   },
   "fighting-memory": {
     "id": 20198,
@@ -7759,7 +7964,8 @@
     "description_fr": "Silvallié devient de type Combat (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "flying-memory": {
     "id": 20199,
@@ -7773,7 +7979,8 @@
     "description_fr": "Silvallié devient de type Vol (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "poison-memory": {
     "id": 20200,
@@ -7787,7 +7994,8 @@
     "description_fr": "Silvallié devient de type Poison (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "ground-memory": {
     "id": 20201,
@@ -7801,7 +8009,8 @@
     "description_fr": "Silvallié devient de type Sol (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "rock-memory": {
     "id": 20202,
@@ -7815,7 +8024,8 @@
     "description_fr": "Silvallié devient de type Roche (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "bug-memory": {
     "id": 20203,
@@ -7829,7 +8039,8 @@
     "description_fr": "Silvallié devient de type Insecte (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "ghost-memory": {
     "id": 20204,
@@ -7843,7 +8054,8 @@
     "description_fr": "Silvallié devient de type Spectre (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "steel-memory": {
     "id": 20205,
@@ -7857,7 +8069,8 @@
     "description_fr": "Silvallié devient de type Acier (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "fire-memory": {
     "id": 20206,
@@ -7871,7 +8084,8 @@
     "description_fr": "Silvallié devient de type Feu (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "water-memory": {
     "id": 20207,
@@ -7885,7 +8099,8 @@
     "description_fr": "Silvallié devient de type Eau (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "grass-memory": {
     "id": 20208,
@@ -7899,7 +8114,8 @@
     "description_fr": "Silvallié devient de type Plante (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "electric-memory": {
     "id": 20209,
@@ -7913,7 +8129,8 @@
     "description_fr": "Silvallié devient de type Électrik (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "psychic-memory": {
     "id": 20210,
@@ -7927,7 +8144,8 @@
     "description_fr": "Silvallié devient de type Psy (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "ice-memory": {
     "id": 20211,
@@ -7941,7 +8159,8 @@
     "description_fr": "Silvallié devient de type Glace (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "dragon-memory": {
     "id": 20212,
@@ -7955,7 +8174,8 @@
     "description_fr": "Silvallié devient de type Dragon (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "dark-memory": {
     "id": 20213,
@@ -7969,7 +8189,8 @@
     "description_fr": "Silvallié devient de type Ténèbres (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "fairy-memory": {
     "id": 20214,
@@ -7983,7 +8204,8 @@
     "description_fr": "Silvallié devient de type Fée (Coup Mémoire aussi).",
     "species_only": [773],
     "exclusive_group": "rom",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "douse-drive": {
     "id": 20215,
@@ -7997,7 +8219,8 @@
     "description_fr": "Techno-Buster de Genesect devient de type Eau.",
     "species_only": [649],
     "exclusive_group": "module",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "shock-drive": {
     "id": 20216,
@@ -8011,7 +8234,8 @@
     "description_fr": "Techno-Buster de Genesect devient de type Électrik.",
     "species_only": [649],
     "exclusive_group": "module",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "burn-drive": {
     "id": 20217,
@@ -8025,7 +8249,8 @@
     "description_fr": "Techno-Buster de Genesect devient de type Feu.",
     "species_only": [649],
     "exclusive_group": "module",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "chill-drive": {
     "id": 20218,
@@ -8039,7 +8264,8 @@
     "description_fr": "Techno-Buster de Genesect devient de type Glace.",
     "species_only": [649],
     "exclusive_group": "module",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "red-nectar": {
     "id": 20219,
@@ -8053,7 +8279,8 @@
     "description_fr": "Plumeline prend le Style Flamenco.",
     "species_only": [741],
     "exclusive_group": "nectar",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "yellow-nectar": {
     "id": 20220,
@@ -8067,7 +8294,8 @@
     "description_fr": "Plumeline prend le Style Pom-Pom.",
     "species_only": [741],
     "exclusive_group": "nectar",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "pink-nectar": {
     "id": 20221,
@@ -8081,7 +8309,8 @@
     "description_fr": "Plumeline prend le Style Pas de Hula.",
     "species_only": [741],
     "exclusive_group": "nectar",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "purple-nectar": {
     "id": 20222,
@@ -8095,7 +8324,8 @@
     "description_fr": "Plumeline prend le Style Buyō.",
     "species_only": [741],
     "exclusive_group": "nectar",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "wellspring-mask": {
     "id": 20223,
@@ -8109,7 +8339,8 @@
     "description_fr": "Ogerpon prend le type Plante/Eau et ses capacités sont augmentées de 20 %.",
     "species_only": [1017],
     "exclusive_group": "masque",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "hearthflame-mask": {
     "id": 20224,
@@ -8123,7 +8354,8 @@
     "description_fr": "Ogerpon prend le type Plante/Feu et ses capacités sont augmentées de 20 %.",
     "species_only": [1017],
     "exclusive_group": "masque",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "cornerstone-mask": {
     "id": 20225,
@@ -8137,7 +8369,8 @@
     "description_fr": "Ogerpon prend le type Plante/Roche et ses capacités sont augmentées de 20 %.",
     "species_only": [1017],
     "exclusive_group": "masque",
-    "unique": true
+    "unique": true,
+    "family": "degats"
   },
   "occa-berry": {
     "id": 20226,
@@ -8149,7 +8382,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Feu super efficace reçu : dégâts réduits de 50 % ; puis immunisé à la brûlure pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Feu super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "passho-berry": {
     "id": 20227,
@@ -8161,7 +8395,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Eau super efficace reçu : dégâts réduits de 50 % ; puis régénère 3 % des PV max pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Eau super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "wacan-berry": {
     "id": 20228,
@@ -8173,7 +8408,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Électrik super efficace reçu : dégâts réduits de 50 % ; puis immunisé à la paralysie pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Électrik super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "rindo-berry": {
     "id": 20229,
@@ -8185,7 +8421,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Plante super efficace reçu : dégâts réduits de 50 % ; puis immunisé au sommeil et à Vampigraine pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Plante super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "yache-berry": {
     "id": 20230,
@@ -8197,7 +8434,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Glace super efficace reçu : dégâts réduits de 50 % ; puis immunisé au gel pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Glace super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "chople-berry": {
     "id": 20231,
@@ -8209,7 +8447,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Combat super efficace reçu : dégâts réduits de 50 % ; puis Attaque +1. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Combat super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "kebia-berry": {
     "id": 20232,
@@ -8221,7 +8460,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Poison super efficace reçu : dégâts réduits de 50 % ; puis immunisé au poison pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Poison super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "shuca-berry": {
     "id": 20233,
@@ -8233,7 +8473,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Sol super efficace reçu : dégâts réduits de 50 % ; puis ne peut pas être déplacé pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Sol super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "coba-berry": {
     "id": 20234,
@@ -8245,7 +8486,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Vol super efficace reçu : dégâts réduits de 50 % ; puis Esquive +1. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Vol super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "payapa-berry": {
     "id": 20235,
@@ -8257,7 +8499,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Psy super efficace reçu : dégâts réduits de 50 % ; puis immunisé à la confusion pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Psy super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "tanga-berry": {
     "id": 20236,
@@ -8269,7 +8512,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Insecte super efficace reçu : dégâts réduits de 50 % ; puis jauge d'action +15 %. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Insecte super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "charti-berry": {
     "id": 20237,
@@ -8281,7 +8525,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Roche super efficace reçu : dégâts réduits de 50 % ; puis Défense +1. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Roche super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "kasib-berry": {
     "id": 20238,
@@ -8293,7 +8538,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Spectre super efficace reçu : dégâts réduits de 50 % ; puis jauge Z +15 %. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Spectre super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "haban-berry": {
     "id": 20239,
@@ -8305,7 +8551,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Dragon super efficace reçu : dégâts réduits de 50 % ; puis Att. Spé. +1. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Dragon super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "colbur-berry": {
     "id": 20240,
@@ -8317,7 +8564,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Ténèbres super efficace reçu : dégâts réduits de 50 % ; puis immunisé à Provocation pendant 3 tours. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Ténèbres super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "babiri-berry": {
     "id": 20241,
@@ -8329,7 +8577,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Acier super efficace reçu : dégâts réduits de 50 % ; puis bouclier de 10 % des PV max. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Acier super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "roseli-berry": {
     "id": 20242,
@@ -8341,7 +8590,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Fée super efficace reçu : dégâts réduits de 50 % ; puis Déf. Spé. +1. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Fée super efficace. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "chilan-berry": {
     "id": 20243,
@@ -8353,7 +8603,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Premier coup Normal reçu : dégâts réduits de 50 % ; puis Vitesse +1. Amélioration à l'Atelier : jusqu'à 75.",
     "description_fr": "Réduit de moitié les dégâts d'une capacité Normal. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "lansat-berry": {
     "id": 20244,
@@ -8365,7 +8616,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : critique +2 paliers et coups critiques +15 % jusqu'à la fin du combat. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Augmente le taux de critique de deux niveaux quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "starf-berry": {
     "id": 20245,
@@ -8377,7 +8629,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : une stat au hasard +2 ; 25 % de chance qu'une seconde stat gagne +1. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Augmente fortement une stat au hasard quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "micle-berry": {
     "id": 20246,
@@ -8389,7 +8642,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : sa prochaine attaque ne peut pas rater ; précision +20 % ensuite. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Augmente la précision du prochain coup quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "custap-berry": {
     "id": 20247,
@@ -8401,7 +8655,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Quand ses PV passent sous 25 % : sa jauge d'action est remplie, il agit immédiatement. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Permet d'agir en premier une fois quand les PV passent sous 1/4.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "enigma-berry": {
     "id": 20248,
@@ -8413,7 +8668,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Touché par une attaque super efficace : soigne 25 % des PV max. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Restaure 1/4 des PV max après une capacité super efficace.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "jaboca-berry": {
     "id": 20249,
@@ -8425,7 +8681,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup physique reçu : l'attaquant perd 12,5 % de ses PV max. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Inflige 1/8 de ses PV à l'attaquant qui utilise une capacité physique. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "rowap-berry": {
     "id": 20250,
@@ -8437,7 +8694,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup spécial reçu : l'attaquant perd 12,5 % de ses PV max. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Inflige 1/8 de ses PV à l'attaquant qui utilise une capacité spéciale. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "kee-berry": {
     "id": 20251,
@@ -8449,7 +8707,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup physique reçu : Défense +1 et bouclier de 8 % des PV max. Amélioration à l'Atelier : jusqu'à 25.",
     "description_fr": "Augmente la Défense quand le porteur subit une capacité physique.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "maranga-berry": {
     "id": 20252,
@@ -8461,7 +8720,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup spécial reçu : Déf. Spé. +1 et bouclier de 8 % des PV max. Amélioration à l'Atelier : jusqu'à 25.",
     "description_fr": "Augmente la Déf. Spé. quand le porteur subit une capacité spéciale.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "oran-berry": {
     "id": 20253,
@@ -8473,7 +8733,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès que ses PV passent sous 75 % : soigne 10 % des PV max. Amélioration à l'Atelier : jusqu'à 25.",
     "description_fr": "Restaure 10 PV quand les PV passent sous la moitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "berry-juice": {
     "id": 20254,
@@ -8485,7 +8746,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 50 % des PV : régénère 6 % des PV max par tour pendant 4 tours. Amélioration à l'Atelier : jusqu'à 15.",
     "description_fr": "Restaure 20 PV quand les PV passent sous la moitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "figy-berry": {
     "id": 20255,
@@ -8497,7 +8759,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 25 % des PV : soigne 33 % des PV max et Attaque +1. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Restaure 1/3 des PV max sous 1/4 des PV ; rend confus un Pokémon qui n'aime pas le goût épicé.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "wiki-berry": {
     "id": 20256,
@@ -8509,7 +8772,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 25 % des PV : soigne 33 % des PV max et Att. Spé. +1. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Restaure 1/3 des PV max sous 1/4 des PV ; rend confus un Pokémon qui n'aime pas le goût sec.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "mago-berry": {
     "id": 20257,
@@ -8521,7 +8785,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 25 % des PV : soigne 33 % des PV max et jauge d'action +25 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Restaure 1/3 des PV max sous 1/4 des PV ; rend confus un Pokémon qui n'aime pas le goût sucré.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "aguav-berry": {
     "id": 20258,
@@ -8533,7 +8798,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 25 % des PV : soigne 33 % des PV max et bouclier de 10 % des PV max. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Restaure 1/3 des PV max sous 1/4 des PV ; rend confus un Pokémon qui n'aime pas le goût amer.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "iapapa-berry": {
     "id": 20259,
@@ -8545,7 +8811,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Sous 25 % des PV : soigne 33 % des PV max et Défense +1. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Restaure 1/3 des PV max sous 1/4 des PV ; rend confus un Pokémon qui n'aime pas le goût acide.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "leppa-berry": {
     "id": 20260,
@@ -8557,7 +8824,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Après sa première capacité Z, la jauge Z repart à 30 % au lieu de 0. Amélioration à l'Atelier : jusqu'à 80.",
     "description_fr": "Restaure 10 PP d'une capacité épuisée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "cheri-berry": {
     "id": 20261,
@@ -8569,7 +8837,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit la paralysie (STAT_PAR) : la soigne et jauge d'action +25 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Soigne la paralysie. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "chesto-berry": {
     "id": 20262,
@@ -8581,7 +8850,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit le sommeil (STAT_SOM) : la soigne et jauge Z +25 %. Amélioration à l'Atelier : jusqu'à 60.",
     "description_fr": "Soigne le sommeil. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "pecha-berry": {
     "id": 20263,
@@ -8593,7 +8863,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit le poison (STAT_PSN) : la soigne et régénère 4 % des PV max pendant 3 tours. Amélioration à l'Atelier : jusqu'à 10.",
     "description_fr": "Soigne le poison. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "rawst-berry": {
     "id": 20264,
@@ -8605,7 +8876,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit la brûlure (STAT_BRU) : la soigne et bouclier de 10 % des PV max. Amélioration à l'Atelier : jusqu'à 30.",
     "description_fr": "Soigne la brûlure. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "aspear-berry": {
     "id": 20265,
@@ -8617,7 +8889,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit le gel (STAT_GEL) : la soigne et sa prochaine attaque inflige +20 %. Amélioration à l'Atelier : jusqu'à 50.",
     "description_fr": "Soigne le gel. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "persim-berry": {
     "id": 20266,
@@ -8629,7 +8902,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit la confusion (STAT_CONF) : la soigne et précision +15 % pendant 3 tours. Amélioration à l'Atelier : jusqu'à 40.",
     "description_fr": "Soigne la confusion. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "lum-berry": {
     "id": 20267,
@@ -8641,7 +8915,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Dès qu'il subit une altération ou la confusion : la soigne et récupère 5 % des PV max. Amélioration à l'Atelier : jusqu'à 20.",
     "description_fr": "Soigne toute altération de statut ou la confusion. Consommée.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "pomeg-berry": {
     "id": 20268,
@@ -8653,7 +8928,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : l'attaquant subit Anti-Soin 2 tours et le porteur récupère 8 % des PV max. Amélioration à l'Atelier : jusqu'à 20.",
     "description_fr": "Baisse les EV de PV du Pokémon et augmente son amitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "kelpsy-berry": {
     "id": 20269,
@@ -8665,7 +8941,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : l'attaquant perd 1 palier d'Attaque et le porteur gagne 15 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 40.",
     "description_fr": "Baisse les EV de Attaque du Pokémon et augmente son amitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "qualot-berry": {
     "id": 20270,
@@ -8677,7 +8954,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : l'attaquant perd 1 palier de Défense et le porteur gagne 15 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 40.",
     "description_fr": "Baisse les EV de Défense du Pokémon et augmente son amitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "hondew-berry": {
     "id": 20271,
@@ -8689,7 +8967,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : l'attaquant perd 1 palier d'Att. Spé. et le porteur gagne 15 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 40.",
     "description_fr": "Baisse les EV de Att. Spé. du Pokémon et augmente son amitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "grepa-berry": {
     "id": 20272,
@@ -8701,7 +8980,8 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : l'attaquant perd 1 palier de Déf. Spé. et le porteur gagne 15 % de jauge d'action. Amélioration à l'Atelier : jusqu'à 40.",
     "description_fr": "Baisse les EV de Déf. Spé. du Pokémon et augmente son amitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   },
   "tamato-berry": {
     "id": 20273,
@@ -8713,6 +8993,7 @@
     "attributes": ["holdable"],
     "effect_fr": "Au premier coup reçu : l'attaquant perd 1 palier de Vitesse et 15 % de sa jauge d'action. Amélioration à l'Atelier : jusqu'à 40.",
     "description_fr": "Baisse les EV de Vitesse du Pokémon et augmente son amitié.",
-    "unique": true
+    "unique": true,
+    "family": "baie"
   }
 }

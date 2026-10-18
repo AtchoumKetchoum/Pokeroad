@@ -32,6 +32,7 @@ for (const p of proposal) {
     };
     if (Array.isArray(p.species_only) && p.species_only.length) entry.species_only = p.species_only.map(s => s.id);
     if (p.exclusive_group) entry.exclusive_group = p.exclusive_group;
+    entry.family = isBerry ? 'baie' : p.category; // famille pour le tri en boutique et dans le sac
     if (p.unique) entry.unique = true;
     if (items[p.slug]) updated++; else added++;
     items[p.slug] = entry;

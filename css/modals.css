@@ -212,3 +212,10 @@
 .hold-slot img { width: 40px; height: 40px; image-rendering: pixelated; }
 .hold-slot .hold-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
 .hold-hint { opacity: .75; }
+
+/* Familles d'objets de combat : rangée au-dessus des poches */
+#shop-families, #item-bag-families { order: 2; flex: none; display: flex; flex-wrap: nowrap !important; gap: 6px; justify-content: space-between; margin: 10px 0 0 !important; padding: 0 !important; }
+#shop-pockets, #item-bag-pockets { order: 3; }
+.item-families .pocket-tab.pocket-icon { height: 56px; border-radius: 12px !important; }
+.item-families .pocket-tab.pocket-icon svg, .item-families .pocket-tab.pocket-icon img { width: 40px !important; height: 40px !important; }
+.item-families .family-all { font-family: var(--font-title); font-size: 22px; }

@@ -457,7 +457,8 @@ function renderItemBag() {
 
     const inventory = GameData.getInventory().items || {};
     const itemsByPocket = GameData.getItemsByPocket();
-    const pocketItems = itemsByPocket[currentItemBagPocket] || [];
+    renderFamilyRow('item-bag-families', currentBagFamily, 'switchBagFamily', currentItemBagPocket === 'battle');
+    const pocketItems = currentItemBagPocket === 'battle' ? byFamily(itemsByPocket.battle || [], currentBagFamily) : (itemsByPocket[currentItemBagPocket] || []);
 
     if (pocketItems.length === 0) {
         grid.innerHTML = "<p>Aucun objet dans cette catégorie.</p>";
@@ -494,7 +495,9 @@ function showItemInfo(itemId) {
     const move = ctMove(item);
     // Les capacités ne sont pas encore chargées : on réaffiche dès qu'elles le sont
     if (moveName && !move && typeof loadMovesDB === 'function' && !MovesDB) loadMovesDB().then(() => { if (modal.style.display !== 'none') showItemInfo(itemId); });
-    const desc = move ? (move.description_game || move.description_fr) : (item.description_fr || item.effect_fr || 'Aucune description disponible.');
+    // Objets tenus et baies : l'effet réel dans le jeu ; les autres : la description
+    const gameEffect = ['battle', 'berries'].includes(item.pocket) ? item.effect_fr : null;
+    const desc = move ? (move.description_game || move.description_fr) : (gameEffect || item.description_fr || item.effect_fr || 'Aucune description disponible.');
 
     content.innerHTML = `
         <img src="${sprite}" alt="${item.name_fr}" style="width: 64px; height: 64px; margin-bottom: 15px;" onerror="this.src=Art.FALLBACK">
@@ -524,6 +527,25 @@ function pocketButton(p, active, onclick) {
     const art = p === 'eggs' ? Art.egg('Commun', 44) : (icon ? Art.item(icon, 44) : label);
     return `<button class="pocket-tab pocket-icon ${active ? 'active' : ''}" title="${label}" aria-label="${label}" onclick="${onclick}">${art}</button>`;
 }
+
+// Familles des objets de combat : une rangée d'icônes pour trier les 200+ objets
+const ITEM_FAMILIES = [
+    ['all', null, 'Tous'], ['degats', 'life-orb', 'Dégâts'], ['defense', 'assault-vest', 'Défense'], ['soin', 'leftovers', 'Soin'],
+    ['bouclier', 'light-clay', 'Bouclier'], ['vitesse', 'quick-claw', 'Vitesse et jauge'], ['jauge_z', 'normalium-z--held', 'Jauge Z'],
+    ['statut', 'flame-orb', 'Altérations'], ['placement', 'eject-button', 'Placement'], ['autre', 'amulet-coin', 'Autres'],
+];
+let currentShopFamily = 'all';
+let currentBagFamily = 'all';
+function renderFamilyRow(containerId, current, onclick, visible) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.style.display = visible ? '' : 'none';
+    if (!visible) return;
+    el.innerHTML = ITEM_FAMILIES.map(([key, icon, label]) => `<button class="pocket-tab pocket-icon ${current === key ? 'active' : ''}" title="${label}" aria-label="${label}" onclick="${onclick}('${key}')">${icon ? Art.item(icon, 44) : '<span class="family-all">Tous</span>'}</button>`).join('');
+}
+const byFamily = (list, family) => (family === 'all' ? list : list.filter(it => it.family === family));
+function switchShopFamily(f) { currentShopFamily = f; renderShop(); }
+function switchBagFamily(f) { currentBagFamily = f; renderItemBag(); }
 
 function renderItemBagPockets() {
     const container = document.getElementById('item-bag-pockets');
@@ -688,6 +710,7 @@ function switchShopPocket(pocket) {
 async function renderShop() {
     const grid = document.getElementById('shop-grid');
     if (!grid) return;
+    renderFamilyRow('shop-families', currentShopFamily, 'switchShopFamily', currentShopPocket === 'battle');
     grid.innerHTML = 'Chargement...';
 
     const data = GameData._load();
@@ -725,7 +748,7 @@ async function renderShop() {
     }
     else {
         const itemsByPocket = GameData.getItemsByPocket();
-        const shopItems = (itemsByPocket[currentShopPocket] || []).filter(it => !it.not_sold);
+        const shopItems = (currentShopPocket === 'battle' ? byFamily(itemsByPocket.battle || [], currentShopFamily) : (itemsByPocket[currentShopPocket] || [])).filter(it => !it.not_sold);
 
         if (shopItems.length === 0) {
             grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Aucun objet dans cette catégorie.</p>';
@@ -743,7 +766,7 @@ async function renderShop() {
             const sprite = item.sprite || Art.FALLBACK;
             const moveName = ctMoveName(item);
             const move = moveName && movesByName[moveName.toLowerCase()];
-            const desc = move ? (move.description_game || move.description_fr || '') : (item.description_fr || item.effect_fr || 'Pas de description.');
+            const desc = move ? (move.description_game || move.description_fr || '') : ((['battle', 'berries'].includes(item.pocket) ? item.effect_fr : null) || item.description_fr || item.effect_fr || 'Pas de description.');
             return `
                 <div class="shop-item-card${moveName ? ' is-ct' : ''}" onclick="showItemInfo('${item.id}')" style="cursor: pointer;">
                     <img src="${sprite}" class="item-icon" loading="lazy" onerror="this.src=Art.FALLBACK">
