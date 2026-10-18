@@ -1542,6 +1542,8 @@ function promptTargetSelection(move, unit) {
 
         if (valid) hasTarget = true;
         slot.classList.toggle('targetable', valid);
+        // Pokémon présent mais hors de portée (ligne de front pour le contact, Plongée…) : grisé
+        slot.classList.toggle('not-targetable', !valid && !!(grid.enemy[idx] && !grid.enemy[idx].isKO));
     });
 
     // S'il n'y a aucune cible valide, on ne peut pas continuer le tour du joueur.
@@ -1563,8 +1565,9 @@ function promptTargetSelection(move, unit) {
         currentTargetingController = controller;
 
         const cleanup = () => {
-            document.querySelectorAll('#enemy-grid .unit-slot.aoe-highlight').forEach(s => s.classList.remove('aoe-highlight'));
-            slots.forEach(s => s.classList.remove('targetable'));
+            document.querySelectorAll('#enemy-grid .unit-slot.aoe-highlight, #enemy-grid .unit-slot.aoe-confirm').forEach(s => s.classList.remove('aoe-highlight', 'aoe-confirm'));
+            slots.forEach(s => s.classList.remove('targetable', 'not-targetable'));
+            dom.enemyGrid.classList.remove('is-targeting');
             if (dom.targetPrompt) {
                 dom.targetPrompt.style.display = 'none';
                 dom.targetPrompt.textContent = '';
@@ -1574,66 +1577,88 @@ function promptTargetSelection(move, unit) {
 
         controller.signal.addEventListener('abort', () => { cleanup(); resolve(false); });
 
-        const clearHighlights = () => document.querySelectorAll('#enemy-grid .unit-slot.aoe-highlight').forEach(s => s.classList.remove('aoe-highlight'));
+        // Cases que l'attaque touchera si elle part sur la case `idx` (forme de zone de la refonte)
+        const hitIndexesFor = (idx) => {
+            const target = grid.enemy[idx];
+            if (!target || target.isKO) return [];
+            return (move.rw?.kind === 'attack' && typeof MoveRework !== 'undefined')
+                ? [...new Set(MoveRework.previewHits(move, unit, target).map(h => h.unit._index))]
+                : getAoePreviewIndexes(move.aoe || 'single', idx, 'enemy');
+        };
+        const paint = (cls, indexes) => {
+            document.querySelectorAll(`#enemy-grid .unit-slot.${cls}`).forEach(s => s.classList.remove(cls));
+            indexes.forEach(i => getSlotEl('enemy', i)?.classList.add(cls));
+        };
+        const slotUnder = (e) => {
+            const el = document.elementFromPoint(e.clientX, e.clientY)?.closest('#enemy-grid .unit-slot');
+            const idx = el ? slots.indexOf(el) : -1;
+            return idx >= 0 && slots[idx].classList.contains('targetable') ? idx : -1;
+        };
 
+        const launch = async (idx) => {
+            const target = grid.enemy[idx];
+            if (!target || target.isKO) return;
+            // Annuler les autres listeners et nettoyer l'UI
+            cleanup();
+            ev.abort(); // plus d'écoute du ciblage
+            // Si c'est une attaque boostée, on vide la jauge
+            if (move._isBoosted) {
+                unit.boostGauge = 0;
+                // On ne nettoie pas l'UI des actions car le tour du joueur n'est pas forcément terminé
+                updateZMoveIndicators();
+            } else {
+                // Pour un move normal, on nettoie tout
+                clearActionUI();
+            }
+            await attack(unit, target, move);
+            uiLocked = false;
+            // Si ce n'est PAS un Z-Move, on continue le flux normal du tour
+            if (!move._isBoosted) {
+                if (dom._resolveTurn) dom._resolveTurn();
+                dom._resolveTurn = null;
+            }
+            resolve(true);
+        };
+
+        // Écouteurs du ciblage : coupés au lancement de l'attaque ou à l'annulation
+        const ev = new AbortController();
+        controller.signal.addEventListener('abort', () => ev.abort());
+        dom.enemyGrid.classList.add('is-targeting');
+        if (dom.targetPrompt) {
+            dom.targetPrompt.style.display = 'block';
+            dom.targetPrompt.textContent = 'Appuie sur une cible pour voir la zone, relâche pour attaquer.';
+        }
+
+        // Survol à la souris : aperçu léger de la zone
         slots.forEach((slot, idx) => {
-            // --- NOUVEAU: Listeners pour la prévisualisation de l'AOE ---
-            slot.addEventListener('mouseover', () => {
-                clearHighlights();
-                let hovered = grid.enemy[idx];
-                if (move.rw?.kind === 'attack' && (!hovered || hovered.isKO)) return; // case vide : rien à prévisualiser
-                // Même redirection que l'attaque : le contact frappe la ligne de front la plus proche du couloir visé
-                if (hovered && !BattleRules.canTarget(unit, move, hovered)) {
-                    const front = BattleRules.frontLineUnits('enemy');
-                    const lane = BattleRules.laneOf(idx);
-                    if (front.length) hovered = front.reduce((a, b) => (Math.abs(BattleRules.laneOf(a._index) - lane) <= Math.abs(BattleRules.laneOf(b._index) - lane) ? a : b));
-                }
-                const aoeIndexes = (move.rw?.kind === 'attack' && hovered && typeof MoveRework !== 'undefined')
-                    ? MoveRework.previewHits(move, unit, hovered).map(h => h.unit._index)
-                    : getAoePreviewIndexes(move.aoe || 'single', idx, 'enemy');
-                
-                aoeIndexes.forEach(targetIndex => {
-                    const targetSlot = getSlotEl('enemy', targetIndex);
-                    if (targetSlot) {
-                        targetSlot.classList.add('aoe-highlight');
-                    }
-                });
-            }, { signal: controller.signal });
-
-            slot.addEventListener('mouseout', clearHighlights, { signal: controller.signal });
-            // --- FIN NOUVEAU ---
-
-            if (!slot.classList.contains('targetable')) return;
-
-            slot.addEventListener('click', async () => {
-                const target = grid.enemy[idx];
-                if (!target || target.isKO) return;
-
-                // Annuler les autres listeners et nettoyer l'UI
-                cleanup();
-
-                // Si c'est une attaque boostée, on vide la jauge
-                if (move._isBoosted) {
-                    unit.boostGauge = 0;
-                    // On ne nettoie pas l'UI des actions car le tour du joueur n'est pas forcément terminé
-                    // On met à jour juste les boutons Z-Move
-                    updateZMoveIndicators();
-                } else {
-                    // Pour un move normal, on nettoie tout
-                    clearActionUI();
-                }
-                
-                await attack(unit, target, move);
-
-                uiLocked = false;
-                // Si ce n'est PAS un Z-Move, on continue le flux normal du tour
-                if (!move._isBoosted) {
-                    if (dom._resolveTurn) dom._resolveTurn();
-                    dom._resolveTurn = null;
-                }
-                resolve(true);
-            }, { signal: controller.signal, once: true });
+            slot.addEventListener('mouseenter', () => { if (!pressed) paint('aoe-highlight', slot.classList.contains('targetable') ? hitIndexesFor(idx) : []); }, { signal: ev.signal });
+            slot.addEventListener('mouseleave', () => { if (!pressed) paint('aoe-highlight', []); }, { signal: ev.signal });
         });
+
+        // Appui maintenu (doigt ou souris) : les Pokémon touchés passent en rouge ; relâcher lance l'attaque
+        let pressed = -1;
+        dom.enemyGrid.addEventListener('pointerdown', (e) => {
+            const idx = slotUnder(e);
+            if (idx < 0) return;
+            e.preventDefault();
+            pressed = idx;
+            paint('aoe-highlight', []);
+            paint('aoe-confirm', hitIndexesFor(idx));
+        }, { signal: ev.signal });
+        document.addEventListener('pointermove', (e) => {
+            if (pressed < 0) return;
+            const idx = slotUnder(e);
+            if (idx >= 0 && idx !== pressed) { pressed = idx; paint('aoe-confirm', hitIndexesFor(idx)); }
+            if (idx < 0) paint('aoe-confirm', []);
+        }, { signal: ev.signal });
+        document.addEventListener('pointerup', (e) => {
+            if (pressed < 0) return;
+            const idx = slotUnder(e);
+            pressed = -1;
+            paint('aoe-confirm', []);
+            if (idx >= 0) launch(idx); // relâché sur une cible valide : l'attaque part
+        }, { signal: ev.signal });
+        document.addEventListener('pointercancel', () => { pressed = -1; paint('aoe-confirm', []); }, { signal: ev.signal });
     });
 }
 

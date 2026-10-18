@@ -1638,3 +1638,9 @@
 
 /* --- MOBILE OPTIMIZATIONS EN COMBAT --- */
 
+
+/* Ciblage en deux temps : hors de portée grisé, zone touchée en rouge pendant l'appui */
+#enemy-grid.is-targeting { touch-action: none; }
+.unit-slot.not-targetable .unit { filter: grayscale(1) brightness(.75); opacity: .5; transition: opacity .15s, filter .15s; }
+#view-battle .unit-slot.aoe-confirm::before { background: radial-gradient(ellipse, rgba(230, 40, 40, .95), rgba(200, 20, 20, .35)) !important; border-color: #8a1010 !important; }
+.unit-slot.aoe-confirm .unit { filter: drop-shadow(0 0 6px rgba(230, 40, 40, .9)); }
