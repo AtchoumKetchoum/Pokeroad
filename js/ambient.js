@@ -105,9 +105,10 @@ const Ambient = (() => {
         if (typeof PmdSprite === 'undefined') return;
         PmdSprite.hydrate(layer);
         // Les Pokémon en mouvement jouent leur animation en boucle une fois le sprite chargé :
-        // battement d'ailes pour les volants (FlapAround, Hover...), nage (Walk) pour les autres
+        // battement d'ailes sur place pour les volants (Float, Hover ; pas FlapAround, où le Pokémon tourne
+        // sur lui-même), nage (Walk) pour les autres
         layer.querySelectorAll('.amb-flyer .pmd-sprite, .amb-swim .pmd-sprite').forEach(sprite => {
-            const anims = sprite.closest('.amb-flyer') ? ['FlapAround', 'Hover', 'Float', 'Walk'] : ['Walk', 'Idle'];
+            const anims = sprite.closest('.amb-flyer') ? ['Float', 'Hover', 'Walk'] : ['Walk', 'Idle'];
             const tryMove = (tries = 0) => {
                 if (sprite.dataset.pmdState === 'ready') PmdSprite.play(sprite, anims, { loop: true });
                 else if (tries < 40 && sprite.dataset.pmdState !== 'fallback') setTimeout(() => tryMove(tries + 1), 250);
