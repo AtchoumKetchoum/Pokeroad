@@ -942,6 +942,7 @@ function renderBoosters(pokemon) {
         <div class="train-shortcuts">
             <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'iv')">IV</button>
             <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'ev')">EV</button>
+            <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'nature')">Nature</button>
             <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'moves')">Capacités</button>
         </div>
         ${uses.length ? `<div class="section-title">Objets</div>

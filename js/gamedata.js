@@ -221,11 +221,12 @@ const GameData = (() => {
         return Object.keys(itemsCatalog).filter(k => itemsCatalog[k].category === 'Échantillons');
     }
     function countOf(inv, item) {
+        if (item === 'nature-sweet') return NATURE_SWEETS.reduce((a, k) => a + (inv[k] || 0), 0);
         return item === 'feather-sample' ? featherSampleIds().reduce((a, k) => a + (inv[k] || 0), 0) : (inv[item] || 0);
     }
     function consume(inv, item, n) {
-        if (item !== 'feather-sample') { inv[item] -= n; if (inv[item] <= 0) delete inv[item]; return; }
-        for (const k of featherSampleIds()) {
+        if (item !== 'feather-sample' && item !== 'nature-sweet') { inv[item] -= n; if (inv[item] <= 0) delete inv[item]; return; }
+        for (const k of (item === 'nature-sweet' ? NATURE_SWEETS : featherSampleIds())) {
             const take = Math.min(n, inv[k] || 0);
             if (take) { inv[k] -= take; n -= take; if (inv[k] <= 0) delete inv[k]; }
             if (!n) break;
@@ -299,6 +300,43 @@ const GameData = (() => {
         return { success: true, pokemon, nature };
     }
 
+    // --- Nature : bonus +10 % (+0,5 %/niveau, +5 %/étoile), malus −10 % qui s'efface (−0,25 %/niveau, −2,5 %/étoile) ---
+    const NATURE_SWEETS = ['strawberry-sweet', 'love-sweet', 'berry-sweet', 'clover-sweet', 'flower-sweet', 'ribbon-sweet'];
+    function natureTrack(pokemon) {
+        const t = pokemon?.training?.nature;
+        return { level: t?.level || 0, stars: t?.stars || 0 };
+    }
+    function natureBonus(pokemon) {
+        const t = natureTrack(pokemon);
+        return {
+            plus: Math.round((10 + 0.5 * t.level + 5 * t.stars) * 10) / 10,
+            minus: Math.max(0, Math.round((10 - 0.25 * t.level - 2.5 * t.stars) * 10) / 10),
+        };
+    }
+    function natureCost(track) {
+        if (track.level < trainingMax(track.stars)) return { star: false, item: 'nature-sweet', count: 1, money: Math.floor(400 * (track.level + 1) * (1 + 0.5 * track.stars)) };
+        return { star: true, item: 'star-sweet', count: track.stars + 1, money: 5000 * (track.stars + 1) };
+    }
+    function trainNature(pokemonInstanceId) {
+        const data = loadData();
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
+        if (!pokemon) return { success: false, reason: 'Pokémon introuvable.' };
+        const nature = typeof pokemon.nature === 'string' ? NATURES.find(n => n.name === pokemon.nature) : pokemon.nature;
+        if (!nature?.plus) return { success: false, reason: 'Nature neutre : change-la d’abord (Pilule ou Patch Talent).' };
+        const track = natureTrack(pokemon);
+        const cost = natureCost(track);
+        const inv = data.inventory.items = data.inventory.items || {};
+        if (data.money < cost.money) return { success: false, reason: "Pas assez d'argent." };
+        if (countOf(inv, cost.item) < cost.count) return { success: false, reason: cost.star ? `Il faut ${cost.count} × Étoile en Sucre.` : 'Il faut une sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre).' };
+        data.money -= cost.money;
+        consume(inv, cost.item, cost.count);
+        pokemon.training = pokemon.training || {};
+        pokemon.training.nature = cost.star ? { level: track.level, stars: track.stars + 1 } : { level: track.level + 1, stars: track.stars };
+        pokemon.stats = calculateStats(pokemon);
+        saveData(data);
+        return { success: true, pokemon };
+    }
+
     function calculateStats(pokemon) {
         const pkData = masterOf(pokemon.id);
         if (!pkData || !pkData.stats) return pokemon.stats || {};
@@ -336,10 +374,11 @@ const GameData = (() => {
         };
 
         // Helper to get nature multiplier for non-HP stats
+        const nb = natureBonus(pokemon);
         const getNatureMult = (statKey) => {
             if (!nature) return 1;
-            if (nature.plus === statKey) return 1.1;
-            if (nature.minus === statKey) return 0.9;
+            if (nature.plus === statKey) return 1 + nb.plus / 100;
+            if (nature.minus === statKey) return 1 - nb.minus / 100;
             return 1;
         };
 
@@ -2276,6 +2315,11 @@ const GameData = (() => {
         trainStat,
         resetEvTraining,
         changeNature,
+        natureTrack,
+        natureBonus,
+        natureCost,
+        trainNature,
+        getNature: (pokemon) => (typeof pokemon?.nature === 'string' ? NATURES.find(n => n.name === pokemon.nature) : pokemon?.nature) || null,
         countTrainingItem: (item) => countOf(loadData()?.inventory?.items || {}, item),
         getLearnableCTs,
         learnCT,

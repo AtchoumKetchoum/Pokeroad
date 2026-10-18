@@ -201,6 +201,7 @@ const RefinementUI = (() => {
             tabs.push({ id: 'pokemon', label: `${Art.stars(1, 18)} Grade` });
             tabs.push({ id: 'iv', label: `${Art.item('bottle-cap', 22)} IVs` });
             tabs.push({ id: 'ev', label: `${Art.item('power-bracer', 22)} EVs` });
+            tabs.push({ id: 'nature', label: `${Art.item('star-sweet', 22)} Nature` });
             if (GameData.isFeatureUnlocked('moves-refinement')) {
                 tabs.push({ id: 'moves', label: `${Art.item('tm-normal', 22)} Attaques` });
             }
@@ -236,6 +237,8 @@ const RefinementUI = (() => {
                 return renderIVRefinement();
             case 'ev':
                 return renderEVRefinement();
+            case 'nature':
+                return renderNatureTraining();
             case 'moves':
                 return renderMovesRefinement();
             case 'items':
@@ -390,6 +393,38 @@ const RefinementUI = (() => {
                     : 'Chaque niveau : 1 vitamine de la stat (+10 EV). Tous les 20 niveaux, un palier : mochi de la stat (une étoile = +20 % sur l’EV de la stat).'}</p>
                 <div class="train-list">${rows}</div>
                 <div class="small train-money">${data.money.toLocaleString('fr-FR')} $ disponibles</div>
+            </div>`;
+    }
+    // Nature : le bonus grandit et le malus s'efface avec l'entraînement (sucreries, Étoiles en Sucre)
+    function renderNatureTraining() {
+        const data = GameData._load();
+        const nature = GameData.getNature(selectedPokemon);
+        const t = GameData.natureTrack(selectedPokemon);
+        const b = GameData.natureBonus(selectedPokemon);
+        const cost = GameData.natureCost(t);
+        const have = GameData.countTrainingItem(cost.item);
+        const neutral = !nature?.plus;
+        const ok = !neutral && data.money >= cost.money && have >= cost.count;
+        const inv = data.inventory.items || {};
+        return `
+            <div class="refinement-section train-section">
+                <h4>Nature : ${nature?.name || '—'}</h4>
+                <p class="small info">Chaque niveau : 1 sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre) : bonus +0,5 %, malus −0,25 %. Tous les 20 niveaux, un palier : Étoiles en Sucre (bonus +5 %, malus −2,5 %). La progression reste si la nature change.</p>
+                <div class="train-list">
+                    <div class="train-row ${cost.star ? 'is-cap' : ''}">
+                        <div class="train-stat"><b>${neutral ? 'Neutre' : `+${b.plus} %`}</b><span>${neutral ? 'aucun effet' : `${STAT_LABEL[nature.plus]} · −${b.minus} % ${STAT_LABEL[nature.minus]}`}</span></div>
+                        <div class="train-track">
+                            <div class="train-level">Niv. ${t.level}/${GameData.trainingMax(t.stars)} ${'★'.repeat(t.stars)}</div>
+                            <div class="train-bar"><i style="width:${Math.min(100, (t.level - (GameData.trainingMax(t.stars) - 20)) / 20 * 100)}%"></i></div>
+                        </div>
+                        <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.trainNature()">
+                            <span class="train-cost">${Art.item(cost.star ? 'star-sweet' : 'strawberry-sweet', 28)}×${cost.count} · ${cost.money.toLocaleString('fr-FR')} $</span>
+                            <span>${cost.star ? 'Palier ★' : 'Entraîner'}</span>
+                        </button>
+                    </div>
+                </div>
+                ${neutral ? '<p class="small">Une nature neutre ne donne ni bonus ni malus : change-la avec une Pilule ou un Patch Talent (fiche du Pokémon).</p>' : ''}
+                <div class="small train-money">${data.money.toLocaleString('fr-FR')} $ · Pilules Talent ${inv['ability-capsule'] || 0} · Patchs Talent ${inv['ability-patch'] || 0}</div>
             </div>`;
     }
     const renderIVRefinement = () => renderStatTraining('iv');
@@ -953,6 +988,12 @@ const RefinementUI = (() => {
         refineIV,
         refineEV,
         refineMove,
+        trainNature: () => {
+            const res = GameData.trainNature(selectedPokemon.instanceId);
+            if (!res.success) { showNotification(res.reason, 'error'); return; }
+            selectedPokemon = res.pokemon;
+            renderUI();
+        },
         trainXP,
         toggleFood,
         confirmFood,

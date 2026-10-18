@@ -293,7 +293,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
     "description_fr": "Un bonbon en forme de trèfle. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "love-sweet": {
@@ -304,7 +304,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
     "description_fr": "Un bonbon en forme de cœur. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "berry-sweet": {
@@ -315,7 +315,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
     "description_fr": "Un bonbon en forme de Baie. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "strawberry-sweet": {
@@ -326,7 +326,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
     "description_fr": "Un bonbon en forme de fraise. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "flower-sweet": {
@@ -337,7 +337,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
     "description_fr": "Un bonbon en forme de fleur. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "chipped-pot": {
@@ -414,7 +414,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
     "description_fr": "Un bonbon en forme de ruban. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "star-sweet": {
@@ -425,7 +425,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à la nature d'un Pokémon. Sert aussi à faire évoluer Crèmy.",
     "description_fr": "Un bonbon en forme d’étoile. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "masterpiece-teacup": {
