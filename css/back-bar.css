@@ -1,0 +1,24 @@
+/* ==========================================================================
+   back-bar.css — Barre « Retour » en bas des écrans (js/back-bar.js)
+   Même barre que dans les fenêtres : rouge, toute la largeur, sous le pouce.
+   Le contenu de l'écran s'arrête au-dessus.
+   ========================================================================== */
+
+.scaler-view > .exit-btn.view-back-btn {
+  position: absolute !important; left: 16px !important; right: 16px !important; bottom: 16px !important; top: auto !important;
+  width: auto !important; height: 64px !important; z-index: 60;
+  border-radius: 16px !important; border: var(--outline-thick) !important; box-shadow: var(--pop) !important;
+  background: linear-gradient(180deg, #d0605a, var(--red) 60%, var(--red-dark)) !important;
+  display: flex !important; align-items: center; justify-content: center;
+}
+.scaler-view > .exit-btn.view-back-btn::after {
+  content: 'Retour'; position: static; width: auto; height: auto; border: none; border-radius: 0; background: none;
+  font-family: var(--font-title); font-size: 26px; letter-spacing: .5px; text-transform: uppercase; line-height: 1;
+  color: #f7ecdc; text-shadow: 0 2px 0 var(--ink);
+}
+.scaler-view > .exit-btn.view-back-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink) !important; }
+
+/* Le contenu laisse la place à la barre */
+.scaler-view.view-flex.has-back-bar { padding-bottom: 96px !important; }
+/* Carte d'une zone : « Combattre » remonte au-dessus de la barre */
+.zone-viewport.has-back-bar .zone-go { bottom: 100px !important; }
