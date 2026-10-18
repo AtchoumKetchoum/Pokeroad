@@ -337,6 +337,26 @@ const GameData = (() => {
         return { success: true, pokemon };
     }
 
+    // Bonus de stats en % des objets portés (champ stat_bonus du catalogue), renforcés par leur niveau d'Atelier
+    let lastBreakdown = null;
+    function heldItemStatBonus(pokemon) {
+        const out = {};
+        const refs = (() => { try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null')?.itemRefinements || {}; } catch { return {}; } })();
+        [...(pokemon.heldItems || []), ...(pokemon.berries || [])].forEach(id => {
+            const bonus = itemsCatalog?.[id]?.stat_bonus;
+            if (!bonus) return;
+            const ref = refs[id] || { level: 1, stars: 0 };
+            const mult = typeof Refinement !== 'undefined' ? Refinement.getMultiplier(Refinement.levelOf(ref), Refinement.starsOf(ref)) : 1;
+            Object.entries(bonus).forEach(([k, pct]) => { out[k] = (out[k] || 0) + pct * mult; });
+        });
+        return out;
+    }
+    // Détail des stats d'un Pokémon : { hp: { level, iv, ev, nature, rank, items, total }, … }
+    function statBreakdown(pokemon) {
+        calculateStats(pokemon);
+        return lastBreakdown;
+    }
+
     function calculateStats(pokemon) {
         const pkData = masterOf(pokemon.id);
         if (!pkData || !pkData.stats) return pokemon.stats || {};
@@ -400,6 +420,22 @@ const GameData = (() => {
                 return Math.floor(5 + (level * growth));
             }
         };
+
+        // Détail de chaque stat : niveau et base, IV, EV, nature, Grade et étoiles, objets portés
+        const itemPct = heldItemStatBonus(pokemon);
+        const detail = {};
+        STAT_KEYS.forEach(k => {
+            const isHP = k === 'hp';
+            const lvl = calcValue(base[k] || 0, 0, 0, isHP);
+            const withIV = calcValue(base[k] || 0, effectiveIV[k], 0, isHP);
+            const withEV = calcValue(base[k] || 0, effectiveIV[k], effectiveEV[k], isHP);
+            const withNature = isHP ? withEV : Math.floor(withEV * getNatureMult(k));
+            const withRank = Math.floor(withNature * pokemonMult);
+            const total = Math.floor(withRank * (1 + (itemPct[k] || 0) / 100));
+            detail[k] = { level: lvl, iv: withIV - lvl, ev: withEV - withIV, nature: withNature - withEV, rank: withRank - withNature, items: total - withRank, total };
+        });
+        lastBreakdown = detail;
+        if (detail) return Object.fromEntries(STAT_KEYS.map(k => [k, detail[k].total]));
 
         const rawStats = {
             hp: calcValue(base.hp || 0, effectiveIV.hp, effectiveEV.hp, true),
@@ -1994,6 +2030,7 @@ const GameData = (() => {
         data.inventory.items[itemId]--;
         if (data.inventory.items[itemId] <= 0) delete data.inventory.items[itemId];
         pokemon[kind] = list.filter(Boolean);
+        pokemon.stats = calculateStats(pokemon);
         saveData(data);
         return { success: true, pokemon };
     }
@@ -2009,6 +2046,7 @@ const GameData = (() => {
             if (index != null) { if (list[index]) { back(list[index]); list.splice(index, 1); } }
             else { list.forEach(back); pokemon[k] = []; }
         }
+        pokemon.stats = calculateStats(pokemon);
         saveData(data);
         return { success: true, pokemon };
     }
@@ -2344,6 +2382,7 @@ const GameData = (() => {
         addPlayerExp,
         getPlayerStats,
         isFeatureUnlocked,
-        calculateStats
+        calculateStats,
+        statBreakdown
     };
 })();

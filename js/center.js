@@ -541,93 +541,25 @@ function openPokemonDetail(pokemon) {
 function renderStatsTable(pokemon) {
     const container = document.getElementById('detail-stats-container');
     if (!container) return;
-
-    const stats = pokemon.stats || {};
-    const ivs = pokemon.ivs || {};
-    const evs = pokemon.evs || {};
-    const nature = (typeof pokemon.nature === 'string') 
-        ? GameData._load().pokemons.find(p => p.instanceId === pokemon.instanceId)?.nature // Fallback check or get from NATURES
-        : pokemon.nature;
-    
-    // Find nature impact for colors
-    // We can assume GameData has the NATURES list or we re-map it here
-    const NATURES_MAP = [
-        { name: "Hardi", plus: null, minus: null }, { name: "Solo", plus: "atk", minus: "def" },
-        { name: "Brave", plus: "atk", minus: "speed" }, { name: "Rigide", plus: "atk", minus: "spatk" },
-        { name: "Mauvais", plus: "atk", minus: "spdef" }, { name: "Assuré", plus: "def", minus: "atk" },
-        { name: "Docile", plus: null, minus: null }, { name: "Relax", plus: "def", minus: "speed" },
-        { name: "Malin", plus: "def", minus: "spatk" }, { name: "Lâche", plus: "def", minus: "spdef" },
-        { name: "Timide", plus: "speed", minus: "atk" }, { name: "Pressé", plus: "speed", minus: "def" },
-        { name: "Sérieux", plus: null, minus: null }, { name: "Jovial", plus: "speed", minus: "spatk" },
-        { name: "Naïf", plus: "speed", minus: "spdef" }, { name: "Modeste", plus: "spatk", minus: "atk" },
-        { name: "Doux", plus: "spatk", minus: "def" }, { name: "Discret", plus: "spatk", minus: "speed" },
-        { name: "Pudique", plus: null, minus: null }, { name: "Foufou", plus: "spatk", minus: "spdef" },
-        { name: "Calme", plus: "spdef", minus: "atk" }, { name: "Gentil", plus: "spdef", minus: "def" },
-        { name: "Malpoli", plus: "spdef", minus: "speed" }, { name: "Prudent", plus: "spdef", minus: "spatk" },
-        { name: "Bizarre", plus: null, minus: null }
-    ];
-
-    const currentNature = (typeof pokemon.nature === 'object' && pokemon.nature.name) ? pokemon.nature : NATURES_MAP.find(n => n.name === pokemon.nature);
-
-    const statRows = [
-        { key: 'hp', label: 'PV' },
-        { key: 'atk', label: 'Attaque' },
-        { key: 'def', label: 'Défense' },
-        { key: 'spatk', label: 'Att. Spé.' },
-        { key: 'spdef', label: 'Déf. Spé.' },
-        { key: 'speed', label: 'Vitesse' }
-    ];
-
-    let html = `
-        <table class="stats-table detailed-stats">
-            <thead>
-                <tr>
-                    <th class="stat-name">Stat</th>
-                    <th>Total</th>
-                    <th class="stat-detail-header" title="Base Stats">Base</th>
-                    <th class="stat-detail-header" title="Individual Values">IV</th>
-                    <th class="stat-detail-header" title="Effort Values">EV</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    statRows.forEach(row => {
-        let valClass = '';
-        if (currentNature) {
-            if (currentNature.plus === row.key) valClass = 'stat-bonus';
-            else if (currentNature.minus === row.key) valClass = 'stat-penalty';
-        }
-
-        // We need base stats from pokedex if not in instance
-        const baseVal = (pokemon.stats && pokemon.stats[row.key]) || 0; 
-        
-        // Base stats lookup
-        const subset = GameData.getPokedexSubset();
-        const basePk = subset.find(p => p.id === pokemon.id);
-        const actualBase = basePk ? basePk.stats[row.key] : '--';
-        
-        // IV/EV
-        const ivVal = ivs[row.key] !== undefined ? ivs[row.key] : '--';
-        const evVal = evs[row.key] !== undefined ? evs[row.key] : '--';
-
-        html += `
-            <tr>
-                <td class="stat-name">${row.label}</td>
-                <td class="stat-val ${valClass}">${stats[row.key] || '--'}</td>
-                <td class="stat-detail">${actualBase}</td>
-                <td class="stat-detail">${ivVal}</td>
-                <td class="stat-detail">${evVal}</td>
-            </tr>
-        `;
-    });
-
-    html += `
-            </tbody>
+    const detail = GameData.statBreakdown(pokemon) || {};
+    const nature = GameData.getNature(pokemon);
+    const rows = [['hp', 'PV'], ['atk', 'Attaque'], ['def', 'Défense'], ['spatk', 'Att. Spé.'], ['spdef', 'Déf. Spé.'], ['speed', 'Vitesse']];
+    const cell = v => `<td class="stat-detail ${v > 0 ? 'pos' : v < 0 ? 'neg' : ''}">${v > 0 ? '+' + v : v || '·'}</td>`;
+    container.innerHTML = `
+        <table class="stats-table detailed-stats stat-sum">
+            <thead><tr>
+                <th class="stat-name">Stat</th><th>Total</th>
+                <th title="Stat de base de l'espèce et niveau">Niv.</th><th title="IV (base + entraînement)">IV</th><th title="EV (entraînement)">EV</th>
+                <th title="Nature (entraînée)">Nat.</th><th title="Grade et étoiles du Pokémon">Rang</th><th title="Objets et baies portés">Obj.</th>
+            </tr></thead>
+            <tbody>${rows.map(([k, label]) => {
+                const d = detail[k] || {};
+                const cls = nature?.plus === k ? 'stat-bonus' : nature?.minus === k ? 'stat-penalty' : '';
+                return `<tr><td class="stat-name">${label}</td><td class="stat-val ${cls}">${d.total ?? '--'}</td><td class="stat-detail">${d.level ?? '--'}</td>${cell(d.iv)}${cell(d.ev)}${cell(d.nature)}${cell(d.rank)}${cell(d.items)}</tr>`;
+            }).join('')}</tbody>
         </table>
+        <p class="small stat-sum-hint">Total = niveau + IV + EV + nature + rang (Grade, étoiles) + objets.</p>
     `;
-
-    container.innerHTML = html;
 }
 
 async function triggerEvolution(instanceId, targetId) {
