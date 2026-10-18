@@ -66,6 +66,9 @@ const FormationUI = (() => {
         return units;
     }
 
+    // Pictogramme « synergie » (maillons) à la place du titre, pour laisser la place aux bonus
+    const synergyIcon = (side) => `<span class="synergy-title synergy-icon" title="${side === 'player' ? 'Tes synergies de types' : 'Synergies ennemies'}"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><rect x="2.5" y="8" width="11" height="8" rx="4"/><rect x="10.5" y="8" width="11" height="8" rx="4"/></svg></span>`;
+
     function renderSynergies(side, units) {
         const footer = document.getElementById('view-battle')?.querySelector('.scaler-view');
         if (!footer) return;
@@ -78,19 +81,19 @@ const FormationUI = (() => {
         }
         // Zone 1 (apprentissage) : les ennemis n'ont pas de synergies, comme dans les règles du combat
         if (side === 'enemy' && typeof zoneIndex !== 'undefined' && zoneIndex <= 1) {
-            panel.innerHTML = `<div class="synergy-title">Synergies ennemies</div><div class="synergy-empty">Aucune en zone 1 (apprentissage)</div>`;
+            panel.innerHTML = `${synergyIcon(side)}<div class="synergy-empty">Aucune en zone 1</div>`;
             return;
         }
         const list = BattleRules.describeSynergies(units);
         const active = list.filter(s => s.tier > 0);
         const next = list.filter(s => s.tier === 0).slice(0, 3);
-        panel.innerHTML = `<div class="synergy-title">${side === 'player' ? 'Tes synergies' : 'Synergies ennemies'}</div>`
+        panel.innerHTML = synergyIcon(side)
             + (active.length ? active : []).map(s => `
                 <div class="synergy-chip active" title="${formatTypeLabel(s.type)} : +${s.tier * 10} % de dégâts ${formatTypeLabel(s.type)}${s.tier >= 2 ? ' · ' + s.perk : ' · à 3 : ' + s.perk}">
                     <span class="chip type-${s.type}">${formatTypeLabel(s.type)}</span><b>${s.count}</b>
                     <span class="synergy-desc">+${s.tier * 10} %${s.tier >= 2 ? ' · ' + s.perk : ''}</span>
                 </div>`).join('')
-            + (!active.length ? `<div class="synergy-empty">Aucune — place 2 Pokémon d'un même type${next.length ? ` (${next.map(s => formatTypeLabel(s.type)).join(', ')}…)` : ''}</div>` : '');
+            + (!active.length ? `<div class="synergy-empty">Aucune : 2 Pokémon d'un même type${next.length ? ` (${next.map(s => formatTypeLabel(s.type)).join(', ')}…)` : ''}</div>` : '');
     }
 
     function refresh() {

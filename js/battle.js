@@ -1073,7 +1073,7 @@ function updateTurnOrderDisplay() {
         boostGauge.className = 'timeline-boost-gauge';
         const boostFill = document.createElement('div');
         boostFill.className = 'timeline-boost-fill';
-        boostFill.style.width = `${(unit.boostGauge / 50) * 100}%`;
+        boostFill.style.width = `${Math.min(100, unit.boostGauge || 0)}%`;
         boostGauge.appendChild(boostFill);
 
         const spriteImg = document.createElement('img');
@@ -1186,6 +1186,7 @@ function showPokemonDetails(unit) {
             <span class="info-item"><strong>Types:</strong> ${typesHtml}</span>
             <div class="info-item" style="flex-basis: 100%;"><strong>Effets :</strong> ${typeof UnitTiles !== 'undefined' ? UnitTiles.describe(unit) : effectsHtml}</div>
             ${heldItemsHtml(unit)}
+            ${unit._side === 'player' && unit._instanceId ? `<button class="pk-btn-action small info-sheet-link" onclick="PokeSheet.open('${unit._instanceId}')">Fiche complète</button>` : ''}
         </div>
     `;
     dom.infoDisplayPanel.classList.remove('terrain-mode');
@@ -1315,7 +1316,7 @@ async function renderMovesForUnit(unit) {
     const btn = document.createElement('button');
     btn.className = 'move-btn';
 
-    const isZMoveReady = unit._boostedMoveId === mv.id && unit.boostGauge >= 50;
+    const isZMoveReady = unit._boostedMoveId === mv.id && unit.boostGauge >= 100;
 
     if (unit._boostedMoveId === mv.id) {
         btn.classList.add('is-z-move-base'); // Always show the 'Z' badge if it's the base move
@@ -1693,7 +1694,7 @@ async function choosePlayerAutoAction(unit) {
 }
 
 async function triggerZMove(unit) {
-    if (!unit || unit.isKO || !unit._boostedMoveId || unit.boostGauge < 50) {
+    if (!unit || unit.isKO || !unit._boostedMoveId || unit.boostGauge < 100) {
         return;
     }
 
@@ -1918,13 +1919,13 @@ async function attack(attacker, primaryTarget, move) {
   // La jauge de boost ne doit augmenter que pour les capacités offensives (physiques ou spéciales) qui ne sont pas déjà des Z-Moves.
   if (!moveToDo._isBoosted && (moveForThisHit.damage_class === 'physical' || moveForThisHit.damage_class === 'special') && (moveForThisHit.power && moveForThisHit.power > 0)) {
       // Attacker's boost gauge
-      if (attacker.boostGauge < 50) {
-          attacker.boostGauge = Math.min(50, (attacker.boostGauge || 0) + Math.round(10 * (attacker.zGainMult || 1) * (typeof HeldItems !== 'undefined' ? HeldItems.zGainMult(attacker, BattleRules.moveTypeFor(attacker, moveForThisHit)) : 1))); // 20% de la jauge (plus avec la synergie Dragon et les cristaux Z)
+      if (attacker.boostGauge < 100) {
+          attacker.boostGauge = Math.min(100, (attacker.boostGauge || 0) + Math.round(20 * (attacker.zGainMult || 1) * (typeof HeldItems !== 'undefined' ? HeldItems.zGainMult(attacker, BattleRules.moveTypeFor(attacker, moveForThisHit)) : 1))); // 20% de la jauge (plus avec la synergie Dragon et les cristaux Z)
       }
       // Target's boost gauge (only primary target for AOE, as per user's rule)
       // Check if primaryTarget is still valid (not KO'd before this move)
-      if (primaryTarget && !primaryTarget.isKO && primaryTarget.boostGauge < 50) {
-          primaryTarget.boostGauge = Math.min(50, (primaryTarget.boostGauge || 0) + 10); // Incrément de 10 points (20% de la jauge max de 50)
+      if (primaryTarget && !primaryTarget.isKO && primaryTarget.boostGauge < 100) {
+          primaryTarget.boostGauge = Math.min(100, (primaryTarget.boostGauge || 0) + 20); // +20 % de la jauge (sur 100)
       }
   }
 
@@ -1994,13 +1995,13 @@ async function attack(attacker, primaryTarget, move) {
       // Une capacité de statut (Entrave…) ne déclenche pas de Z en réaction : seulement un Pokémon qui vient d'encaisser des dégâts
       const hurt = damages.filter(d => d.dmg > 0).map(d => d.target);
       for (const target of hurt) {
-          if (target.boostGauge >= 50 && !target.isKO) {
+          if (target.boostGauge >= 100 && !target.isKO) {
               await triggerZMove(target);
               zMoveHasTriggered = true;
               break; // Une seule réaction par action
           }
       }
-      if (!zMoveHasTriggered && attacker.boostGauge >= 50 && !attacker.isKO) {
+      if (!zMoveHasTriggered && attacker.boostGauge >= 100 && !attacker.isKO) {
           await triggerZMove(attacker);
       }
   }

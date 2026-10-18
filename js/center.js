@@ -374,6 +374,7 @@ function renderPokemonList(pokemons, targetId = 'pokemon-list') {
             <img src="${spriteUrl}" alt="${name}" onerror="this.style.display='none'">
             <div class="name">${name}</div>
         `;
+        item.dataset.instanceId = pokemon.instanceId; // appui long (js/long-press.js)
         item.addEventListener('click', () => openPokemonDetail(pokemon)); // Ajout du gestionnaire de clic
         listeElement.appendChild(item);
     });
@@ -754,7 +755,7 @@ function renderItemSlot(pokemon) {
         return `<div class="hold-slot filled" title="${(it?.effect_fr || '').replace(/"/g, '&quot;')}">
             <img src="${it?.sprite || Art.FALLBACK}" alt="" onerror="this.onerror=null;this.src=Art.FALLBACK">
             <span>${it?.name_fr || id}</span>
-            <span class="hold-actions"><button class="pk-btn-action small" onclick="pickItemForEquip('${pokemon.instanceId}', '${kind}', ${i})">Changer</button><button class="pk-btn-action small btn-unequip" onclick="handleUnequip('${pokemon.instanceId}', '${kind}', ${i})">Retirer</button></span>
+            <span class="hold-actions"><button class="pk-btn-action small" onclick="closePokemonDetail(); RefinementUI.open('${id}', 'item')">Atelier</button><button class="pk-btn-action small" onclick="pickItemForEquip('${pokemon.instanceId}', '${kind}', ${i})">Changer</button><button class="pk-btn-action small btn-unequip" onclick="handleUnequip('${pokemon.instanceId}', '${kind}', ${i})">Retirer</button></span>
         </div>`;
     }).join('');
     const slotDiv = document.createElement('div');

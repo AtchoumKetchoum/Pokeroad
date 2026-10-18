@@ -140,7 +140,7 @@ const RefinementUI = (() => {
                 <h3>Sélectionnez un Pokémon</h3>
                 <div class="pokemon-grid">
                     ${pokemons.map(p => `
-                        <div class="pokemon-card" onclick="RefinementUI.selectPokemon('${p.instanceId}')">
+                        <div class="pokemon-card" data-instance-id="${p.instanceId}" onclick="RefinementUI.selectPokemon('${p.instanceId}')">
                             <div class="pokemon-sprite">
                                 <img src="${p.sprite || Art.FALLBACK}" alt="${p.name}" onerror="this.src=Art.FALLBACK">
                             </div>
@@ -183,6 +183,7 @@ const RefinementUI = (() => {
                     </div>
                     </div>
                     <button class="modal-back-btn" onclick="RefinementUI.back()">${Art.icon('back', 22)}</button>
+                    <button class="pk-btn-action small refine-sheet-link" onclick="RefinementUI.close(); PokeSheet.open('${selectedPokemon.instanceId}')">Fiche</button>
                 </div>
 
                 ${renderTabs()}
@@ -333,7 +334,7 @@ const RefinementUI = (() => {
                             ${otherPokemons.map(p => {
                                 const isSelected = selectedFoodIds.includes(p.instanceId);
                                 return `
-                                <div class="food-item ${isSelected ? 'selected' : ''}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:1px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
+                                <div class="food-item ${isSelected ? 'selected' : ''}" data-instance-id="${p.instanceId}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:1px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
                                     <img src="${p.sprite || Art.FALLBACK}" style="width:100%; height:auto;">
                                     <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.7); font-size:9px; padding:0 2px;">L.${p.level}</div>
                                 </div>
@@ -616,7 +617,7 @@ const RefinementUI = (() => {
                         ${otherPokemons.map(p => {
                             const isSelected = selectedFoodIds.includes(p.instanceId);
                             return `
-                            <div class="food-item ${isSelected ? 'selected' : ''}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:2px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
+                            <div class="food-item ${isSelected ? 'selected' : ''}" data-instance-id="${p.instanceId}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:2px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
                                 <img src="${p.sprite || Art.FALLBACK}" style="width:100%; height:auto;">
                                 <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.7); font-size:10px; padding:0 2px;">L.${p.level}</div>
                             </div>
@@ -828,6 +829,7 @@ const RefinementUI = (() => {
                     </div>
                     <button class="back-btn" onclick="RefinementUI.back()">← Retour</button>
                 </div>
+                <div class="refine-links"><button class="pk-btn-action small" onclick="goToShopFor('${itemId}')">Acheter des exemplaires</button></div>
                 
                 <div class="refinement-panel">
                     <div class="refinement-section">

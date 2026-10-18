@@ -260,7 +260,7 @@ const HeldItems = (() => {
         u.actionPoints = Math.max(0, Math.min(150, (u.actionPoints || 0) + pct));
         if (typeof updateActionPointsUI === 'function') updateActionPointsUI(u);
     };
-    const addZ = (u, pct) => { u.boostGauge = Math.min(50, (u.boostGauge || 0) + pct / 2); if (typeof updateZMoveIndicators === 'function') updateZMoveIndicators(); };
+    const addZ = (u, pct) => { u.boostGauge = Math.min(100, (u.boostGauge || 0) + pct); if (typeof updateZMoveIndicators === 'function') updateZMoveIndicators(); };
     const addShield = (u, pct) => {
         const boost = 1 + stacked(has(u, 'shieldBoost').map(id => valueOf(u, id))) / 100;
         u.shield = (u.shield || 0) + Math.round(u.maxHp * Math.min(50, pct * boost) / 100);
@@ -720,7 +720,7 @@ const HeldItems = (() => {
     // Baie Mepo : la jauge Z repart à {v} % après la première capacité Z
     function afterZMove(u) {
         const id = itemsOf(u).find(x => S[x].leppa);
-        if (id) { consume(u, id); u.boostGauge = Math.round(valueOf(u, id) / 2); }
+        if (id) { consume(u, id); u.boostGauge = Math.round(valueOf(u, id)); }
     }
     // Dé Pipé : un coup de plus sur les attaques à coups multiples
     const extraHitPct = (u) => { const id = itemsOf(u).find(x => S[x].extraHit); return id ? valueOf(u, id) : 0; };

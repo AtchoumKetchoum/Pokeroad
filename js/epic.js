@@ -32,7 +32,9 @@ const Epic = (() => {
 
     function rankChip(zone, { short = false } = {}) {
         const r = rankFor(zone);
-        return `<span class="rank-chip rank-${r.key}" style="--rank-color:${r.color}" title="Rang ${r.label}">${emblem(r, 18)}<span>${short ? r.label : `Rang ${r.label}`}</span></span>`;
+        // Version courte (bandeau de combat) : pictogramme seul, le nom du rang en infobulle
+        if (short) return `<span class="rank-chip rank-chip-icon rank-${r.key}" style="--rank-color:${r.color}" title="Rang ${r.label} (difficulté de la zone)" aria-label="Rang ${r.label}">${emblem(r, 26)}</span>`;
+        return `<span class="rank-chip rank-${r.key}" style="--rank-color:${r.color}" title="Rang ${r.label}">${emblem(r, 18)}<span>Rang ${r.label}</span></span>`;
     }
 
     // Ambiance de l'arène : le rang pilote l'éclairage et les particules (css/epic.css)

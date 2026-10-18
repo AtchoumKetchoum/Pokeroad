@@ -148,6 +148,7 @@ function renderSelectionBanner(pokemons) {
         const p_el = document.createElement('div');
         p_el.className = 'banner-pokemon';
         p_el.id = `banner-${p.instanceId}`; // Utiliser l'ID d'instance unique pour éviter les doublons
+        p_el.dataset.instanceId = p.instanceId; // appui long : fiche du Pokémon
         const name = (typeof p.name === 'object') ? (p.name.french || p.name.en) : p.name;
         p_el.innerHTML = `<img src="${p.sprite}" alt="${name}" title="${name} Lv.${p.level}" style="transform: scaleX(-1);"><span class="banner-lvl-badge">Lv.${p.level}</span>`;
         p_el.addEventListener('click', () => addPokemonToField(p, p_el));

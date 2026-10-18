@@ -723,7 +723,7 @@ const BattleRules = (() => {
                     }
                     break;
                 }
-                case 'gainZ': list.forEach(u => { u.boostGauge = Math.min(50, (u.boostGauge || 0) + op.amount); spawnEffectText(u, 'Jauge Z +', 'buff'); }); updateZMoveIndicators(); break;
+                case 'gainZ': list.forEach(u => { u.boostGauge = Math.min(100, (u.boostGauge || 0) + op.amount * 2); spawnEffectText(u, 'Jauge Z +', 'buff'); }); updateZMoveIndicators(); break;
                 case 'gainAP': list.forEach(u => { u.actionPoints += op.amount; updateActionPointsUI(u); spawnEffectText(u, 'Accélère', 'buff'); }); break;
                 case 'money': field.moneyMult = Math.max(field.moneyMult, op.mult || 2); spawnEffectText(attacker, 'Argent ×2 !', 'buff'); break;
                 case 'ionDeluge': field.ionDeluge = roundsToActions(1); BattleAnimation.say('Les capacités Normal deviennent Électrik !'); break;

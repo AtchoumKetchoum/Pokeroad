@@ -507,9 +507,28 @@ function showItemInfo(itemId) {
             <p style="font-size: 13px; line-height: 1.4;">${desc}</p>
         </div>
         <p style="font-weight: bold; color: #2ecc71;">Possédé : x${count}</p>
+        ${['battle', 'berries'].includes(item.pocket) ? `<div class="item-info-links"><button class="pk-btn-action small" onclick="goToWorkshop('${itemId}')">Améliorer à l'Atelier</button></div>` : ''}
     `;
 
     modal.style.display = 'flex';
+}
+
+// Liens entre écrans : objet → Atelier, Atelier → boutique
+function goToWorkshop(itemId) {
+    closeItemInfoModal();
+    document.getElementById('shop-modal') && (document.getElementById('shop-modal').style.display = 'none');
+    document.getElementById('item-bag-modal') && (document.getElementById('item-bag-modal').style.display = 'none');
+    if (typeof RefinementUI !== 'undefined') RefinementUI.open(itemId, 'item');
+}
+function goToShopFor(itemId) {
+    const item = GameData.getItem(itemId);
+    if (typeof RefinementUI !== 'undefined') RefinementUI.close();
+    ViewManager.show('home');
+    setTimeout(() => {
+        openShopModal();
+        if (item?.pocket) switchShopPocket(item.pocket === 'misc' ? 'misc' : item.pocket);
+        if (item?.pocket === 'battle' && item.family) switchShopFamily(item.family);
+    }, 250);
 }
 
 function closeItemInfoModal() {
