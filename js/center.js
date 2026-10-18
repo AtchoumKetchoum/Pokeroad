@@ -446,6 +446,8 @@ function openPokemonDetail(pokemon) {
 
     // Moves <= level
     const moves = Array.isArray(pokemon.moves) ? pokemon.moves.filter(m => (m && typeof m.level === 'number' ? m.level : 0) <= level) : [];
+    // Attaques apprises par CT
+    (pokemon.ctMoves || []).forEach(name => { if (!moves.some(m => m.name === name)) moves.push({ name, level: 0, ct: true }); });
     CURRENT_AVAILABLE_MOVES = moves;
 
     // Équipées: initialiser la sélection
@@ -734,7 +736,7 @@ Version Z : ${moveData.description_z}` : '');
                     ${actionHtml}
                 </div>
             </div>
-            <div class="move-level">Appris Lv. ${move.level}</div>
+            <div class="move-level">${move.ct ? 'Appris par CT' : `Appris Lv. ${move.level}`}</div>
         `;
 
         if (isSelected) {
@@ -743,6 +745,34 @@ Version Z : ${moveData.description_z}` : '');
             availableContainer.appendChild(moveItem);
         }
     });
+    renderLearnableCTs(availableContainer);
+}
+
+// CT du sac que ce Pokémon peut apprendre : une touche pour l'apprendre (la CT est consommée)
+function renderLearnableCTs(container) {
+    if (!CURRENT_POKEMON || typeof GameData.getLearnableCTs !== 'function') return;
+    const cts = GameData.getLearnableCTs(CURRENT_POKEMON);
+    if (!cts.length) return;
+    const block = document.createElement('div');
+    block.className = 'ct-learn-block';
+    block.innerHTML = `<h4>CT compatibles</h4>` + cts.map(id => {
+        const it = GameData.getItem(id);
+        const mv = (MOVES_FR && MOVES_FR[it.move]) || {};
+        return `<div class="move-item ct-learn">
+            <div class="move-header"><span class="move-name">${mv.name_fr || it.move}</span><span class="type-badge type-${mv.type || 'normal'}">${formatTypeLabel(mv.type || 'normal')}</span></div>
+            <div class="move-details"><div class="move-stats"><span>${it.name_fr}</span></div>
+            <div class="move-actions"><button class="move-action-btn btn-equip" onclick="learnCtMove('${id}')">Apprendre</button></div></div>
+        </div>`;
+    }).join('');
+    container.appendChild(block);
+}
+
+function learnCtMove(itemId) {
+    const res = GameData.learnCT(CURRENT_POKEMON.instanceId, itemId);
+    if (!res.success) { alert(res.reason); return; }
+    const fresh = GameData.getPokemons().find(p => p.instanceId === CURRENT_POKEMON.instanceId);
+    if (fresh) openPokemonDetail(fresh);
+    switchDetailTab('moves');
 }
 
 function equipMove(moveName) {

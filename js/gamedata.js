@@ -346,6 +346,7 @@ const GameData = (() => {
         } catch (error) {
             console.warn('[GameData] items.json introuvable au démarrage par défaut.');
         }
+        await loadCtCompat();
 
         identifyBaseForms();
         
@@ -510,7 +511,7 @@ const GameData = (() => {
         data.pokemons.forEach(pk => {
             if (!pk) return;
 
-            const availableMoveNames = (pk.moves || []).map(m => m.name);
+            const availableMoveNames = [...(pk.moves || []).map(m => m.name), ...(pk.ctMoves || [])];
             
             // Nettoie les capacités sélectionnées invalides
             if (Array.isArray(pk.selectedMoves)) {
@@ -608,6 +609,7 @@ const GameData = (() => {
             } catch (error) {
                 console.warn('[GameData] items.json introuvable au chargement de la sauvegarde.');
             }
+            await loadCtCompat();
 
             console.log("Sauvegarde locale chargée.");
             identifyBaseForms(); // Identifier les formes de base après le chargement du pokedex
@@ -878,6 +880,58 @@ const GameData = (() => {
     }
 
     // Met à jour la liste des 4 capacités équipées et l'attaque boostée pour un Pokémon donné
+    // --- CT : chaque CT apprend son attaque aux Pokémon compatibles (data/ct_compat.json) ---
+    let ctCompat = null;
+    async function loadCtCompat() {
+        if (ctCompat) return ctCompat;
+        try { ctCompat = await loadJSON('data/ct_compat.json'); } catch (e) { ctCompat = {}; console.warn('[GameData] ct_compat.json introuvable.', e); }
+        return ctCompat;
+    }
+    // Compatible si l'espèce ou une de ses pré-évolutions peut l'apprendre
+    function speciesLine(id) {
+        const ids = [id];
+        let cur = pokedexSubset.find(p => p.id === id), guard = 0;
+        while (cur?.evolves_from && guard++ < 5) {
+            const prev = typeof cur.evolves_from === 'object' ? cur.evolves_from.id : cur.evolves_from;
+            ids.push(prev);
+            cur = pokedexSubset.find(p => p.id === prev);
+        }
+        return ids;
+    }
+    function canLearnCT(pokemon, itemId) {
+        const move = itemsCatalog[itemId]?.move;
+        if (!pokemon || !move) return { ok: false, reason: 'Ce n\'est pas une CT.' };
+        const known = (pokemon.moves || []).some(m => m.name === move && (m.level ?? 0) <= (pokemon.level || 1)) || (pokemon.ctMoves || []).includes(move);
+        if (known) return { ok: false, reason: 'Attaque déjà connue.' };
+        const list = ctCompat?.[move] || [];
+        if (!speciesLine(pokemon.id).some(id => list.includes(id))) return { ok: false, reason: 'Pokémon incompatible.' };
+        return { ok: true, move };
+    }
+    // CT possédées que ce Pokémon peut apprendre (une seule par attaque)
+    function getLearnableCTs(pokemon) {
+        const inv = loadData()?.inventory?.items || {};
+        const seen = new Set();
+        return Object.keys(inv).filter(id => inv[id] > 0 && itemsCatalog[id]?.move).filter(id => {
+            const res = canLearnCT(pokemon, id);
+            if (!res.ok || seen.has(res.move)) return false;
+            seen.add(res.move);
+            return true;
+        });
+    }
+    function learnCT(pokemonInstanceId, itemId) {
+        const data = loadData();
+        const pk = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
+        if (!pk) return { success: false, reason: 'Pokémon introuvable.' };
+        if (!(data.inventory.items?.[itemId] > 0)) return { success: false, reason: 'CT absente du sac.' };
+        const res = canLearnCT(expandPokemon(pk), itemId);
+        if (!res.ok) return { success: false, reason: res.reason };
+        data.inventory.items[itemId]--;
+        if (data.inventory.items[itemId] <= 0) delete data.inventory.items[itemId];
+        pk.ctMoves = [...(pk.ctMoves || []), res.move];
+        saveData(data);
+        return { success: true, move: res.move };
+    }
+
     function setPokemonMoves(pokemonInstanceId, selectedMoves, boostedMove) {
         try {
             const data = loadData();
@@ -2160,6 +2214,9 @@ const GameData = (() => {
         getItems: () => itemsCatalog,
         getItemsByPocket: () => itemsByPocket,
         getItem: (id) => itemsCatalog[id],
+        canLearnCT,
+        getLearnableCTs,
+        learnCT,
         getPokemonByInstanceId: (id) => (loadData()?.pokemons || []).find(p => p.instanceId === id) || null,
         useItemOnPokemon,
         useBottleCap,

@@ -1,0 +1,1693 @@
+{
+ "tm00": {
+  "move": "mega-punch",
+  "name_fr": "Ultimapoing",
+  "source": "sword-shield"
+ },
+ "tm01": {
+  "move": "take-down",
+  "name_fr": "Bélier",
+  "source": "scarlet-violet"
+ },
+ "tm02": {
+  "move": "charm",
+  "name_fr": "Charme",
+  "source": "scarlet-violet"
+ },
+ "tm03": {
+  "move": "fake-tears",
+  "name_fr": "Croco Larme",
+  "source": "scarlet-violet"
+ },
+ "tm04": {
+  "move": "agility",
+  "name_fr": "Hâte",
+  "source": "scarlet-violet"
+ },
+ "tm05": {
+  "move": "mud-slap",
+  "name_fr": "Coud’Boue",
+  "source": "scarlet-violet"
+ },
+ "tm06": {
+  "move": "scary-face",
+  "name_fr": "Grimace",
+  "source": "scarlet-violet"
+ },
+ "tm07": {
+  "move": "protect",
+  "name_fr": "Abri",
+  "source": "scarlet-violet"
+ },
+ "tm08": {
+  "move": "fire-fang",
+  "name_fr": "Crocs Feu",
+  "source": "scarlet-violet"
+ },
+ "tm09": {
+  "move": "thunder-fang",
+  "name_fr": "Crocs Éclair",
+  "source": "scarlet-violet"
+ },
+ "tm10": {
+  "move": "ice-fang",
+  "name_fr": "Crocs Givre",
+  "source": "scarlet-violet"
+ },
+ "tm11": {
+  "move": "water-pulse",
+  "name_fr": "Vibraqua",
+  "source": "scarlet-violet"
+ },
+ "tm12": {
+  "move": "low-kick",
+  "name_fr": "Balayage",
+  "source": "scarlet-violet"
+ },
+ "tm13": {
+  "move": "acid-spray",
+  "name_fr": "Bombe Acide",
+  "source": "scarlet-violet"
+ },
+ "tm14": {
+  "move": "acrobatics",
+  "name_fr": "Acrobatie",
+  "source": "scarlet-violet"
+ },
+ "tm15": {
+  "move": "struggle-bug",
+  "name_fr": "Survinsecte",
+  "source": "scarlet-violet"
+ },
+ "tm16": {
+  "move": "psybeam",
+  "name_fr": "Rafale Psy",
+  "source": "scarlet-violet"
+ },
+ "tm17": {
+  "move": "confuse-ray",
+  "name_fr": "Onde Folie",
+  "source": "scarlet-violet"
+ },
+ "tm18": {
+  "move": "thief",
+  "name_fr": "Larcin",
+  "source": "scarlet-violet"
+ },
+ "tm19": {
+  "move": "disarming-voice",
+  "name_fr": "Voix Enjôleuse",
+  "source": "scarlet-violet"
+ },
+ "tm20": {
+  "move": "trailblaze",
+  "name_fr": "Désherbaffe",
+  "source": "scarlet-violet"
+ },
+ "tm21": {
+  "move": "pounce",
+  "name_fr": "Bond",
+  "source": "scarlet-violet"
+ },
+ "tm22": {
+  "move": "chilling-water",
+  "name_fr": "Douche Froide",
+  "source": "scarlet-violet"
+ },
+ "tm23": {
+  "move": "charge-beam",
+  "name_fr": "Rayon Chargé",
+  "source": "scarlet-violet"
+ },
+ "tm24": {
+  "move": "fire-spin",
+  "name_fr": "Danse Flammes",
+  "source": "scarlet-violet"
+ },
+ "tm25": {
+  "move": "facade",
+  "name_fr": "Façade",
+  "source": "scarlet-violet"
+ },
+ "tm26": {
+  "move": "poison-tail",
+  "name_fr": "Queue-Poison",
+  "source": "scarlet-violet"
+ },
+ "tm27": {
+  "move": "aerial-ace",
+  "name_fr": "Aéropique",
+  "source": "scarlet-violet"
+ },
+ "tm28": {
+  "move": "bulldoze",
+  "name_fr": "Piétisol",
+  "source": "scarlet-violet"
+ },
+ "tm29": {
+  "move": "hex",
+  "name_fr": "Châtiment",
+  "source": "scarlet-violet"
+ },
+ "tm30": {
+  "move": "snarl",
+  "name_fr": "Aboiement",
+  "source": "scarlet-violet"
+ },
+ "tm31": {
+  "move": "metal-claw",
+  "name_fr": "Griffe Acier",
+  "source": "scarlet-violet"
+ },
+ "tm32": {
+  "move": "swift",
+  "name_fr": "Météores",
+  "source": "scarlet-violet"
+ },
+ "tm33": {
+  "move": "magical-leaf",
+  "name_fr": "Feuille Magik",
+  "source": "scarlet-violet"
+ },
+ "tm34": {
+  "move": "icy-wind",
+  "name_fr": "Vent Glace",
+  "source": "scarlet-violet"
+ },
+ "tm35": {
+  "move": "mud-shot",
+  "name_fr": "Tir de Boue",
+  "source": "scarlet-violet"
+ },
+ "tm36": {
+  "move": "rock-tomb",
+  "name_fr": "Tomberoche",
+  "source": "scarlet-violet"
+ },
+ "tm37": {
+  "move": "draining-kiss",
+  "name_fr": "Vampibaiser",
+  "source": "scarlet-violet"
+ },
+ "tm38": {
+  "move": "flame-charge",
+  "name_fr": "Nitrocharge",
+  "source": "scarlet-violet"
+ },
+ "tm39": {
+  "move": "low-sweep",
+  "name_fr": "Balayette",
+  "source": "scarlet-violet"
+ },
+ "tm40": {
+  "move": "air-cutter",
+  "name_fr": "Tranch’Air",
+  "source": "scarlet-violet"
+ },
+ "tm41": {
+  "move": "stored-power",
+  "name_fr": "Force Ajoutée",
+  "source": "scarlet-violet"
+ },
+ "tm42": {
+  "move": "night-shade",
+  "name_fr": "Ombre Nocturne",
+  "source": "scarlet-violet"
+ },
+ "tm43": {
+  "move": "fling",
+  "name_fr": "Dégommage",
+  "source": "scarlet-violet"
+ },
+ "tm44": {
+  "move": "dragon-tail",
+  "name_fr": "Draco-Queue",
+  "source": "scarlet-violet"
+ },
+ "tm45": {
+  "move": "venoshock",
+  "name_fr": "Choc Venin",
+  "source": "scarlet-violet"
+ },
+ "tm46": {
+  "move": "avalanche",
+  "name_fr": "Avalanche",
+  "source": "scarlet-violet"
+ },
+ "tm47": {
+  "move": "endure",
+  "name_fr": "Ténacité",
+  "source": "scarlet-violet"
+ },
+ "tm48": {
+  "move": "volt-switch",
+  "name_fr": "Change Éclair",
+  "source": "scarlet-violet"
+ },
+ "tm49": {
+  "move": "sunny-day",
+  "name_fr": "Zénith",
+  "source": "scarlet-violet"
+ },
+ "tm50": {
+  "move": "rain-dance",
+  "name_fr": "Danse Pluie",
+  "source": "scarlet-violet"
+ },
+ "tm51": {
+  "move": "sandstorm",
+  "name_fr": "Tempête de Sable",
+  "source": "scarlet-violet"
+ },
+ "tm52": {
+  "move": "snowscape",
+  "name_fr": "Chute de Neige",
+  "source": "scarlet-violet"
+ },
+ "tm53": {
+  "move": "smart-strike",
+  "name_fr": "Estocorne",
+  "source": "scarlet-violet"
+ },
+ "tm54": {
+  "move": "psyshock",
+  "name_fr": "Choc Psy",
+  "source": "scarlet-violet"
+ },
+ "tm55": {
+  "move": "dig",
+  "name_fr": "Tunnel",
+  "source": "scarlet-violet"
+ },
+ "tm56": {
+  "move": "bullet-seed",
+  "name_fr": "Balle Graine",
+  "source": "scarlet-violet"
+ },
+ "tm57": {
+  "move": "false-swipe",
+  "name_fr": "Faux-Chage",
+  "source": "scarlet-violet"
+ },
+ "tm58": {
+  "move": "brick-break",
+  "name_fr": "Casse-Brique",
+  "source": "scarlet-violet"
+ },
+ "tm59": {
+  "move": "zen-headbutt",
+  "name_fr": "Psykoud’Boul",
+  "source": "scarlet-violet"
+ },
+ "tm60": {
+  "move": "u-turn",
+  "name_fr": "Demi-Tour",
+  "source": "scarlet-violet"
+ },
+ "tm61": {
+  "move": "shadow-claw",
+  "name_fr": "Griffe Ombre",
+  "source": "scarlet-violet"
+ },
+ "tm62": {
+  "move": "foul-play",
+  "name_fr": "Tricherie",
+  "source": "scarlet-violet"
+ },
+ "tm63": {
+  "move": "psychic-fangs",
+  "name_fr": "Psycho-Croc",
+  "source": "scarlet-violet"
+ },
+ "tm64": {
+  "move": "bulk-up",
+  "name_fr": "Gonflette",
+  "source": "scarlet-violet"
+ },
+ "tm65": {
+  "move": "air-slash",
+  "name_fr": "Lame d’Air",
+  "source": "scarlet-violet"
+ },
+ "tm66": {
+  "move": "body-slam",
+  "name_fr": "Plaquage",
+  "source": "scarlet-violet"
+ },
+ "tm67": {
+  "move": "fire-punch",
+  "name_fr": "Poing Feu",
+  "source": "scarlet-violet"
+ },
+ "tm68": {
+  "move": "thunder-punch",
+  "name_fr": "Poing Éclair",
+  "source": "scarlet-violet"
+ },
+ "tm69": {
+  "move": "ice-punch",
+  "name_fr": "Poing Glace",
+  "source": "scarlet-violet"
+ },
+ "tm70": {
+  "move": "sleep-talk",
+  "name_fr": "Blabla Dodo",
+  "source": "scarlet-violet"
+ },
+ "tm71": {
+  "move": "seed-bomb",
+  "name_fr": "Canon Graine",
+  "source": "scarlet-violet"
+ },
+ "tm72": {
+  "move": "electro-ball",
+  "name_fr": "Boule Élek",
+  "source": "scarlet-violet"
+ },
+ "tm73": {
+  "move": "drain-punch",
+  "name_fr": "Vampi-Poing",
+  "source": "scarlet-violet"
+ },
+ "tm74": {
+  "move": "reflect",
+  "name_fr": "Protection",
+  "source": "scarlet-violet"
+ },
+ "tm75": {
+  "move": "light-screen",
+  "name_fr": "Mur Lumière",
+  "source": "scarlet-violet"
+ },
+ "tm76": {
+  "move": "rock-blast",
+  "name_fr": "Boule Roc",
+  "source": "scarlet-violet"
+ },
+ "tm77": {
+  "move": "waterfall",
+  "name_fr": "Cascade",
+  "source": "scarlet-violet"
+ },
+ "tm78": {
+  "move": "dragon-claw",
+  "name_fr": "Draco-Griffe",
+  "source": "scarlet-violet"
+ },
+ "tm79": {
+  "move": "dazzling-gleam",
+  "name_fr": "Éclat Magique",
+  "source": "scarlet-violet"
+ },
+ "tm80": {
+  "move": "metronome",
+  "name_fr": "Métronome",
+  "source": "scarlet-violet"
+ },
+ "tm81": {
+  "move": "grass-knot",
+  "name_fr": "Nœud Herbe",
+  "source": "scarlet-violet"
+ },
+ "tm82": {
+  "move": "thunder-wave",
+  "name_fr": "Cage Éclair",
+  "source": "scarlet-violet"
+ },
+ "tm83": {
+  "move": "poison-jab",
+  "name_fr": "Direct Toxik",
+  "source": "scarlet-violet"
+ },
+ "tm84": {
+  "move": "stomping-tantrum",
+  "name_fr": "Trépignement",
+  "source": "scarlet-violet"
+ },
+ "tm85": {
+  "move": "rest",
+  "name_fr": "Repos",
+  "source": "scarlet-violet"
+ },
+ "tm86": {
+  "move": "rock-slide",
+  "name_fr": "Éboulement",
+  "source": "scarlet-violet"
+ },
+ "tm87": {
+  "move": "taunt",
+  "name_fr": "Provoc",
+  "source": "scarlet-violet"
+ },
+ "tm88": {
+  "move": "swords-dance",
+  "name_fr": "Danse Lames",
+  "source": "scarlet-violet"
+ },
+ "tm89": {
+  "move": "body-press",
+  "name_fr": "Big Splash",
+  "source": "scarlet-violet"
+ },
+ "tm90": {
+  "move": "spikes",
+  "name_fr": "Picots",
+  "source": "scarlet-violet"
+ },
+ "tm91": {
+  "move": "toxic-spikes",
+  "name_fr": "Pics Toxik",
+  "source": "scarlet-violet"
+ },
+ "tm92": {
+  "move": "imprison",
+  "name_fr": "Possessif",
+  "source": "scarlet-violet"
+ },
+ "tm93": {
+  "move": "flash-cannon",
+  "name_fr": "Luminocanon",
+  "source": "scarlet-violet"
+ },
+ "tm94": {
+  "move": "dark-pulse",
+  "name_fr": "Vibrobscur",
+  "source": "scarlet-violet"
+ },
+ "tm95": {
+  "move": "leech-life",
+  "name_fr": "Vampirisme",
+  "source": "scarlet-violet"
+ },
+ "tm96": {
+  "move": "eerie-impulse",
+  "name_fr": "Ondes Étranges",
+  "source": "scarlet-violet"
+ },
+ "tm97": {
+  "move": "fly",
+  "name_fr": "Vol",
+  "source": "scarlet-violet"
+ },
+ "tm98": {
+  "move": "skill-swap",
+  "name_fr": "Échange",
+  "source": "scarlet-violet"
+ },
+ "tm99": {
+  "move": "iron-head",
+  "name_fr": "Tête de Fer",
+  "source": "scarlet-violet"
+ },
+ "tm100": {
+  "move": "dragon-dance",
+  "name_fr": "Danse Draco",
+  "source": "scarlet-violet"
+ },
+ "tm101": {
+  "move": "power-gem",
+  "name_fr": "Rayon Gemme",
+  "source": "scarlet-violet"
+ },
+ "tm102": {
+  "move": "gunk-shot",
+  "name_fr": "Détricanon",
+  "source": "scarlet-violet"
+ },
+ "tm103": {
+  "move": "substitute",
+  "name_fr": "Clonage",
+  "source": "scarlet-violet"
+ },
+ "tm104": {
+  "move": "iron-defense",
+  "name_fr": "Mur de Fer",
+  "source": "scarlet-violet"
+ },
+ "tm105": {
+  "move": "x-scissor",
+  "name_fr": "Plaie Croix",
+  "source": "scarlet-violet"
+ },
+ "tm106": {
+  "move": "drill-run",
+  "name_fr": "Tunnelier",
+  "source": "scarlet-violet"
+ },
+ "tm107": {
+  "move": "will-o-wisp",
+  "name_fr": "Feu Follet",
+  "source": "scarlet-violet"
+ },
+ "tm108": {
+  "move": "crunch",
+  "name_fr": "Mâchouille",
+  "source": "scarlet-violet"
+ },
+ "tm109": {
+  "move": "trick",
+  "name_fr": "Tour de Magie",
+  "source": "scarlet-violet"
+ },
+ "tm110": {
+  "move": "liquidation",
+  "name_fr": "Aqua-Brèche",
+  "source": "scarlet-violet"
+ },
+ "tm111": {
+  "move": "giga-drain",
+  "name_fr": "Giga-Sangsue",
+  "source": "scarlet-violet"
+ },
+ "tm112": {
+  "move": "aura-sphere",
+  "name_fr": "Aurasphère",
+  "source": "scarlet-violet"
+ },
+ "tm113": {
+  "move": "tailwind",
+  "name_fr": "Vent Arrière",
+  "source": "scarlet-violet"
+ },
+ "tm114": {
+  "move": "shadow-ball",
+  "name_fr": "Ball’Ombre",
+  "source": "scarlet-violet"
+ },
+ "tm115": {
+  "move": "dragon-pulse",
+  "name_fr": "Draco-Choc",
+  "source": "scarlet-violet"
+ },
+ "tm116": {
+  "move": "stealth-rock",
+  "name_fr": "Piège de Roc",
+  "source": "scarlet-violet"
+ },
+ "tm117": {
+  "move": "hyper-voice",
+  "name_fr": "Mégaphone",
+  "source": "scarlet-violet"
+ },
+ "tm118": {
+  "move": "heat-wave",
+  "name_fr": "Canicule",
+  "source": "scarlet-violet"
+ },
+ "tm119": {
+  "move": "energy-ball",
+  "name_fr": "Éco-Sphère",
+  "source": "scarlet-violet"
+ },
+ "tm120": {
+  "move": "psychic",
+  "name_fr": "Psyko",
+  "source": "scarlet-violet"
+ },
+ "tm121": {
+  "move": "heavy-slam",
+  "name_fr": "Tacle Lourd",
+  "source": "scarlet-violet"
+ },
+ "tm122": {
+  "move": "encore",
+  "name_fr": "Encore",
+  "source": "scarlet-violet"
+ },
+ "tm123": {
+  "move": "surf",
+  "name_fr": "Surf",
+  "source": "scarlet-violet"
+ },
+ "tm124": {
+  "move": "ice-spinner",
+  "name_fr": "Cryo-Pirouette",
+  "source": "scarlet-violet"
+ },
+ "tm125": {
+  "move": "flamethrower",
+  "name_fr": "Lance-Flammes",
+  "source": "scarlet-violet"
+ },
+ "tm126": {
+  "move": "thunderbolt",
+  "name_fr": "Tonnerre",
+  "source": "scarlet-violet"
+ },
+ "tm127": {
+  "move": "play-rough",
+  "name_fr": "Câlinerie",
+  "source": "scarlet-violet"
+ },
+ "tm128": {
+  "move": "amnesia",
+  "name_fr": "Amnésie",
+  "source": "scarlet-violet"
+ },
+ "tm129": {
+  "move": "calm-mind",
+  "name_fr": "Plénitude",
+  "source": "scarlet-violet"
+ },
+ "tm130": {
+  "move": "helping-hand",
+  "name_fr": "Coup d’Main",
+  "source": "scarlet-violet"
+ },
+ "tm131": {
+  "move": "pollen-puff",
+  "name_fr": "Boule Pollen",
+  "source": "scarlet-violet"
+ },
+ "tm132": {
+  "move": "baton-pass",
+  "name_fr": "Relais",
+  "source": "scarlet-violet"
+ },
+ "tm133": {
+  "move": "earth-power",
+  "name_fr": "Telluriforce",
+  "source": "scarlet-violet"
+ },
+ "tm134": {
+  "move": "reversal",
+  "name_fr": "Contre",
+  "source": "scarlet-violet"
+ },
+ "tm135": {
+  "move": "ice-beam",
+  "name_fr": "Laser Glace",
+  "source": "scarlet-violet"
+ },
+ "tm136": {
+  "move": "electric-terrain",
+  "name_fr": "Champ Électrifié",
+  "source": "scarlet-violet"
+ },
+ "tm137": {
+  "move": "grassy-terrain",
+  "name_fr": "Champ Herbu",
+  "source": "scarlet-violet"
+ },
+ "tm138": {
+  "move": "psychic-terrain",
+  "name_fr": "Champ Psychique",
+  "source": "scarlet-violet"
+ },
+ "tm139": {
+  "move": "misty-terrain",
+  "name_fr": "Champ Brumeux",
+  "source": "scarlet-violet"
+ },
+ "tm140": {
+  "move": "nasty-plot",
+  "name_fr": "Machination",
+  "source": "scarlet-violet"
+ },
+ "tm141": {
+  "move": "fire-blast",
+  "name_fr": "Déflagration",
+  "source": "scarlet-violet"
+ },
+ "tm142": {
+  "move": "hydro-pump",
+  "name_fr": "Hydrocanon",
+  "source": "scarlet-violet"
+ },
+ "tm143": {
+  "move": "blizzard",
+  "name_fr": "Blizzard",
+  "source": "scarlet-violet"
+ },
+ "tm144": {
+  "move": "fire-pledge",
+  "name_fr": "Aire de Feu",
+  "source": "scarlet-violet"
+ },
+ "tm145": {
+  "move": "water-pledge",
+  "name_fr": "Aire d’Eau",
+  "source": "scarlet-violet"
+ },
+ "tm146": {
+  "move": "grass-pledge",
+  "name_fr": "Aire d’Herbe",
+  "source": "scarlet-violet"
+ },
+ "tm147": {
+  "move": "wild-charge",
+  "name_fr": "Éclair Fou",
+  "source": "scarlet-violet"
+ },
+ "tm148": {
+  "move": "sludge-bomb",
+  "name_fr": "Bombe Beurk",
+  "source": "scarlet-violet"
+ },
+ "tm149": {
+  "move": "earthquake",
+  "name_fr": "Séisme",
+  "source": "scarlet-violet"
+ },
+ "tm150": {
+  "move": "stone-edge",
+  "name_fr": "Lame de Roc",
+  "source": "scarlet-violet"
+ },
+ "tm151": {
+  "move": "phantom-force",
+  "name_fr": "Hantise",
+  "source": "scarlet-violet"
+ },
+ "tm152": {
+  "move": "giga-impact",
+  "name_fr": "Giga Impact",
+  "source": "scarlet-violet"
+ },
+ "tm153": {
+  "move": "blast-burn",
+  "name_fr": "Rafale Feu",
+  "source": "scarlet-violet"
+ },
+ "tm154": {
+  "move": "hydro-cannon",
+  "name_fr": "Hydroblast",
+  "source": "scarlet-violet"
+ },
+ "tm155": {
+  "move": "frenzy-plant",
+  "name_fr": "Végé-Attaque",
+  "source": "scarlet-violet"
+ },
+ "tm156": {
+  "move": "outrage",
+  "name_fr": "Colère",
+  "source": "scarlet-violet"
+ },
+ "tm157": {
+  "move": "overheat",
+  "name_fr": "Surchauffe",
+  "source": "scarlet-violet"
+ },
+ "tm158": {
+  "move": "focus-blast",
+  "name_fr": "Exploforce",
+  "source": "scarlet-violet"
+ },
+ "tm159": {
+  "move": "leaf-storm",
+  "name_fr": "Tempête Verte",
+  "source": "scarlet-violet"
+ },
+ "tm160": {
+  "move": "hurricane",
+  "name_fr": "Vent Violent",
+  "source": "scarlet-violet"
+ },
+ "tm161": {
+  "move": "trick-room",
+  "name_fr": "Distorsion",
+  "source": "scarlet-violet"
+ },
+ "tm162": {
+  "move": "bug-buzz",
+  "name_fr": "Bourdon",
+  "source": "scarlet-violet"
+ },
+ "tm163": {
+  "move": "hyper-beam",
+  "name_fr": "Ultralaser",
+  "source": "scarlet-violet"
+ },
+ "tm164": {
+  "move": "brave-bird",
+  "name_fr": "Rapace",
+  "source": "scarlet-violet"
+ },
+ "tm165": {
+  "move": "flare-blitz",
+  "name_fr": "Boutefeu",
+  "source": "scarlet-violet"
+ },
+ "tm166": {
+  "move": "thunder",
+  "name_fr": "Fatal-Foudre",
+  "source": "scarlet-violet"
+ },
+ "tm167": {
+  "move": "close-combat",
+  "name_fr": "Close Combat",
+  "source": "scarlet-violet"
+ },
+ "tm168": {
+  "move": "solar-beam",
+  "name_fr": "Lance-Soleil",
+  "source": "scarlet-violet"
+ },
+ "tm169": {
+  "move": "draco-meteor",
+  "name_fr": "Draco-Météore",
+  "source": "scarlet-violet"
+ },
+ "tm170": {
+  "move": "steel-beam",
+  "name_fr": "Métalaser",
+  "source": "scarlet-violet"
+ },
+ "tm171": {
+  "move": "tera-blast",
+  "name_fr": "Téra Explosion",
+  "source": "scarlet-violet"
+ },
+ "tm172": {
+  "move": "roar",
+  "name_fr": "Hurlement",
+  "source": "scarlet-violet"
+ },
+ "tm173": {
+  "move": "charge",
+  "name_fr": "Chargeur",
+  "source": "scarlet-violet"
+ },
+ "tm174": {
+  "move": "haze",
+  "name_fr": "Buée Noire",
+  "source": "scarlet-violet"
+ },
+ "tm175": {
+  "move": "toxic",
+  "name_fr": "Toxik",
+  "source": "scarlet-violet"
+ },
+ "tm176": {
+  "move": "sand-tomb",
+  "name_fr": "Tourbi-Sable",
+  "source": "scarlet-violet"
+ },
+ "tm177": {
+  "move": "spite",
+  "name_fr": "Dépit",
+  "source": "scarlet-violet"
+ },
+ "tm178": {
+  "move": "gravity",
+  "name_fr": "Gravité",
+  "source": "scarlet-violet"
+ },
+ "tm179": {
+  "move": "smack-down",
+  "name_fr": "Anti-Air",
+  "source": "scarlet-violet"
+ },
+ "tm180": {
+  "move": "gyro-ball",
+  "name_fr": "Gyroballe",
+  "source": "scarlet-violet"
+ },
+ "tm181": {
+  "move": "knock-off",
+  "name_fr": "Sabotage",
+  "source": "scarlet-violet"
+ },
+ "tm182": {
+  "move": "bug-bite",
+  "name_fr": "Piqûre",
+  "source": "scarlet-violet"
+ },
+ "tm183": {
+  "move": "super-fang",
+  "name_fr": "Croc Fatal",
+  "source": "scarlet-violet"
+ },
+ "tm184": {
+  "move": "vacuum-wave",
+  "name_fr": "Onde Vide",
+  "source": "scarlet-violet"
+ },
+ "tm185": {
+  "move": "lunge",
+  "name_fr": "Furie-Bond",
+  "source": "scarlet-violet"
+ },
+ "tm186": {
+  "move": "high-horsepower",
+  "name_fr": "Cavalerie Lourde",
+  "source": "scarlet-violet"
+ },
+ "tm187": {
+  "move": "icicle-spear",
+  "name_fr": "Stalactite",
+  "source": "scarlet-violet"
+ },
+ "tm188": {
+  "move": "scald",
+  "name_fr": "Ébullition",
+  "source": "scarlet-violet"
+ },
+ "tm189": {
+  "move": "heat-crash",
+  "name_fr": "Tacle Feu",
+  "source": "scarlet-violet"
+ },
+ "tm190": {
+  "move": "solar-blade",
+  "name_fr": "Lame Solaire",
+  "source": "scarlet-violet"
+ },
+ "tm191": {
+  "move": "uproar",
+  "name_fr": "Brouhaha",
+  "source": "scarlet-violet"
+ },
+ "tm192": {
+  "move": "focus-punch",
+  "name_fr": "Mitra-Poing",
+  "source": "scarlet-violet"
+ },
+ "tm193": {
+  "move": "weather-ball",
+  "name_fr": "Ball’Météo",
+  "source": "scarlet-violet"
+ },
+ "tm194": {
+  "move": "grassy-glide",
+  "name_fr": "Gliss’Herbe",
+  "source": "scarlet-violet"
+ },
+ "tm195": {
+  "move": "burning-jealousy",
+  "name_fr": "Feu Envieux",
+  "source": "scarlet-violet"
+ },
+ "tm196": {
+  "move": "flip-turn",
+  "name_fr": "Eau Revoir",
+  "source": "scarlet-violet"
+ },
+ "tm197": {
+  "move": "dual-wingbeat",
+  "name_fr": "Double Volée",
+  "source": "scarlet-violet"
+ },
+ "tm198": {
+  "move": "poltergeist",
+  "name_fr": "Esprit Frappeur",
+  "source": "scarlet-violet"
+ },
+ "tm199": {
+  "move": "lash-out",
+  "name_fr": "Cent Rancunes",
+  "source": "scarlet-violet"
+ },
+ "tm200": {
+  "move": "scale-shot",
+  "name_fr": "Rafale Écailles",
+  "source": "scarlet-violet"
+ },
+ "tm201": {
+  "move": "misty-explosion",
+  "name_fr": "Explo-Brume",
+  "source": "scarlet-violet"
+ },
+ "tm202": {
+  "move": "pain-split",
+  "name_fr": "Balance",
+  "source": "scarlet-violet"
+ },
+ "tm203": {
+  "move": "psych-up",
+  "name_fr": "Boost",
+  "source": "scarlet-violet"
+ },
+ "tm204": {
+  "move": "double-edge",
+  "name_fr": "Damoclès",
+  "source": "scarlet-violet"
+ },
+ "tm205": {
+  "move": "endeavor",
+  "name_fr": "Effort",
+  "source": "scarlet-violet"
+ },
+ "tm206": {
+  "move": "petal-blizzard",
+  "name_fr": "Tempête Florale",
+  "source": "scarlet-violet"
+ },
+ "tm207": {
+  "move": "temper-flare",
+  "name_fr": "Indignition",
+  "source": "scarlet-violet"
+ },
+ "tm208": {
+  "move": "whirlpool",
+  "name_fr": "Siphon",
+  "source": "scarlet-violet"
+ },
+ "tm209": {
+  "move": "muddy-water",
+  "name_fr": "Ocroupi",
+  "source": "scarlet-violet"
+ },
+ "tm210": {
+  "move": "supercell-slam",
+  "name_fr": "Volt Assaut",
+  "source": "scarlet-violet"
+ },
+ "tm211": {
+  "move": "electroweb",
+  "name_fr": "Toile Élek",
+  "source": "scarlet-violet"
+ },
+ "tm212": {
+  "move": "triple-axel",
+  "name_fr": "Triple Axel",
+  "source": "scarlet-violet"
+ },
+ "tm213": {
+  "move": "coaching",
+  "name_fr": "Coaching",
+  "source": "scarlet-violet"
+ },
+ "tm214": {
+  "move": "sludge-wave",
+  "name_fr": "Cradovague",
+  "source": "scarlet-violet"
+ },
+ "tm215": {
+  "move": "scorching-sands",
+  "name_fr": "Sable Ardent",
+  "source": "scarlet-violet"
+ },
+ "tm216": {
+  "move": "feather-dance",
+  "name_fr": "Danse Plumes",
+  "source": "scarlet-violet"
+ },
+ "tm217": {
+  "move": "future-sight",
+  "name_fr": "Prescience",
+  "source": "scarlet-violet"
+ },
+ "tm218": {
+  "move": "expanding-force",
+  "name_fr": "Vaste Pouvoir",
+  "source": "scarlet-violet"
+ },
+ "tm219": {
+  "move": "skitter-smack",
+  "name_fr": "Ravage Rampant",
+  "source": "scarlet-violet"
+ },
+ "tm220": {
+  "move": "meteor-beam",
+  "name_fr": "Laser Météore",
+  "source": "scarlet-violet"
+ },
+ "tm221": {
+  "move": "throat-chop",
+  "name_fr": "Exécu-Son",
+  "source": "scarlet-violet"
+ },
+ "tm222": {
+  "move": "breaking-swipe",
+  "name_fr": "Abattage",
+  "source": "scarlet-violet"
+ },
+ "tm223": {
+  "move": "metal-sound",
+  "name_fr": "Strido-Son",
+  "source": "scarlet-violet"
+ },
+ "tm224": {
+  "move": "curse",
+  "name_fr": "Malédiction",
+  "source": "scarlet-violet"
+ },
+ "tm225": {
+  "move": "hard-press",
+  "name_fr": "Pression Extrême",
+  "source": "scarlet-violet"
+ },
+ "tm226": {
+  "move": "dragon-cheer",
+  "name_fr": "Cri Draconique",
+  "source": "scarlet-violet"
+ },
+ "tm227": {
+  "move": "alluring-voice",
+  "name_fr": "Voix Envoûtante",
+  "source": "scarlet-violet"
+ },
+ "tm228": {
+  "move": "psychic-noise",
+  "name_fr": "Dissonance Psy",
+  "source": "scarlet-violet"
+ },
+ "tm229": {
+  "move": "upper-hand",
+  "name_fr": "Prio-Parade",
+  "source": "scarlet-violet"
+ },
+ "hm01": {
+  "move": "cut",
+  "name_fr": "Coupe",
+  "source": "diamond-pearl"
+ },
+ "hm02": {
+  "move": "fly",
+  "name_fr": "Vol",
+  "source": "diamond-pearl"
+ },
+ "hm03": {
+  "move": "surf",
+  "name_fr": "Surf",
+  "source": "diamond-pearl"
+ },
+ "hm04": {
+  "move": "strength",
+  "name_fr": "Force",
+  "source": "diamond-pearl"
+ },
+ "hm05": {
+  "move": "defog",
+  "name_fr": "Anti-Brume",
+  "source": "diamond-pearl"
+ },
+ "hm06": {
+  "move": "rock-smash",
+  "name_fr": "Éclate-Roc",
+  "source": "diamond-pearl"
+ },
+ "hm07": {
+  "move": "waterfall",
+  "name_fr": "Cascade",
+  "source": "diamond-pearl"
+ },
+ "hm08": {
+  "move": "rock-climb",
+  "name_fr": "Escalade",
+  "source": "diamond-pearl"
+ },
+ "tr00": {
+  "move": "swords-dance",
+  "name_fr": "Danse Lames",
+  "source": "sword-shield"
+ },
+ "tr01": {
+  "move": "body-slam",
+  "name_fr": "Plaquage",
+  "source": "sword-shield"
+ },
+ "tr02": {
+  "move": "flamethrower",
+  "name_fr": "Lance-Flammes",
+  "source": "sword-shield"
+ },
+ "tr03": {
+  "move": "hydro-pump",
+  "name_fr": "Hydrocanon",
+  "source": "sword-shield"
+ },
+ "tr04": {
+  "move": "surf",
+  "name_fr": "Surf",
+  "source": "sword-shield"
+ },
+ "tr05": {
+  "move": "ice-beam",
+  "name_fr": "Laser Glace",
+  "source": "sword-shield"
+ },
+ "tr06": {
+  "move": "blizzard",
+  "name_fr": "Blizzard",
+  "source": "sword-shield"
+ },
+ "tr07": {
+  "move": "low-kick",
+  "name_fr": "Balayage",
+  "source": "sword-shield"
+ },
+ "tr08": {
+  "move": "thunderbolt",
+  "name_fr": "Tonnerre",
+  "source": "sword-shield"
+ },
+ "tr09": {
+  "move": "thunder",
+  "name_fr": "Fatal-Foudre",
+  "source": "sword-shield"
+ },
+ "tr10": {
+  "move": "earthquake",
+  "name_fr": "Séisme",
+  "source": "sword-shield"
+ },
+ "tr11": {
+  "move": "psychic",
+  "name_fr": "Psyko",
+  "source": "sword-shield"
+ },
+ "tr12": {
+  "move": "agility",
+  "name_fr": "Hâte",
+  "source": "sword-shield"
+ },
+ "tr13": {
+  "move": "focus-energy",
+  "name_fr": "Puissance",
+  "source": "sword-shield"
+ },
+ "tr14": {
+  "move": "metronome",
+  "name_fr": "Métronome",
+  "source": "sword-shield"
+ },
+ "tr15": {
+  "move": "fire-blast",
+  "name_fr": "Déflagration",
+  "source": "sword-shield"
+ },
+ "tr16": {
+  "move": "waterfall",
+  "name_fr": "Cascade",
+  "source": "sword-shield"
+ },
+ "tr17": {
+  "move": "amnesia",
+  "name_fr": "Amnésie",
+  "source": "sword-shield"
+ },
+ "tr18": {
+  "move": "leech-life",
+  "name_fr": "Vampirisme",
+  "source": "sword-shield"
+ },
+ "tr19": {
+  "move": "tri-attack",
+  "name_fr": "Triplattaque",
+  "source": "sword-shield"
+ },
+ "tr20": {
+  "move": "substitute",
+  "name_fr": "Clonage",
+  "source": "sword-shield"
+ },
+ "tr21": {
+  "move": "reversal",
+  "name_fr": "Contre",
+  "source": "sword-shield"
+ },
+ "tr22": {
+  "move": "sludge-bomb",
+  "name_fr": "Bombe Beurk",
+  "source": "sword-shield"
+ },
+ "tr23": {
+  "move": "spikes",
+  "name_fr": "Picots",
+  "source": "sword-shield"
+ },
+ "tr24": {
+  "move": "outrage",
+  "name_fr": "Colère",
+  "source": "sword-shield"
+ },
+ "tr25": {
+  "move": "psyshock",
+  "name_fr": "Choc Psy",
+  "source": "sword-shield"
+ },
+ "tr26": {
+  "move": "endure",
+  "name_fr": "Ténacité",
+  "source": "sword-shield"
+ },
+ "tr27": {
+  "move": "sleep-talk",
+  "name_fr": "Blabla Dodo",
+  "source": "sword-shield"
+ },
+ "tr28": {
+  "move": "megahorn",
+  "name_fr": "Mégacorne",
+  "source": "sword-shield"
+ },
+ "tr29": {
+  "move": "baton-pass",
+  "name_fr": "Relais",
+  "source": "sword-shield"
+ },
+ "tr30": {
+  "move": "encore",
+  "name_fr": "Encore",
+  "source": "sword-shield"
+ },
+ "tr31": {
+  "move": "iron-tail",
+  "name_fr": "Queue de Fer",
+  "source": "sword-shield"
+ },
+ "tr32": {
+  "move": "crunch",
+  "name_fr": "Mâchouille",
+  "source": "sword-shield"
+ },
+ "tr33": {
+  "move": "shadow-ball",
+  "name_fr": "Ball’Ombre",
+  "source": "sword-shield"
+ },
+ "tr34": {
+  "move": "future-sight",
+  "name_fr": "Prescience",
+  "source": "sword-shield"
+ },
+ "tr35": {
+  "move": "uproar",
+  "name_fr": "Brouhaha",
+  "source": "sword-shield"
+ },
+ "tr36": {
+  "move": "heat-wave",
+  "name_fr": "Canicule",
+  "source": "sword-shield"
+ },
+ "tr37": {
+  "move": "taunt",
+  "name_fr": "Provoc",
+  "source": "sword-shield"
+ },
+ "tr38": {
+  "move": "trick",
+  "name_fr": "Tour de Magie",
+  "source": "sword-shield"
+ },
+ "tr39": {
+  "move": "superpower",
+  "name_fr": "Surpuissance",
+  "source": "sword-shield"
+ },
+ "tr40": {
+  "move": "skill-swap",
+  "name_fr": "Échange",
+  "source": "sword-shield"
+ },
+ "tr41": {
+  "move": "blaze-kick",
+  "name_fr": "Pied Brûleur",
+  "source": "sword-shield"
+ },
+ "tr42": {
+  "move": "hyper-voice",
+  "name_fr": "Mégaphone",
+  "source": "sword-shield"
+ },
+ "tr43": {
+  "move": "overheat",
+  "name_fr": "Surchauffe",
+  "source": "sword-shield"
+ },
+ "tr44": {
+  "move": "cosmic-power",
+  "name_fr": "Force Cosmique",
+  "source": "sword-shield"
+ },
+ "tr45": {
+  "move": "muddy-water",
+  "name_fr": "Ocroupi",
+  "source": "sword-shield"
+ },
+ "tr46": {
+  "move": "iron-defense",
+  "name_fr": "Mur de Fer",
+  "source": "sword-shield"
+ },
+ "tr47": {
+  "move": "dragon-claw",
+  "name_fr": "Draco-Griffe",
+  "source": "sword-shield"
+ },
+ "tr48": {
+  "move": "bulk-up",
+  "name_fr": "Gonflette",
+  "source": "sword-shield"
+ },
+ "tr49": {
+  "move": "calm-mind",
+  "name_fr": "Plénitude",
+  "source": "sword-shield"
+ },
+ "tr50": {
+  "move": "leaf-blade",
+  "name_fr": "Lame Feuille",
+  "source": "sword-shield"
+ },
+ "tr51": {
+  "move": "dragon-dance",
+  "name_fr": "Danse Draco",
+  "source": "sword-shield"
+ },
+ "tr52": {
+  "move": "gyro-ball",
+  "name_fr": "Gyroballe",
+  "source": "sword-shield"
+ },
+ "tr53": {
+  "move": "close-combat",
+  "name_fr": "Close Combat",
+  "source": "sword-shield"
+ },
+ "tr54": {
+  "move": "toxic-spikes",
+  "name_fr": "Pics Toxik",
+  "source": "sword-shield"
+ },
+ "tr55": {
+  "move": "flare-blitz",
+  "name_fr": "Boutefeu",
+  "source": "sword-shield"
+ },
+ "tr56": {
+  "move": "aura-sphere",
+  "name_fr": "Aurasphère",
+  "source": "sword-shield"
+ },
+ "tr57": {
+  "move": "poison-jab",
+  "name_fr": "Direct Toxik",
+  "source": "sword-shield"
+ },
+ "tr58": {
+  "move": "dark-pulse",
+  "name_fr": "Vibrobscur",
+  "source": "sword-shield"
+ },
+ "tr59": {
+  "move": "seed-bomb",
+  "name_fr": "Canon Graine",
+  "source": "sword-shield"
+ },
+ "tr60": {
+  "move": "x-scissor",
+  "name_fr": "Plaie Croix",
+  "source": "sword-shield"
+ },
+ "tr61": {
+  "move": "bug-buzz",
+  "name_fr": "Bourdon",
+  "source": "sword-shield"
+ },
+ "tr62": {
+  "move": "dragon-pulse",
+  "name_fr": "Draco-Choc",
+  "source": "sword-shield"
+ },
+ "tr63": {
+  "move": "power-gem",
+  "name_fr": "Rayon Gemme",
+  "source": "sword-shield"
+ },
+ "tr64": {
+  "move": "focus-blast",
+  "name_fr": "Exploforce",
+  "source": "sword-shield"
+ },
+ "tr65": {
+  "move": "energy-ball",
+  "name_fr": "Éco-Sphère",
+  "source": "sword-shield"
+ },
+ "tr66": {
+  "move": "brave-bird",
+  "name_fr": "Rapace",
+  "source": "sword-shield"
+ },
+ "tr67": {
+  "move": "earth-power",
+  "name_fr": "Telluriforce",
+  "source": "sword-shield"
+ },
+ "tr68": {
+  "move": "nasty-plot",
+  "name_fr": "Machination",
+  "source": "sword-shield"
+ },
+ "tr69": {
+  "move": "zen-headbutt",
+  "name_fr": "Psykoud’Boul",
+  "source": "sword-shield"
+ },
+ "tr70": {
+  "move": "flash-cannon",
+  "name_fr": "Luminocanon",
+  "source": "sword-shield"
+ },
+ "tr71": {
+  "move": "leaf-storm",
+  "name_fr": "Tempête Verte",
+  "source": "sword-shield"
+ },
+ "tr72": {
+  "move": "power-whip",
+  "name_fr": "Mégafouet",
+  "source": "sword-shield"
+ },
+ "tr73": {
+  "move": "gunk-shot",
+  "name_fr": "Détricanon",
+  "source": "sword-shield"
+ },
+ "tr74": {
+  "move": "iron-head",
+  "name_fr": "Tête de Fer",
+  "source": "sword-shield"
+ },
+ "tr75": {
+  "move": "stone-edge",
+  "name_fr": "Lame de Roc",
+  "source": "sword-shield"
+ },
+ "tr76": {
+  "move": "stealth-rock",
+  "name_fr": "Piège de Roc",
+  "source": "sword-shield"
+ },
+ "tr77": {
+  "move": "grass-knot",
+  "name_fr": "Nœud Herbe",
+  "source": "sword-shield"
+ },
+ "tr78": {
+  "move": "sludge-wave",
+  "name_fr": "Cradovague",
+  "source": "sword-shield"
+ },
+ "tr79": {
+  "move": "heavy-slam",
+  "name_fr": "Tacle Lourd",
+  "source": "sword-shield"
+ },
+ "tr80": {
+  "move": "electro-ball",
+  "name_fr": "Boule Élek",
+  "source": "sword-shield"
+ },
+ "tr81": {
+  "move": "foul-play",
+  "name_fr": "Tricherie",
+  "source": "sword-shield"
+ },
+ "tr82": {
+  "move": "stored-power",
+  "name_fr": "Force Ajoutée",
+  "source": "sword-shield"
+ },
+ "tr83": {
+  "move": "ally-switch",
+  "name_fr": "Interversion",
+  "source": "sword-shield"
+ },
+ "tr84": {
+  "move": "scald",
+  "name_fr": "Ébullition",
+  "source": "sword-shield"
+ },
+ "tr85": {
+  "move": "work-up",
+  "name_fr": "Rengorgement",
+  "source": "sword-shield"
+ },
+ "tr86": {
+  "move": "wild-charge",
+  "name_fr": "Éclair Fou",
+  "source": "sword-shield"
+ },
+ "tr87": {
+  "move": "drill-run",
+  "name_fr": "Tunnelier",
+  "source": "sword-shield"
+ },
+ "tr88": {
+  "move": "heat-crash",
+  "name_fr": "Tacle Feu",
+  "source": "sword-shield"
+ },
+ "tr89": {
+  "move": "hurricane",
+  "name_fr": "Vent Violent",
+  "source": "sword-shield"
+ },
+ "tr90": {
+  "move": "play-rough",
+  "name_fr": "Câlinerie",
+  "source": "sword-shield"
+ },
+ "tr91": {
+  "move": "venom-drench",
+  "name_fr": "Piège de Venin",
+  "source": "sword-shield"
+ },
+ "tr92": {
+  "move": "dazzling-gleam",
+  "name_fr": "Éclat Magique",
+  "source": "sword-shield"
+ },
+ "tr93": {
+  "move": "darkest-lariat",
+  "name_fr": "Dark Lariat",
+  "source": "sword-shield"
+ },
+ "tr94": {
+  "move": "high-horsepower",
+  "name_fr": "Cavalerie Lourde",
+  "source": "sword-shield"
+ },
+ "tr95": {
+  "move": "throat-chop",
+  "name_fr": "Exécu-Son",
+  "source": "sword-shield"
+ },
+ "tr96": {
+  "move": "pollen-puff",
+  "name_fr": "Boule Pollen",
+  "source": "sword-shield"
+ },
+ "tr97": {
+  "move": "psychic-fangs",
+  "name_fr": "Psycho-Croc",
+  "source": "sword-shield"
+ },
+ "tr98": {
+  "move": "liquidation",
+  "name_fr": "Aqua-Brèche",
+  "source": "sword-shield"
+ },
+ "tr99": {
+  "move": "body-press",
+  "name_fr": "Big Splash",
+  "source": "sword-shield"
+ },
+ "_missing": []
+}
