@@ -207,9 +207,6 @@ const RefinementUI = (() => {
             }
         } else {
             tabs.push({ id: 'items', label: `${Art.item('leftovers', 22)} Objets` });
-            if (GameData.isFeatureUnlocked('moves-refinement')) {
-                tabs.push({ id: 'tm_global', label: `${Art.item('tm-normal', 22)} CTs` });
-            }
         }
 
         return `

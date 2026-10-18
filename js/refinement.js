@@ -280,10 +280,9 @@ const Refinement = (() => {
         if (item.id && EXCLUDED_ITEMS.includes(item.id)) return false;
         if (item.category && EXCLUDED_CATEGORIES.includes(item.category)) return false;
         
-        // Les objets clés ne sont pas raffinables
-        if (item.pocket === 'key-items' || item.pocket === 'key') return false;
-        
-        return true;
+        // L'Atelier n'améliore que les objets tenus et les baies ;
+        // les capacités (CT comprises) progressent sur chaque Pokémon
+        return item.pocket === 'berries' || item.pocket === 'battle';
     }
 
     /**

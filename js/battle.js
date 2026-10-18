@@ -26,17 +26,6 @@ let grid = {
 
 let MovesDB = null;
 
-// Multiplicateur d'Atelier des CT : la meilleure CT améliorée qui apprend cette attaque
-function ctRefMult(moveKey) {
-  if (typeof GameData === 'undefined' || typeof Refinement === 'undefined') return 1;
-  let best = 1;
-  for (const it of (GameData.getItemsByPocket().ct || [])) {
-    if (it.move !== moveKey) continue;
-    const ref = GameData.getGlobalItemRefinement(it.id);
-    if (ref && (ref.level > 1 || ref.stars > 0)) best = Math.max(best, Refinement.getMultiplier(ref.level, ref.stars));
-  }
-  return best;
-}
 async function loadMovesDB() {
   if (MovesDB) return MovesDB;
   try {
@@ -941,7 +930,7 @@ function buildActorsFromDom() {
       return MoveRework.normalize({
           ...info, // Copie toutes les données du JSON (effect, v_stat_count, etc.)
           // Amélioration de l'attaque (Laboratoire) : multiplie sa puissance
-          _refMult: (pk?.moveRefinements?.[key] ? Refinement.getMultiplier(Refinement.levelOf(pk.moveRefinements[key]), Refinement.starsOf(pk.moveRefinements[key])) : 1) * ctRefMult(key),
+          _refMult: (pk?.moveRefinements?.[key] ? Refinement.getMultiplier(Refinement.levelOf(pk.moveRefinements[key]), Refinement.starsOf(pk.moveRefinements[key])) : 1),
           id: key,
           name: info.name_fr || key,
           type: (info.type || firstTypeFrom(pk)).toLowerCase(),
