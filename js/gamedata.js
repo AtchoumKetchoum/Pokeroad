@@ -208,13 +208,25 @@ const GameData = (() => {
         return { level: kind === 'ev' ? Math.round(legacy / EV_PER_LEVEL) : legacy, stars: 0 };
     }
     const trainingMax = (stars) => (stars + 1) * 20;
+    // Prix d'une étoile : de plus en plus cher (×1,5 par étoile déjà obtenue)
+    const starMoney = (base, stars) => Math.floor(base * (stars + 1) * Math.pow(1.5, stars));
+    // Objet de déblocage du palier (Morceau d'Étoile, Fragment Comète, Couronne Antique)
+    function keyMissing(inv, key) {
+        if (!key || (inv[key.item] || 0) >= key.count) return null;
+        return `Palier verrouillé : il faut ${key.count} × ${itemsCatalog[key.item]?.name_fr || key.item}.`;
+    }
+    function consumeKey(inv, key) {
+        if (!key) return;
+        inv[key.item] -= key.count;
+        if (inv[key.item] <= 0) delete inv[key.item];
+    }
     // Coût du prochain pas : un niveau (objet de la stat + argent) ou, au palier, une étoile (matériau rare + argent)
     function trainingCost(kind, stat, track) {
         if (track.level < trainingMax(track.stars)) {
-            return { star: false, item: kind === 'iv' ? IV_RESOURCE_MAP[stat] : EV_RESOURCE_MAP[stat], count: 1,
-                money: Math.floor((kind === 'iv' ? 250 : 300) * (track.level + 1) * (1 + 0.5 * track.stars)) };
+            return { star: false, item: kind === 'iv' ? IV_RESOURCE_MAP[stat] : EV_RESOURCE_MAP[stat], count: 1 + Math.floor(track.stars / 2),
+                money: Math.floor((kind === 'iv' ? 250 : 300) * (track.level + 1) * Refinement.escalation(track.stars)) };
         }
-        return { star: true, item: kind === 'iv' ? 'feather-sample' : MOCHI_MAP[stat], count: track.stars + 1, money: 5000 * (track.stars + 1) };
+        return { star: true, item: kind === 'iv' ? 'feather-sample' : MOCHI_MAP[stat], count: track.stars + 1, money: starMoney(5000, track.stars), key: Refinement.getStarKey(track.stars + 1) };
     }
     // Plumes d'échantillon (Plume de Goélise…) : matériau des étoiles d'IV, toutes interchangeables
     function featherSampleIds() {
@@ -244,8 +256,11 @@ const GameData = (() => {
             const name = cost.item === 'feather-sample' ? 'plumes d’échantillon' : (itemsCatalog[cost.item]?.name_fr || cost.item);
             return { success: false, reason: `Il faut ${cost.count} × ${name}.` };
         }
+        const locked = keyMissing(inv, cost.key);
+        if (locked) return { success: false, reason: locked };
         data.money -= cost.money;
         consume(inv, cost.item, cost.count);
+        consumeKey(inv, cost.key);
         pokemon.training = pokemon.training || {};
         pokemon.training[kind] = pokemon.training[kind] || {};
         pokemon.training[kind][stat] = cost.star ? { level: track.level, stars: track.stars + 1 } : { level: track.level + 1, stars: track.stars };
@@ -314,8 +329,8 @@ const GameData = (() => {
         };
     }
     function natureCost(track) {
-        if (track.level < trainingMax(track.stars)) return { star: false, item: 'nature-sweet', count: 1, money: Math.floor(400 * (track.level + 1) * (1 + 0.5 * track.stars)) };
-        return { star: true, item: 'star-sweet', count: track.stars + 1, money: 5000 * (track.stars + 1) };
+        if (track.level < trainingMax(track.stars)) return { star: false, item: 'nature-sweet', count: 1 + Math.floor(track.stars / 2), money: Math.floor(400 * (track.level + 1) * Refinement.escalation(track.stars)) };
+        return { star: true, item: 'star-sweet', count: track.stars + 1, money: starMoney(5000, track.stars), key: Refinement.getStarKey(track.stars + 1) };
     }
     function trainNature(pokemonInstanceId) {
         const data = loadData();
@@ -327,9 +342,12 @@ const GameData = (() => {
         const cost = natureCost(track);
         const inv = data.inventory.items = data.inventory.items || {};
         if (data.money < cost.money) return { success: false, reason: "Pas assez d'argent." };
-        if (countOf(inv, cost.item) < cost.count) return { success: false, reason: cost.star ? `Il faut ${cost.count} × Étoile en Sucre.` : 'Il faut une sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre).' };
+        if (countOf(inv, cost.item) < cost.count) return { success: false, reason: cost.star ? `Il faut ${cost.count} × Étoile en Sucre.` : `Il faut ${cost.count} sucrerie(s) (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre).` };
+        const locked = keyMissing(inv, cost.key);
+        if (locked) return { success: false, reason: locked };
         data.money -= cost.money;
         consume(inv, cost.item, cost.count);
+        consumeKey(inv, cost.key);
         pokemon.training = pokemon.training || {};
         pokemon.training.nature = cost.star ? { level: track.level, stars: track.stars + 1 } : { level: track.level + 1, stars: track.stars };
         pokemon.stats = calculateStats(pokemon);
@@ -1854,6 +1872,12 @@ const GameData = (() => {
             }
         }
 
+        // Objets de déblocage des paliers : missions difficiles
+        if (difficulty >= 3 && Math.random() < 0.15) {
+            itemsFound.push({ id: 'star-piece', name: itemsCatalog['star-piece']?.name_fr || "Morceau d'Étoile", count: 1 });
+            logs.push(`L'équipe a trouvé un Morceau d'Étoile !`);
+        }
+
         // Drop de CT (TM) - Rare
         if (difficulty >= 2 && Math.random() < (0.1 * difficulty)) {
             const tmItem = pickRandomItem(['ct']);
@@ -2128,6 +2152,10 @@ const GameData = (() => {
         const ppCount = atMax ? Refinement.starsOf(currentRef) + 1 : 1;
         const inv = data.inventory.items = data.inventory.items || {};
         if ((inv[ppItem] || 0) < ppCount) return { success: false, reason: `Il faut ${ppCount} × ${itemsCatalog[ppItem]?.name_fr || ppItem}.` };
+        const moveKey = atMax ? Refinement.getStarKey(Refinement.starsOf(currentRef) + 1) : null;
+        const moveLocked = keyMissing(inv, moveKey);
+        if (moveLocked) return { success: false, reason: moveLocked };
+        consumeKey(inv, moveKey);
         inv[ppItem] -= ppCount;
         if (inv[ppItem] <= 0) delete inv[ppItem];
         data.money -= check.cost.money;
@@ -2171,6 +2199,10 @@ const GameData = (() => {
         else {
              const check = Refinement.canRefineAddStar(currentRef, availableCopies, data.money, 'item');
              if (!check.possible) return { success: false, reason: check.reason };
+             const itemKey = Refinement.getStarKey(Refinement.starsOf(currentRef) + 1);
+             const itemLocked = keyMissing(inventory, itemKey);
+             if (itemLocked) return { success: false, reason: itemLocked };
+             consumeKey(inventory, itemKey);
              
              // Apply
              inventory[itemId] -= check.cost.copies;
@@ -2254,15 +2286,18 @@ const GameData = (() => {
         const busy = new Set(data?.mission?.active ? (data.mission.team || []) : []);
         const pool = (data?.pokemons || []).filter(p => p.instanceId !== pokemon.instanceId && !p.isFavorite && !busy.has(p.instanceId) && getBaseFormId(p.id) === family);
         const copies = 1 + Math.floor(stars / 2);
-        const money = 10000 * (stars + 1);
-        return { copies, money, have: pool.length, pool, ok: pool.length >= copies && (data?.money || 0) >= money };
+        const money = starMoney(10000, stars);
+        const key = Refinement.getStarKey(stars + 1);
+        const keyOk = !keyMissing(data?.inventory?.items || {}, key);
+        return { copies, money, key, keyOk, have: pool.length, pool, ok: pool.length >= copies && (data?.money || 0) >= money && keyOk };
     }
     function refinePokemonStar(pokemonInstanceId) {
         const data = loadData();
         const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
         if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
         const cost = pokemonStarCost(pokemon, data);
-        if (!cost.ok) return { success: false, reason: cost.have < cost.copies ? `Il faut ${cost.copies} exemplaire(s) de la même famille.` : "Pas assez d'argent." };
+        if (!cost.ok) return { success: false, reason: cost.have < cost.copies ? `Il faut ${cost.copies} exemplaire(s) de la même famille.` : !cost.keyOk ? keyMissing(data.inventory.items || {}, cost.key) : "Pas assez d'argent." };
+        consumeKey(data.inventory.items, cost.key);
         const eaten = new Set(cost.pool.slice(0, cost.copies).map(p => p.instanceId));
         data.pokemons = data.pokemons.filter(p => !eaten.has(p.instanceId));
         data.money -= cost.money;

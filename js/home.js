@@ -725,7 +725,7 @@ async function renderShop() {
     }
     else {
         const itemsByPocket = GameData.getItemsByPocket();
-        const shopItems = itemsByPocket[currentShopPocket] || [];
+        const shopItems = (itemsByPocket[currentShopPocket] || []).filter(it => !it.not_sold);
 
         if (shopItems.length === 0) {
             grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Aucun objet dans cette catégorie.</p>';

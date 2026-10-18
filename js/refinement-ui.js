@@ -289,7 +289,7 @@ const RefinementUI = (() => {
         const starHtml = `
                 <div class="refinement-action star-action">
                     <h5>Étoile (${currentStars} → ${currentStars + 1}) : +20 % de stats et +20 niveaux max</h5>
-                    <p class="small">${starCost.copies} exemplaire(s) de la même famille (${starCost.have} disponibles, hors favoris) et ${starCost.money.toLocaleString('fr-FR')} $.</p>
+                    <p class="small">${starCost.copies} exemplaire(s) de la même famille (${starCost.have} disponibles, hors favoris), ${starCost.money.toLocaleString('fr-FR')} $${starCost.key ? ` et ${starCost.key.count} × ${GameData.getItem(starCost.key.item)?.name_fr || starCost.key.item}` : ''}.</p>
                     <button class="refine-btn star-btn ${starCost.ok ? '' : 'disabled'}" ${starCost.ok ? '' : 'disabled'} onclick="RefinementUI.refinePokemonStar()">Ajouter ★</button>
                 </div>`;
         return `
@@ -380,7 +380,7 @@ const RefinementUI = (() => {
                         <div class="train-bar"><i style="width:${Math.min(100, (t.level - (max - 20)) / 20 * 100)}%"></i></div>
                     </div>
                     <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.${isIV ? 'refineIV' : 'refineEV'}('${stat}')" title="${itemName}">
-                        <span class="train-cost">${icon}×${cost.count} · ${cost.money.toLocaleString('fr-FR')} $</span>
+                        <span class="train-cost">${icon}×${cost.count}${cost.key ? ` ${Art.item(cost.key.item, 24)}×${cost.key.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $</span>
                         <span>${cost.star ? 'Palier ★' : 'Entraîner'}</span>
                     </button>
                 </div>`;
@@ -418,7 +418,7 @@ const RefinementUI = (() => {
                             <div class="train-bar"><i style="width:${Math.min(100, (t.level - (GameData.trainingMax(t.stars) - 20)) / 20 * 100)}%"></i></div>
                         </div>
                         <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.trainNature()">
-                            <span class="train-cost">${Art.item(cost.star ? 'star-sweet' : 'strawberry-sweet', 28)}×${cost.count} · ${cost.money.toLocaleString('fr-FR')} $</span>
+                            <span class="train-cost">${Art.item(cost.star ? 'star-sweet' : 'strawberry-sweet', 28)}×${cost.count}${cost.key ? ` ${Art.item(cost.key.item, 24)}×${cost.key.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $</span>
                             <span>${cost.star ? 'Palier ★' : 'Entraîner'}</span>
                         </button>
                     </div>
@@ -456,6 +456,7 @@ const RefinementUI = (() => {
                         const mult = Refinement.getMultiplier(lvl, stars);
                         const cost = Refinement.getRefinementCost('move', lvl, stars);
                         const pp = atMax ? 'pp-max' : 'pp-up', ppCount = atMax ? stars + 1 : 1;
+                        const tierKey = atMax ? Refinement.getStarKey(stars + 1) : null;
                         const ok = data.money >= cost.money && (inv[pp] || 0) >= ppCount;
                         const power = mv.rw?.kind === 'attack' ? mv.rw.power : null;
                         const kind = mv.rw?.kind === 'passive' ? 'Passif' : mv.rw?.kind === 'tactic' ? 'Tactique' : 'Attaque';
@@ -469,7 +470,7 @@ const RefinementUI = (() => {
                                     <div>${kind} · ×${mult.toFixed(2)}${power ? ` · Puissance ${Math.round(power * mult)}` : ''}</div>
                                 </div>
                                 <button class="refine-btn small ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.refineMove('${key}')">
-                                    ${Art.item(pp, 22)}×${ppCount} · ${cost.money.toLocaleString('fr-FR')} $ · ${atMax ? 'Palier ★' : 'Améliorer'}
+                                    ${Art.item(pp, 22)}×${ppCount}${tierKey ? ` ${Art.item(tierKey.item, 20)}×${tierKey.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $ · ${atMax ? 'Palier ★' : 'Améliorer'}
                                 </button>
                             </div>`;
                     }).join('') || '<p class="small">Aucune capacité équipée.</p>'}

@@ -126,13 +126,28 @@ const Refinement = (() => {
      * @param {number} currentStars - Étoiles actuelles
      * @returns {number} Coût en argent
      */
+    // Hausse des prix avec les étoiles déjà obtenues
+    function escalation(stars) {
+        return Math.pow(1.35, stars || 0);
+    }
+    // Objets de déblocage des paliers : rien pour les étoiles 1 et 2, puis de plus en plus rares
+    const STAR_KEYS = [
+        { from: 3, to: 5, item: 'star-piece' },
+        { from: 6, to: 9, item: 'comet-shard' },
+        { from: 10, to: Infinity, item: 'relic-crown' },
+    ];
+    function getStarKey(nextStar) {
+        const tier = STAR_KEYS.find(t => nextStar >= t.from && nextStar <= t.to);
+        return tier ? { item: tier.item, count: nextStar - tier.from + 1 } : null;
+    }
+
     function getMoneyCost(type, currentLevel, currentStars) {
         // Pour les Pokémon (Grade), le coût en argent est remplacé par du "Food" (XP sacrifice)
         if (type === 'pokemon') return 0;
 
         const baseValue = BASE_COSTS[type] || BASE_COSTS.item;
-        // Formule: baseValue × currentLevel × (1 + stars × 0.5)
-        const starMultiplier = 1 + (currentStars * 0.5);
+        // Chaque étoile rend la suite 35 % plus chère (courbe exponentielle)
+        const starMultiplier = escalation(currentStars);
         // Le coût grimpe un peu plus vite que linéairement : la course au grinding ne s'arrête jamais
         return Math.floor(baseValue * currentLevel * starMultiplier * (1 + currentLevel / 100));
     }
@@ -451,6 +466,9 @@ const Refinement = (() => {
         getRefinementCost,
         getStarCost,
         getItemSlots,
+        escalation,
+        getStarKey,
+        STAR_KEYS,
         getBerrySlots,
         
         // Validation

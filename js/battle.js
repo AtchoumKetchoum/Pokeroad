@@ -2563,6 +2563,17 @@ async function checkWinCondition() {
         droppedTM = { id: tmId, name: getCleanItemNameFr(tmId), icon: Art.item('tm-normal', 22) };
     }
 
+    // Objets de déblocage des paliers : sur les boss, de plus en plus rares
+    if (battleIndex === 10) {
+        const keyDrops = ['star-piece'];
+        if (waveIndex === 10 || (zoneIndex >= 5 && Math.random() < 0.25)) keyDrops.push('comet-shard');
+        if (waveIndex === 10 && zoneIndex >= 8 && Math.random() < 0.3) keyDrops.push('relic-crown');
+        keyDrops.forEach(id => {
+            GameData.addItem(id, 1);
+            droppedItems.push({ id, name: getCleanItemNameFr(id), icon: Art.item(id, 22) });
+        });
+    }
+
     let finalEggCount = 0;
     if (typeof GameData !== 'undefined' && GameData.addEggsToBag) {
         const result = GameData.addEggsToBag(eggCount);

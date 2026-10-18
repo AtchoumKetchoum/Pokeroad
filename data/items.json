@@ -5000,5 +5000,39 @@
     "attributes": ["countable", "consumable"],
     "effect_fr": "Monte au maximum (31) l'IV de base d'une stat d'un Pokémon.",
     "description_fr": "Une capsule argentée qui fait briller le potentiel d'une stat."
+  },
+  "star-piece": {
+    "id": 10002,
+    "name_fr": "Morceau d'Étoile",
+    "cost": 25000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/star-piece.png",
+    "category": "Déblocage",
+    "pocket": "misc",
+    "attributes": ["countable"],
+    "effect_fr": "Débloque les paliers ★3 à ★5 (Pokémon, IV, EV, nature, capacités, objets). Obtenu sur les boss.",
+    "description_fr": "Un éclat d'étoile rouge, rare et précieux."
+  },
+  "comet-shard": {
+    "id": 10003,
+    "name_fr": "Fragment Comète",
+    "cost": 150000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/comet-shard.png",
+    "category": "Déblocage",
+    "pocket": "misc",
+    "attributes": ["countable"],
+    "effect_fr": "Débloque les paliers ★6 à ★9. Obtenu sur les boss de fin de zone.",
+    "description_fr": "Un fragment de comète tombé du ciel."
+  },
+  "relic-crown": {
+    "id": 10004,
+    "name_fr": "Couronne Antique",
+    "cost": 0,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/relic-crown.png",
+    "category": "Déblocage",
+    "pocket": "misc",
+    "attributes": ["countable"],
+    "effect_fr": "Débloque les paliers ★10 et au-delà. Très rare : boss des zones avancées.",
+    "description_fr": "Une couronne d'un ancien royaume.",
+    "not_sold": true
   }
 }
