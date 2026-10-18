@@ -745,62 +745,8 @@ function updateTurnDisplay(unit) {
 
 
 function updateStatusIcons(unit) {
-    if (!unit) return;
-    const slotEl = getSlotEl(unit._side, unit._index);
-    if (!slotEl) return;
-
-    const iconsContainer = slotEl.querySelector('.status-icons');
-    if (!iconsContainer) return;
-    
-    if (unit.isKO) {
-        iconsContainer.style.display = 'none';
-        return;
-    } else {
-        iconsContainer.style.display = 'flex';
-    }
-    
-    iconsContainer.innerHTML = '';
-
-    const effectsToDisplay = {};
-
-    // Afficher les statuts majeurs et mineurs
-    unit.activeEffects.forEach(effect => {
-        const rule = RulesDB[effect.id];
-        if (!rule || (rule.category !== 'Majeur' && rule.category !== 'Mineur')) return;
-
-        const iconKey = effect.id;
-        const iconClass = effect.id.substring(5).toLowerCase();
-        const iconText = iconClass.substring(0, 3).toUpperCase();
-
-        if (!effectsToDisplay[iconKey]) {
-            effectsToDisplay[iconKey] = { class: iconClass, text: iconText, title: rule.name };
-        }
-    });
-
-    // Afficher les modificateurs de stats individuellement
-    for (const [stat, value] of Object.entries(unit.statMods)) {
-        if (value === 0) continue;
-        const modType = value > 0 ? 'buff' : 'debuff';
-        const statAbbr = stat.substring(0, 3).toUpperCase();
-        const title = `${stat} ${value > 0 ? 'augmentée' : 'diminuée'}`;
-        const iconKey = `V_STAT_${stat}_${modType.toUpperCase()}`;
-        
-        effectsToDisplay[iconKey] = { 
-            class: `v-stat ${modType}`, 
-            text: statAbbr, 
-            title: title 
-        };
-    }
-
-    // Créer les éléments DOM
-    for (const key in effectsToDisplay) {
-        const displayInfo = effectsToDisplay[key];
-        const iconEl = document.createElement('div');
-        iconEl.className = `status-icon ${displayInfo.class}`; // ex: "status-icon v-stat buff"
-        iconEl.textContent = displayInfo.text;
-        iconEl.title = displayInfo.title;
-        iconsContainer.appendChild(iconEl);
-    }
+    // Vignettes carrées au-dessus du Pokémon (js/unit-tiles.js)
+    if (unit && typeof UnitTiles !== 'undefined') UnitTiles.render(unit);
 }
 
 
@@ -1276,7 +1222,7 @@ function showPokemonDetails(unit) {
             <span class="info-item"><strong>HP:</strong> ${unit.hp}/${unit.maxHp}</span>
             ${statDisplayHtml}
             <span class="info-item"><strong>Types:</strong> ${typesHtml}</span>
-            <div class="info-item" style="flex-basis: 100%;"><strong>Effets:</strong> ${effectsHtml}</div>
+            <div class="info-item" style="flex-basis: 100%;"><strong>Effets :</strong> ${typeof UnitTiles !== 'undefined' ? UnitTiles.describe(unit) : effectsHtml}</div>
         </div>
     `;
     dom.infoDisplayPanel.classList.remove('terrain-mode');

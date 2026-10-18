@@ -1,0 +1,61 @@
+/* ==========================================================================
+   unit-tiles.css — Effets au-dessus des Pokémon en combat (js/unit-tiles.js)
+   Petites vignettes à pictogramme, façon Summoners War :
+   fond bleu = bénéfique, fond rouge = néfaste, chevrons = paliers de stat.
+   6 par rangée, 2 rangées au plus, au-dessus d'un cadre compact
+   (niveau et jauge Z sur une ligne, barre de PV dessous, bouclier en clair).
+   ========================================================================== */
+
+#view-battle .unit .hp-box { width: 128px !important; min-width: 0 !important; max-width: none !important; padding: 2px 4px 3px !important; }
+#view-battle .unit .status-main-row { flex-wrap: wrap; row-gap: 2px; }
+#view-battle .unit .lvl-badge, #view-battle .unit .charge-text { transform: none; margin: 0; line-height: 1; }
+#view-battle .unit .charge-text { margin-left: auto; }
+#view-battle .unit .hp-container-minimal { order: 3; flex: 0 0 100%; }
+#view-battle .unit .status-icons {
+  position: absolute !important; left: 50%; bottom: calc(100% + 4px); transform: translateX(-50%);
+  width: 231px; display: flex; flex-wrap: wrap-reverse; justify-content: center; gap: 3px;
+  min-height: 0 !important; margin: 0; padding: 0; background: none; border: none; z-index: 6;
+}
+#view-battle .unit .status-icons:empty { display: none !important; }
+
+/* Vignette carrée à pictogramme */
+.ut-tile {
+  position: relative; width: 36px; height: 36px; box-sizing: border-box; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 7px; border: 2px solid var(--ink); box-shadow: 0 2px 0 var(--ink);
+  color: #fff; cursor: help; overflow: hidden;
+}
+.ut-good { background: linear-gradient(160deg, #6f9fd4, #2f5f9e 70%); }
+.ut-bad { background: linear-gradient(160deg, #e0766c, #a3332c 70%); }
+.ut-ico { width: 24px; height: 24px; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .45)); }
+.ut-tile:has(.ut-stg) .ut-ico { margin-right: 6px; }
+/* Paliers : chevrons ▲ (hausse) ou ▼ (baisse) sur le bord droit */
+.ut-stg {
+  position: absolute; right: 1px; top: 2px; bottom: 2px; width: 9px; height: auto;
+  fill: none; stroke: #ffe680; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .6));
+}
+.ut-more { background: var(--paper-2); color: var(--ink); font-family: var(--font-title); font-size: 22px; }
+
+/* Rôle : vignette à icône (le nom du rôle est dans l'infobulle et la fiche) */
+#view-battle .unit .role-badge {
+  align-self: flex-start; display: inline-flex !important; align-items: center; justify-content: center;
+  width: 30px; height: 30px; padding: 0 !important; border-radius: 8px !important; margin: 0 !important;
+}
+#view-battle .unit .role-badge > span { display: none !important; }
+#view-battle .unit .role-badge svg { width: 20px !important; height: 20px !important; }
+#view-battle .unit .hp-box > .role-badge { position: absolute; left: -34px; bottom: 0; }
+
+/* Bouclier sur la barre de PV */
+#view-battle .unit .hp-bar-bg { position: relative; overflow: hidden; }
+#view-battle .unit .hp-shield {
+  position: absolute; top: 0; bottom: 0; left: 100%; width: 0;
+  background: repeating-linear-gradient(45deg, #dbe8f3 0 4px, #9fc0dc 4px 8px);
+  box-shadow: inset 0 0 0 1px #3f74a3; transition: left .3s, width .3s;
+}
+
+/* Fiche du Pokémon : légende des vignettes */
+.ut-legend { display: grid; gap: 6px; margin-top: 6px; }
+.ut-row { display: flex; align-items: center; gap: 8px; }
+.ut-row .ut-tile { flex: none; }
+.ut-row span { font-size: 22px; line-height: 1.2; }
