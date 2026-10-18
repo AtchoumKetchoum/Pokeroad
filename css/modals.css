@@ -64,3 +64,64 @@
 #view-battle #pmd-credits-btn { max-width: 150px; white-space: nowrap; }
 /* Bandeau du haut plus haut : les synergies ennemies descendent sous la frise des tours */
 #view-battle .synergy-panel.synergy-enemy { top: 196px !important; padding-top: 2px !important; padding-bottom: 2px !important; }
+
+/* Pas de rotation de l'ancienne croix au survol : la barre Retour reste droite */
+.modal:not(#confirm-modal) .close-btn:hover { transform: none !important; }
+
+/* ==========================================================================
+   Onglets et filtres en bas, sous le pouce, juste au-dessus de Retour.
+   La liste défile seule au-dessus ; filtres secondaires au-dessus des onglets.
+   ========================================================================== */
+#shop-modal .modal-content,
+#item-bag-modal .modal-content,
+#locker-modal .modal-content { display: flex !important; flex-direction: column; overflow: hidden !important; }
+#locker-content { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#shop-grid, #item-bag-grid, #locker-grid {
+  order: 1; flex: 1 1 auto; min-height: 0; max-height: none !important; overflow-y: auto; margin: 0 !important; align-content: start; align-items: start;
+}
+#shop-pockets, #item-bag-pockets, #locker-filters {
+  order: 2; flex: none; margin: 10px 0 0 !important; padding: 0 !important; justify-content: center;
+}
+#shop-categories {
+  order: 3; flex: none; justify-content: center; margin: 10px 0 0 !important;
+  padding: 10px 0 0 !important; border-bottom: none !important; border-top: 2px solid #d7d0ca;
+}
+#shop-pockets:not([style*="none"]) + #shop-grid, #shop-grid { padding: 4px 2px 10px !important; }
+#locker-filters { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Raffinement : les onglets restent collés en bas pendant le défilement */
+#refinement-modal .refinement-options { display: flex; flex-direction: column; }
+#refinement-modal .refinement-panel { order: 1; }
+#refinement-modal .refinement-tabs {
+  order: 2; position: sticky; bottom: -24px; z-index: 5; margin: 12px -18px -24px !important;
+  padding: 10px 18px 12px !important; background: var(--paper); border-top: 2px solid #d7d0ca; justify-content: center; flex-wrap: wrap;
+}
+
+/* Fiche Pokémon : onglets sous le contenu */
+.pk-sheet .sheet-right .sheet-tabs { order: 9; border-bottom: none !important; border-top: 4px solid var(--gba-frame, #45434e); padding: 10px 16px 12px !important; justify-content: center; }
+
+/* Sac d'œufs : les raretés passent en bas */
+#egg-bag-modal .egg-bag-layout { flex-direction: column-reverse !important; }
+#egg-bag-modal #egg-bag-sidebar { width: auto !important; border-right: none !important; border-top: 2px solid #d7d0ca; padding: 10px 0 0 !important; gap: 8px !important; background: none !important; }
+#egg-bag-modal #egg-bag-sidebar h3 { display: none; }
+#egg-bag-modal #egg-rarity-filters { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; }
+#egg-bag-modal #egg-bag-main { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+#egg-bag-modal .egg-filter-item:hover { transform: none; }
+
+/* Pokédex : filtres en bas de l'écran */
+#view-pokedex #pokedex-filters { order: 3; }
+#view-pokedex #pokedex-grid { order: 2; }
+
+/* Boutique : cartes CT avec le nom de l'attaque apprise */
+#shop-modal .shop-item-card { padding: 12px 8px; gap: 4px; }
+#shop-modal .shop-item-card .item-icon { width: 48px; height: 48px; margin: 0; }
+#shop-modal .shop-item-card .item-name { margin: 0; color: #7d7670; }
+#shop-modal .shop-item-card .item-move { font-family: var(--font-title); font-size: 26px; line-height: 1.1; color: var(--ink); }
+#shop-modal .shop-item-card .item-desc { margin: 2px 0 6px; min-height: 0; line-height: 1.25; }
+#shop-modal .shop-item-card .item-price { margin: auto 0 6px; }
+/* Un peu d'air entre la dernière rangée de filtres et la barre Retour */
+#shop-modal .modal-content, #item-bag-modal .modal-content, #locker-modal .modal-content { padding-bottom: 14px !important; height: calc(100% - 100px) !important; }
+#egg-bag-modal #egg-selection-grid { align-content: start; align-items: start; }
+.ct-move { font-family: var(--font-title); font-weight: 400; color: var(--ink); }
+/* Fiche : les onglets du bas restent au-dessus de la barre Retour */
+.modal:not(#confirm-modal) #pokemon-detail-card.pk-sheet { height: calc(100% - 146px) !important; }

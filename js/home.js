@@ -432,6 +432,22 @@ async function openItemBagModal() {
     renderItemBag();
 }
 
+// CT : nom de l'attaque apprise (« Apprend Toxik à un Pokémon… ») et sa fiche si les capacités sont chargées
+function ctMoveName(item) {
+    return (item?.effect_fr || '').match(/Apprend (.+?) à un Pok/)?.[1] || null;
+}
+function ctMove(item) {
+    const name = ctMoveName(item);
+    if (!name || typeof MovesDB === 'undefined' || !MovesDB) return null;
+    const low = name.toLowerCase();
+    return Object.values(MovesDB).find(m => m?.name_fr?.toLowerCase() === low) || null;
+}
+// Libellé d'un objet dans les grilles : « CT06 · Toxik » pour les CT
+function itemLabel(item) {
+    const move = ctMoveName(item);
+    return move ? `${item.name_fr}<br><b class="ct-move">${move}</b>` : (item.name_fr || item.id);
+}
+
 function renderItemBag() {
     const grid = document.getElementById('item-bag-grid');
     if (!grid) return;
@@ -457,7 +473,7 @@ function renderItemBag() {
             <div class="item-card-home ${isLocked ? 'locked' : ''}" onclick="showItemInfo('${item.id}')" style="cursor: pointer;">
                 <div class="item-owned-count">x${count}</div>
                 <img src="${sprite}" alt="${item.name_fr}" class="item-sprite-home" onerror="this.src=Art.FALLBACK">
-                <p class="item-name-home">${item.name_fr || item.id}</p>
+                <p class="item-name-home">${itemLabel(item)}</p>
             </div>
         `;
     }).join('');
@@ -474,13 +490,18 @@ function showItemInfo(itemId) {
     const inventory = GameData.getInventory().items || {};
     const count = inventory[itemId] || 0;
     const sprite = item.sprite || Art.FALLBACK;
+    const moveName = ctMoveName(item);
+    const move = ctMove(item);
+    // Les capacités ne sont pas encore chargées : on réaffiche dès qu'elles le sont
+    if (moveName && !move && typeof loadMovesDB === 'function' && !MovesDB) loadMovesDB().then(() => { if (modal.style.display !== 'none') showItemInfo(itemId); });
+    const desc = move ? (move.description_game || move.description_fr) : (item.description_fr || item.effect_fr || 'Aucune description disponible.');
 
     content.innerHTML = `
         <img src="${sprite}" alt="${item.name_fr}" style="width: 64px; height: 64px; margin-bottom: 15px;" onerror="this.src=Art.FALLBACK">
-        <h3 style="margin-bottom: 5px;">${item.name_fr}</h3>
+        <h3 style="margin-bottom: 5px;">${item.name_fr}${moveName ? ` · ${moveName}` : ''}</h3>
         <p style="color: #666; font-size: 12px; margin-bottom: 15px;">${item.category} | ${POCKET_LABELS[item.pocket] || item.pocket}</p>
         <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 15px;">
-            <p style="font-size: 13px; line-height: 1.4;">${item.description_fr || item.effect_fr || 'Aucune description disponible.'}</p>
+            <p style="font-size: 13px; line-height: 1.4;">${desc}</p>
         </div>
         <p style="font-weight: bold; color: #2ecc71;">Possédé : x${count}</p>
     `;
@@ -732,14 +753,25 @@ async function renderShop() {
             return;
         }
 
+        // CT : on affiche l'attaque apprise (nom et description du jeu)
+        const movesByName = {};
+        if (currentShopPocket === 'ct' && typeof loadMovesDB === 'function') {
+            Object.values(await loadMovesDB() || {}).forEach(m => { if (m?.name_fr) movesByName[m.name_fr.toLowerCase()] = m; });
+        }
+        const clip = (t, n) => (t.length > n ? `${t.slice(0, n).trim()}…` : t);
+
         grid.innerHTML = shopItems.map(item => {
             const sprite = item.sprite || Art.FALLBACK;
+            const moveName = ctMoveName(item);
+            const move = moveName && movesByName[moveName.toLowerCase()];
+            const desc = move ? (move.description_game || move.description_fr || '') : (item.description_fr || item.effect_fr || 'Pas de description.');
             return `
-                <div class="shop-item-card" onclick="showItemInfo('${item.id}')" style="cursor: pointer;">
+                <div class="shop-item-card${moveName ? ' is-ct' : ''}" onclick="showItemInfo('${item.id}')" style="cursor: pointer;">
                     <img src="${sprite}" class="item-icon" loading="lazy" onerror="this.src=Art.FALLBACK">
                     <div class="item-name">${item.name_fr || item.id}</div>
-                    <div class="item-desc" style="font-size: 10px; margin: 10px 0;">${(item.description_fr || item.effect_fr || 'Pas de description.').substring(0, 60)}...</div>
-                    <div class="item-price">${(item.cost || 1000).toLocaleString('fr-FR')} $</div>
+                    ${moveName ? `<div class="item-move">${moveName}</div>` : ''}
+                    <div class="item-desc">${clip(desc, 70)}</div>
+                    <div class="item-price">${(item.cost || 1000).toLocaleString('fr-FR')}</div>
                     <button class="pk-btn-action small" onclick="event.stopPropagation(); buyShopItem('${item.id}', ${item.cost || 1000}, '${item.name_fr.replace(/'/g, "\\'")}')">Acheter</button>
                 </div>
             `;

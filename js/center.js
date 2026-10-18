@@ -203,7 +203,7 @@ function renderLockerGrid() {
         card.innerHTML = `
             ${ownedCount > 0 ? `<div class="item-owned-count">x${ownedCount}</div>` : ''}
             <img src="${sprite}" alt="${item.name_fr}" class="item-sprite" onerror="this.src=Art.FALLBACK">
-            <p class="item-name">${item.name_fr}</p>
+            <p class="item-name">${typeof itemLabel === 'function' ? itemLabel(item) : item.name_fr}</p>
         `;
         
         card.addEventListener('click', () => showItemDetails(item));
