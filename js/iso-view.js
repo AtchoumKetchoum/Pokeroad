@@ -1,5 +1,5 @@
 /**
- * iso-view.js - Prototype de vue du combat : classique, iso léger ou vraie iso.
+ * iso-view.js - Vue du combat : iso léger (par défaut), classique ou vraie iso.
  *
  *  - Iso léger : le sol des deux grilles est incliné en perspective (lignes horizontales).
  *  - Vraie iso : le plateau (6 lignes × 3 colonnes) est tourné à 45° et incliné : cases en losange.
@@ -11,13 +11,14 @@ const IsoView = (() => {
     const KEY = 'pokeroad_battle_view';
     const MODES = {
         classic: { label: 'Classique' },
-        light: { label: 'Iso léger', tilt: 34, spin: 0, scale: 0.86 },
+        light: { label: 'Iso léger', tilt: 34, spin: 0, scale: 0.82 },
         iso: { label: 'Vraie iso', tilt: 44, spin: 30, scale: 0.76 },
     };
     const ORDER = ['classic', 'light', 'iso'];
-    let mode = 'classic';
-    try { mode = localStorage.getItem(KEY) || 'classic'; } catch { /* sans stockage */ }
-    if (!MODES[mode]) mode = 'classic';
+    // Iso léger par défaut (choix de l'utilisateur) ; classique et vraie iso restent au choix
+    let mode = 'light';
+    try { mode = localStorage.getItem(KEY) || 'light'; } catch { /* sans stockage */ }
+    if (!MODES[mode]) mode = 'light';
 
     const screen = () => document.querySelector('#view-battle .scaler-view');
     const grids = () => ['enemy-grid', 'player-grid'].map(id => document.getElementById(id)).filter(Boolean);
