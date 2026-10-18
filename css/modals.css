@@ -155,3 +155,34 @@
   display: flex !important; align-items: center; justify-content: center; border-radius: 14px !important;
 }
 .shop-pockets .pocket-tab.pocket-icon svg, .shop-pockets .pocket-tab.pocket-icon img { width: 52px !important; height: 52px !important; }
+
+/* Sac d'œufs : raretés en vignettes sur une ligne (œuf + nombre), le nom en infobulle */
+#egg-bag-modal #egg-rarity-filters { flex-wrap: nowrap !important; justify-content: space-between !important; gap: 6px !important; margin-bottom: 14px; }
+#egg-bag-modal .egg-filter-item {
+  position: relative; flex: 1 1 0; min-width: 0; max-width: 92px; height: 68px; box-sizing: border-box;
+  padding: 0 !important; display: flex !important; align-items: center; justify-content: center; gap: 0 !important; border-radius: 14px !important;
+}
+#egg-bag-modal .egg-filter-item .egg-filter-name { display: none; }
+#egg-bag-modal .egg-filter-item:first-child .egg-filter-name { display: block; flex: none; font-family: var(--font-title); font-size: 22px; }
+#egg-bag-modal .egg-filter-item .egg-sprite { width: auto !important; height: auto !important; display: flex; }
+#egg-bag-modal .egg-filter-item .egg-sprite svg { width: 40px; height: 40px; }
+#egg-bag-modal .egg-filter-item .egg-filter-count {
+  position: absolute; top: -6px; right: -4px; min-width: 26px; height: 26px; padding: 0 5px !important; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center; border-radius: 13px !important;
+  background: var(--ink) !important; color: #f7ecdc !important; font-size: 22px; line-height: 1;
+}
+#egg-bag-modal .egg-filter-item:first-child .egg-filter-count { display: none; }
+#egg-bag-modal #egg-bag-sidebar { overflow: visible; padding-top: 14px !important; }
+#egg-bag-modal #egg-bag-sidebar, #egg-bag-modal #egg-rarity-filters { width: 100% !important; align-self: stretch; box-sizing: border-box; }
+
+/* Incubateur : les 10 emplacements tiennent dans la fenêtre, sans défilement */
+#incubator-modal .modal-content { display: flex !important; flex-direction: column; overflow: hidden !important; }
+#incubator-slots-container { flex: 1 1 auto; min-height: 0; max-height: none !important; overflow: hidden !important; padding: 0 !important; display: flex; flex-direction: column; gap: 10px; }
+#incubator-slots-container > :not(#incubator-grid-premium) { flex: none; }
+#incubator-grid-premium {
+  flex: 1 1 auto; min-height: 0; padding: 6px !important; gap: 10px !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important; grid-auto-rows: minmax(0, 1fr);
+}
+#incubator-grid-premium .incubator-slot-premium { min-height: 0; padding: 6px !important; gap: 2px !important; justify-content: center; }
+#incubator-grid-premium .incubator-slot-premium svg { flex: 1 1 auto; min-height: 0; width: auto !important; max-width: 100%; height: auto; max-height: 100%; }
+#incubator-modal .modal-content { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; filter: none !important; transform: none !important; }
