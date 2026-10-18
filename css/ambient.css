@@ -147,3 +147,9 @@
   75% { transform: translate(420px, -30px); }
   100% { transform: translate(0, 0); }
 }
+
+/* Paramètres : installation en appli (js/pwa.js) */
+.install-hint { margin: 6px 0 0; font-weight: 800; font-size: 15px; color: var(--ink-soft); }
+.install-hint:empty { display: none; }
+#install-app-btn[hidden] { display: none; }
+#install-group[hidden] { display: none !important; }

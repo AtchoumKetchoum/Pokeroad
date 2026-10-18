@@ -6,7 +6,11 @@
     <title>PokéRoad</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23fff' stroke='%231b1f3b' stroke-width='3'/%3E%3Cpath d='M2 20a18 18 0 0 1 36 0z' fill='%23ee1515' stroke='%231b1f3b' stroke-width='3'/%3E%3Ccircle cx='20' cy='20' r='6' fill='%23fff' stroke='%231b1f3b' stroke-width='3'/%3E%3C/svg%3E">
     
-    <!-- PWA & Mobile Meta -->
+    <!-- PWA & Mobile Meta : installation en appli (manifest + service worker, voir js/pwa.js) -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#2b2433">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="PokéRoad">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -128,6 +132,11 @@
                                 <label><input type="radio" name="player-gender" value="girl"> Fille</label>
                             </div>
                             <button class="pk-btn-action small" onclick="saveProfile()">Enregistrer Profil</button>
+                        </div>
+                        <div class="settings-group" id="install-group" hidden>
+                            <h3>Appli</h3>
+                            <button class="pk-btn-action small" id="install-app-btn" onclick="PWA.install()">Installer l'appli sur l'écran d'accueil</button>
+                            <p class="install-hint" id="install-hint"></p>
                         </div>
                         <div class="settings-group">
                             <h3>Données</h3>
@@ -431,6 +440,7 @@
     </div>
 
     <!-- Global Scripts -->
+    <script src="js/pwa.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/art.js"></script>
     <script src="js/ui.js"></script>
