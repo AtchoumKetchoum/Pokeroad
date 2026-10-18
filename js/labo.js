@@ -279,7 +279,7 @@ function renderEggRarityFilters() {
         counts[egg.rarity] = (counts[egg.rarity] || 0) + 1;
     });
 
-    const rarities = ["Commun", "Peu commun", "Rare", "Bébé", "Très rare", "Légendaire", "Mythique"];
+    const rarities = ["Commun", "Peu Commun", "Rare", "Bébé", "Très Rare", "Légendaire", "Mythique"];
     
     let html = `
         <div class="egg-filter-item ${currentEggRarityFilter === 'all' ? 'active' : ''}" onclick="setEggBagFilter('all')" title="Tous les œufs">

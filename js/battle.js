@@ -2537,7 +2537,7 @@ async function checkWinCondition() {
     // CT drop chance (fixed 20%)
     let droppedTM = null;
     if (Math.random() < 0.2) {
-        const tmId = `tm${Math.floor(Math.random() * 50) + 1}`; 
+        const tmId = `tm${String(Math.floor(Math.random() * 50) + 1).padStart(2, "0")}`;
         GameData.addItem(tmId, 1);
         droppedTM = { id: tmId, name: getCleanItemNameFr(tmId), icon: Art.item('tm-normal', 22) };
     }

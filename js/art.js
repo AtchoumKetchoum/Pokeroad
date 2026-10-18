@@ -547,7 +547,7 @@ const Art = (() => {
     }
 
     // Image de secours (objet ou Pokémon introuvable) : Poké Ball en data-URI
-    const FALLBACK = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(pokeball(64));
+    const FALLBACK = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(pokeball(64).replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"'));
 
     // Remplit les emplacements déclarés dans le HTML : data-scene, data-icon, data-egg, data-pokeball, data-building
     // --- RENDU « GBA » : un SVG est dessiné en basse résolution puis agrandi sans lissage ---

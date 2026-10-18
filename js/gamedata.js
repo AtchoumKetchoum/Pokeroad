@@ -110,7 +110,7 @@ const GameData = (() => {
         while (iterations < 10) {
             const pk = pokedexSubset.find(p => p.id === currentId);
             if (!pk || !pk.evolves_from) break;
-            currentId = pk.evolves_from;
+            currentId = typeof pk.evolves_from === 'object' ? pk.evolves_from.id : pk.evolves_from;
             iterations++;
         }
         return currentId;
@@ -563,18 +563,21 @@ const GameData = (() => {
                 pocket = 'mega';
             } else if (key.includes('candy') || key.includes('bonbon')) {
                 pocket = 'exp';
-            } else if (item.category === 'Vitamines' || item.category === 'Vitamins') {
+            } else if ((item.category === 'Vitamines' || item.category === 'Vitamins') && !key.endsWith('-wing')) {
                 pocket = 'vitamins';
-            } else if (item.name_fr && item.name_fr.includes('Plume')) {
+            } else if (key.endsWith('-wing')) {
                 pocket = 'feathers';
-            } else if (pocket === 'misc' && (item.category.includes('loot') || item.category.includes('collectible'))) {
+            } else if (item.category === 'Échantillons' || item.category === 'Butin' || key === 'fairy-feather' || key === 'poke-toy' || key === 'plume-fossil') {
                 pocket = 'loot';
-            } else if (pocket === 'misc' && (item.attributes.includes('holdable') || item.attributes.includes('holdable-active'))) {
+            } else if (pocket === 'misc' && ((item.category || '').includes('loot') || (item.category || '').includes('collectible'))) {
+                pocket = 'loot';
+            } else if (item.pocket === 'battle' || (pocket === 'misc' && (item.attributes || []).some(a => a === 'holdable' || a === 'holdable-active'))) {
                 pocket = 'battle';
             } else if (pocket === 'misc') {
                 pocket = 'misc';
             }
             
+            if (!item.sprite) item.sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${pocket === 'ct' ? 'tm-normal' : key}.png`;
             if (!itemsByPocket[pocket]) itemsByPocket[pocket] = [];
             itemsByPocket[pocket].push({ ...item, id: key });
         });
@@ -1263,17 +1266,18 @@ const GameData = (() => {
         saveData(data);
         return { success: true, egg: newIncubation };
     }
+    // Prix du N-ième incubateur (index = nombre déjà débloqué)
+    const INCUBATOR_COSTS = [0, 1500, 4000, 10000, 25000, 60000, 150000, 400000, 1000000, 2500000];
     function buyIncubatorSlot() {
         const data = loadData();
         if (!data) return { success: false, reason: "Sauvegarde non trouvée." };
 
         const unlockedCount = data.unlockedIncubators || 1;
-        if (unlockedCount >= 10) {
-            return { success: false, reason: "Nombre maximum d'incubateurs atteint (10)." };
+        if (unlockedCount >= INCUBATOR_COSTS.length) {
+            return { success: false, reason: `Nombre maximum d'incubateurs atteint (${INCUBATOR_COSTS.length}).` };
         }
 
-        const COSTS = [0, 1500, 4000, 10000, 25000, 60000, 150000, 400000, 1000000, 2500000];
-        const cost = COSTS[unlockedCount];
+        const cost = INCUBATOR_COSTS[unlockedCount];
 
         if (data.money < cost) {
             return { success: false, reason: `Pas assez d'argent. Requis : ${cost.toLocaleString('fr-FR')} $.` };
@@ -1506,7 +1510,7 @@ const GameData = (() => {
     }
 
     // Items pool enrichie pour les missions
-    function pickRandomItem(pockets = ['misc', 'medicine', 'battle', 'berries', 'training', 'tm']) {
+    function pickRandomItem(pockets = ['misc', 'vitamins', 'feathers', 'battle', 'berries', 'ct']) {
         const availablePockets = pockets.filter(p => itemsByPocket[p] && itemsByPocket[p].length > 0);
         if (availablePockets.length === 0) return null;
         
@@ -1592,8 +1596,8 @@ const GameData = (() => {
         const itemChance = 0.4 + (affinityBonus * 0.05); // 40% base + bonus affinité
         
         if (Math.random() < itemChance) {
-            let pockets = ['medicine', 'berries', 'training'];
-            if (difficulty >= 2) pockets.push('misc', 'battle');
+            let pockets = ['vitamins', 'feathers', 'berries', 'exp'];
+            if (difficulty >= 2) pockets.push('misc', 'battle', 'loot');
             
             const foundItem = pickRandomItem(pockets);
             if (foundItem) {
@@ -1604,7 +1608,7 @@ const GameData = (() => {
 
         // Drop de CT (TM) - Rare
         if (difficulty >= 2 && Math.random() < (0.1 * difficulty)) {
-            const tmItem = pickRandomItem(['tm']);
+            const tmItem = pickRandomItem(['ct']);
             if (tmItem) {
                 itemsFound.push({ id: tmItem.id, name: tmItem.name_fr || tmItem.id.toUpperCase(), count: 1 });
                 logs.push(`Merveilleux ! L'équipe a découvert une CT oubliée : ${tmItem.name_fr || tmItem.id.toUpperCase()} !`);
@@ -1689,8 +1693,7 @@ const GameData = (() => {
                     canEvolve = true;
                 } else {
                     // Try to find readable name for item
-                    const itemInfo = (typeof REWARD_ITEMS_POOL !== 'undefined') ? REWARD_ITEMS_POOL.find(i => i.id === requiredItem) : null;
-                    const itemName = itemInfo ? itemInfo.name : requiredItem;
+                    const itemName = itemsCatalog[requiredItem]?.name_fr || requiredItem;
                     reason = `Objet requis : ${itemName}`;
                 }
             }
@@ -2157,6 +2160,14 @@ const GameData = (() => {
         getItems: () => itemsCatalog,
         getItemsByPocket: () => itemsByPocket,
         getItem: (id) => itemsCatalog[id],
+        getPokemonByInstanceId: (id) => (loadData()?.pokemons || []).find(p => p.instanceId === id) || null,
+        useItemOnPokemon,
+        useBottleCap,
+        buyItem,
+        getIncubatorCost: (count) => INCUBATOR_COSTS[count] ?? null,
+        MAX_INCUBATORS: INCUBATOR_COSTS.length,
+        IV_RESOURCE_MAP,
+        EV_RESOURCE_MAP,
         // Fonctions de raffinement
         refinePokemonLevel,
         refinePokemonStar,

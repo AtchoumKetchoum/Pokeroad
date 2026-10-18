@@ -825,10 +825,13 @@ function handleUnequip(instanceId) {
 async function pickItemForEquip(instanceId) {
     // We can reuse displayLocker logic or a simpler pick list
     const inventory = GameData.getInventory().items || {};
-    const ownedItems = Object.entries(inventory).filter(([id, count]) => count > 0);
+    // Seuls les objets de combat et les baies se tiennent
+    const pockets = GameData.getItemsByPocket();
+    const holdable = new Set([...(pockets.battle || []), ...(pockets.berries || [])].map(i => i.id));
+    const ownedItems = Object.entries(inventory).filter(([id, count]) => count > 0 && holdable.has(id));
     
     if (ownedItems.length === 0) {
-        alert("Vous n'avez aucun objet dans votre inventaire.");
+        alert("Aucun objet à tenir dans ton sac (baies et objets de combat).");
         return;
     }
 
@@ -952,6 +955,6 @@ function refreshDetail(pokemonId) {
     const pokemon = data.pokemons.find(p => p.instanceId === pokemonId);
     if (pokemon) {
         openPokemonDetail(pokemon);
-        renderPokemonList(); // Refresh the grid too
+        renderPCView(); // Refresh the grid too
     }
 }

@@ -422,7 +422,7 @@ function createMissionPokemonCard(pokemon, onClick) {
  * @returns {string} La chaîne normalisée.
  */
 // --- MODAL SAC A OBJETS ---
-let currentItemBagPocket = 'battle';
+let currentItemBagPocket = 'berries';
 
 async function openItemBagModal() {
     const modal = document.getElementById('item-bag-modal');
@@ -696,20 +696,20 @@ async function renderShop() {
     if (currentShopPocket === 'eggs') {
         // Incubateur supplémentaire, puis les œufs
         const slots = data.unlockedIncubators || 1;
-        const costs = [0, 5000, 15000, 50000, 150000, 500000];
-        const nextCost = costs[slots];
-        const slotCard = (slots < 6) ? `
+        const maxSlots = GameData.MAX_INCUBATORS;
+        const nextCost = GameData.getIncubatorCost(slots);
+        const slotCard = (slots < maxSlots) ? `
             <div class="shop-item-card">
                 <div class="item-icon-text">${Art.item('cell-battery', 48)}</div>
                 <div class="item-name">Incubateur</div>
-                <div class="item-desc">Un emplacement de plus pour faire éclore plus d'œufs en même temps (${slots}/6).</div>
+                <div class="item-desc">Un emplacement de plus pour faire éclore plus d'œufs en même temps (${slots}/${maxSlots}).</div>
                 <div class="item-price">${nextCost.toLocaleString('fr-FR')}</div>
                 <button class="pk-btn-action small" onclick="buySlot()">Acheter</button>
             </div>` : '';
 
         const eggItems = [
             { rarity: 'Commun', price: 500, desc: 'Un œuf simple contenant un Pokémon de rareté commune.' },
-            { rarity: 'Peu commun', price: 2500, desc: 'Un œuf contenant un Pokémon un peu plus rare.' },
+            { rarity: 'Peu Commun', price: 2500, desc: 'Un œuf contenant un Pokémon un peu plus rare.' },
             { rarity: 'Rare', price: 10000, desc: 'Un œuf précieux pouvant contenir des Pokémon puissants.' }
         ];
 

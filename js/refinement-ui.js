@@ -22,8 +22,7 @@ const RefinementUI = (() => {
      */
     function open(target = null, mode = 'item') {
         try {
-            console.log('[RefinementUI] Opening with', target, mode);
-            currentMode = mode;
+            currentMode = (mode === 'items') ? 'item' : mode;
             selectedFoodIds = []; // Reset selection
             
             if (currentMode === 'pokemon') {
@@ -93,6 +92,8 @@ const RefinementUI = (() => {
                  content.innerHTML = renderItemSelection();
             } else if (currentMode === 'pokemon' && !selectedPokemon) {
                  content.innerHTML = renderPokemonSelection();
+            } else if (currentMode === 'item') {
+                 content.innerHTML = renderItemRefinement();
             } else {
                  content.innerHTML = renderRefinementOptions();
             }
@@ -832,11 +833,11 @@ const RefinementUI = (() => {
                         return `
                         <div class="pokemon-card" onclick="RefinementUI.selectItem('${item.id}')">
                             <div class="pokemon-sprite">
-                                <img src="${item.sprite || Art.FALLBACK}" alt="${item.name}" onerror="this.src=Art.FALLBACK">
+                                <img src="${item.sprite || Art.FALLBACK}" alt="${item.name_fr}" onerror="this.onerror=null;this.src=Art.FALLBACK">
                             </div>
                             <div class="item-owned-count">${item.quantity} + ${item.heldCount} tenu(s)</div>
                             <div class="pokemon-info">
-                                <div class="pokemon-name">${item.name}</div>
+                                <div class="pokemon-name">${item.name_fr}</div>
                                 <div class="pokemon-refinement">
                                     ${Refinement.formatDisplay(ref.level, ref.stars)}
                                 </div>
@@ -870,14 +871,14 @@ const RefinementUI = (() => {
         const starCost = Refinement.getStarCost('item', ref.level, ref.stars);
         
         const canLevelUp = ref.level < maxLevel && data.money >= levelCost.money && quantity >= levelCost.copies;
-        const canAddStar = ref.level >= maxLevel && ref.stars < 5 && data.money >= starCost.money && quantity >= starCost.copies;
+        const canAddStar = ref.level >= maxLevel && data.money >= starCost.money && quantity >= starCost.copies;
 
         return `
             <div class="refinement-options">
                  <div class="pokemon-header">
-                    <img src="${item.sprite || Art.FALLBACK}" alt="${item.name}" class="pokemon-sprite-large" onerror="this.src=Art.FALLBACK">
+                    <img src="${item.sprite || Art.FALLBACK}" alt="${item.name_fr}" class="pokemon-sprite-large" onerror="this.onerror=null;this.src=Art.FALLBACK">
                     <div class="pokemon-details">
-                        <h3>${item.name}</h3>
+                        <h3>${item.name_fr}</h3>
                         <div class="refinement-display">
                             ${Refinement.formatDisplay(ref.level, ref.stars)}
                         </div>
@@ -893,7 +894,7 @@ const RefinementUI = (() => {
                         
                         <div class="current-stats">
                             <div>Niveau: ${ref.level}/${maxLevel}</div>
-                            <div>Étoiles : ${ref.stars > 5 ? `★×${ref.stars}` : '★'.repeat(ref.stars) + '☆'.repeat(5 - ref.stars)}</div>
+                            <div>Étoiles : ${Refinement.formatDisplay(ref.level, ref.stars)}</div>
                         </div>
 
                         <div class="refinement-action">
@@ -940,7 +941,7 @@ const RefinementUI = (() => {
         const result = GameData.refineItem(itemId);
         if (result.success) {
             renderUI();
-            showNotification(`${GameData.getItem(itemId).name} amélioré avec succès !`);
+            showNotification(`${GameData.getItem(itemId)?.name_fr || itemId} amélioré !`);
         } else {
             showNotification(result.reason, 'error');
         }
