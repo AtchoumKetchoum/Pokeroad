@@ -46,6 +46,7 @@
     <link rel="stylesheet" href="css/zonemap.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/readability.css">
+    <link rel="stylesheet" href="css/modals.css">
 
     <style>
         /* View Manager Display Logic */
@@ -87,22 +88,23 @@
 
                     <!-- Bâtiments du bourg, de part et d'autre de la route -->
                     <div class="hub-town">
+                        <!-- Du haut vers le bas : du moins utilisé au plus utilisé (le bas est sous le pouce) -->
                         <div class="hub-row">
-                            <button class="hub-building small" data-building="board" onclick="openMissionModal()"><span class="hub-label">Missions</span></button>
+                            <button class="hub-building" data-building="dojo" onclick="openTraining()"><span class="hub-label">Entraînement</span></button>
                             <!-- Panneau au sommet de la route : elle monte vers la Route des Défis (autres modes de jeu) -->
                             <button class="hub-gate" onclick="ViewManager.show('modes')">
                                 <span class="hub-gate-arrow" data-icon="back" data-size="26"></span>
                                 <span class="hub-gate-text">Route<br>des Défis</span>
                             </button>
+                            <button class="hub-building" data-building="atelier" onclick="ViewManager.show('atelier')"><span class="hub-label">Atelier</span></button>
+                        </div>
+                        <div class="hub-row">
+                            <button class="hub-building small" data-building="board" onclick="openMissionModal()"><span class="hub-label">Missions</span></button>
                             <button class="hub-building" data-building="labo" onclick="ViewManager.show('labo')"><span class="hub-label">Laboratoire</span></button>
                         </div>
                         <div class="hub-row">
                             <button class="hub-building" data-building="center" onclick="ViewManager.show('center')"><span class="hub-label">Centre Pokémon</span></button>
                             <button class="hub-building" data-building="shop" onclick="openShopModal()"><span class="hub-label">Boutique</span></button>
-                        </div>
-                        <div class="hub-row">
-                            <button class="hub-building" data-building="dojo" onclick="openTraining()"><span class="hub-label">Entraînement</span></button>
-                            <button class="hub-building" data-building="atelier" onclick="ViewManager.show('atelier')"><span class="hub-label">Atelier</span></button>
                         </div>
                     </div>
 
@@ -236,7 +238,7 @@
                     <div id="enemy-grid" class="team-grid"></div>
                     <div id="infoDisplayPanel" class="glass-panel"></div>
                     <div id="battleStatus"></div>
-                    <button id="pmd-credits-btn" type="button" onclick="PmdSprite.showCredits(document.getElementById('view-battle'))">Sprites : PMD Sprite Repository · CC BY-NC</button>
+                    <button id="pmd-credits-btn" type="button" onclick="PmdSprite.showCredits(document.getElementById('view-battle'))" title="Sprites : PMD Sprite Repository · CC BY-NC">© Sprites</button>
                     <div id="battle-footer">
                         <div id="selection-banner"></div>
                         <div id="combat-panel">
@@ -468,5 +470,6 @@
     <script src="js/home.js"></script>
     <script src="js/mobile-manager.js"></script>
     <script src="js/view-manager.js"></script>
+    <script src="js/min-font.js"></script>
 </body>
 </html>

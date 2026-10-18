@@ -1,0 +1,66 @@
+/* ==========================================================================
+   modals.css — Toutes les fenêtres en plein écran (chargé en dernier)
+   La fenêtre occupe toute la scène (720 × --stage-h) ; son contenu défile.
+   La croix devient une grande barre « Retour » en bas, sous le pouce ;
+   quand la fenêtre a un bouton précédent, la barre se partage
+   « Précédent » / « Retour ». La petite boîte de confirmation reste centrée.
+   ========================================================================== */
+
+.modal:not(#confirm-modal) {
+  padding: 0 !important;
+  background: var(--paper) !important;
+}
+/* Le contenu remplit la fenêtre au-dessus de la barre du bas et défile seul ;
+   en position statique, l'en-tête et les boutons se placent par rapport à la fenêtre */
+.modal:not(#confirm-modal) .modal-content {
+  position: static !important;
+  width: 100% !important; max-width: none !important;
+  height: calc(100% - 96px) !important; max-height: none !important;
+  margin: 0 !important; border-radius: 0 !important; border: none !important; box-shadow: none !important;
+  padding: 76px 18px 24px !important;
+  overflow-y: auto !important; box-sizing: border-box;
+}
+/* Fiche Pokémon : sa mise en page gère elle-même le défilement de ses onglets */
+.modal:not(#confirm-modal) #pokemon-detail-card.pk-sheet { padding: 64px 0 0 !important; overflow: hidden !important; }
+
+/* Barre du bas : Retour (et Précédent) */
+.modal:not(#confirm-modal) .close-btn,
+.modal:not(#confirm-modal) .modal-back-btn {
+  position: absolute !important; top: auto !important; bottom: 16px !important;
+  width: auto !important; height: 64px !important; border-radius: 16px !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  font-size: 0 !important; padding: 0 !important; z-index: 30 !important;
+  border: var(--outline-thick) !important; box-shadow: var(--pop) !important; cursor: pointer;
+}
+.modal:not(#confirm-modal) .close-btn {
+  left: 16px !important; right: 16px !important;
+  background: linear-gradient(180deg, #d0605a, var(--red) 60%, var(--red-dark)) !important; color: #f7ecdc !important;
+}
+.modal:not(#confirm-modal) .modal-back-btn {
+  left: 16px !important; right: calc(50% + 6px) !important;
+  background: var(--paper-2) !important; color: var(--ink) !important;
+}
+.modal:not(#confirm-modal) .close-btn::after,
+.modal:not(#confirm-modal) .modal-back-btn::after {
+  font-family: var(--font-title); font-size: 26px; letter-spacing: .5px; text-transform: uppercase; line-height: 1;
+}
+.modal:not(#confirm-modal) .close-btn::after { content: 'Retour'; text-shadow: 0 2px 0 var(--ink); }
+.modal:not(#confirm-modal) .modal-back-btn::after { content: '\2190  Précédent'; }
+.modal:not(#confirm-modal) .modal-back-btn > * { display: none !important; }
+.modal:not(#confirm-modal) .close-btn:active,
+.modal:not(#confirm-modal) .modal-back-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink) !important; }
+
+/* Avec un bouton précédent visible : la barre se partage */
+.modal:not(#confirm-modal):has(.modal-back-btn) .close-btn { left: calc(50% + 6px) !important; }
+/* Missions : le bouton précédent n'existe qu'à l'étape du choix de l'équipe */
+#mission-modal.modal:has(#mission-team-view[style*="none"]) .close-btn { left: 16px !important; }
+.modal-content:has(.modal-back-btn) > h2:first-of-type,
+.modal-content .mission-header h3 { padding-left: 0 !important; margin-left: 0 !important; }
+
+/* Police minimale (js/min-font.js) : le combat garde sa mise en page avec des textes plus grands */
+#view-battle #battle-top-bar #hudProgress { height: auto !important; min-height: 56px; flex-wrap: wrap !important; row-gap: 2px; overflow: visible !important; }
+#view-battle .synergy-panel { flex-wrap: nowrap !important; white-space: nowrap; overflow: hidden; }
+#view-battle .synergy-panel > * { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#view-battle #pmd-credits-btn { max-width: 150px; white-space: nowrap; }
+/* Bandeau du haut plus haut : les synergies ennemies descendent sous la frise des tours */
+#view-battle .synergy-panel.synergy-enemy { top: 196px !important; padding-top: 2px !important; padding-bottom: 2px !important; }
