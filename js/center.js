@@ -378,6 +378,8 @@ function renderPokemonList(pokemons, targetId = 'pokemon-list') {
         item.addEventListener('click', () => openPokemonDetail(pokemon)); // Ajout du gestionnaire de clic
         listeElement.appendChild(item);
     });
+    // Aperçu des améliorations faisables tout de suite pour chaque Pokémon
+    if (typeof QuickUpgrades !== 'undefined') QuickUpgrades.badgeCards(listeElement);
 }
 
 // --- DÉTAIL ---
@@ -870,9 +872,8 @@ function renderBoosters(pokemon) {
         { key: 'exp-candy-xl', label: '+15 000 XP', candy: true },
     ].filter(u => inv[u.key] > 0);
     container.style.display = 'block';
-    const todo = typeof QuickUpgrades !== 'undefined' ? QuickUpgrades.forPokemon(pokemon) : [];
     container.innerHTML = `
-        ${todo.length ? `<button class="pk-btn-action qu-sheet-btn" onclick="QuickUpgrades.show(GameData.getPokemons().find(p => p.instanceId === '${pokemon.instanceId}'))">À faire pour ce Pokémon (${todo.length})</button>` : ''}
+        ${typeof QuickUpgrades !== 'undefined' ? QuickUpgrades.sheetHtml(pokemon) : ''}
         <div class="section-title">Entraînement</div>
         <div class="train-shortcuts">
             <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'iv')">IV</button>

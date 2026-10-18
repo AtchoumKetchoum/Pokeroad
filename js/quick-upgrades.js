@@ -4,10 +4,9 @@
  * Le jeu repère les améliorations faisables (CT apprenable, évolution prête, emplacement d'objet
  * vide alors qu'on a l'objet, bonbon utilisable, entraînement IV/EV/nature payable, capacité
  * améliorable, Grade possible, objet améliorable à l'Atelier, œufs prêts ou incubateur libre)
- * et les propose en un toucher :
- *  - au bourg : bouton « Améliorations » avec le nombre en pastille ;
- *  - après une victoire : bouton dans le récapitulatif ;
- *  - dans la fiche d'un Pokémon : section « À faire ».
+ * et les propose en un toucher, Pokémon par Pokémon :
+ *  - dans la fiche du Pokémon : section « À faire » (onglet Stats) ;
+ *  - au Centre : sur la vignette du Pokémon, le nombre d'actions et l'aperçu des premières.
  */
 const QuickUpgrades = (() => {
     const MAX_LIST = 40;
@@ -116,11 +115,15 @@ const QuickUpgrades = (() => {
     // Navigation
     function openSheet(pk, tab) {
         InfoModal.close();
+        // Déjà dans la fiche de ce Pokémon : on change seulement d'onglet
+        const sheet = document.getElementById('center-pokemon-detail-modal');
+        if (sheet && sheet.style.display !== 'none' && typeof CURRENT_POKEMON !== 'undefined' && CURRENT_POKEMON?.instanceId === pk.instanceId) { switchDetailTab?.(tab); return; }
         if (typeof PokeSheet !== 'undefined') PokeSheet.open(pk.instanceId).then?.(() => setTimeout(() => switchDetailTab?.(tab), 100));
         else { openPokemonDetail(pk); switchDetailTab?.(tab); }
     }
     function openTraining(pk, tab) {
         InfoModal.close();
+        if (typeof closePokemonDetail === 'function') closePokemonDetail();
         const fresh = GameData.getPokemons().find(p => p.instanceId === pk.instanceId) || pk;
         RefinementUI.open(fresh, 'pokemon');
         RefinementUI.switchTab(tab);
@@ -145,40 +148,58 @@ const QuickUpgrades = (() => {
             if (res && res.success === false && res.reason) alert(res.reason);
             // Action faite sur place : on rafraîchit la liste ; navigation : la fenêtre est déjà fermée
             if (document.getElementById('info-modal')?.style.display !== 'none') show(filterPk);
-            refreshBadges();
         }));
     }
 
-    // Pastille du bourg
-    function refreshBadges() {
-        const n = (() => { try { return all().length; } catch { return 0; } })();
-        const btn = document.getElementById('quick-upgrades-btn');
-        if (btn) { btn.querySelector('.qu-badge').textContent = n; btn.classList.toggle('has-items', n > 0); }
-        return n;
+    // Section « À faire » de la fiche du Pokémon
+    let lastSheet = null;
+    const doesItHere = (a) => ['evolve', 'ct', 'candy'].includes(a.kind) || (a.kind === 'grade' && a.label.startsWith('Ajouter'));
+    function sheetHtml(pk) {
+        const list = forPokemon(pk);
+        lastSheet = { pk, list };
+        if (!list.length) return '';
+        return `<div class="section-title">À faire (${list.length})</div>
+            <div class="qu-inline">${list.map((a, i) => `<div class="qu-row qu-${a.kind}">
+                <span class="qu-icon">${a.icon || ''}</span><span class="qu-text">${a.label}</span>
+                <button class="pk-btn-action small" onclick="QuickUpgrades.runSheet(${i})">${doesItHere(a) ? 'Faire' : 'Ouvrir'}</button>
+            </div>`).join('')}</div>`;
     }
-    function addHubButton() {
-        const row = document.querySelector('.hub-top-row');
-        if (!row || document.getElementById('quick-upgrades-btn')) return;
-        const btn = document.createElement('button');
-        btn.id = 'quick-upgrades-btn';
-        btn.className = 'quick-upgrades-btn panel-pop';
-        btn.title = 'Améliorations disponibles';
-        btn.innerHTML = `<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V6M6 12l6-6 6 6"/></svg><span class="qu-badge">0</span>`;
-        btn.addEventListener('click', () => show());
-        row.insertBefore(btn, document.getElementById('settings-btn'));
-        refreshBadges();
+    async function runSheet(i) {
+        const a = lastSheet?.list[i];
+        if (!a) return;
+        const res = await a.run();
+        if (res && res.success === false && res.reason) alert(res.reason);
+        // Action faite sur place : la fiche se met à jour
+        const sheet = document.getElementById('center-pokemon-detail-modal');
+        if (doesItHere(a) && sheet && sheet.style.display !== 'none') {
+            const fresh = GameData.getPokemons().find(p => p.instanceId === a.pokemon.instanceId);
+            if (fresh) openPokemonDetail(fresh);
+        }
+        if (typeof renderPCView === 'function') renderPCView();
+    }
+    // Vignettes du Centre : nombre d'actions et aperçu des 3 premières (calculé sans bloquer l'affichage)
+    function badgeCards(root = document) {
+        const cards = [...root.querySelectorAll('.pokemon-item[data-instance-id]')];
+        if (!cards.length) return;
+        const data = GameData._load();
+        const byId = new Map(GameData.getPokemons().map(p => [p.instanceId, p]));
+        let i = 0;
+        const step = () => {
+            const end = Math.min(cards.length, i + 12);
+            for (; i < end; i++) {
+                const card = cards[i], pk = byId.get(card.dataset.instanceId);
+                card.querySelectorAll('.qu-dot, .qu-preview').forEach(el => el.remove());
+                if (!pk) continue;
+                const list = forPokemon(pk, data);
+                if (!list.length) continue;
+                card.title = list.map(a => '• ' + a.label).join('\n');
+                card.insertAdjacentHTML('beforeend', `<span class="qu-dot">${list.length}</span><span class="qu-preview">${list.slice(0, 3).map(a => `<i class="qu-mini qu-${a.kind}">${a.icon || ''}</i>`).join('')}</span>`);
+            }
+            if (i < cards.length) setTimeout(step, 0);
+        };
+        setTimeout(step, 0);
     }
 
-    function init() {
-        addHubButton();
-        // Recompte quand on revient au bourg
-        const home = document.getElementById('view-home');
-        if (home && 'MutationObserver' in window) new MutationObserver(() => { if (home.classList.contains('active')) refreshBadges(); }).observe(home, { attributes: true, attributeFilter: ['class'] });
-        setTimeout(refreshBadges, 1500);
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
-
-    return { all, forPokemon, show, refreshBadges };
+    return { all, forPokemon, show, sheetHtml, runSheet, badgeCards };
 })();
 window.QuickUpgrades = QuickUpgrades;
