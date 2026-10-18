@@ -303,6 +303,76 @@ const BattleAnimation = (() => {
         }
     }
 
+    // Attaque de zone : l'attaquant part une seule fois, toutes les cibles encaissent en même temps
+    class SimultaneousAOEAnimationStrategy extends BaseAnimationStrategy {
+        constructor(attacker, damages, move) {
+            super(attacker, damages[0].target, move, damages[0].dmg, damages[0].typeMod);
+            this.damages = damages;
+        }
+
+        // Effets d'impact d'une cible, sans attendre les autres
+        hitOne({ target, dmg, typeMod }) {
+            const hit = Object.create(this);
+            hit.target = target; hit.damage = dmg; hit.typeMod = typeMod;
+            hit.targetEl = _getSlotEl(target._side, target._index);
+            return hit.applyHitEffects();
+        }
+
+        async execute() {
+            if (!this.attackerEl) return;
+            const unitEl = this.attackerEl.querySelector('.unit');
+            if (!unitEl) return;
+            unitEl.classList.add('is-attacking');
+            const startPos = getElementCenter(unitEl);
+            const physical = this.move.damage_class === 'physical';
+            if (physical) {
+                // Élan vers le point d'impact (première cible), puis tous les coups ensemble
+                const firstEl = this.targetEl?.querySelector('.unit');
+                const endPos = firstEl ? getElementCenter(firstEl) : startPos;
+                playSpriteAnim(unitEl, SPRITE_ANIMS.physical);
+                unitEl.style.zIndex = 100;
+                unitEl.style.transition = `transform ${0.2 / _battleSpeed}s cubic-bezier(0.17, 0.84, 0.44, 1)`;
+                unitEl.style.transform = `translate(${endPos.x - startPos.x}px, ${endPos.y - startPos.y}px)`;
+                await sleep(200);
+            } else {
+                // Un projectile par cible, tous lancés en même temps
+                playSpriteAnim(unitEl, SPRITE_ANIMS.special);
+                const shots = this.damages.map(({ target }) => {
+                    const el = _getSlotEl(target._side, target._index)?.querySelector('.unit');
+                    if (!el) return null;
+                    const end = getElementCenter(el);
+                    const shot = document.createElement('div');
+                    shot.className = `projectile ${this.typeConfig.particle}`;
+                    shot.style.backgroundColor = this.typeConfig.color;
+                    shot.style.width = shot.style.height = '22px';
+                    shot.style.borderRadius = '50%';
+                    shot.style.boxShadow = `0 0 15px ${this.typeConfig.color}`;
+                    shot.style.transform = `translate(${startPos.x}px, ${startPos.y}px) translate(-50%, -50%) scale(0.5)`;
+                    getBattleScreen().appendChild(shot);
+                    return { shot, end };
+                }).filter(Boolean);
+                await sleep(50);
+                shots.forEach(({ shot, end }) => {
+                    shot.style.transition = `transform ${0.4 / _battleSpeed}s cubic-bezier(0.4, 0, 0.2, 1)`;
+                    shot.style.transform = `translate(${end.x}px, ${end.y}px) translate(-50%, -50%) scale(${this.getPowerScale()})`;
+                });
+                await sleep(400);
+                shots.forEach(({ shot }) => shot.remove());
+            }
+            const units = this.damages.map(({ target }) => _getSlotEl(target._side, target._index)?.querySelector('.unit')).filter(Boolean);
+            units.forEach(el => el.classList.add('physical-impact-shake'));
+            await Promise.all(this.damages.map(d => this.hitOne(d)));
+            setTimeout(() => units.forEach(el => el.classList.remove('physical-impact-shake')), 300);
+            if (physical) {
+                unitEl.style.transition = `transform ${0.3 / _battleSpeed}s ease-in-out`;
+                unitEl.style.transform = '';
+                await sleep(300);
+                unitEl.style.zIndex = 'auto';
+            }
+            unitEl.classList.remove('is-attacking');
+        }
+    }
+
     class PhysicalAnimationStrategy extends BaseAnimationStrategy {
         async execute() {
             if (!this.attackerEl || !this.targetEl) return;
@@ -437,6 +507,14 @@ const BattleAnimation = (() => {
                 await getAnimationStrategy(attacker, target, move, damage, typeMod).execute();
             } catch (e) {
                 console.warn('[BattleAnimation] animation ignorée :', e);
+            }
+        },
+
+        playAoeAnimation: async (attacker, damages, move) => {
+            try {
+                await new SimultaneousAOEAnimationStrategy(attacker, damages, move).execute();
+            } catch (e) {
+                console.warn('[BattleAnimation] animation de zone ignorée :', e);
             }
         },
 

@@ -1580,7 +1580,14 @@ function promptTargetSelection(move, unit) {
             // --- NOUVEAU: Listeners pour la prévisualisation de l'AOE ---
             slot.addEventListener('mouseover', () => {
                 clearHighlights();
-                const hovered = grid.enemy[idx];
+                let hovered = grid.enemy[idx];
+                if (move.rw?.kind === 'attack' && (!hovered || hovered.isKO)) return; // case vide : rien à prévisualiser
+                // Même redirection que l'attaque : le contact frappe la ligne de front la plus proche du couloir visé
+                if (hovered && !BattleRules.canTarget(unit, move, hovered)) {
+                    const front = BattleRules.frontLineUnits('enemy');
+                    const lane = BattleRules.laneOf(idx);
+                    if (front.length) hovered = front.reduce((a, b) => (Math.abs(BattleRules.laneOf(a._index) - lane) <= Math.abs(BattleRules.laneOf(b._index) - lane) ? a : b));
+                }
                 const aoeIndexes = (move.rw?.kind === 'attack' && hovered && typeof MoveRework !== 'undefined')
                     ? MoveRework.previewHits(move, unit, hovered).map(h => h.unit._index)
                     : getAoePreviewIndexes(move.aoe || 'single', idx, 'enemy');
@@ -1983,9 +1990,9 @@ async function attack(attacker, primaryTarget, move) {
             // Pour les capacités de statut, l'animation principale (lueur de l'attaquant) ne joue qu'une fois.
             // Les effets sur les cibles sont gérés plus bas par applyEffect.
             await BattleAnimation.playActionAnimation(attacker, primaryTarget, moveForThisHit, 0, 1.0);
-        } else if (moveForThisHit.damage_class === 'physical' && successfulTargets.length > 1) {
-            // Stratégie dédiée pour les AOE physiques
-            await BattleAnimation.playPhysicalAOEAnimation(attacker, successfulTargets, moveForThisHit, damages);
+        } else if (damages.length > 1) {
+            // Attaque de zone : toutes les cibles sont touchées en même temps
+            await BattleAnimation.playAoeAnimation(attacker, damages, moveForThisHit);
         } else { // Cible unique (physique/spécial) ou AOE spéciale
             // Pour les AOE spéciales, les animations joueront séquentiellement pour éviter les problèmes d'affichage.
             // Pour les cibles uniques, cette boucle ne s'exécute qu'une fois.
@@ -2038,7 +2045,9 @@ async function attack(attacker, primaryTarget, move) {
   // Déclenchement des Z-Moves en réaction
   let zMoveHasTriggered = false;
   if (!moveToDo._isBoosted) {
-      for (const target of successfulTargets) {
+      // Une capacité de statut (Entrave…) ne déclenche pas de Z en réaction : seulement un Pokémon qui vient d'encaisser des dégâts
+      const hurt = damages.filter(d => d.dmg > 0).map(d => d.target);
+      for (const target of hurt) {
           if (target.boostGauge >= 50 && !target.isKO) {
               await triggerZMove(target);
               zMoveHasTriggered = true;

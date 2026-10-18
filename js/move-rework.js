@@ -284,8 +284,26 @@ const MoveRework = (() => {
         }
     }
 
+    // Indication affichée pour chaque drapeau posé (un effet ne doit jamais être invisible)
+    const FLAG_LABEL = {
+        sureHit: 'Ne rate plus', nextCrit: 'Prochain coup critique', noCrit: 'Air Veinard', curl: 'Boul’Armure', noConfusion: 'Esprit clair',
+        minimized: 'Lilliput', pierce: 'Perce-défense', scrappy: 'Clairvoyance', levitate: 'Lévitation', counterBoost: 'Riposte ×2',
+        magicCoat: 'Reflet Magik', destinyBond: 'Lien du Destin', grudge: 'Rancune', rooted: 'Enraciné', helped: 'Coup d’Main',
+        vulnerable: 'Vulnérable', locked: 'Bloqué', noEvasion: 'Esquive bloquée', substitute: 'Clone', provoke: 'Provocation',
+        safeguard: 'Rune Protect', mist: 'Brume', reflect: 'Protection', lightScreen: 'Mur Lumière', wideGuard: 'Garde Large',
+        quickGuard: 'Prévention', matBlock: 'Tatamigaeshi', craftyShield: 'Vigilance', leechSeed: 'Vampigraine',
+    };
+
     async function runOne(attacker, op, list, ctx) {
         switch (op.op) {
+            case 'flag':
+                list.forEach(u => {
+                    u.flags = u.flags || {};
+                    u.flags[op.id] = { turns: op.turns || 3, value: op.fromAttacker ? attacker : (op.value ?? true) };
+                    const label = op.label || FLAG_LABEL[op.id];
+                    if (label) say(u, label, op.debuff || ['vulnerable', 'locked', 'noEvasion', 'leechSeed'].includes(op.id) ? 'debuff' : 'status');
+                });
+                return;
             case 'ap':
                 list.forEach(u => {
                     u.actionPoints = Math.max(0, (u.actionPoints || 0) + op.amount);
@@ -311,7 +329,7 @@ const MoveRework = (() => {
                     say(u, 'Bouclier', 'buff');
                 });
                 return;
-            case 'clearShield': list.forEach(u => { u.shield = 0; }); return;
+            case 'clearShield': list.forEach(u => { if (u.shield > 0) say(u, 'Bouclier perdu', 'debuff'); u.shield = 0; }); return;
             case 'heal': list.forEach(u => R().heal(u, u.maxHp * op.pct / 100, attacker)); return;
             case 'regen':
                 list.forEach(u => { (u._regens = u._regens || []).push({ pct: op.pct, turns: op.turns }); say(u, 'Régénération', 'buff'); });
@@ -333,7 +351,7 @@ const MoveRework = (() => {
                 list.forEach(u => { u.activeEffects = (u.activeEffects || []).filter(e => !['Majeur', 'Mineur'].includes(RulesDB?.[e.id]?.category)); u._trap = null; updateStatusIcons(u); say(u, 'Soigné', 'buff'); });
                 return;
             case 'clearNegativeStages':
-                list.forEach(u => Object.keys(u.statMods || {}).forEach(k => { if (u.statMods[k] < 0) u.statMods[k] = 0; }));
+                list.forEach(u => { Object.keys(u.statMods || {}).forEach(k => { if (u.statMods[k] < 0) u.statMods[k] = 0; }); say(u, 'Malus annulés', 'buff'); });
                 return;
             case 'fieldFlag':
                 extra.fieldFlags[op.id] = (op.rounds || 4) * Math.max(2, alive('player').length + alive('enemy').length) / 2;
@@ -371,8 +389,8 @@ const MoveRework = (() => {
                 return;
             }
             case 'moveToBack': if (canMove(attacker)) pushBack(attacker, 2, 0); return;
-            case 'copyStagesTo': list.forEach(u => { if (u !== attacker) Object.entries(attacker.statMods || {}).forEach(([k, v]) => { if (v > 0) u.statMods[k] = Math.max(u.statMods[k] || 0, v); }); }); return;
-            case 'swapAP': list.forEach(u => { const a = attacker.actionPoints; attacker.actionPoints = u.actionPoints; u.actionPoints = a; updateActionPointsUI(u); updateActionPointsUI(attacker); }); return;
+            case 'copyStagesTo': list.forEach(u => { if (u !== attacker) { Object.entries(attacker.statMods || {}).forEach(([k, v]) => { if (v > 0) u.statMods[k] = Math.max(u.statMods[k] || 0, v); }); say(u, 'Bonus transmis', 'buff'); } }); return;
+            case 'swapAP': list.forEach(u => { const a = attacker.actionPoints; attacker.actionPoints = u.actionPoints; u.actionPoints = a; updateActionPointsUI(u); updateActionPointsUI(attacker); say(u, 'Jauges échangées', 'status'); }); return;
             case 'shapeHeal': return shapeSupport(attacker, op, 'heal');
             case 'shapeShield': return shapeSupport(attacker, op, 'shield');
             case 'drainTeam': {
@@ -391,7 +409,7 @@ const MoveRework = (() => {
                 R().damage(src, ctx.damage * op.pct / 100 * boost, 'Riposte !');
                 return;
             }
-            case 'storeDamage': attacker._bide = (attacker._bide || 0) + (ctx.damage || 0); return;
+            case 'storeDamage': attacker._bide = (attacker._bide || 0) + (ctx.damage || 0); say(attacker, `Patience (${attacker._bide})`, 'status'); return;
             case 'releaseDamage': {
                 const stored = attacker._bide || 0;
                 if (!stored) return;
@@ -433,6 +451,9 @@ const MoveRework = (() => {
                 // Ops déjà connues du moteur (météo, champs, pièges, abris, statuts, échanges…)
                 const targets = list && list.length ? list : (ctx.target ? [ctx.target] : []);
                 await R().executeOps(attacker, targets[0] || ctx.target, { ...(ctx.move || {}), ops: [{ ...op, target: 'targets' }] }, targets);
+                // Effets de terrain qui peuvent ne rien changer : on l'indique quand même
+                const QUIET = { swapHazards: 'Pièges échangés', clearHazards: 'Pièges dissipés', invertStages: 'Stats inversées', giveItem: 'Passe-Cadeau' };
+                if (QUIET[op.op]) say(targets[0] || attacker, QUIET[op.op], 'status');
             }
         }
     }
@@ -487,7 +508,7 @@ const MoveRework = (() => {
     // ------------------------------------------------------------------
     // Renvoie false si l'action échoue (Bluff après le premier tour…)
     function canUse(attacker, move) {
-        if (move.rw?.firstTurnOnly && (attacker._turnsTaken || 0) > 0) { say(attacker, 'Échec', 'info'); return false; }
+        if (move.rw?.firstTurnOnly && !move._isBoosted && (attacker._turnsTaken || 0) > 0) { say(attacker, 'Échec', 'info'); return false; }
         return true;
     }
 
@@ -521,9 +542,11 @@ const MoveRework = (() => {
         const dealt = results.reduce((a, r) => a + (r.dmg || 0), 0);
         const ctx = { target: primary, targets, move, dealt, guaranteed: !!move._isBoosted };
         if (rw.kind === 'attack') {
+            // En face : bonus affiché quand la cible est dans le couloir du lanceur
+            if (rw.face && primary && R().laneOf(primary._index) === R().laneOf(attacker._index)) say(primary, 'En face !', 'debuff');
             await runOps(attacker, rw.fx, ctx);
-            if (rw.priorityAP && !attacker.isKO) { attacker.actionPoints += rw.priorityAP; updateActionPointsUI(attacker); }
-            if (rw.slowAP && !attacker.isKO) { attacker.actionPoints = Math.max(0, attacker.actionPoints - rw.slowAP); updateActionPointsUI(attacker); }
+            if (rw.priorityAP && !attacker.isKO) { attacker.actionPoints += rw.priorityAP; updateActionPointsUI(attacker); say(attacker, `Rapide ! Jauge +${rw.priorityAP} %`, 'buff'); }
+            if (rw.slowAP && !attacker.isKO) { attacker.actionPoints = Math.max(0, attacker.actionPoints - rw.slowAP); updateActionPointsUI(attacker); say(attacker, `Lent : jauge −${rw.slowAP} %`, 'debuff'); }
         }
         if (move._isBoosted) {
             await runOps(attacker, rw.z?.ops || [], ctx);
@@ -555,6 +578,7 @@ const MoveRework = (() => {
         const rw = base.rw;
         const mv = normalize({ ...base, rw: { ...rw } });
         mv._isBoosted = true;
+        mv.accuracy = null; // une version Z ne rate jamais
         if (rw.kind === 'attack') {
             mv.power = rw.z?.power || mv.power;
             mv.mech = { ...(mv.mech || {}) };
@@ -586,6 +610,8 @@ const MoveRework = (() => {
             u._passives = (u.moves || []).filter(isPassive).map(move => ({ move, rw: move.rw, used: false, cd: 0, turns: 0 }));
         });
         for (const u of units) {
+            // Aura (Coup d'Main) : affichée au premier tour
+            passivesOf(u).filter(p => p.rw.trigger === 'aura').forEach(p => say(u, `${p.move.name || p.move.name_fr} (aura)`, 'buff'));
             for (const p of passivesOf(u).filter(p => p.rw.trigger === 'start')) {
                 say(u, p.move.name || p.move.name_fr, 'buff');
                 await runOps(u, p.rw.ops, { target: null, move: p.move });
@@ -618,7 +644,7 @@ const MoveRework = (() => {
         for (const p of passivesOf(unit)) {
             if (p.cd > 0) p.cd--;
             p.turns++;
-            if (p.rw.trigger === 'turn') await runOps(unit, p.rw.ops, { move: p.move });
+            if (p.rw.trigger === 'turn') { say(unit, p.move.name || p.move.name_fr, 'buff'); await runOps(unit, p.rw.ops, { move: p.move }); }
             if (p.rw.every && p.turns % p.rw.every === 0) await runOps(unit, p.rw.release || [], { move: p.move });
         }
     }
@@ -631,6 +657,7 @@ const MoveRework = (() => {
         if (!target || target.isKO || !damage) return;
         for (const p of passivesOf(target).filter(p => p.rw.trigger === 'hit')) {
             if (p.rw.contactOnly && !R().isContact(move)) continue;
+            say(target, p.move.name || p.move.name_fr, 'buff');
             await runOps(target, p.rw.ops, { source, move, damage, target: source });
         }
     }
@@ -657,6 +684,7 @@ const MoveRework = (() => {
     function onStatus(unit) {
         passivesOf(unit).filter(p => p.rw.trigger === 'status' && p.cd <= 0).forEach(p => {
             p.cd = p.rw.cooldown || 0;
+            say(unit, p.move.name || p.move.name_fr, 'buff');
             runOps(unit, p.rw.ops, { move: p.move });
         });
     }
