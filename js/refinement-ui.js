@@ -282,8 +282,16 @@ const RefinementUI = (() => {
         const hasEnoughFood = currentFoodXP >= gradeCost.foodXP;
         const canGradeUp = isMaxLevelReached && hasEnoughCopies && hasEnoughFood;
 
+        const starCost = GameData.pokemonStarCost(selectedPokemon);
+        const starHtml = `
+                <div class="refinement-action star-action">
+                    <h5>Étoile (${currentStars} → ${currentStars + 1}) : +20 % de stats et +20 niveaux max</h5>
+                    <p class="small">${starCost.copies} exemplaire(s) de la même famille (${starCost.have} disponibles, hors favoris) et ${starCost.money.toLocaleString('fr-FR')} $.</p>
+                    <button class="refine-btn star-btn ${starCost.ok ? '' : 'disabled'}" ${starCost.ok ? '' : 'disabled'} onclick="RefinementUI.refinePokemonStar()">Ajouter ★</button>
+                </div>`;
         return `
             <div class="refinement-section">
+                ${starHtml}
                 <h4>Montée en Grade</h4>
                 <p class="small info">Le Grade débloque le niveau maximum. (1 Grade = +20 Lv. Max)</p>
                 
@@ -346,191 +354,90 @@ const RefinementUI = (() => {
         `;
     }
 
-    /**
-     * Rend le raffinement des IVs
-     * @returns {string} HTML
-     */
-    function renderIVRefinement() {
-        const ivRef = selectedPokemon.ivRefinement || { stats: {} };
+    // Entraînement d'une stat (IV ou EV) : niveaux avec l'objet de la stat, palier tous les 20 niveaux (étoile)
+    const STAT_LABEL = { hp: 'PV', atk: 'Attaque', def: 'Défense', spatk: 'Atq. Spé.', spdef: 'Déf. Spé.', speed: 'Vitesse' };
+    function renderStatTraining(kind) {
         const data = GameData._load();
-        const stats = ['hp', 'atk', 'def', 'spatk', 'spdef', 'speed'];
-
-        const ivs = selectedPokemon.ivs || {};
-        const getStatColor = (stat) => {
-            const val = ivs[stat] || 0;
-            if (val >= 31) return '#FFD700'; // Gold phase
-            if (val >= 25) return '#4CAF50';
-            return '#fff';
-        };
-
+        const isIV = kind === 'iv';
+        const base = (isIV ? selectedPokemon.ivs : selectedPokemon.evs) || {};
+        const rows = GameData.STAT_KEYS.map(stat => {
+            const t = GameData.statTrack(selectedPokemon, kind, stat);
+            const max = GameData.trainingMax(t.stars);
+            const cost = GameData.trainingCost(kind, stat, t);
+            const have = GameData.countTrainingItem(cost.item);
+            const ok = data.money >= cost.money && have >= cost.count;
+            const value = Math.floor(((base[stat] || 0) + t.level * (isIV ? 1 : 10)) * (1 + 0.2 * t.stars));
+            const icon = cost.item === 'feather-sample' ? Art.item('wingull-feather', 28) : Art.item(cost.item, 28);
+            const itemName = cost.item === 'feather-sample' ? 'Plume d’échantillon' : (GameData.getItem(cost.item)?.name_fr || cost.item);
+            return `
+                <div class="train-row ${cost.star ? 'is-cap' : ''}">
+                    <div class="train-stat"><b>${STAT_LABEL[stat]}</b><span>${isIV ? 'IV' : 'EV'} ${value}</span></div>
+                    <div class="train-track">
+                        <div class="train-level">Niv. ${t.level}/${max} ${Refinement.formatDisplay(1, t.stars).replace(/Niveau 1\s*/, '')}</div>
+                        <div class="train-bar"><i style="width:${Math.min(100, (t.level - (max - 20)) / 20 * 100)}%"></i></div>
+                    </div>
+                    <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.${isIV ? 'refineIV' : 'refineEV'}('${stat}')" title="${itemName}">
+                        <span class="train-cost">${icon}×${cost.count} · ${cost.money.toLocaleString('fr-FR')} $</span>
+                        <span>${cost.star ? 'Palier ★' : 'Entraîner'}</span>
+                    </button>
+                </div>`;
+        }).join('');
         return `
-            <div class="refinement-section">
-                <h4>Entraînement & Raffinement des IVs</h4>
-                <p class="small info">Améliorez vos stats de base jusqu'à 31, puis passez au Raffinement (Max 200).</p>
-
-                <div class="iv-grid" style="display:flex; flex-direction:column; gap:10px; margin:20px 0;">
-                    ${stats.map(stat => {
-                        const value = (selectedPokemon.ivs ? selectedPokemon.ivs[stat] : 0) || 0;
-                        const refLevel = ivRef.stats?.[stat] || 0;
-                        const cost = Refinement.getRefinementCost('iv', refLevel, 0, { statValue: value });
-                        const wingId = GameData.IV_RESOURCE_MAP[stat];
-                        const invItem = data.inventory.items[wingId] || 0;
-                        const capsAvailable = data.inventory.items['gold-bottle-cap'] || 0;
-
-                        const isRefMode = value >= 31;
-                        const canAfford = data.money >= cost.money && (isRefMode ? (cost.goldBottleCaps ? capsAvailable >= cost.goldBottleCaps : true) : invItem >= cost.wings);
-
-                        return `
-                        <div class="stat-ref-card" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px; display:flex; align-items:center;">
-                            <div class="stat-info" style="width:120px;">
-                                <div style="font-weight:bold; color:${getStatColor(stat)};">${stat.toUpperCase()}</div>
-                                <div style="font-size:18px; font-weight:800;">${value}${isRefMode ? `<span style="color:#FFD700; font-size:12px;">+${refLevel}</span>` : ''}</div>
-                            </div>
-                            
-                            <div class="stat-progress" style="flex-grow:1; margin:0 15px;">
-                                <div class="progress-bar-bg" style="height:6px; background:#222; border-radius:10px; overflow:hidden;">
-                                    <div style="width:${(value / 31) * 100}%; height:100%; background:linear-gradient(90deg, #3498db, #4CAF50);"></div>
-                                </div>
-                                <div class="small" style="margin-top:5px; color:#777;">
-                                    ${isRefMode ? `Raffinement: Niv. ${refLevel}/200` : `Entraînement: ${value}/31`}
-                                </div>
-                            </div>
-
-                            <div class="stat-actions" style="text-align:right;">
-                                <div class="cost-small" style="font-size:10px; color:#aaa; margin-bottom:5px;">
-                                    ${cost.money.toLocaleString()}$ + 
-                                    ${isRefMode 
-                                        ? (cost.goldBottleCaps ? `<b>${cost.goldBottleCaps} Caps d'Or</b>` : 'XP')
-                                        : `<b>1 x Plume</b>`}
-                                </div>
-                                <button class="refine-btn small ${canAfford ? '' : 'disabled'}" onclick="RefinementUI.refineIV('${stat}')" ${!canAfford ? 'disabled' : ''} style="padding:6px 12px; font-size:11px;">
-                                    ${isRefMode ? 'Raffiner' : 'Entraîner'}
-                                </button>
-                            </div>
-                        </div>
-                        `;
-                    }).join('')}
-                </div>
-                
-                <div class="inventory-summary" style="display:flex; justify-content:center; gap:20px; padding:10px; background:rgba(0,0,0,0.2); border-radius:8px;">
-                    <div class="small">${Art.item('relic-gold', 18)} ${data.money.toLocaleString()} $</div>
-                    <div class="small">${Art.item('gold-bottle-cap', 18)} Capsules d'Or: ${data.inventory.items['gold-bottle-cap'] || 0}</div>
-                </div>
-            </div>
-        `;
+            <div class="refinement-section train-section">
+                <h4>${isIV ? 'Entraînement des IV' : 'Entraînement des EV'}</h4>
+                <p class="small info">${isIV
+                    ? 'Chaque niveau : 1 plume de la stat (+1 IV). Tous les 20 niveaux, un palier : plumes d’échantillon (une étoile = +20 % sur l’IV de la stat).'
+                    : 'Chaque niveau : 1 vitamine de la stat (+10 EV). Tous les 20 niveaux, un palier : mochi de la stat (une étoile = +20 % sur l’EV de la stat).'}</p>
+                <div class="train-list">${rows}</div>
+                <div class="small train-money">${data.money.toLocaleString('fr-FR')} $ disponibles</div>
+            </div>`;
     }
-
-    /**
-     * Rend le raffinement des EVs
-     * @returns {string} HTML
-     */
-    function renderEVRefinement() {
-        const evRef = selectedPokemon.evRefinement || { stats: {} };
-        const data = GameData._load();
-        const stats = ['hp', 'atk', 'def', 'spatk', 'spdef', 'speed'];
-
-        return `
-            <div class="refinement-section">
-                <h4>Optimisation des EVs</h4>
-                <p class="small info">Utilisez des vitamines (+25 EV) jusqu'à ~252, puis raffinez la stat au-delà.</p>
-
-                <div class="ev-grid" style="display:flex; flex-direction:column; gap:10px; margin:20px 0;">
-                    ${stats.map(stat => {
-                        const value = (selectedPokemon.evs ? selectedPokemon.evs[stat] : 0) || 0;
-                        const refLevel = evRef.stats?.[stat] || 0;
-                        const cost = Refinement.getRefinementCost('ev', refLevel, 0, { statValue: value });
-                        const vitId = GameData.EV_RESOURCE_MAP[stat];
-                        const invItem = data.inventory.items[vitId] || 0;
-                        const capsAvailable = data.inventory.items['gold-bottle-cap'] || 0;
-
-                        const isRefMode = value >= 250;
-                        const canAfford = data.money >= cost.money && (isRefMode ? (cost.goldBottleCaps ? capsAvailable >= cost.goldBottleCaps : true) : invItem >= cost.vitamins);
-
-                        return `
-                        <div class="stat-ref-card" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px; display:flex; align-items:center;">
-                            <div class="stat-info" style="width:120px;">
-                                <div style="font-weight:bold; color:#03A9F4;">${stat.toUpperCase()}</div>
-                                <div style="font-size:18px; font-weight:800;">${value}${isRefMode ? `<span style="color:#FFD700; font-size:12px;">+${refLevel}</span>` : ''}</div>
-                            </div>
-                            
-                            <div class="stat-progress" style="flex-grow:1; margin:0 15px;">
-                                <div class="progress-bar-bg" style="height:6px; background:#222; border-radius:10px; overflow:hidden;">
-                                    <div style="width:${Math.min(100, (value / 252) * 100)}%; height:100%; background:linear-gradient(90deg, #03A9F4, #00BCD4);"></div>
-                                </div>
-                                <div class="small" style="margin-top:5px; color:#777;">
-                                    ${isRefMode ? `Raffinement: Niv. ${refLevel}/200` : `Effort: ${value}/252`}
-                                </div>
-                            </div>
-
-                            <div class="stat-actions" style="text-align:right;">
-                                <div class="cost-small" style="font-size:10px; color:#aaa; margin-bottom:5px;">
-                                    ${cost.money.toLocaleString()}$ + 
-                                    ${isRefMode 
-                                        ? (cost.goldBottleCaps ? `<b>${cost.goldBottleCaps} Caps d'Or</b>` : 'XP')
-                                        : `<b>1 x Vitamine</b>`}
-                                </div>
-                                <button class="refine-btn small ${canAfford ? '' : 'disabled'}" onclick="RefinementUI.refineEV('${stat}')" ${!canAfford ? 'disabled' : ''} style="padding:6px 12px; font-size:11px;">
-                                    ${isRefMode ? 'Raffiner' : 'Utiliser Vitamine'}
-                                </button>
-                            </div>
-                        </div>
-                        `;
-                    }).join('')}
-                </div>
-                
-                <div class="inventory-summary" style="display:flex; justify-content:center; gap:20px; padding:10px; background:rgba(0,0,0,0.2); border-radius:8px;">
-                    <div class="small">${Art.item('relic-gold', 18)} ${data.money.toLocaleString()} $</div>
-                    <div class="small">${Art.item('gold-bottle-cap', 18)} Capsules d'Or: ${data.inventory.items['gold-bottle-cap'] || 0}</div>
-                </div>
-            </div>
-        `;
-    }
+    const renderIVRefinement = () => renderStatTraining('iv');
+    const renderEVRefinement = () => renderStatTraining('ev');
 
     /**
      * Rend le raffinement des moves
      * @returns {string} HTML
      */
     function renderMovesRefinement() {
-        const moves = selectedPokemon.moves || [];
+        // Les capacités équipées (ou, à défaut, les 4 dernières apprises) : attaques, tactiques et passifs
+        const level = selectedPokemon.level || 1;
+        const learnt = [...(selectedPokemon.moves || []).filter(m => (m.level ?? 0) <= level).map(m => m.name), ...(selectedPokemon.ctMoves || [])];
+        const keys = (selectedPokemon.selectedMoves?.length ? selectedPokemon.selectedMoves : learnt.slice(-4));
+        const data = GameData._load();
+        const inv = data.inventory.items || {};
+        const db = (typeof MovesDB !== 'undefined' && MovesDB) || {};
         const moveRefinements = selectedPokemon.moveRefinements || {};
-
         return `
             <div class="refinement-section">
-                <h4>Raffinement des Attaques</h4>
-                <p class="info">Seules les attaques physiques et spéciales peuvent être raffinées.</p>
-
+                <h4>Entraînement des capacités</h4>
+                <p class="small info">Chaque niveau : 1 PP Plus. Tous les 20 niveaux, un palier : PP Max. L'amélioration renforce les dégâts, mais aussi les boucliers, soins et régénérations de la capacité.</p>
                 <div class="moves-list">
-                    ${moves.map(move => {
-                        const ref = moveRefinements[move.id] || { level: 1, stars: 0 };
-                        const mult = Refinement.getMultiplier(ref.level, ref.stars);
-                        const cost = Refinement.getRefinementCost('move', ref.level, ref.stars);
-                        
-                        // TODO: Vérifier si l'attaque est physique/spéciale
-                        const isRefinable = move.power && move.power > 0;
-
+                    ${keys.map(key => {
+                        const mv = db[key] || {};
+                        const ref = moveRefinements[key] || { level: 1, stars: 0 };
+                        const lvl = Refinement.levelOf(ref), stars = Refinement.starsOf(ref);
+                        const atMax = lvl >= Refinement.getMaxRefineLevel(stars);
+                        const mult = Refinement.getMultiplier(lvl, stars);
+                        const cost = Refinement.getRefinementCost('move', lvl, stars);
+                        const pp = atMax ? 'pp-max' : 'pp-up', ppCount = atMax ? stars + 1 : 1;
+                        const ok = data.money >= cost.money && (inv[pp] || 0) >= ppCount;
+                        const power = mv.rw?.kind === 'attack' ? mv.rw.power : null;
+                        const kind = mv.rw?.kind === 'passive' ? 'Passif' : mv.rw?.kind === 'tactic' ? 'Tactique' : 'Attaque';
                         return `
-                            <div class="move-card ${!isRefinable ? 'disabled' : ''}">
+                            <div class="move-card">
                                 <div class="move-header">
-                                    <span class="move-name">${move.name}</span>
-                                    <span class="move-refinement">${Refinement.formatDisplay(ref.level, ref.stars)}</span>
+                                    <span class="move-name">${mv.name_fr || key}</span>
+                                    <span class="move-refinement">${Refinement.formatDisplay(lvl, stars)}</span>
                                 </div>
-                                ${isRefinable ? `
-                                    <div class="move-stats">
-                                        <div>Puissance: ${move.power} → ${Math.floor(move.power * mult)}</div>
-                                        <div>Multiplicateur: ×${mult.toFixed(2)}</div>
-                                    </div>
-                                    <div class="move-cost">
-                                        ${Art.item('relic-gold', 18)} ${cost.money.toLocaleString()} $
-                                    </div>
-                                    <button class="refine-btn small" onclick="RefinementUI.refineMove('${move.id}')">
-                                        Améliorer
-                                    </button>
-                                ` : `
-                                    <div class="move-info">Attaque de statut (non raffinable)</div>
-                                `}
-                            </div>
-                        `;
-                    }).join('')}
+                                <div class="move-stats">
+                                    <div>${kind} · ×${mult.toFixed(2)}${power ? ` · Puissance ${Math.round(power * mult)}` : ''}</div>
+                                </div>
+                                <button class="refine-btn small ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.refineMove('${key}')">
+                                    ${Art.item(pp, 22)}×${ppCount} · ${cost.money.toLocaleString('fr-FR')} $ · ${atMax ? 'Palier ★' : 'Améliorer'}
+                                </button>
+                            </div>`;
+                    }).join('') || '<p class="small">Aucune capacité équipée.</p>'}
                 </div>
             </div>
         `;

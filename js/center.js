@@ -914,70 +914,58 @@ function handleToggleFavorite(instanceId) {
 }
 
 
+// Objets utilisables depuis la fiche : capsules, natures, Mochi Renouveau ; et accès à l'entraînement IV/EV
+const STAT_SHORT = { hp: 'PV', atk: 'ATQ', def: 'DÉF', spatk: 'ASP', spdef: 'DSP', speed: 'VIT' };
 function renderBoosters(pokemon) {
     const container = document.getElementById('detail-boosters-container');
     if (!container) return;
-
-    const inventory = GameData.getInventory().items || {};
-    const boosters = [
-        { key: 'hp-up', name: 'PV Plus' },
-        { key: 'protein', name: 'Protéine' },
-        { key: 'iron', name: 'Fer' },
-        { key: 'calcium', name: 'Calcium' },
-        { key: 'zinc', name: 'Zinc' },
-        { key: 'carbos', name: 'Carbone' },
-        { key: 'silver-bottle-cap', name: 'Bouchon Argent' },
-        { key: 'gold-bottle-cap', name: 'Bouchon d\'Or' }
-    ];
-
-    const ownedBoosters = boosters.filter(b => inventory[b.key] > 0);
-
-    if (ownedBoosters.length === 0) {
-        container.innerHTML = '';
-        container.style.display = 'none';
-        return;
-    }
-
+    const inv = GameData.getInventory().items || {};
+    const uses = [
+        { key: 'gold-bottle-cap', label: 'Toutes les IV de base à 31' },
+        { key: 'silver-bottle-cap', label: 'Une IV de base à 31', pick: true },
+        { key: 'ability-capsule', label: 'Nature au hasard' },
+        { key: 'ability-patch', label: 'Nature : + la stat choisie', pick: true, noHp: true },
+        { key: 'fresh-start-mochi', label: 'Remise à zéro des EV (remboursés)' },
+    ].filter(u => inv[u.key] > 0);
     container.style.display = 'block';
     container.innerHTML = `
-        <div class="section-title">Boosters Possédés</div>
-        <div class="boosters-list">
-            ${ownedBoosters.map(b => `
-                <div class="booster-item" onclick="applyBooster('${b.key}', '${pokemon.instanceId}')">
-                    <span class="booster-emoji">${Art.item(b.key === 'silver-bottle-cap' ? 'bottle-cap' : b.key, 32)}</span>
-                    <span class="booster-name">${b.name} (x${inventory[b.key]})</span>
-                </div>
-            `).join('')}
+        <div class="section-title">Entraînement</div>
+        <div class="train-shortcuts">
+            <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'iv')">IV</button>
+            <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'ev')">EV</button>
+            <button class="pk-btn-action small" onclick="openStatTraining('${pokemon.instanceId}', 'moves')">Capacités</button>
         </div>
-        <p class="booster-hint">Cliquez sur un booster pour l'utiliser.</p>
+        ${uses.length ? `<div class="section-title">Objets</div>
+        <div class="boosters-list">
+            ${uses.map(u => `
+                <div class="booster-item">
+                    <span class="booster-emoji">${Art.item(u.key === 'silver-bottle-cap' ? 'bottle-cap' : u.key, 32)}</span>
+                    <span class="booster-name">${GameData.getItem(u.key)?.name_fr || u.key} (x${inv[u.key]})<small>${u.label}</small></span>
+                    <span class="booster-actions">${u.pick
+                        ? Object.keys(STAT_SHORT).filter(k => !(u.noHp && k === 'hp')).map(k => `<button class="pk-btn-action small" onclick="applyBooster('${u.key}', '${pokemon.instanceId}', '${k}')">${STAT_SHORT[k]}</button>`).join('')
+                        : `<button class="pk-btn-action small" onclick="applyBooster('${u.key}', '${pokemon.instanceId}')">Utiliser</button>`}</span>
+                </div>`).join('')}
+        </div>` : ''}
     `;
 }
 
-function applyBooster(itemKey, pokemonId) {
-    if (itemKey === 'silver-bottle-cap') {
-        const stat = prompt("Sur quelle statistique voulez-vous utiliser le Bouchon d'Argent ? (hp, atk, def, spatk, spdef, speed)");
-        if (!stat) return;
-        const validStats = ['hp', 'atk', 'def', 'spatk', 'spdef', 'speed'];
-        if (!validStats.includes(stat.toLowerCase())) {
-            alert("Statistique invalide.");
-            return;
-        }
-        const res = GameData.useBottleCap(pokemonId, stat.toLowerCase());
-        if (res.success) {
-            alert("Statistique maximisée !");
-            refreshDetail(pokemonId);
-        } else {
-            alert(res.reason);
-        }
-    } else {
-        const res = GameData.useItemOnPokemon(itemKey, pokemonId);
-        if (res.success) {
-            alert("Booster utilisé !");
-            refreshDetail(pokemonId);
-        } else {
-            alert(res.reason);
-        }
-    }
+function openStatTraining(instanceId, tab) {
+    const pk = GameData.getPokemons().find(p => p.instanceId === instanceId);
+    if (!pk || typeof RefinementUI === 'undefined') return;
+    closePokemonDetail();
+    RefinementUI.open(pk, 'pokemon');
+    RefinementUI.switchTab(tab);
+}
+
+function applyBooster(itemKey, pokemonId, stat = null) {
+    let res;
+    if (itemKey === 'silver-bottle-cap') res = GameData.useBottleCap(pokemonId, stat);
+    else if (itemKey === 'ability-capsule' || itemKey === 'ability-patch') res = GameData.changeNature(pokemonId, itemKey, stat);
+    else if (itemKey === 'fresh-start-mochi') res = GameData.resetEvTraining(pokemonId);
+    else res = GameData.useItemOnPokemon(itemKey, pokemonId);
+    if (!res?.success) { alert(res?.reason || 'Impossible.'); return; }
+    if (res.nature) alert(`Nouvelle nature : ${res.nature.name}`);
+    refreshDetail(pokemonId);
 }
 
 function refreshDetail(pokemonId) {

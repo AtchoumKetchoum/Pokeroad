@@ -190,6 +190,110 @@ const GameData = (() => {
         return normalized;
     }
 
+    // --- Entraînement des IV et EV : chaque stat monte de niveau, palier tous les 20 niveaux (étoile) ---
+    const STAT_KEYS = ['hp', 'atk', 'def', 'spatk', 'spdef', 'speed'];
+    const IV_PER_LEVEL = 1;   // +1 IV par niveau
+    const EV_PER_LEVEL = 10;  // +10 EV par niveau
+    const MOCHI_MAP = { hp: 'health-mochi', atk: 'muscle-mochi', def: 'resist-mochi', spatk: 'genius-mochi', spdef: 'clever-mochi', speed: 'swift-mochi' };
+    function statTrack(pokemon, kind, stat) {
+        const t = pokemon?.training?.[kind]?.[stat];
+        if (t) return { level: t.level || 0, stars: t.stars || 0 };
+        // Anciennes sauvegardes : niveaux de raffinement de l'ancien système
+        const legacy = pokemon?.[kind === 'iv' ? 'ivRefinement' : 'evRefinement']?.stats?.[stat] || 0;
+        return { level: kind === 'ev' ? Math.round(legacy / EV_PER_LEVEL) : legacy, stars: 0 };
+    }
+    const trainingMax = (stars) => (stars + 1) * 20;
+    // Coût du prochain pas : un niveau (objet de la stat + argent) ou, au palier, une étoile (matériau rare + argent)
+    function trainingCost(kind, stat, track) {
+        if (track.level < trainingMax(track.stars)) {
+            return { star: false, item: kind === 'iv' ? IV_RESOURCE_MAP[stat] : EV_RESOURCE_MAP[stat], count: 1,
+                money: Math.floor((kind === 'iv' ? 250 : 300) * (track.level + 1) * (1 + 0.5 * track.stars)) };
+        }
+        return { star: true, item: kind === 'iv' ? 'feather-sample' : MOCHI_MAP[stat], count: track.stars + 1, money: 5000 * (track.stars + 1) };
+    }
+    // Plumes d'échantillon (Plume de Goélise…) : matériau des étoiles d'IV, toutes interchangeables
+    function featherSampleIds() {
+        return Object.keys(itemsCatalog).filter(k => itemsCatalog[k].category === 'Échantillons');
+    }
+    function countOf(inv, item) {
+        return item === 'feather-sample' ? featherSampleIds().reduce((a, k) => a + (inv[k] || 0), 0) : (inv[item] || 0);
+    }
+    function consume(inv, item, n) {
+        if (item !== 'feather-sample') { inv[item] -= n; if (inv[item] <= 0) delete inv[item]; return; }
+        for (const k of featherSampleIds()) {
+            const take = Math.min(n, inv[k] || 0);
+            if (take) { inv[k] -= take; n -= take; if (inv[k] <= 0) delete inv[k]; }
+            if (!n) break;
+        }
+    }
+    function trainStat(pokemonInstanceId, kind, stat) {
+        const data = loadData();
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
+        if (!pokemon || !STAT_KEYS.includes(stat) || !['iv', 'ev'].includes(kind)) return { success: false, reason: 'Entraînement impossible.' };
+        const track = statTrack(pokemon, kind, stat);
+        const cost = trainingCost(kind, stat, track);
+        const inv = data.inventory.items = data.inventory.items || {};
+        if (data.money < cost.money) return { success: false, reason: "Pas assez d'argent." };
+        if (countOf(inv, cost.item) < cost.count) {
+            const name = cost.item === 'feather-sample' ? 'plumes d’échantillon' : (itemsCatalog[cost.item]?.name_fr || cost.item);
+            return { success: false, reason: `Il faut ${cost.count} × ${name}.` };
+        }
+        data.money -= cost.money;
+        consume(inv, cost.item, cost.count);
+        pokemon.training = pokemon.training || {};
+        pokemon.training[kind] = pokemon.training[kind] || {};
+        pokemon.training[kind][stat] = cost.star ? { level: track.level, stars: track.stars + 1 } : { level: track.level + 1, stars: track.stars };
+        pokemon.stats = calculateStats(pokemon);
+        saveData(data);
+        return { success: true, pokemon, star: cost.star };
+    }
+    // Mochi Renouveau : remet l'entraînement des EV à zéro et rend vitamines et mochi
+    function resetEvTraining(pokemonInstanceId) {
+        const data = loadData();
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
+        const inv = data?.inventory?.items || {};
+        if (!pokemon) return { success: false, reason: 'Pokémon introuvable.' };
+        if (!(inv['fresh-start-mochi'] > 0)) return { success: false, reason: 'Mochi Renouveau absent du sac.' };
+        STAT_KEYS.forEach(k => {
+            const t = statTrack(pokemon, 'ev', k);
+            if (t.level) inv[EV_RESOURCE_MAP[k]] = (inv[EV_RESOURCE_MAP[k]] || 0) + t.level;
+            const mochi = t.stars * (t.stars + 1) / 2;
+            if (mochi) inv[MOCHI_MAP[k]] = (inv[MOCHI_MAP[k]] || 0) + mochi;
+        });
+        inv['fresh-start-mochi']--;
+        if (pokemon.training) delete pokemon.training.ev;
+        delete pokemon.evRefinement;
+        pokemon.evs = { hp: 0, atk: 0, def: 0, spatk: 0, spdef: 0, speed: 0 };
+        pokemon.stats = calculateStats(pokemon);
+        saveData(data);
+        return { success: true, pokemon };
+    }
+    // Pilule Talent : nature au hasard ; Patch Talent : nature qui augmente la stat choisie
+    function changeNature(pokemonInstanceId, itemKey, plusStat = null) {
+        const data = loadData();
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
+        const inv = data?.inventory?.items || {};
+        if (!pokemon) return { success: false, reason: 'Pokémon introuvable.' };
+        if (!(inv[itemKey] > 0)) return { success: false, reason: 'Objet absent du sac.' };
+        let nature;
+        if (itemKey === 'ability-patch') {
+            if (!plusStat) return { success: false, reason: 'Choisis une stat.' };
+            const base = masterOf(pokemon.id)?.stats || {};
+            const minus = plusStat === 'atk' ? 'spatk' : plusStat === 'spatk' ? 'atk' : ((base.atk || 0) < (base.spatk || 0) ? 'atk' : 'spatk');
+            nature = NATURES.find(n => n.plus === plusStat && n.minus === minus);
+        } else if (itemKey === 'ability-capsule') {
+            const current = typeof pokemon.nature === 'string' ? pokemon.nature : pokemon.nature?.name;
+            const pool = NATURES.filter(n => n.name !== current);
+            nature = pool[Math.floor(Math.random() * pool.length)];
+        }
+        if (!nature) return { success: false, reason: 'Nature introuvable.' };
+        inv[itemKey]--;
+        pokemon.nature = nature;
+        pokemon.stats = calculateStats(pokemon);
+        saveData(data);
+        return { success: true, pokemon, nature };
+    }
+
     function calculateStats(pokemon) {
         const pkData = masterOf(pokemon.id);
         if (!pkData || !pkData.stats) return pokemon.stats || {};
@@ -234,27 +338,13 @@ const GameData = (() => {
             return 1;
         };
 
-        // Appliquer les multiplicateurs de raffinement aux IVs et EVs
-        const ivRefStats = pokemon.ivRefinement?.stats || {};
-        const evRefStats = pokemon.evRefinement?.stats || {};
-
-        const effectiveIV = {
-            hp: Math.floor((iv.hp + (ivRefStats.hp || 0)) * ivMult),
-            atk: Math.floor((iv.atk + (ivRefStats.atk || 0)) * ivMult),
-            def: Math.floor((iv.def + (ivRefStats.def || 0)) * ivMult),
-            spatk: Math.floor((iv.spatk + (ivRefStats.spatk || 0)) * ivMult),
-            spdef: Math.floor((iv.spdef + (ivRefStats.spdef || 0)) * ivMult),
-            speed: Math.floor((iv.speed + (ivRefStats.speed || 0)) * ivMult)
-        };
-        
-        const effectiveEV = {
-            hp: Math.floor((ev.hp + (evRefStats.hp || 0)) * evMult),
-            atk: Math.floor((ev.atk + (evRefStats.atk || 0)) * evMult),
-            def: Math.floor((ev.def + (evRefStats.def || 0)) * evMult),
-            spatk: Math.floor((ev.spatk + (evRefStats.spatk || 0)) * evMult),
-            spdef: Math.floor((ev.spdef + (evRefStats.spdef || 0)) * evMult),
-            speed: Math.floor((ev.speed + (evRefStats.speed || 0)) * evMult)
-        };
+        // IV et EV effectifs : valeur de base + entraînement de la stat (niveaux), × étoiles (+20 % chacune)
+        const effectiveIV = {}, effectiveEV = {};
+        STAT_KEYS.forEach(k => {
+            const ti = statTrack(pokemon, 'iv', k), te = statTrack(pokemon, 'ev', k);
+            effectiveIV[k] = Math.floor(((iv[k] || 0) + ti.level * IV_PER_LEVEL) * (1 + 0.2 * ti.stars));
+            effectiveEV[k] = Math.floor(((ev[k] || 0) + te.level * EV_PER_LEVEL) * (1 + 0.2 * te.stars));
+        });
 
         // Calculer les stats selon la nouvelle logique demandée :
         // Chaque niveau apporte +1/50 Base + 1/100 (IV + EV)
@@ -1920,7 +2010,7 @@ const GameData = (() => {
         }
 
         const currentRef = pokemon.moveRefinements[moveName];
-        // Les attaques s'améliorent avec de l'argent : niveaux, puis une étoile tous les 20 niveaux
+        // Les attaques s'améliorent avec de l'argent et des PP Plus ; une étoile tous les 20 niveaux avec des PP Max
         const atMax = Refinement.levelOf(currentRef) >= Refinement.getMaxRefineLevel(Refinement.starsOf(currentRef));
         const check = atMax
             ? Refinement.canRefineAddStar(currentRef, 0, data.money, 'move')
@@ -1928,6 +2018,12 @@ const GameData = (() => {
         if (!check.possible) {
             return { success: false, reason: check.reason };
         }
+        const ppItem = atMax ? 'pp-max' : 'pp-up';
+        const ppCount = atMax ? Refinement.starsOf(currentRef) + 1 : 1;
+        const inv = data.inventory.items = data.inventory.items || {};
+        if ((inv[ppItem] || 0) < ppCount) return { success: false, reason: `Il faut ${ppCount} × ${itemsCatalog[ppItem]?.name_fr || ppItem}.` };
+        inv[ppItem] -= ppCount;
+        if (inv[ppItem] <= 0) delete inv[ppItem];
         data.money -= check.cost.money;
         pokemon.moveRefinements[moveName] = atMax ? Refinement.applyAddStar(currentRef) : Refinement.applyLevelUp(currentRef);
         pokemon.stats = calculateStats(pokemon); 
@@ -2045,113 +2141,37 @@ const GameData = (() => {
         return { success: true, pokemon, cost: check };
     }
     
+    // Étoile d'un Pokémon : exemplaires de la même famille (hors favoris et équipe en mission) + argent
+    function pokemonStarCost(pokemon, data = loadData()) {
+        const stars = pokemon.refinementStars || 0;
+        const family = getBaseFormId(pokemon.id);
+        const busy = new Set(data?.mission?.active ? (data.mission.team || []) : []);
+        const pool = (data?.pokemons || []).filter(p => p.instanceId !== pokemon.instanceId && !p.isFavorite && !busy.has(p.instanceId) && getBaseFormId(p.id) === family);
+        const copies = 1 + Math.floor(stars / 2);
+        const money = 10000 * (stars + 1);
+        return { copies, money, have: pool.length, pool, ok: pool.length >= copies && (data?.money || 0) >= money };
+    }
     function refinePokemonStar(pokemonInstanceId) {
         const data = loadData();
-        if (!data) return { success: false, reason: "Sauvegarde non trouvée." };
-        
-        const pokemon = data.pokemons.find(p => p.instanceId === pokemonInstanceId);
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
         if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
-        
-        const copies = data.pokemons.filter(p => p.id === pokemon.id && p.instanceId !== pokemonInstanceId);
-        const check = Refinement.canRefineAddStar(pokemon, copies.length, data.money, 'pokemon');
-        
-        if (!check.possible) {
-            return { success: false, reason: check.reason, cost: check.cost };
-        }
-        
-        // Consommer les exemplaires
-        for (let i = 0; i < check.cost.copies; i++) {
-            const copyIndex = data.pokemons.findIndex(p => p.id === pokemon.id && p.instanceId !== pokemonInstanceId);
-            if (copyIndex !== -1) {
-                data.pokemons.splice(copyIndex, 1);
-            }
-        }
-        
-        data.money -= check.cost.money;
-        
-        // Appliquer le raffinement
+        const cost = pokemonStarCost(pokemon, data);
+        if (!cost.ok) return { success: false, reason: cost.have < cost.copies ? `Il faut ${cost.copies} exemplaire(s) de la même famille.` : "Pas assez d'argent." };
+        const eaten = new Set(cost.pool.slice(0, cost.copies).map(p => p.instanceId));
+        data.pokemons = data.pokemons.filter(p => !eaten.has(p.instanceId));
+        data.money -= cost.money;
         pokemon.refinementStars = (pokemon.refinementStars || 0) + 1;
         pokemon.stats = calculateStats(pokemon);
-        
         saveData(data);
-        return { success: true, pokemon, cost: check.cost };
+        return { success: true, pokemon, cost };
     }
     
     function refineIV(pokemonInstanceId, stat) {
-        const data = loadData();
-        if (!data) return { success: false, reason: "Sauvegarde non trouvée." };
-        
-        const pokemon = data.pokemons.find(p => p.instanceId === pokemonInstanceId);
-        if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
-        
-        const currentIV = pokemon.ivs[stat] || 0;
-        const currentRefLevel = pokemon.ivRefinement.stats[stat] || 0;
-        
-        const cost = Refinement.getRefinementCost('iv', currentRefLevel, pokemon.ivRefinement.stars, { statValue: currentIV });
-        
-        if (data.money < cost.money) return { success: false, reason: "Pas assez d'argent." };
-        
-        if (cost.wings) {
-            const wingId = IV_RESOURCE_MAP[stat];
-            if ((data.inventory.items[wingId] || 0) < cost.wings) {
-                return { success: false, reason: `Pas assez de ${itemsCatalog[wingId]?.name_fr || wingId}.` };
-            }
-            data.inventory.items[wingId] -= cost.wings;
-            pokemon.ivs[stat] += 1;
-        } else {
-            // Refinement phase
-            if (cost.goldBottleCaps) {
-                if ((data.inventory.items['gold-bottle-cap'] || 0) < cost.goldBottleCaps) {
-                    return { success: false, reason: `Pas assez de Capsules d'Or (${cost.goldBottleCaps} requises).` };
-                }
-                data.inventory.items['gold-bottle-cap'] -= cost.goldBottleCaps;
-            }
-            pokemon.ivRefinement.stats[stat] = currentRefLevel + 1;
-        }
-        
-        data.money -= cost.money;
-        pokemon.stats = calculateStats(pokemon);
-        saveData(data);
-        return { success: true, pokemon };
+        return trainStat(pokemonInstanceId, 'iv', stat);
     }
     
     function refineEV(pokemonInstanceId, stat) {
-        const data = loadData();
-        if (!data) return { success: false, reason: "Sauvegarde non trouvée." };
-        
-        const pokemon = data.pokemons.find(p => p.instanceId === pokemonInstanceId);
-        if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
-        
-        const currentEV = pokemon.evs[stat] || 0;
-        const currentRefLevel = pokemon.evRefinement.stats[stat] || 0;
-        
-        const cost = Refinement.getRefinementCost('ev', currentRefLevel, pokemon.evRefinement.stars, { statValue: currentEV });
-        
-        if (data.money < cost.money) return { success: false, reason: "Pas assez d'argent." };
-        
-        if (cost.vitamins) {
-            const vitId = EV_RESOURCE_MAP[stat];
-            if ((data.inventory.items[vitId] || 0) < cost.vitamins) {
-                return { success: false, reason: `Pas assez de ${itemsCatalog[vitId]?.name_fr || vitId}.` };
-            }
-            data.inventory.items[vitId] -= cost.vitamins;
-            // +25 EV par vitamin comme demandé (ou cap à 252)
-            pokemon.evs[stat] = Math.min(252, currentEV + 25);
-        } else {
-            // Refinement phase
-            if (cost.goldBottleCaps) {
-                if ((data.inventory.items['gold-bottle-cap'] || 0) < cost.goldBottleCaps) {
-                    return { success: false, reason: `Pas assez de Capsules d'Or (${cost.goldBottleCaps} requises).` };
-                }
-                data.inventory.items['gold-bottle-cap'] -= cost.goldBottleCaps;
-            }
-            pokemon.evRefinement.stats[stat] = currentRefLevel + 1;
-        }
-        
-        data.money -= cost.money;
-        pokemon.stats = calculateStats(pokemon);
-        saveData(data);
-        return { success: true, pokemon };
+        return trainStat(pokemonInstanceId, 'ev', stat);
     }
 
     /**
@@ -2215,6 +2235,15 @@ const GameData = (() => {
         getItemsByPocket: () => itemsByPocket,
         getItem: (id) => itemsCatalog[id],
         canLearnCT,
+        STAT_KEYS,
+        MOCHI_MAP,
+        statTrack,
+        trainingCost,
+        trainingMax,
+        trainStat,
+        resetEvTraining,
+        changeNature,
+        countTrainingItem: (item) => countOf(loadData()?.inventory?.items || {}, item),
         getLearnableCTs,
         learnCT,
         getPokemonByInstanceId: (id) => (loadData()?.pokemons || []).find(p => p.instanceId === id) || null,
@@ -2228,6 +2257,7 @@ const GameData = (() => {
         // Fonctions de raffinement
         refinePokemonLevel,
         refinePokemonStar,
+        pokemonStarCost,
         refineIV,
         refineEV,
         refineMove,

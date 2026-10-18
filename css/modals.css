@@ -186,3 +186,20 @@
 #incubator-grid-premium .incubator-slot-premium { min-height: 0; padding: 6px !important; gap: 2px !important; justify-content: center; }
 #incubator-grid-premium .incubator-slot-premium svg { flex: 1 1 auto; min-height: 0; width: auto !important; max-width: 100%; height: auto; max-height: 100%; }
 #incubator-modal .modal-content { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; filter: none !important; transform: none !important; }
+
+/* Entraînement IV/EV par stat (js/refinement-ui.js) */
+.train-list { display: grid; gap: 8px; margin: 10px 0; }
+.train-row { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 10px; background: var(--paper-2); border: 2px solid var(--ink); border-radius: 12px; }
+.train-row.is-cap { background: #f3e3b5; }
+.train-stat { display: flex; flex-direction: column; line-height: 1.1; }
+.train-stat b { font-family: var(--font-title); font-weight: 400; font-size: 24px; }
+.train-level { font-weight: 800; }
+.train-bar { height: 10px; border: 2px solid var(--ink); border-radius: 6px; background: #fff8; overflow: hidden; margin-top: 4px; }
+.train-bar i { display: block; height: 100%; background: linear-gradient(90deg, #6f9fd4, #3f74a3); }
+.train-btn { display: flex !important; flex-direction: column; align-items: center; gap: 2px; padding: 6px 10px !important; min-width: 150px; }
+.train-cost { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.train-shortcuts { display: flex; gap: 8px; margin: 6px 0 12px; }
+.booster-item { display: grid !important; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 4px 10px; }
+.booster-item .booster-name small { display: block; opacity: .75; }
+.booster-item .booster-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.ct-learn-block { margin-top: 10px; }

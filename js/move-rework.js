@@ -294,6 +294,9 @@ const MoveRework = (() => {
         quickGuard: 'Prévention', matBlock: 'Tatamigaeshi', craftyShield: 'Vigilance', leechSeed: 'Vampigraine',
     };
 
+    // Amélioration de la capacité (entraînement, CT améliorée) : renforce aussi ses boucliers et soins
+    const refOf = (ctx) => ctx?.move?._refMult || 1;
+
     async function runOne(attacker, op, list, ctx) {
         switch (op.op) {
             case 'flag':
@@ -323,19 +326,19 @@ const MoveRework = (() => {
                 return;
             case 'shield':
                 list.forEach(u => {
-                    let value = (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100;
+                    let value = (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100 * refOf(ctx);
                     if (R().roleActive(attacker, 'support')) value *= 1.5;
                     u.shield = (u.shield || 0) + Math.round(value);
                     say(u, 'Bouclier', 'buff');
                 });
                 return;
             case 'clearShield': list.forEach(u => { if (u.shield > 0) say(u, 'Bouclier perdu', 'debuff'); u.shield = 0; }); return;
-            case 'heal': list.forEach(u => R().heal(u, u.maxHp * op.pct / 100, attacker)); return;
+            case 'heal': list.forEach(u => R().heal(u, u.maxHp * op.pct / 100 * refOf(ctx), attacker)); return;
             case 'regen':
-                list.forEach(u => { (u._regens = u._regens || []).push({ pct: op.pct, turns: op.turns }); say(u, 'Régénération', 'buff'); });
+                list.forEach(u => { (u._regens = u._regens || []).push({ pct: Math.round(op.pct * refOf(ctx) * 10) / 10, turns: op.turns }); say(u, 'Régénération', 'buff'); });
                 return;
             case 'delayedHeal':
-                list.forEach(u => { (u._delayedHeals = u._delayedHeals || []).push({ amount: (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100, turns: op.turns }); say(u, 'Vœu', 'buff'); });
+                list.forEach(u => { (u._delayedHeals = u._delayedHeals || []).push({ amount: (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100 * refOf(ctx), turns: op.turns }); say(u, 'Vœu', 'buff'); });
                 return;
             case 'trap':
                 list.forEach(u => { if (!u._trap) { u._trap = { turns: op.turns || 3 }; say(u, 'Piégé', 'debuff'); } });

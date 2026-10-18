@@ -458,7 +458,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente l'effort en Attaque et le bonheur.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'EV de sa stat (+10 EV).",
     "description_fr": "Une boisson très nutritive qui augmente l’Attaque de base d’un Pokémon."
   },
   "hp-up": {
@@ -469,7 +469,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente l'effort en PV et le bonheur.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'EV de sa stat (+10 EV).",
     "description_fr": "Une boisson très nutritive qui augmente les PV de base d’un Pokémon."
   },
   "iron": {
@@ -480,7 +480,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente l'effort en Défense et le bonheur.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'EV de sa stat (+10 EV).",
     "description_fr": "Une boisson très nutritive qui augmente la Défense de base d’un Pokémon."
   },
   "carbos": {
@@ -491,7 +491,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente l'effort en Vitesse et le bonheur.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'EV de sa stat (+10 EV).",
     "description_fr": "Une boisson très nutritive qui augmente la Vitesse de base d’un Pokémon."
   },
   "calcium": {
@@ -502,7 +502,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente l'effort en Attaque Spéciale et le bonheur.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'EV de sa stat (+10 EV).",
     "description_fr": "Une boisson très nutritive qui augmente l’Attaque Spéciale de base d’un Pokémon."
   },
   "rare-candy": {
@@ -524,7 +524,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente les PP max d'une capacité de 20%.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau une attaque d'un Pokémon.",
     "description_fr": "Augmente un peu les PP max d’une capacité sélectionnée."
   },
   "zinc": {
@@ -535,7 +535,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente l'effort en Défense Spéciale et le bonheur.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'EV de sa stat (+10 EV).",
     "description_fr": "Une boisson très nutritive qui augmente la Défense Spéciale de base d’un Pokémon."
   },
   "pp-max": {
@@ -546,7 +546,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Augmente les PP max d'une capacité de 60%.",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à une attaque d'un Pokémon.",
     "description_fr": "Augmente sensiblement les PP max d’une capacité sélectionnée."
   },
   "health-wing": {
@@ -557,7 +557,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "Augmente les EV de PV de 1.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'IV de sa stat (+1 IV).",
     "description_fr": "Objet à utiliser sur un Pokémon pour un peu augmenter ses PV de base."
   },
   "muscle-wing": {
@@ -568,7 +568,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "Augmente les EV d'Attaque de 1.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'IV de sa stat (+1 IV).",
     "description_fr": "Objet à utiliser sur un Pokémon pour un peu augmenter son Attaque de base."
   },
   "resist-wing": {
@@ -579,7 +579,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "Augmente les EV de Défense de 1.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'IV de sa stat (+1 IV).",
     "description_fr": "Objet à utiliser sur un Pokémon pour un peu augmenter sa Défense de base."
   },
   "genius-wing": {
@@ -590,7 +590,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "Augmente les EV d'Attaque Spéciale de 1.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'IV de sa stat (+1 IV).",
     "description_fr": "Objet à utiliser sur un Pokémon pour un peu augmenter son Attaque Spéciale de base."
   },
   "clever-wing": {
@@ -601,7 +601,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "Augmente les EV de Défense Spéciale de 1.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'IV de sa stat (+1 IV).",
     "description_fr": "Objet à utiliser sur un Pokémon pour un peu augmenter sa Défense Spéciale de base."
   },
   "swift-wing": {
@@ -612,7 +612,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "Augmente les EV de Vitesse de 1.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau l'IV de sa stat (+1 IV).",
     "description_fr": "Objet à utiliser sur un Pokémon pour un peu augmenter sa Vitesse de base."
   },
   "ability-capsule": {
@@ -623,206 +623,8 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "Permet à un Pokémon d'alterner entre ses deux Talents (non cachés) possibles.",
+    "effect_fr": "Change la nature d'un Pokémon au hasard.",
     "description_fr": "Une capsule permettant à un Pokémon pouvant avoir deux talents de passer de l’un à l’autre."
-  },
-  "health-candy": {
-    "id": 1040,
-    "name_fr": "Bonbon Santé S",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un bonbon plein d’énergie. Il augmente les PV d’un Pokémon."
-  },
-  "mighty-candy": {
-    "id": 1041,
-    "name_fr": "Bonbon Force S",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un bonbon plein d’énergie. Il augmente l’Attaque d’un Pokémon."
-  },
-  "tough-candy": {
-    "id": 1042,
-    "name_fr": "Bonbon Armure S",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un bonbon plein d’énergie. Il augmente la Défense d’un Pokémon."
-  },
-  "smart-candy": {
-    "id": 1043,
-    "name_fr": "Bonbon Esprit S",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un bonbon plein d’énergie. Il augmente l’Attaque Spéciale d’un Pokémon."
-  },
-  "courage-candy": {
-    "id": 1044,
-    "name_fr": "Bonbon Mental S",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un bonbon plein d’énergie. Il augmente la Défense Spéciale d’un Pokémon."
-  },
-  "quick-candy": {
-    "id": 1045,
-    "name_fr": "Bonbon Sprint S",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un bonbon plein d’énergie. Il augmente la Vitesse d’un Pokémon."
-  },
-  "health-candy-l": {
-    "id": 1046,
-    "name_fr": "Bonbon Santé M",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un gros bonbon plein d’énergie. Il augmente les PV d’un Pokémon de niveau 30 ou supérieur."
-  },
-  "mighty-candy-l": {
-    "id": 1047,
-    "name_fr": "Bonbon Force M",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un gros bonbon plein d’énergie. Il augmente l’Attaque d’un Pokémon de niveau 30 ou supérieur."
-  },
-  "tough-candy-l": {
-    "id": 1048,
-    "name_fr": "Bonbon Armure M",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un gros bonbon plein d’énergie. Il augmente la Défense d’un Pokémon de niveau 30 ou supérieur."
-  },
-  "smart-candy-l": {
-    "id": 1049,
-    "name_fr": "Bonbon Esprit M",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un gros bonbon plein d’énergie. Il augmente l’Attaque Spéciale d’un Pokémon de niveau 30 ou supérieur."
-  },
-  "courage-candy-l": {
-    "id": 1050,
-    "name_fr": "Bonbon Mental M",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un gros bonbon plein d’énergie. Il augmente la Défense Spéciale d’un Pokémon de niveau 30 ou supérieur."
-  },
-  "quick-candy-l": {
-    "id": 1051,
-    "name_fr": "Bonbon Sprint M",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un gros bonbon plein d’énergie. Il augmente la Vitesse d’un Pokémon de niveau 30 ou supérieur."
-  },
-  "health-candy-xl": {
-    "id": 1052,
-    "name_fr": "Bonbon Santé L",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un énorme bonbon plein d’énergie. Il augmente les PV d’un Pokémon de niveau 60 ou supérieur."
-  },
-  "mighty-candy-xl": {
-    "id": 1053,
-    "name_fr": "Bonbon Force L",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un énorme bonbon plein d’énergie. Il augmente l’Attaque d’un Pokémon de niveau 60 ou supérieur."
-  },
-  "tough-candy-xl": {
-    "id": 1054,
-    "name_fr": "Bonbon Armure L",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un énorme bonbon plein d’énergie. Il augmente la Défense d’un Pokémon de niveau 60 ou supérieur."
-  },
-  "smart-candy-xl": {
-    "id": 1055,
-    "name_fr": "Bonbon Esprit L",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un énorme bonbon plein d’énergie. Il augmente l’Attaque Spéciale d’un Pokémon de niveau 60 ou supérieur."
-  },
-  "courage-candy-xl": {
-    "id": 1056,
-    "name_fr": "Bonbon Mental L",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un énorme bonbon plein d’énergie. Il augmente la Défense Spéciale d’un Pokémon de niveau 60 ou supérieur."
-  },
-  "quick-candy-xl": {
-    "id": 1057,
-    "name_fr": "Bonbon Sprint L",
-    "cost": 20,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un énorme bonbon plein d’énergie. Il augmente la Vitesse d’un Pokémon de niveau 60 ou supérieur."
   },
   "exp-candy-xs": {
     "id": 1182,
@@ -879,17 +681,6 @@
     "effect_fr": "",
     "description_fr": "Un bonbon plein d’énergie. Il permet à un Pokémon de gagner beaucoup de Points d’Expérience."
   },
-  "dynamax-candy": {
-    "id": 1187,
-    "name_fr": "Bonbon Dynamax",
-    "cost": 0,
-    "sprite": null,
-    "category": "Vitamines",
-    "pocket": "medicine",
-    "attributes": [],
-    "effect_fr": "",
-    "description_fr": "Un bonbon plein d’énergie qui fait monter le niveau Dynamax d’un Pokémon d’un point. Plus ce dernier est élevé, plus les PV sous forme Dynamax augmentent."
-  },
   "ability-patch": {
     "id": 1657,
     "name_fr": "Patch Talent",
@@ -898,7 +689,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Donne à un Pokémon la nature qui augmente la stat choisie.",
     "description_fr": "Un objet qui permet de remplacer le talent ordinaire d’un Pokémon par un talent rare."
   },
   "health-mochi": {
@@ -909,7 +700,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à l'EV de sa stat.",
     "description_fr": ""
   },
   "muscle-mochi": {
@@ -920,7 +711,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à l'EV de sa stat.",
     "description_fr": ""
   },
   "resist-mochi": {
@@ -931,7 +722,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à l'EV de sa stat.",
     "description_fr": ""
   },
   "genius-mochi": {
@@ -942,7 +733,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à l'EV de sa stat.",
     "description_fr": ""
   },
   "clever-mochi": {
@@ -953,7 +744,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à l'EV de sa stat.",
     "description_fr": ""
   },
   "swift-mochi": {
@@ -964,7 +755,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à l'EV de sa stat.",
     "description_fr": ""
   },
   "fresh-start-mochi": {
@@ -975,7 +766,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Remet à zéro l'entraînement des EV d'un Pokémon et rend vitamines et mochi.",
     "description_fr": ""
   },
   "plume-fossil": {
@@ -5053,7 +4844,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "swablu-fluff": {
@@ -5064,7 +4855,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "starly-feather": {
@@ -5075,7 +4866,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "fletchling-feather": {
@@ -5086,7 +4877,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "rufflet-feather": {
@@ -5097,7 +4888,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "oricorio-feather": {
@@ -5108,7 +4899,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "rookidee-feather": {
@@ -5119,7 +4910,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "bombirdier-feather": {
@@ -5130,7 +4921,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "squawkabilly-feather": {
@@ -5141,7 +4932,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "wattrel-feather": {
@@ -5152,7 +4943,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "hoothoot-feather": {
@@ -5163,7 +4954,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "ducklett-feather": {
@@ -5174,7 +4965,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "vullaby-feather": {
@@ -5185,7 +4976,7 @@
     "category": "Échantillons",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) aux IV.",
     "description_fr": ""
   },
   "gold-bottle-cap": {
@@ -5196,7 +4987,18 @@
     "category": "Butin",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "À échanger à Papi Ultime pour maximiser tous les IV d'un Pokémon.",
+    "effect_fr": "Monte au maximum (31) l'IV de base de toutes les stats d'un Pokémon.",
     "description_fr": "Une jolie capsule en or, encore plus rare que la Capsule d’Argent. Certaines personnes adorent en recevoir."
+  },
+  "silver-bottle-cap": {
+    "id": 10001,
+    "name_fr": "Capsule d'Argent",
+    "cost": 20000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/bottle-cap.png",
+    "category": "Butin",
+    "pocket": "misc",
+    "attributes": ["countable", "consumable"],
+    "effect_fr": "Monte au maximum (31) l'IV de base d'une stat d'un Pokémon.",
+    "description_fr": "Une capsule argentée qui fait briller le potentiel d'une stat."
   }
 }
