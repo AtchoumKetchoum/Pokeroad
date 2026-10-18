@@ -9,6 +9,8 @@
 .modal:not(#confirm-modal) {
   padding: 0 !important;
   background: var(--paper) !important;
+  /* Contenu calé en haut : il s'arrête juste au-dessus de la barre Retour */
+  align-items: flex-start !important; justify-content: flex-start !important;
 }
 /* Le contenu remplit la fenêtre au-dessus de la barre du bas et défile seul ;
    en position statique, l'en-tête et les boutons se placent par rapport à la fenêtre */
@@ -120,11 +122,11 @@
 #shop-modal .shop-item-card .item-desc { margin: 2px 0 6px; min-height: 0; line-height: 1.25; }
 #shop-modal .shop-item-card .item-price { margin: auto 0 6px; }
 /* Un peu d'air entre la dernière rangée de filtres et la barre Retour */
-#shop-modal .modal-content, #item-bag-modal .modal-content, #locker-modal .modal-content { padding-bottom: 14px !important; height: calc(100% - 100px) !important; }
+#shop-modal .modal-content, #item-bag-modal .modal-content, #locker-modal .modal-content { padding-bottom: 0 !important; }
 #egg-bag-modal #egg-selection-grid { align-content: start; align-items: start; }
 .ct-move { font-family: var(--font-title); font-weight: 400; color: var(--ink); }
 /* Fiche : les onglets du bas restent au-dessus de la barre Retour */
-.modal:not(#confirm-modal) #pokemon-detail-card.pk-sheet { height: calc(100% - 146px) !important; }
+.modal:not(#confirm-modal) #pokemon-detail-card.pk-sheet { height: calc(100% - 100px) !important; }
 
 /* Boutique : toutes les cartes ont la même forme (3 colonnes égales, même hauteur,
    description sur 3 lignes, prix et bouton calés en bas) */
@@ -144,7 +146,7 @@
 /* Boutons de poche : icône et libellé sur une ligne */
 .shop-pockets .pocket-tab { display: inline-flex !important; align-items: center; gap: 4px; white-space: nowrap; }
 .shop-pockets .pocket-tab svg, .shop-pockets .pocket-tab img { flex: none; width: 20px; height: 20px; display: block; }
-#shop-pockets, #item-bag-pockets { margin-bottom: 4px !important; }
+#shop-pockets, #item-bag-pockets { margin-bottom: 14px !important; }
 
 /* Poches : grandes vignettes seules, toutes sur une ligne */
 #shop-pockets, #item-bag-pockets { display: flex !important; flex-wrap: nowrap !important; gap: 6px !important; justify-content: space-between; }
