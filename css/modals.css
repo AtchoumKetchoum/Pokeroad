@@ -229,3 +229,16 @@
 #view-battle .synergy-panel .synergy-icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 30px; padding: 0 !important; border-radius: 8px; background: var(--ink); color: #f7ecdc; overflow: visible !important; }
 #view-battle .synergy-panel.synergy-enemy .synergy-icon { background: var(--red-dark, #8a2a24); }
 #view-battle .rank-chip.rank-chip-icon { padding: 0 2px !important; background: none !important; border: none !important; box-shadow: none !important; }
+
+/* Améliorations rapides (js/quick-upgrades.js) */
+.quick-upgrades-btn { position: relative; width: 58px; height: 58px; border-radius: 50%; border: var(--outline-thick); background: var(--paper-2); color: var(--ink); box-shadow: var(--pop); display: grid; place-items: center; cursor: pointer; margin-left: auto; margin-right: 10px; }
+.quick-upgrades-btn.has-items { background: linear-gradient(180deg, #ffe680, var(--yellow)); animation: badge-pop 1.6s infinite; }
+.quick-upgrades-btn .qu-badge { position: absolute; top: -6px; right: -6px; min-width: 28px; height: 28px; padding: 0 6px; box-sizing: border-box; border-radius: 14px; background: var(--red); color: #f7ecdc; border: 3px solid var(--ink); font-family: var(--font-title); font-size: 22px; line-height: 22px; display: none; }
+.quick-upgrades-btn.has-items .qu-badge { display: block; }
+#info-modal .qu-list { display: grid; gap: 8px; }
+#info-modal .qu-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 8px 10px; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper-2); }
+#info-modal .qu-row .qu-icon { display: grid; place-items: center; }
+#info-modal .qu-row .qu-icon img, #info-modal .qu-row .qu-icon svg { width: 30px; height: 30px; image-rendering: pixelated; }
+#info-modal .qu-evolve { background: #e2efdc; }
+#info-modal .qu-ct { background: #e2ecf5; }
+.qu-sheet-btn { width: 100%; margin-bottom: 10px; background: linear-gradient(180deg, #ffe680, var(--yellow)) !important; }

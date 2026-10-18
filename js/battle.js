@@ -2558,6 +2558,7 @@ async function checkWinCondition() {
             </div>
             <div id="end-battle-nav-win" class="end-battle-actions" style="position:relative; bottom:auto; left:auto; transform:none; margin-top:20px;">
                 <button class="pk-btn-action secondary-btn" title="Retour à la carte de la zone" onclick="leaveBattleToHome(true)">${Art.icon('map', 20)} Carte</button>
+                ${(() => { const n = typeof QuickUpgrades !== 'undefined' ? QuickUpgrades.all().length : 0; return n ? `<button class="pk-btn-action secondary-btn qu-after-battle" onclick="QuickUpgrades.show()">Améliorations (${n})</button>` : ''; })()}
                 <button class="pk-btn-action" title="Combat Suivant" onclick="nextBattleProgression()">
                     Combat suivant ${Art.icon('play', 20)}
                 </button>
