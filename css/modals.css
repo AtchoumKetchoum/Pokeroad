@@ -254,3 +254,11 @@
 .pokemon-item .qu-mini img, .pokemon-item .qu-mini svg { width: 20px !important; height: 20px !important; max-width: none; position: static !important; margin: 0 !important; image-rendering: pixelated; filter: none !important; }
 .pokemon-item .qu-mini.qu-evolve { background: #cde3c0; }
 .pokemon-item .qu-mini.qu-ct { background: #d6e4f2; }
+
+/* Recyclage des objets */
+.item-info-links { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.sell-btn { background: linear-gradient(180deg, #cde3c0, #8fbf7f) !important; }
+#item-bag-modal .bag-sell-dupes { order: 0; align-self: flex-end; margin: 0 0 8px; flex: none; }
+
+/* Listes des fenêtres d'info : alignées à gauche */
+#info-modal .info-list, #info-modal .info-lede { text-align: left; }

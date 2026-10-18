@@ -452,6 +452,14 @@ function renderItemBag() {
     const grid = document.getElementById('item-bag-grid');
     if (!grid) return;
     grid.innerHTML = 'Chargement...';
+    if (!document.getElementById('bag-sell-dupes')) {
+        const btn = document.createElement('button');
+        btn.id = 'bag-sell-dupes';
+        btn.className = 'pk-btn-action small bag-sell-dupes';
+        btn.textContent = 'Vendre les doublons';
+        btn.onclick = sellBagDuplicates;
+        grid.parentElement.insertBefore(btn, grid);
+    }
 
     renderItemBagPockets();
 
@@ -507,10 +515,51 @@ function showItemInfo(itemId) {
             <p style="font-size: 13px; line-height: 1.4;">${desc}</p>
         </div>
         <p style="font-weight: bold; color: #2ecc71;">Possédé : x${count}</p>
-        ${['battle', 'berries'].includes(item.pocket) ? `<div class="item-info-links"><button class="pk-btn-action small" onclick="goToWorkshop('${itemId}')">Améliorer à l'Atelier</button></div>` : ''}
+        <div class="item-info-links">
+            ${['battle', 'berries'].includes(item.pocket) ? `<button class="pk-btn-action small" onclick="goToWorkshop('${itemId}')">Améliorer à l'Atelier</button>` : ''}
+            ${count > 0 ? `<button class="pk-btn-action small sell-btn" onclick="sellItems('${itemId}', 1)">Vendre ×1 · +${sellPrice(item).toLocaleString('fr-FR')} $</button>` : ''}
+            ${count > 1 ? `<button class="pk-btn-action small sell-btn" onclick="sellItems('${itemId}', ${count - 1})">Garder 1, vendre ×${count - 1} · +${(sellPrice(item) * (count - 1)).toLocaleString('fr-FR')} $</button>` : ''}
+        </div>
     `;
 
     modal.style.display = 'flex';
+}
+
+// --- RECYCLAGE : vendre des objets contre de l'argent (25 % du prix en boutique) ---
+function sellPrice(item) {
+    if (!item) return 0;
+    if (!item.cost) return item.not_sold ? 25000 : 50; // objets sans prix : Couronne Antique précieuse, le reste symbolique
+    return Math.max(10, Math.round(item.cost * 0.25 / 10) * 10);
+}
+function sellItems(itemId, count) {
+    const data = GameData._load();
+    const inv = data?.inventory?.items || {};
+    const n = Math.min(count, inv[itemId] || 0);
+    if (!n) return;
+    const gain = sellPrice(GameData.getItem(itemId)) * n;
+    inv[itemId] -= n;
+    if (inv[itemId] <= 0) delete inv[itemId];
+    data.money = (data.money || 0) + gain;
+    GameData._save(data);
+    if (typeof updateHomeHUD === 'function') updateHomeHUD();
+    if (document.getElementById('item-bag-modal')?.style.display !== 'none') renderItemBag();
+    if ((inv[itemId] || 0) > 0) showItemInfo(itemId); else closeItemInfoModal();
+}
+// Vend les doublons de la poche affichée (garde un exemplaire de chaque)
+async function sellBagDuplicates() {
+    const inv = GameData.getInventory().items || {};
+    const list = (GameData.getItemsByPocket()[currentItemBagPocket] || []).filter(it => (inv[it.id] || 0) > 1);
+    if (!list.length) { alert('Aucun doublon dans cette poche.'); return; }
+    const total = list.reduce((a, it) => a + sellPrice(it) * (inv[it.id] - 1), 0);
+    const copies = list.reduce((a, it) => a + inv[it.id] - 1, 0);
+    const ok = await UI.confirm(`Vendre ${copies} doublon(s) de cette poche contre ${total.toLocaleString('fr-FR')} $ ? Un exemplaire de chaque objet est gardé.`, { title: 'Recyclage', okLabel: 'Vendre' });
+    if (!ok) return;
+    const data = GameData._load();
+    list.forEach(it => { data.inventory.items[it.id] = 1; });
+    data.money = (data.money || 0) + total;
+    GameData._save(data);
+    if (typeof updateHomeHUD === 'function') updateHomeHUD();
+    renderItemBag();
 }
 
 // Liens entre écrans : objet → Atelier, Atelier → boutique
