@@ -626,7 +626,6 @@ window.addEventListener('click', (event) => {
 });
 
 // --- BOUTIQUE ---
-let currentShopTab = 'upgrades';
 const POCKET_LABELS = {
     'ct': `${Art.item('tm-normal', 20)} CT`,
     'vitamins': `${Art.item('protein', 20)} Vitamines`,
@@ -642,7 +641,8 @@ const POCKET_LABELS = {
 
 function openShopModal() {
     document.getElementById('shop-modal').style.display = 'flex';
-    currentShopPocket = 'ct'; // Default to CTs now
+    currentShopPocket = 'eggs'; // Œufs et incubateurs d'abord
+    renderShopPockets();
     renderShop();
 }
 
@@ -650,28 +650,9 @@ function closeShopModal() {
     document.getElementById('shop-modal').style.display = 'none';
 }
 
+// Ancien système d'onglets : renvoie vers la poche correspondante
 function switchShopTab(tab) {
-    currentShopTab = tab;
-    
-    // Update active tab UI
-    document.querySelectorAll('.shop-tab').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('onclick').includes(`'${tab}'`));
-    });
-    
-    const pocketContainer = document.getElementById('shop-pockets');
-    if (tab === 'items') {
-        pocketContainer.style.display = 'flex';
-        // Set default pocket based on what exists
-        const pockets = Object.keys(GameData.getItemsByPocket());
-        if (pockets.includes('ct')) currentShopPocket = 'ct';
-        else if (pockets.length > 0) currentShopPocket = pockets[0];
-        
-        renderShopPockets();
-    } else {
-        pocketContainer.style.display = 'none';
-    }
-    
-    renderShop();
+    switchShopPocket(tab === 'items' ? 'ct' : 'eggs');
 }
 
 function renderShopPockets() {
@@ -679,12 +660,8 @@ function renderShopPockets() {
     if (!container) return;
 
     const itemsByPocket = GameData.getItemsByPocket();
-    const pockets = Object.keys(itemsByPocket).sort();
-
-    if (pockets.length === 0) {
-        container.innerHTML = '<p>Aucun objet disponible.</p>';
-        return;
-    }
+    // Une seule rangée de boutons : Œufs (œufs + incubateurs), puis les poches d'objets
+    const pockets = ['eggs', ...Object.keys(itemsByPocket).sort()];
 
     // S'assurer que la poche actuelle est valide, sinon prendre la première
     if (!pockets.includes(currentShopPocket)) {
@@ -693,7 +670,7 @@ function renderShopPockets() {
 
     container.innerHTML = pockets.map(p => `
         <button class="pocket-tab ${currentShopPocket === p ? 'active' : ''}" onclick="switchShopPocket('${p}')">
-            ${POCKET_LABELS[p] || p}
+            ${p === 'eggs' ? `${Art.egg('Commun', 20)} Œufs` : (POCKET_LABELS[p] || p)}
         </button>
     `).join('');
 }
@@ -712,31 +689,29 @@ async function renderShop() {
     const data = GameData._load();
     const money = data.money;
 
-    if (currentShopTab === 'upgrades') {
+    if (currentShopPocket === 'eggs') {
+        // Incubateur supplémentaire, puis les œufs
         const slots = data.unlockedIncubators || 1;
         const costs = [0, 5000, 15000, 50000, 150000, 500000];
         const nextCost = costs[slots];
-        
-        grid.innerHTML = (slots < 6) ? `
+        const slotCard = (slots < 6) ? `
             <div class="shop-item-card">
                 <div class="item-icon-text">${Art.item('cell-battery', 48)}</div>
-                <div class="item-name">Slot d'Incubateur</div>
-                <div class="item-desc">Ajoute un slot supplémentaire pour faire éclore plus d'œufs simultanément.</div>
+                <div class="item-name">Incubateur</div>
+                <div class="item-desc">Un emplacement de plus pour faire éclore plus d'œufs en même temps (${slots}/6).</div>
                 <div class="item-price">${nextCost.toLocaleString('fr-FR')}</div>
                 <button class="pk-btn-action small" onclick="buySlot()">Acheter</button>
-            </div>
-        ` : `<p style="grid-column: 1/-1; text-align: center;">Tous les slots sont débloqués !</p>`;
-    } 
-    else if (currentShopTab === 'eggs') {
+            </div>` : '';
+
         const eggItems = [
             { rarity: 'Commun', price: 500, desc: 'Un œuf simple contenant un Pokémon de rareté commune.' },
             { rarity: 'Peu commun', price: 2500, desc: 'Un œuf contenant un Pokémon un peu plus rare.' },
             { rarity: 'Rare', price: 10000, desc: 'Un œuf précieux pouvant contenir des Pokémon puissants.' }
         ];
 
-        grid.innerHTML = eggItems.map(egg => `
+        grid.innerHTML = slotCard + eggItems.map(egg => `
             <div class="shop-item-card">
-                <div class="egg-sprite rarity-${egg.rarity.toLowerCase().replace(/ /g, '-')}"></div>
+                <div class="item-icon-text">${Art.egg(egg.rarity, 48)}</div>
                 <div class="item-name">Œuf ${egg.rarity}</div>
                 <div class="item-desc">${egg.desc}</div>
                 <div class="item-price">${egg.price.toLocaleString('fr-FR')}</div>
@@ -744,7 +719,7 @@ async function renderShop() {
             </div>
         `).join('');
     }
-    else if (currentShopTab === 'items') {
+    else {
         const itemsByPocket = GameData.getItemsByPocket();
         const shopItems = itemsByPocket[currentShopPocket] || [];
 
@@ -770,7 +745,7 @@ async function renderShop() {
                     <img src="${sprite}" class="item-icon" loading="lazy" onerror="this.src=Art.FALLBACK">
                     <div class="item-name">${item.name_fr || item.id}</div>
                     ${moveName ? `<div class="item-move">${moveName}</div>` : ''}
-                    <div class="item-desc">${clip(desc, 70)}</div>
+                    <div class="item-desc">${clip(desc, 140)}</div>
                     <div class="item-price">${(item.cost || 1000).toLocaleString('fr-FR')}</div>
                     <button class="pk-btn-action small" onclick="event.stopPropagation(); buyShopItem('${item.id}', ${item.cost || 1000}, '${item.name_fr.replace(/'/g, "\\'")}')">Acheter</button>
                 </div>

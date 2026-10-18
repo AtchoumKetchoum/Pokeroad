@@ -125,3 +125,23 @@
 .ct-move { font-family: var(--font-title); font-weight: 400; color: var(--ink); }
 /* Fiche : les onglets du bas restent au-dessus de la barre Retour */
 .modal:not(#confirm-modal) #pokemon-detail-card.pk-sheet { height: calc(100% - 146px) !important; }
+
+/* Boutique : toutes les cartes ont la même forme (3 colonnes égales, même hauteur,
+   description sur 3 lignes, prix et bouton calés en bas) */
+#shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; align-items: stretch !important; gap: 10px !important; }
+#shop-modal .shop-item-card { display: flex; flex-direction: column; align-items: center; min-width: 0; height: 100%; box-sizing: border-box; }
+#shop-modal .shop-item-card .item-move,
+#shop-modal .shop-item-card .item-name { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#shop-modal .shop-item-card .item-desc {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  height: 3.75em; line-height: 1.25 !important;
+}
+#shop-modal .shop-item-card .item-price { margin-top: auto; }
+#shop-modal .shop-item-card .pk-btn-action { flex: none; }
+/* Cartes hors CT : le nom est le titre */
+#shop-modal .shop-item-card:not(.is-ct) .item-name { font-family: var(--font-title); font-size: 26px; line-height: 1.1; color: var(--ink); }
+#shop-modal .shop-item-card .item-icon-text { margin: 0; height: 48px; display: flex; align-items: center; justify-content: center; }
+/* Boutons de poche : icône et libellé sur une ligne */
+.shop-pockets .pocket-tab { display: inline-flex !important; align-items: center; gap: 4px; white-space: nowrap; }
+.shop-pockets .pocket-tab svg, .shop-pockets .pocket-tab img { flex: none; width: 20px; height: 20px; display: block; }
+#shop-pockets, #item-bag-pockets { margin-bottom: 4px !important; }
