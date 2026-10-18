@@ -1068,6 +1068,7 @@ function updateTurnOrderDisplay() {
     turnPrediction.forEach(unit => {
         const container = document.createElement('div');
         container.className = 'timeline-unit-container';
+        container.__unit = unit; // toucher : fiche de combat (js/info-modal.js)
 
         const boostGauge = document.createElement('div');
         boostGauge.className = 'timeline-boost-gauge';
@@ -1135,7 +1136,7 @@ function heldItemsHtml(unit) {
         const used = unit._usedItems?.has(id);
         const v = typeof HeldItems !== 'undefined' && HeldItems.spec(id) ? Math.round(HeldItems.valueOf(unit, id) * 10) / 10 : null;
         const title = (it?.effect_fr || '').replace(/"/g, '&quot;');
-        return `<span class="held-chip ${used ? 'used' : ''} ${unit._itemsOff ? 'off' : ''}" title="${title}">${Art.item(id, 22)}${it?.name_fr || id}${v != null ? ` <small>${v}</small>` : ''}</span>`;
+        return `<span class="held-chip ${used ? 'used' : ''} ${unit._itemsOff ? 'off' : ''}" title="${title}" data-item="${id}" data-side="${unit._side}" data-index="${unit._index}">${Art.item(id, 22)}${it?.name_fr || id}${v != null ? ` <small>${v}</small>` : ''}</span>`;
     };
     return `<div class="info-item held-items-line" style="flex-basis: 100%;"><strong>Objets :</strong> ${ids.map(chip).join(' ')}</div>`;
 }
@@ -1157,7 +1158,7 @@ function showPokemonDetails(unit) {
     for (const statKey in statsMap) {
         const baseStatName = statsMap[statKey];
         const baseStatValue = unit[baseStatName];
-        const modifierStage = unit.statMods[statKey] || 0;
+        const modifierStage = unit.statMods?.[statKey] || 0;
 
         let statValueText = `${baseStatValue}`;
         if (modifierStage !== 0) {
@@ -1315,6 +1316,7 @@ async function renderMovesForUnit(unit) {
   moves.slice(0, 4).forEach(mv => {
     const btn = document.createElement('button');
     btn.className = 'move-btn';
+    btn.__move = mv; btn.__unit = unit; // appui long : fiche complète (js/info-modal.js)
 
     const isZMoveReady = unit._boostedMoveId === mv.id && unit.boostGauge >= 100;
 

@@ -63,3 +63,31 @@
 #view-battle .scaler-view.view-light .team-grid .unit-slot::before { border-width: 4px; box-shadow: 0 6px 0 rgba(27, 31, 59, .18); }
 /* Ombre sous le Pokémon, au sol */
 #view-battle .scaler-view.view-light .team-grid .shadow { width: 52%; height: 12%; bottom: 4%; background: rgba(27, 31, 59, .22); }
+
+/* ==========================================================================
+   Attaques en flexbox : 2 par ligne, largeurs égales
+   ========================================================================== */
+#view-battle #movesRow, #view-battle .movesRow { display: flex !important; flex-wrap: wrap; gap: 8px !important; }
+#view-battle #movesRow .move-btn, #view-battle .movesRow .move-btn { flex: 1 1 calc(50% - 4px); min-width: 0; max-width: none !important; width: auto !important; margin: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ==========================================================================
+   Fenêtre d'information (js/info-modal.js)
+   ========================================================================== */
+#info-modal { z-index: 20050; }
+#info-modal .info-lede { opacity: .85; margin: 0 0 10px; }
+#info-modal .info-warn { color: var(--red); font-weight: 800; }
+#info-modal .info-list { display: grid; gap: 8px; padding-left: 20px; }
+#info-modal .info-modal-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
+#info-modal .syn-list, #info-modal .rank-list { display: grid; gap: 8px; }
+#info-modal .syn-row, #info-modal .rank-row { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: 8px; padding: 8px 10px; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper-2); }
+#info-modal .syn-row.on, #info-modal .rank-row.on { background: #f3e3b5; }
+#info-modal .syn-row b, #info-modal .rank-row b { font-family: var(--font-title); font-weight: 400; font-size: 24px; }
+#info-modal .zone-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+#info-modal .zone-facts > div { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper-2); }
+#info-modal .type-line { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px dashed rgba(27, 31, 59, .2); }
+#info-modal .type-line span { display: flex; flex-wrap: wrap; gap: 4px; }
+#info-modal .item-hero { display: flex; justify-content: center; }
+#info-modal .item-hero img, #info-modal .item-hero svg { width: 64px; height: 64px; image-rendering: pixelated; }
+#info-modal .info-from-panel .info-section { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+/* Ce qui ouvre une fiche d'info se signale au toucher */
+#view-battle .synergy-panel, #view-battle #hudProgress, #view-battle .rank-chip, #view-battle .timeline-unit-container, .held-chip, .chip[class*="type-"] { cursor: pointer; }
