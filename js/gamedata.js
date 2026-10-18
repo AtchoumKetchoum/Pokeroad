@@ -1237,6 +1237,29 @@ const GameData = (() => {
      * @param {string} targetId - ID du Pokémon qui reçoit l'XP
      * @param {Array} foodIds - Liste des IDs des Pokémon sacrifiés
      */
+    // Bonbons : Super Bonbon = +1 niveau ; Bonbons Exp = expérience (500 XP par niveau, le reste est gardé)
+    const CANDY_XP = { 'rare-candy': 500, 'exp-candy-xs': 100, 'exp-candy-s': 500, 'exp-candy-m': 1500, 'exp-candy-l': 5000, 'exp-candy-xl': 15000 };
+    function useCandy(pokemonInstanceId, itemKey, count = 1) {
+        const data = loadData();
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
+        const inv = data?.inventory?.items || {};
+        if (!pokemon || !CANDY_XP[itemKey]) return { success: false, reason: 'Bonbon inutilisable.' };
+        const maxLevel = Refinement.getMaxLevel(pokemon.refinementLevel || 1, pokemon.refinementStars || 0);
+        let used = 0;
+        const start = pokemon.level;
+        while (used < count && (inv[itemKey] || 0) > 0 && pokemon.level < maxLevel) {
+            inv[itemKey]--; used++;
+            pokemon.xp = (pokemon.xp || 0) + CANDY_XP[itemKey];
+            while (pokemon.xp >= 500 && pokemon.level < maxLevel) { pokemon.xp -= 500; pokemon.level++; }
+        }
+        if (inv[itemKey] <= 0) delete inv[itemKey];
+        if (pokemon.level >= maxLevel) pokemon.xp = 0;
+        if (!used) return { success: false, reason: pokemon.level >= maxLevel ? `Niveau maximum (${maxLevel}) atteint : monte le Grade.` : 'Bonbon absent du sac.' };
+        pokemon.stats = calculateStats(pokemon);
+        saveData(data);
+        return { success: true, pokemon, used, levels: pokemon.level - start };
+    }
+
     function feedPokemon(targetId, foodIds) {
         const data = loadData();
         const target = data.pokemons.find(p => p.instanceId === targetId);
@@ -2235,6 +2258,8 @@ const GameData = (() => {
         getItemsByPocket: () => itemsByPocket,
         getItem: (id) => itemsCatalog[id],
         canLearnCT,
+        useCandy,
+        CANDY_XP,
         STAT_KEYS,
         MOCHI_MAP,
         statTrack,

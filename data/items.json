@@ -508,12 +508,12 @@
   "rare-candy": {
     "id": 50,
     "name_fr": "Super Bonbon",
-    "cost": 10000,
+    "cost": 1500,
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rare-candy.png",
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Provoque une montée de niveau et augmente le bonheur.",
+    "effect_fr": "Fait monter un Pokémon d'un niveau (dans la limite de son Grade).",
     "description_fr": "Un bonbon plein d’énergie. Il permet à un Pokémon de monter d’un niveau."
   },
   "pp-up": {
@@ -629,56 +629,56 @@
   "exp-candy-xs": {
     "id": 1182,
     "name_fr": "Bonbon Exp. XS",
-    "cost": 20,
+    "cost": 150,
     "sprite": null,
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Donne 100 points d'expérience à un Pokémon (500 = 1 niveau).",
     "description_fr": "Un bonbon plein d’énergie. Il permet à un Pokémon de gagner un petit peu de Points d’Expérience."
   },
   "exp-candy-s": {
     "id": 1183,
     "name_fr": "Bonbon Exp. S",
-    "cost": 240,
+    "cost": 600,
     "sprite": null,
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Donne 500 points d'expérience à un Pokémon (1 niveau).",
     "description_fr": "Un bonbon plein d’énergie. Il permet à un Pokémon de gagner un peu de Points d’Expérience."
   },
   "exp-candy-m": {
     "id": 1184,
     "name_fr": "Bonbon Exp. M",
-    "cost": 1000,
+    "cost": 1800,
     "sprite": null,
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Donne 1 500 points d'expérience à un Pokémon (3 niveaux).",
     "description_fr": "Un bonbon plein d’énergie. Il permet à un Pokémon de gagner quelques Points d’Expérience."
   },
   "exp-candy-l": {
     "id": 1185,
     "name_fr": "Bonbon Exp. L",
-    "cost": 3000,
+    "cost": 5500,
     "sprite": null,
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Donne 5 000 points d'expérience à un Pokémon (10 niveaux).",
     "description_fr": "Un bonbon plein d’énergie. Il permet à un Pokémon de gagner une bonne quantité de Points d’Expérience."
   },
   "exp-candy-xl": {
     "id": 1186,
     "name_fr": "Bonbon Exp. XL",
-    "cost": 10000,
+    "cost": 16000,
     "sprite": null,
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Donne 15 000 points d'expérience à un Pokémon (30 niveaux).",
     "description_fr": "Un bonbon plein d’énergie. Il permet à un Pokémon de gagner beaucoup de Points d’Expérience."
   },
   "ability-patch": {

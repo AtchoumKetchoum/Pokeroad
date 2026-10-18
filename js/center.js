@@ -926,6 +926,12 @@ function renderBoosters(pokemon) {
         { key: 'ability-capsule', label: 'Nature au hasard' },
         { key: 'ability-patch', label: 'Nature : + la stat choisie', pick: true, noHp: true },
         { key: 'fresh-start-mochi', label: 'Remise à zéro des EV (remboursés)' },
+        { key: 'rare-candy', label: '+1 niveau', candy: true },
+        { key: 'exp-candy-xs', label: '+100 XP (500 XP = 1 niveau)', candy: true },
+        { key: 'exp-candy-s', label: '+500 XP', candy: true },
+        { key: 'exp-candy-m', label: '+1 500 XP', candy: true },
+        { key: 'exp-candy-l', label: '+5 000 XP', candy: true },
+        { key: 'exp-candy-xl', label: '+15 000 XP', candy: true },
     ].filter(u => inv[u.key] > 0);
     container.style.display = 'block';
     container.innerHTML = `
@@ -943,7 +949,7 @@ function renderBoosters(pokemon) {
                     <span class="booster-name">${GameData.getItem(u.key)?.name_fr || u.key} (x${inv[u.key]})<small>${u.label}</small></span>
                     <span class="booster-actions">${u.pick
                         ? Object.keys(STAT_SHORT).filter(k => !(u.noHp && k === 'hp')).map(k => `<button class="pk-btn-action small" onclick="applyBooster('${u.key}', '${pokemon.instanceId}', '${k}')">${STAT_SHORT[k]}</button>`).join('')
-                        : `<button class="pk-btn-action small" onclick="applyBooster('${u.key}', '${pokemon.instanceId}')">Utiliser</button>`}</span>
+                        : `<button class="pk-btn-action small" onclick="applyBooster('${u.key}', '${pokemon.instanceId}')">Utiliser</button>${u.candy && inv[u.key] >= 10 ? `<button class="pk-btn-action small" onclick="applyBooster('${u.key}', '${pokemon.instanceId}', null, 10)">×10</button>` : ''}`}</span>
                 </div>`).join('')}
         </div>` : ''}
     `;
@@ -957,9 +963,10 @@ function openStatTraining(instanceId, tab) {
     RefinementUI.switchTab(tab);
 }
 
-function applyBooster(itemKey, pokemonId, stat = null) {
+function applyBooster(itemKey, pokemonId, stat = null, count = 1) {
     let res;
-    if (itemKey === 'silver-bottle-cap') res = GameData.useBottleCap(pokemonId, stat);
+    if (GameData.CANDY_XP?.[itemKey]) res = GameData.useCandy(pokemonId, itemKey, count);
+    else if (itemKey === 'silver-bottle-cap') res = GameData.useBottleCap(pokemonId, stat);
     else if (itemKey === 'ability-capsule' || itemKey === 'ability-patch') res = GameData.changeNature(pokemonId, itemKey, stat);
     else if (itemKey === 'fresh-start-mochi') res = GameData.resetEvTraining(pokemonId);
     else res = GameData.useItemOnPokemon(itemKey, pokemonId);
