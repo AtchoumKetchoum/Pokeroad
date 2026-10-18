@@ -59,3 +59,10 @@
 .ut-row { display: flex; align-items: center; gap: 8px; }
 .ut-row .ut-tile { flex: none; }
 .ut-row span { font-size: 22px; line-height: 1.2; }
+
+/* Fiche en combat : objets et baies portés */
+.held-items-line { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.held-chip { display: inline-flex; align-items: center; gap: 3px; padding: 1px 8px 1px 2px; border: 2px solid var(--ink); border-radius: 999px; background: var(--paper-2); font-weight: 800; }
+.held-chip small { opacity: .7; }
+.held-chip.used { opacity: .45; text-decoration: line-through; }
+.held-chip.off { filter: grayscale(1); }

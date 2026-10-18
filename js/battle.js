@@ -1126,6 +1126,20 @@ function hideInfoPanel() {
 }
 
 
+// Objets et baies portés (barrés une fois utilisés, grisés sous Zone Magique)
+function heldItemsHtml(unit) {
+    const ids = [...(unit.heldItems || []), ...(unit.berries || [])];
+    if (!ids.length) return '';
+    const chip = id => {
+        const it = typeof GameData !== 'undefined' ? GameData.getItem(id) : null;
+        const used = unit._usedItems?.has(id);
+        const v = typeof HeldItems !== 'undefined' && HeldItems.spec(id) ? Math.round(HeldItems.valueOf(unit, id) * 10) / 10 : null;
+        const title = (it?.effect_fr || '').replace(/"/g, '&quot;');
+        return `<span class="held-chip ${used ? 'used' : ''} ${unit._itemsOff ? 'off' : ''}" title="${title}">${Art.item(id, 22)}${it?.name_fr || id}${v != null ? ` <small>${v}</small>` : ''}</span>`;
+    };
+    return `<div class="info-item held-items-line" style="flex-basis: 100%;"><strong>Objets :</strong> ${ids.map(chip).join(' ')}</div>`;
+}
+
 function showPokemonDetails(unit) {
     if (!dom.infoDisplayPanel || !unit) return;
 
@@ -1171,6 +1185,7 @@ function showPokemonDetails(unit) {
             ${statDisplayHtml}
             <span class="info-item"><strong>Types:</strong> ${typesHtml}</span>
             <div class="info-item" style="flex-basis: 100%;"><strong>Effets :</strong> ${typeof UnitTiles !== 'undefined' ? UnitTiles.describe(unit) : effectsHtml}</div>
+            ${heldItemsHtml(unit)}
         </div>
     `;
     dom.infoDisplayPanel.classList.remove('terrain-mode');
