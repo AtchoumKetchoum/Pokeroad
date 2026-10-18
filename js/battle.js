@@ -995,12 +995,18 @@ function buildActorsFromDom() {
       isIdle: true, // Pour l'animation de "respiration"
       statMods: { ATK: 0, DEF: 0, SPA: 0, SPD: 0, SPE: 0, PRE: 0, EVA: 0, CRIT: 0 }, // Ajout de l'évasion (EVA)
       _boostedMoveId: null, // Initialisation explicite du boostedMoveId
-      heldItem: srcPk.heldItem || null,
+      heldItems: [...(srcPk.heldItems || [])].filter(Boolean),
+      berries: [...(srcPk.berries || [])].filter(Boolean),
     };
-    if (actor.heldItem) {
-        const itemRef = GameData.getGlobalItemRefinement(actor.heldItem);
-        actor.itemMult = Refinement.getMultiplier(Refinement.levelOf(itemRef), Refinement.starsOf(itemRef));
-    }
+    // Niveau d'Atelier de chaque objet porté
+    actor.itemMults = {};
+    [...actor.heldItems, ...actor.berries].forEach(id => {
+        const ref = GameData.getGlobalItemRefinement(id);
+        actor.itemMults[id] = Refinement.getMultiplier(Refinement.levelOf(ref), Refinement.starsOf(ref));
+    });
+    // Compatibilité : l'ancien code lit un objet et une baie
+    actor.heldItem = actor.heldItems[0] || actor.berries[0] || null;
+    actor.itemMult = actor.itemMults[actor.heldItem] || 1;
     actor.boostGauge = 0;
     actor.actionPoints = 0;
 
@@ -1059,6 +1065,9 @@ function buildActorsFromDom() {
         actor.hp = actor.maxHp;
         actor.heldItem = tier.item || null;
         actor.itemMult = Refinement.getMultiplier(tier.itemLevel, tier.itemStars);
+        actor.heldItems = tier.item ? [tier.item] : [];
+        actor.berries = [];
+        actor.itemMults = tier.item ? { [tier.item]: actor.itemMult } : {};
         actor.tier = tier;
     }
     if (srcPk) {

@@ -710,7 +710,7 @@ const RefinementUI = (() => {
         
         // Collect all held item IDs from pokemons
         const heldIds = data.pokemons
-            .map(p => p.heldItem)
+            .flatMap(p => [...(p.heldItems || []), ...(p.berries || []), p.heldItem])
             .filter(id => id); // Filter nulls
             
         // Generic set of unique IDs

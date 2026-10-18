@@ -812,25 +812,28 @@ function setBoostedMove(moveName) {
 function renderItemSlot(pokemon) {
     let detailRight = document.querySelector('.detail-right');
     if (!detailRight) return;
-
-    // Check if slot already exists
-    let existingSlot = document.getElementById('item-management-section');
-    if (existingSlot) existingSlot.remove();
-
+    document.getElementById('item-management-section')?.remove();
+    const slots = GameData.getHoldSlots(pokemon);
+    const row = (kind, label, open) => Array.from({ length: slots.max }, (_, i) => {
+        const id = (pokemon[kind] || [])[i];
+        if (i >= open) return `<div class="hold-slot locked" title="Débloqué au Grade ${i === 1 ? 3 : 5}">${Art.icon ? '' : ''}<span>Grade ${i === 1 ? 3 : 5}</span></div>`;
+        if (!id) return `<button class="hold-slot empty" onclick="pickItemForEquip('${pokemon.instanceId}', '${kind}', ${i})"><span>+ ${label}</span></button>`;
+        const it = GameData.getItem(id);
+        return `<div class="hold-slot filled" title="${(it?.effect_fr || '').replace(/"/g, '&quot;')}">
+            <img src="${it?.sprite || Art.FALLBACK}" alt="" onerror="this.onerror=null;this.src=Art.FALLBACK">
+            <span>${it?.name_fr || id}</span>
+            <span class="hold-actions"><button class="pk-btn-action small" onclick="pickItemForEquip('${pokemon.instanceId}', '${kind}', ${i})">Changer</button><button class="pk-btn-action small btn-unequip" onclick="handleUnequip('${pokemon.instanceId}', '${kind}', ${i})">Retirer</button></span>
+        </div>`;
+    }).join('');
     const slotDiv = document.createElement('div');
     slotDiv.id = 'item-management-section';
     slotDiv.innerHTML = `
-        <div class="section-title">Objet Tenu</div>
-        <div class="item-slot-container">
-            <div id="held-item-display" class="held-item-info">
-                ${pokemon.heldItem ? renderHeldItem(pokemon.heldItem) : '<span class="none">Aucun objet</span>'}
-            </div>
-            <button class="pk-btn-action small" onclick="pickItemForEquip('${pokemon.instanceId}')">Changer</button>
-            ${pokemon.heldItem ? `<button class="pk-btn-action small btn-unequip" onclick="handleUnequip('${pokemon.instanceId}')">Retirer</button>` : ''}
-        </div>
+        <div class="section-title">Objets tenus (${(pokemon.heldItems || []).length}/${slots.items})</div>
+        <div class="hold-grid">${row('heldItems', 'Objet', slots.items)}</div>
+        <div class="section-title">Baies (${(pokemon.berries || []).length}/${slots.berries})</div>
+        <div class="hold-grid">${row('berries', 'Baie', slots.berries)}</div>
+        <p class="small hold-hint">Un emplacement de plus au Grade 3, puis au Grade 5. Les baies se consomment une fois par combat.</p>
     `;
-    
-    // Append to detail-right instead of trying to insert before sibling
     detailRight.appendChild(slotDiv);
 }
 
@@ -843,8 +846,8 @@ function renderHeldItem(itemId) {
     `;
 }
 
-function handleUnequip(instanceId) {
-    const result = GameData.unequipItem(instanceId);
+function handleUnequip(instanceId, kind = null, index = null) {
+    const result = GameData.unequipItem(instanceId, kind, index);
     if (result.success) {
         renderItemSlot(result.pokemon);
     } else {
@@ -852,23 +855,23 @@ function handleUnequip(instanceId) {
     }
 }
 
-async function pickItemForEquip(instanceId) {
+async function pickItemForEquip(instanceId, kind = 'heldItems', slot = null) {
     // We can reuse displayLocker logic or a simpler pick list
     const inventory = GameData.getInventory().items || {};
     // Seuls les objets de combat et les baies se tiennent
     const pockets = GameData.getItemsByPocket();
-    const holdable = new Set([...(pockets.battle || []), ...(pockets.berries || [])].map(i => i.id));
+    const holdable = new Set((kind === 'berries' ? (pockets.berries || []) : (pockets.battle || [])).map(i => i.id));
     const ownedItems = Object.entries(inventory).filter(([id, count]) => count > 0 && holdable.has(id));
     
     if (ownedItems.length === 0) {
-        alert("Aucun objet à tenir dans ton sac (baies et objets de combat).");
+        alert(kind === 'berries' ? "Aucune baie dans ton sac." : "Aucun objet de combat dans ton sac.");
         return;
     }
 
     let listHtml = ownedItems.map(([id, count]) => { // This uses allItemsData
         const item = GameData.getItem(id); // Use GameData's getItem
         return `
-            <div class="item-pick-option" onclick="confirmEquip('${instanceId}', '${id}')">
+            <div class="item-pick-option" onclick="confirmEquip('${instanceId}', '${id}', ${slot})">
                 <img src="${item.sprite || Art.FALLBACK}" style="width:32px;">
                 <span>${item.name_fr} (x${count})</span>
             </div>
@@ -891,8 +894,8 @@ async function pickItemForEquip(instanceId) {
     document.body.appendChild(pickerModal);
 }
 
-window.confirmEquip = function(instanceId, itemId) {
-    const result = GameData.equipItem(instanceId, itemId);
+window.confirmEquip = function(instanceId, itemId, slot = null) {
+    const result = GameData.equipItem(instanceId, itemId, slot);
     if (result.success) {
         document.getElementById('item-picker-temporary')?.remove();
         renderItemSlot(result.pokemon);

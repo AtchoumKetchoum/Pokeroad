@@ -153,9 +153,12 @@ const GameData = (() => {
 
         const moveRefinements = p.moveRefinements || {}; // Raffinement des attaques apprises
         
-        // Objets multiples
-        const heldItems = p.heldItems || [];
-        const berries = p.berries || [];
+        // Objets multiples : jusqu'à 3 objets et 3 baies (l'ancien objet unique rejoint le bon emplacement)
+        const heldItems = [...(p.heldItems || [])].filter(Boolean);
+        const berries = [...(p.berries || [])].filter(Boolean);
+        if (p.heldItem && !heldItems.includes(p.heldItem) && !berries.includes(p.heldItem)) {
+            (isBerryId(p.heldItem) ? berries : heldItems).push(p.heldItem);
+        }
 
         // Ability selection if missing
         let ability = p.ability;
@@ -181,8 +184,10 @@ const GameData = (() => {
             evRefinement,
             moveRefinements,
             heldItems,
-            berries
+            berries,
+            heldItem: undefined
         };
+        delete normalized.heldItem;
 
         // Recalculate stats based on IVs/EVs/Nature
         normalized.stats = calculateStats(normalized);
@@ -763,9 +768,10 @@ const GameData = (() => {
                         pk.moveRefinements = {};
                         needsSave = true;
                     }
-                    // Migration: heldItem → heldItems array
-                    if (pk && pk.heldItem && !pk.heldItems) {
-                        pk.heldItems = [pk.heldItem];
+                    // Migration : l'objet unique rejoint ses emplacements (objet ou baie)
+                    if (pk && pk.heldItem) {
+                        const list = isBerryId(pk.heldItem) ? (pk.berries = pk.berries || []) : (pk.heldItems = pk.heldItems || []);
+                        if (!list.includes(pk.heldItem)) list.push(pk.heldItem);
                         delete pk.heldItem;
                         needsSave = true;
                     }
@@ -1922,49 +1928,49 @@ const GameData = (() => {
         return { success: true, newPokemon: pokemon };
     }
 
-    function equipItem(pokemonInstanceId, itemId) {
+    // --- Objets tenus : emplacements d'objets et de baies, débloqués par le Grade ---
+    const MAX_HELD = 3;
+    function isBerryId(id) {
+        return itemsCatalog?.[id]?.pocket === 'berries' || /-berry$/.test(id || '');
+    }
+    // 1 objet et 1 baie au départ ; un de plus au Grade 3, puis au Grade 5
+    function getHoldSlots(pokemon) {
+        const grade = pokemon?.refinementLevel || 1;
+        const n = Math.min(MAX_HELD, 1 + (grade >= 3 ? 1 : 0) + (grade >= 5 ? 1 : 0));
+        return { items: n, berries: n, max: MAX_HELD, nextAt: grade < 3 ? 3 : grade < 5 ? 5 : null };
+    }
+    function equipItem(pokemonInstanceId, itemId, slot = null) {
         const data = loadData();
-        const pokemon = data.pokemons.find(p => p.instanceId === pokemonInstanceId);
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
         if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
-
-        // If already has an item, unequip first
-        if (pokemon.heldItem) {
-            const unequipResult = _unequipItemInternal(data, pokemon);
-            if (!unequipResult.success) return unequipResult;
-        }
-
-        // Check inventory
-        if (!data.inventory.items || !data.inventory.items[itemId] || data.inventory.items[itemId] <= 0) {
-            return { success: false, reason: "Objet non possédé." };
-        }
-
-        // Equip
+        if (!(data.inventory.items?.[itemId] > 0)) return { success: false, reason: "Objet non possédé." };
+        const kind = isBerryId(itemId) ? 'berries' : 'heldItems';
+        const list = pokemon[kind] = (pokemon[kind] || []).filter(Boolean);
+        const slots = getHoldSlots(pokemon)[kind === 'berries' ? 'berries' : 'items'];
+        if (kind === 'heldItems' && list.includes(itemId)) return { success: false, reason: "Cet objet est déjà tenu." };
+        const index = slot != null ? slot : (list.length < slots ? list.length : slots - 1);
+        if (index >= slots) return { success: false, reason: `Emplacement verrouillé (Grade ${getHoldSlots(pokemon).nextAt}).` };
+        if (list[index]) data.inventory.items[list[index]] = (data.inventory.items[list[index]] || 0) + 1;
+        list[index] = itemId;
         data.inventory.items[itemId]--;
-        pokemon.heldItem = itemId;
-
+        if (data.inventory.items[itemId] <= 0) delete data.inventory.items[itemId];
+        pokemon[kind] = list.filter(Boolean);
         saveData(data);
         return { success: true, pokemon };
     }
-
-    function unequipItem(pokemonInstanceId) {
+    // Retire l'objet d'un emplacement (kind : 'heldItems' ou 'berries'), ou tous si index est omis
+    function unequipItem(pokemonInstanceId, kind = null, index = null) {
         const data = loadData();
-        const pokemon = data.pokemons.find(p => p.instanceId === pokemonInstanceId);
+        const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
         if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
-        if (!pokemon.heldItem) return { success: false, reason: "Ce Pokémon n'a pas d'objet." };
-
-        const result = _unequipItemInternal(data, pokemon);
-        if (result.success) {
-            saveData(data);
+        data.inventory.items = data.inventory.items || {};
+        const back = id => { data.inventory.items[id] = (data.inventory.items[id] || 0) + 1; };
+        for (const k of kind ? [kind] : ['heldItems', 'berries']) {
+            const list = pokemon[k] || [];
+            if (index != null) { if (list[index]) { back(list[index]); list.splice(index, 1); } }
+            else { list.forEach(back); pokemon[k] = []; }
         }
-        return result;
-    }
-
-    function _unequipItemInternal(data, pokemon) {
-        if (!pokemon.heldItem) return { success: true };
-        const itemId = pokemon.heldItem;
-        if (!data.inventory.items) data.inventory.items = {};
-        data.inventory.items[itemId] = (data.inventory.items[itemId] || 0) + 1;
-        pokemon.heldItem = null;
+        saveData(data);
         return { success: true, pokemon };
     }
 
@@ -2253,6 +2259,8 @@ const GameData = (() => {
         evolvePokemon,
         equipItem,
         unequipItem,
+        getHoldSlots,
+        isBerryId,
         toggleFavorite,
         getItems: () => itemsCatalog,
         getItemsByPocket: () => itemsByPocket,
