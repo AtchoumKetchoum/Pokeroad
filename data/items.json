@@ -524,7 +524,7 @@
     "category": "Vitamines",
     "pocket": "medicine",
     "attributes": ["countable", "consumable", "usable-overworld", "usable-in-battle", "holdable"],
-    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau une attaque d'un Pokémon.",
+    "effect_fr": "Joker d'entraînement : remplace une CT pour faire monter d'un niveau une capacité d'un Pokémon.",
     "description_fr": "Augmente un peu les PP max d’une capacité sélectionnée."
   },
   "zinc": {
@@ -788,9 +788,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Grimace à un Pokémon compatible.",
+    "effect_fr": "Apprend Grimace à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Vitesse −2, −20 % de jauge pour la cible.",
-    "move": "scary-face"
+    "move": "scary-face",
+    "move_type": "normal"
   },
   "tm01": {
     "id": 305,
@@ -800,9 +801,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Bélier à un Pokémon compatible.",
+    "effect_fr": "Apprend Bélier à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 28 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 25 % des dégâts infligés.",
-    "move": "take-down"
+    "move": "take-down",
+    "move_type": "normal"
   },
   "tm04": {
     "id": 308,
@@ -812,9 +814,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Hâte à un Pokémon compatible.",
+    "effect_fr": "Apprend Hâte à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Vitesse +2 et +40 % de jauge tout de suite.",
-    "move": "agility"
+    "move": "agility",
+    "move_type": "psychic"
   },
   "tm07": {
     "id": 311,
@@ -824,9 +827,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Abri à un Pokémon compatible.",
+    "effect_fr": "Apprend Abri à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Bloque toutes les attaques jusqu'à son prochain tour.",
-    "move": "protect"
+    "move": "protect",
+    "move_type": "normal"
   },
   "tm02": {
     "id": 306,
@@ -836,9 +840,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Charme à un Pokémon compatible.",
+    "effect_fr": "Apprend Charme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Attaque −2 pour la cible.",
-    "move": "charm"
+    "move": "charm",
+    "move_type": "fairy"
   },
   "tm05": {
     "id": 309,
@@ -848,9 +853,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Coud’Boue à un Pokémon compatible.",
+    "effect_fr": "Apprend Coud’Boue à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 6 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Toujours : Précision −1 pour la cible.",
-    "move": "mud-slap"
+    "move": "mud-slap",
+    "move_type": "ground"
   },
   "tm03": {
     "id": 307,
@@ -860,9 +866,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Croco Larme à un Pokémon compatible.",
+    "effect_fr": "Apprend Croco Larme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Déf. Spé. −2 pour la cible.",
-    "move": "fake-tears"
+    "move": "fake-tears",
+    "move_type": "dark"
   },
   "tm16": {
     "id": 320,
@@ -872,9 +879,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rafale Psy à un Pokémon compatible.",
+    "effect_fr": "Apprend Rafale Psy à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 16 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. 10 % de chance : confusion.",
-    "move": "psybeam"
+    "move": "psybeam",
+    "move_type": "psychic"
   },
   "tm19": {
     "id": 323,
@@ -884,9 +892,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Voix Enjôleuse à un Pokémon compatible.",
+    "effect_fr": "Apprend Voix Enjôleuse à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 8 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "disarming-voice"
+    "move": "disarming-voice",
+    "move_type": "fairy"
   },
   "tm10": {
     "id": 314,
@@ -896,9 +905,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Crocs Givre à un Pokémon compatible.",
+    "effect_fr": "Apprend Crocs Givre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 33 au point d'impact. 100 % sur la cible seule. 10 % de chance : gel. 10 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "ice-fang"
+    "move": "ice-fang",
+    "move_type": "ice"
   },
   "tm11": {
     "id": 315,
@@ -908,9 +918,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vibraqua à un Pokémon compatible.",
+    "effect_fr": "Apprend Vibraqua à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 17 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 20 % de chance : confusion.",
-    "move": "water-pulse"
+    "move": "water-pulse",
+    "move_type": "water"
   },
   "tm08": {
     "id": 312,
@@ -920,9 +931,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Crocs Feu à un Pokémon compatible.",
+    "effect_fr": "Apprend Crocs Feu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 33 au point d'impact. 100 % sur la cible seule. 10 % de chance : brûlure. 10 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "fire-fang"
+    "move": "fire-fang",
+    "move_type": "fire"
   },
   "tm13": {
     "id": 317,
@@ -932,9 +944,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Bombe Acide à un Pokémon compatible.",
+    "effect_fr": "Apprend Bombe Acide à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 12 au point d'impact. Toute la ligne avant ennemie : 70 % chacun. Toujours : Déf. Spé. −2 pour la cible.",
-    "move": "acid-spray"
+    "move": "acid-spray",
+    "move_type": "poison"
   },
   "tm17": {
     "id": 321,
@@ -944,9 +957,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Onde Folie à un Pokémon compatible.",
+    "effect_fr": "Apprend Onde Folie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Inflige confusion (précision 100 %) à la cible.",
-    "move": "confuse-ray"
+    "move": "confuse-ray",
+    "move_type": "ghost"
   },
   "tm18": {
     "id": 322,
@@ -956,9 +970,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Larcin à un Pokémon compatible.",
+    "effect_fr": "Apprend Larcin à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 30 au point d'impact. 100 % sur la cible seule. Vole l'objet tenu par la cible si le lanceur n'en a pas.",
-    "move": "thief"
+    "move": "thief",
+    "move_type": "dark"
   },
   "tm21": {
     "id": 325,
@@ -968,9 +983,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Bond à un Pokémon compatible.",
+    "effect_fr": "Apprend Bond à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible seule. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-    "move": "pounce"
+    "move": "pounce",
+    "move_type": "bug"
   },
   "tm09": {
     "id": 313,
@@ -980,9 +996,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Crocs Éclair à un Pokémon compatible.",
+    "effect_fr": "Apprend Crocs Éclair à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 33 au point d'impact. 100 % sur la cible seule. 10 % de chance : paralysie. 10 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "thunder-fang"
+    "move": "thunder-fang",
+    "move_type": "electric"
   },
   "tm14": {
     "id": 318,
@@ -992,9 +1009,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Acrobatie à un Pokémon compatible.",
+    "effect_fr": "Apprend Acrobatie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 28 au point d'impact. 100 % sur la cible seule.",
-    "move": "acrobatics"
+    "move": "acrobatics",
+    "move_type": "flying"
   },
   "tm20": {
     "id": 324,
@@ -1004,9 +1022,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Désherbaffe à un Pokémon compatible.",
+    "effect_fr": "Apprend Désherbaffe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible seule. Toujours : Vitesse +1 pour la cible.",
-    "move": "trailblaze"
+    "move": "trailblaze",
+    "move_type": "grass"
   },
   "tm15": {
     "id": 319,
@@ -1016,9 +1035,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Survinsecte à un Pokémon compatible.",
+    "effect_fr": "Apprend Survinsecte à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 14 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Atq. Spé. −1 pour la cible.",
-    "move": "struggle-bug"
+    "move": "struggle-bug",
+    "move_type": "bug"
   },
   "tm12": {
     "id": 316,
@@ -1028,9 +1048,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Balayage à un Pokémon compatible.",
+    "effect_fr": "Apprend Balayage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule.",
-    "move": "low-kick"
+    "move": "low-kick",
+    "move_type": "fighting"
   },
   "tm23": {
     "id": 327,
@@ -1040,9 +1061,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rayon Chargé à un Pokémon compatible.",
+    "effect_fr": "Apprend Rayon Chargé à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 25. 100 % sur un ennemi tiré au hasard. 70 % de chance : Atq. Spé. +1 pour le lanceur.",
-    "move": "charge-beam"
+    "move": "charge-beam",
+    "move_type": "electric"
   },
   "tm25": {
     "id": 329,
@@ -1052,9 +1074,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Façade à un Pokémon compatible.",
+    "effect_fr": "Apprend Façade à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 35 au point d'impact. 100 % sur la cible seule. Puissance ×2 si le lanceur a une altération.",
-    "move": "facade"
+    "move": "facade",
+    "move_type": "normal"
   },
   "tm29": {
     "id": 333,
@@ -1064,9 +1087,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Châtiment à un Pokémon compatible.",
+    "effect_fr": "Apprend Châtiment à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Puissance 18 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Puissance ×2 si la cible a une altération.",
-    "move": "hex"
+    "move": "hex",
+    "move_type": "ghost"
   },
   "tm22": {
     "id": 326,
@@ -1076,9 +1100,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Douche Froide à un Pokémon compatible.",
+    "effect_fr": "Apprend Douche Froide à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 14 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Toujours : Attaque −1 pour la cible.",
-    "move": "chilling-water"
+    "move": "chilling-water",
+    "move_type": "water"
   },
   "tm24": {
     "id": 328,
@@ -1088,9 +1113,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Danse Flammes à un Pokémon compatible.",
+    "effect_fr": "Apprend Danse Flammes à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 9 au point d'impact. 100 % sur la cible, 40 % sur ses 4 voisins ; toute la zone est piégée 3 tours (6 % de PV par tour, impossible d'en déplacer les Pokémon). Piège 3 tours : la cible perd 6 % de PV par tour et ne peut pas changer de ligne.",
-    "move": "fire-spin"
+    "move": "fire-spin",
+    "move_type": "fire"
   },
   "tm27": {
     "id": 331,
@@ -1100,9 +1126,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aéropique à un Pokémon compatible.",
+    "effect_fr": "Apprend Aéropique à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 30 au point d'impact. 100 % sur la cible seule. Tir de précision : vise n'importe quelle case, ignore la Provocation et ne rate jamais.",
-    "move": "aerial-ace"
+    "move": "aerial-ace",
+    "move_type": "flying"
   },
   "tm26": {
     "id": 330,
@@ -1112,9 +1139,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Queue-Poison à un Pokémon compatible.",
+    "effect_fr": "Apprend Queue-Poison à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 14 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1. 10 % de chance : empoisonnement.",
-    "move": "poison-tail"
+    "move": "poison-tail",
+    "move_type": "poison"
   },
   "tm28": {
     "id": 332,
@@ -1124,9 +1152,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Piétisol à un Pokémon compatible.",
+    "effect_fr": "Apprend Piétisol à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 12 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-    "move": "bulldoze"
+    "move": "bulldoze",
+    "move_type": "ground"
   },
   "tm32": {
     "id": 336,
@@ -1136,9 +1165,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Météores à un Pokémon compatible.",
+    "effect_fr": "Apprend Météores à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 30 au point d'impact. 100 % sur la cible seule. Ne rate jamais et ignore la Provocation.",
-    "move": "swift"
+    "move": "swift",
+    "move_type": "normal"
   },
   "tm30": {
     "id": 334,
@@ -1148,9 +1178,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aboiement à un Pokémon compatible.",
+    "effect_fr": "Apprend Aboiement à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 11 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Toujours : Atq. Spé. −1 pour la cible.",
-    "move": "snarl"
+    "move": "snarl",
+    "move_type": "dark"
   },
   "tm33": {
     "id": 337,
@@ -1160,9 +1191,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Feuille Magik à un Pokémon compatible.",
+    "effect_fr": "Apprend Feuille Magik à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 30 au point d'impact. 100 % sur la cible seule. Tir de précision : vise n'importe quelle case, ignore la Provocation et ne rate jamais.",
-    "move": "magical-leaf"
+    "move": "magical-leaf",
+    "move_type": "grass"
   },
   "tm31": {
     "id": 335,
@@ -1172,9 +1204,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Griffe Acier à un Pokémon compatible.",
+    "effect_fr": "Apprend Griffe Acier à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 12 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. 10 % de chance : Attaque +1 pour le lanceur.",
-    "move": "metal-claw"
+    "move": "metal-claw",
+    "move_type": "steel"
   },
   "tm36": {
     "id": 340,
@@ -1184,9 +1217,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tomberoche à un Pokémon compatible.",
+    "effect_fr": "Apprend Tomberoche à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 13 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-    "move": "rock-tomb"
+    "move": "rock-tomb",
+    "move_type": "rock"
   },
   "tm34": {
     "id": 338,
@@ -1196,9 +1230,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vent Glace à un Pokémon compatible.",
+    "effect_fr": "Apprend Vent Glace à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 15 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-    "move": "icy-wind"
+    "move": "icy-wind",
+    "move_type": "ice"
   },
   "tm35": {
     "id": 339,
@@ -1208,9 +1243,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tir de Boue à un Pokémon compatible.",
+    "effect_fr": "Apprend Tir de Boue à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 15 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-    "move": "mud-shot"
+    "move": "mud-shot",
+    "move_type": "ground"
   },
   "tm37": {
     "id": 341,
@@ -1220,9 +1256,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vampibaiser à un Pokémon compatible.",
+    "effect_fr": "Apprend Vampibaiser à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 14 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Draine 75 % des dégâts ; l'excédent devient un bouclier.",
-    "move": "draining-kiss"
+    "move": "draining-kiss",
+    "move_type": "fairy"
   },
   "tm40": {
     "id": 344,
@@ -1232,9 +1269,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tranch’Air à un Pokémon compatible.",
+    "effect_fr": "Apprend Tranch’Air à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 17 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
-    "move": "air-cutter"
+    "move": "air-cutter",
+    "move_type": "flying"
   },
   "tm38": {
     "id": 342,
@@ -1244,9 +1282,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Nitrocharge à un Pokémon compatible.",
+    "effect_fr": "Apprend Nitrocharge à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible seule. Toujours : Vitesse +1 et +20 % de jauge pour le lanceur.",
-    "move": "flame-charge"
+    "move": "flame-charge",
+    "move_type": "fire"
   },
   "tm46": {
     "id": 350,
@@ -1256,9 +1295,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Avalanche à un Pokémon compatible.",
+    "effect_fr": "Apprend Avalanche à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 11 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Lente : le lanceur perd 20 % de jauge après coup. En face : puissance ×1,3 si la cible est dans le même couloir que le lanceur. ×2 s'il vient d'être touché par elle.",
-    "move": "avalanche"
+    "move": "avalanche",
+    "move_type": "ice"
   },
   "tm42": {
     "id": 346,
@@ -1268,9 +1308,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ombre Nocturne à un Pokémon compatible.",
+    "effect_fr": "Apprend Ombre Nocturne à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Puissance 1 au point d'impact. 100 % sur la cible seule.",
-    "move": "night-shade"
+    "move": "night-shade",
+    "move_type": "ghost"
   },
   "tm44": {
     "id": 348,
@@ -1280,9 +1321,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Draco-Queue à un Pokémon compatible.",
+    "effect_fr": "Apprend Draco-Queue à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 30 au point d'impact. 100 % sur la cible seule. Lente : le lanceur perd 20 % de jauge après coup. Projection : repousse la cible au fond de sa colonne ; si la case derrière est occupée, les deux Pokémon prennent 15 % de leurs PV max dans le choc.",
-    "move": "dragon-tail"
+    "move": "dragon-tail",
+    "move_type": "dragon"
   },
   "tm47": {
     "id": 351,
@@ -1292,9 +1334,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ténacité à un Pokémon compatible.",
+    "effect_fr": "Apprend Ténacité à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Survit avec 1 PV.",
-    "move": "endure"
+    "move": "endure",
+    "move_type": "normal"
   },
   "tm43": {
     "id": 347,
@@ -1304,9 +1347,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Dégommage à un Pokémon compatible.",
+    "effect_fr": "Apprend Dégommage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 70 au point d'impact. 100 % sur la cible seule.",
-    "move": "fling"
+    "move": "fling",
+    "move_type": "dark"
   },
   "tm39": {
     "id": 343,
@@ -1316,9 +1360,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Balayette à un Pokémon compatible.",
+    "effect_fr": "Apprend Balayette à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 18 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-    "move": "low-sweep"
+    "move": "low-sweep",
+    "move_type": "fighting"
   },
   "tm48": {
     "id": 352,
@@ -1328,9 +1373,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Change Éclair à un Pokémon compatible.",
+    "effect_fr": "Apprend Change Éclair à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 17 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. Relais : après l'attaque, le lanceur échange sa place avec l'allié de sa colonne qui a le plus de PV.",
-    "move": "volt-switch"
+    "move": "volt-switch",
+    "move_type": "electric"
   },
   "tm45": {
     "id": 349,
@@ -1340,9 +1386,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Choc Venin à un Pokémon compatible.",
+    "effect_fr": "Apprend Choc Venin à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 20 au point d'impact. Toute la ligne avant ennemie : 70 % chacun. Puissance ×2 si la cible a une altération.",
-    "move": "venoshock"
+    "move": "venoshock",
+    "move_type": "poison"
   },
   "tm41": {
     "id": 345,
@@ -1352,9 +1399,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Force Ajoutée à un Pokémon compatible.",
+    "effect_fr": "Apprend Force Ajoutée à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 10 au point d'impact. 100 % sur la cible seule.",
-    "move": "stored-power"
+    "move": "stored-power",
+    "move_type": "psychic"
   },
   "tm49": {
     "id": 353,
@@ -1364,9 +1412,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Zénith à un Pokémon compatible.",
+    "effect_fr": "Apprend Zénith à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Soleil 4 tours : Feu ×1,5, Eau ×0,5.",
-    "move": "sunny-day"
+    "move": "sunny-day",
+    "move_type": "fire"
   },
   "tm50": {
     "id": 354,
@@ -1376,9 +1425,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Danse Pluie à un Pokémon compatible.",
+    "effect_fr": "Apprend Danse Pluie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Pluie 4 tours : Eau ×1,5, Feu ×0,5 ; les Eau alliés régénèrent 4 % par tour.",
-    "move": "rain-dance"
+    "move": "rain-dance",
+    "move_type": "water"
   },
   "tm51": {
     "id": 355,
@@ -1388,9 +1438,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tempête de Sable à un Pokémon compatible.",
+    "effect_fr": "Apprend Tempête de Sable à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Tempête de sable 4 tours : 6 % de dégâts par tour sauf Roche, Sol, Acier ; Déf. Spé. des Roche ×1,5.",
-    "move": "sandstorm"
+    "move": "sandstorm",
+    "move_type": "rock"
   },
   "tm52": {
     "id": 356,
@@ -1400,9 +1451,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Chute de Neige à un Pokémon compatible.",
+    "effect_fr": "Apprend Chute de Neige à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Neige 4 tours : Défense des Glace ×1,5.",
-    "move": "snowscape"
+    "move": "snowscape",
+    "move_type": "ice"
   },
   "tm54": {
     "id": 358,
@@ -1412,9 +1464,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Choc Psy à un Pokémon compatible.",
+    "effect_fr": "Apprend Choc Psy à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "psyshock"
+    "move": "psyshock",
+    "move_type": "psychic"
   },
   "tm53": {
     "id": 357,
@@ -1424,9 +1477,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Estocorne à un Pokémon compatible.",
+    "effect_fr": "Apprend Estocorne à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 21 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "smart-strike"
+    "move": "smart-strike",
+    "move_type": "steel"
   },
   "tm55": {
     "id": 359,
@@ -1436,9 +1490,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tunnel à un Pokémon compatible.",
+    "effect_fr": "Apprend Tunnel à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Plongée : disparaît, intouchable jusqu'à son prochain tour, puis frappe n'importe quelle case (même à l'arrière au contact).",
-    "move": "dig"
+    "move": "dig",
+    "move_type": "ground"
   },
   "tm57": {
     "id": 361,
@@ -1448,9 +1503,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Faux-Chage à un Pokémon compatible.",
+    "effect_fr": "Apprend Faux-Chage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 20 au point d'impact. 100 % sur la cible seule.",
-    "move": "false-swipe"
+    "move": "false-swipe",
+    "move_type": "normal"
   },
   "tm56": {
     "id": 360,
@@ -1460,9 +1516,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Balle Graine à un Pokémon compatible.",
+    "effect_fr": "Apprend Balle Graine à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-    "move": "bullet-seed"
+    "move": "bullet-seed",
+    "move_type": "grass"
   },
   "tm58": {
     "id": 362,
@@ -1472,9 +1529,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Casse-Brique à un Pokémon compatible.",
+    "effect_fr": "Apprend Casse-Brique à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 38 au point d'impact. 100 % sur la cible seule. Brise d'abord les boucliers et murs (Protection, Mur Lumière) de la cible.",
-    "move": "brick-break"
+    "move": "brick-break",
+    "move_type": "fighting"
   },
   "tm59": {
     "id": 363,
@@ -1484,9 +1542,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Psykoud’Boul à un Pokémon compatible.",
+    "effect_fr": "Apprend Psykoud’Boul à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 20 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "zen-headbutt"
+    "move": "zen-headbutt",
+    "move_type": "psychic"
   },
   "tm60": {
     "id": 364,
@@ -1496,9 +1555,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Demi-Tour à un Pokémon compatible.",
+    "effect_fr": "Apprend Demi-Tour à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 35 au point d'impact. 100 % sur la cible seule. Relais : après l'attaque, le lanceur échange sa place avec l'allié de sa colonne qui a le plus de PV.",
-    "move": "u-turn"
+    "move": "u-turn",
+    "move_type": "bug"
   },
   "tm61": {
     "id": 365,
@@ -1508,9 +1568,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Griffe Ombre à un Pokémon compatible.",
+    "effect_fr": "Apprend Griffe Ombre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Puissance 17 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. Taux de critique +1.",
-    "move": "shadow-claw"
+    "move": "shadow-claw",
+    "move_type": "ghost"
   },
   "tm70": {
     "id": 374,
@@ -1520,9 +1581,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Blabla Dodo à un Pokémon compatible.",
+    "effect_fr": "Apprend Blabla Dodo à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Utilise une de ses attaques offensives au hasard.",
-    "move": "sleep-talk"
+    "move": "sleep-talk",
+    "move_type": "normal"
   },
   "tm64": {
     "id": 368,
@@ -1532,9 +1594,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Gonflette à un Pokémon compatible.",
+    "effect_fr": "Apprend Gonflette à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Attaque +1, Défense +1, bouclier de 10 % des PV pour le lanceur.",
-    "move": "bulk-up"
+    "move": "bulk-up",
+    "move_type": "fighting"
   },
   "tm68": {
     "id": 372,
@@ -1544,9 +1607,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Poing Éclair à un Pokémon compatible.",
+    "effect_fr": "Apprend Poing Éclair à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 38 au point d'impact. 100 % sur la cible seule. 10 % de chance : paralysie.",
-    "move": "thunder-punch"
+    "move": "thunder-punch",
+    "move_type": "electric"
   },
   "tm66": {
     "id": 370,
@@ -1556,9 +1620,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Plaquage à un Pokémon compatible.",
+    "effect_fr": "Apprend Plaquage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : paralysie.",
-    "move": "body-slam"
+    "move": "body-slam",
+    "move_type": "normal"
   },
   "tm62": {
     "id": 366,
@@ -1568,9 +1633,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tricherie à un Pokémon compatible.",
+    "effect_fr": "Apprend Tricherie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 48 au point d'impact. 100 % sur la cible seule.",
-    "move": "foul-play"
+    "move": "foul-play",
+    "move_type": "dark"
   },
   "tm69": {
     "id": 373,
@@ -1580,9 +1646,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Poing Glace à un Pokémon compatible.",
+    "effect_fr": "Apprend Poing Glace à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 38 au point d'impact. 100 % sur la cible seule. 10 % de chance : gel.",
-    "move": "ice-punch"
+    "move": "ice-punch",
+    "move_type": "ice"
   },
   "tm65": {
     "id": 369,
@@ -1592,9 +1659,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lame d’Air à un Pokémon compatible.",
+    "effect_fr": "Apprend Lame d’Air à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 23 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 30 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "air-slash"
+    "move": "air-slash",
+    "move_type": "flying"
   },
   "tm67": {
     "id": 371,
@@ -1604,9 +1672,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Poing Feu à un Pokémon compatible.",
+    "effect_fr": "Apprend Poing Feu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 38 au point d'impact. 100 % sur la cible seule. 10 % de chance : brûlure.",
-    "move": "fire-punch"
+    "move": "fire-punch",
+    "move_type": "fire"
   },
   "tm71": {
     "id": 375,
@@ -1616,9 +1685,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Canon Graine à un Pokémon compatible.",
+    "effect_fr": "Apprend Canon Graine à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "seed-bomb"
+    "move": "seed-bomb",
+    "move_type": "grass"
   },
   "tm63": {
     "id": 367,
@@ -1628,9 +1698,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Psycho-Croc à un Pokémon compatible.",
+    "effect_fr": "Apprend Psycho-Croc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 43 au point d'impact. 100 % sur la cible seule. Brise d'abord les boucliers et murs (Protection, Mur Lumière) de la cible.",
-    "move": "psychic-fangs"
+    "move": "psychic-fangs",
+    "move_type": "psychic"
   },
   "tm72": {
     "id": 376,
@@ -1640,9 +1711,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boule Élek à un Pokémon compatible.",
+    "effect_fr": "Apprend Boule Élek à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %).",
-    "move": "electro-ball"
+    "move": "electro-ball",
+    "move_type": "electric"
   },
   "tm73": {
     "id": 377,
@@ -1652,9 +1724,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vampi-Poing à un Pokémon compatible.",
+    "effect_fr": "Apprend Vampi-Poing à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 38 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier.",
-    "move": "drain-punch"
+    "move": "drain-punch",
+    "move_type": "fighting"
   },
   "tm76": {
     "id": 380,
@@ -1664,9 +1737,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boule Roc à un Pokémon compatible.",
+    "effect_fr": "Apprend Boule Roc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-    "move": "rock-blast"
+    "move": "rock-blast",
+    "move_type": "rock"
   },
   "tm74": {
     "id": 378,
@@ -1676,9 +1750,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Protection à un Pokémon compatible.",
+    "effect_fr": "Apprend Protection à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Protection 4 tours : bouclier de 12 % des PV pour l'équipe et dégâts physiques reçus ×0,7. Bouclier complet sur la ligne avant, 60 % au milieu, 30 % à l'arrière.",
-    "move": "reflect"
+    "move": "reflect",
+    "move_type": "psychic"
   },
   "tm75": {
     "id": 379,
@@ -1688,9 +1763,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mur Lumière à un Pokémon compatible.",
+    "effect_fr": "Apprend Mur Lumière à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Mur Lumière 4 tours : bouclier de 12 % des PV pour l'équipe et dégâts spéciaux reçus ×0,7. Bouclier complet sur la ligne avant, 60 % au milieu, 30 % à l'arrière.",
-    "move": "light-screen"
+    "move": "light-screen",
+    "move_type": "psychic"
   },
   "tm78": {
     "id": 382,
@@ -1700,9 +1776,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Draco-Griffe à un Pokémon compatible.",
+    "effect_fr": "Apprend Draco-Griffe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 19 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-    "move": "dragon-claw"
+    "move": "dragon-claw",
+    "move_type": "dragon"
   },
   "tm77": {
     "id": 381,
@@ -1712,9 +1789,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cascade à un Pokémon compatible.",
+    "effect_fr": "Apprend Cascade à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 20 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "waterfall"
+    "move": "waterfall",
+    "move_type": "water"
   },
   "tm79": {
     "id": 383,
@@ -1724,9 +1802,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éclat Magique à un Pokémon compatible.",
+    "effect_fr": "Apprend Éclat Magique à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 16 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "dazzling-gleam"
+    "move": "dazzling-gleam",
+    "move_type": "fairy"
   },
   "tm86": {
     "id": 390,
@@ -1736,9 +1815,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éboulement à un Pokémon compatible.",
+    "effect_fr": "Apprend Éboulement à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 28 par projectile. 3 projectiles sur des cases au hasard, 45 % chacun (une case peut être touchée plusieurs fois). 30 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "rock-slide"
+    "move": "rock-slide",
+    "move_type": "rock"
   },
   "tm81": {
     "id": 385,
@@ -1748,9 +1828,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Nœud Herbe à un Pokémon compatible.",
+    "effect_fr": "Apprend Nœud Herbe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule.",
-    "move": "grass-knot"
+    "move": "grass-knot",
+    "move_type": "grass"
   },
   "tm82": {
     "id": 386,
@@ -1760,9 +1841,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cage Éclair à un Pokémon compatible.",
+    "effect_fr": "Apprend Cage Éclair à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Inflige paralysie (précision 90 %) à la cible.",
-    "move": "thunder-wave"
+    "move": "thunder-wave",
+    "move_type": "electric"
   },
   "tm80": {
     "id": 384,
@@ -1772,9 +1854,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Métronome à un Pokémon compatible.",
+    "effect_fr": "Apprend Métronome à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Utilise une attaque offensive tirée au hasard.",
-    "move": "metronome"
+    "move": "metronome",
+    "move_type": "normal"
   },
   "tm83": {
     "id": 387,
@@ -1784,9 +1867,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Direct Toxik à un Pokémon compatible.",
+    "effect_fr": "Apprend Direct Toxik à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 30 % de chance : empoisonnement.",
-    "move": "poison-jab"
+    "move": "poison-jab",
+    "move_type": "poison"
   },
   "tm87": {
     "id": 391,
@@ -1796,9 +1880,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Provoc à un Pokémon compatible.",
+    "effect_fr": "Apprend Provoc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Pendant 3 tours, la cible ne peut utiliser que des attaques offensives.",
-    "move": "taunt"
+    "move": "taunt",
+    "move_type": "dark"
   },
   "tm84": {
     "id": 388,
@@ -1808,9 +1893,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Trépignement à un Pokémon compatible.",
+    "effect_fr": "Apprend Trépignement à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 21 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "stomping-tantrum"
+    "move": "stomping-tantrum",
+    "move_type": "ground"
   },
   "tm85": {
     "id": 389,
@@ -1820,9 +1906,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Repos à un Pokémon compatible.",
+    "effect_fr": "Apprend Repos à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Récupère 100 % des PV et purge ses altérations, puis dort 2 tours.",
-    "move": "rest"
+    "move": "rest",
+    "move_type": "psychic"
   },
   "hm02": {
     "id": 398,
@@ -1832,9 +1919,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vol à un Pokémon compatible.",
+    "effect_fr": "Apprend Vol à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 45 au point d'impact. 100 % sur la cible seule. Plongée : disparaît, intouchable jusqu'à son prochain tour, puis frappe n'importe quelle case (même à l'arrière au contact).",
-    "move": "fly"
+    "move": "fly",
+    "move_type": "flying"
   },
   "tm92": {
     "id": 396,
@@ -1844,9 +1932,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Possessif à un Pokémon compatible.",
+    "effect_fr": "Apprend Possessif à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Pendant 3 tours, les ennemis ne peuvent pas utiliser les capacités que le lanceur connaît.",
-    "move": "imprison"
+    "move": "imprison",
+    "move_type": "psychic"
   },
   "hm06": {
     "id": 402,
@@ -1856,9 +1945,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éclate-Roc à un Pokémon compatible.",
+    "effect_fr": "Apprend Éclate-Roc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 20 au point d'impact. 100 % sur la cible seule. 50 % de chance : Défense −1 pour la cible.",
-    "move": "rock-smash"
+    "move": "rock-smash",
+    "move_type": "fighting"
   },
   "hm05": {
     "id": 401,
@@ -1868,9 +1958,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Anti-Brume à un Pokémon compatible.",
+    "effect_fr": "Apprend Anti-Brume à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Balaye les pièges des deux camps et les boucliers ennemis ; Esquive des ennemis −1.",
-    "move": "defog"
+    "move": "defog",
+    "move_type": "flying"
   },
   "hm07": {
     "id": 403,
@@ -1880,9 +1971,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cascade à un Pokémon compatible.",
+    "effect_fr": "Apprend Cascade à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 20 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "waterfall"
+    "move": "waterfall",
+    "move_type": "water"
   },
   "tm91": {
     "id": 395,
@@ -1892,9 +1984,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Pics Toxik à un Pokémon compatible.",
+    "effect_fr": "Apprend Pics Toxik à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Pose des Pics Toxik : les ennemis de la ligne de front sont empoisonnés.",
-    "move": "toxic-spikes"
+    "move": "toxic-spikes",
+    "move_type": "poison"
   },
   "tm90": {
     "id": 394,
@@ -1904,9 +1997,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Picots à un Pokémon compatible.",
+    "effect_fr": "Apprend Picots à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Pose 1 couche de Picots : chaque ennemi perd 3 % de PV à chacun de ses tours.",
-    "move": "spikes"
+    "move": "spikes",
+    "move_type": "ground"
   },
   "tm88": {
     "id": 392,
@@ -1916,9 +2010,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Danse Lames à un Pokémon compatible.",
+    "effect_fr": "Apprend Danse Lames à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Attaque +2 pour le lanceur.",
-    "move": "swords-dance"
+    "move": "swords-dance",
+    "move_type": "normal"
   },
   "hm01": {
     "id": 397,
@@ -1928,9 +2023,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Coupe à un Pokémon compatible.",
+    "effect_fr": "Apprend Coupe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 14 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-    "move": "cut"
+    "move": "cut",
+    "move_type": "normal"
   },
   "tm89": {
     "id": 393,
@@ -1940,9 +2036,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Big Splash à un Pokémon compatible.",
+    "effect_fr": "Apprend Big Splash à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "body-press"
+    "move": "body-press",
+    "move_type": "fighting"
   },
   "hm04": {
     "id": 400,
@@ -1952,9 +2049,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Force à un Pokémon compatible.",
+    "effect_fr": "Apprend Force à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule.",
-    "move": "strength"
+    "move": "strength",
+    "move_type": "normal"
   },
   "hm03": {
     "id": 399,
@@ -1964,9 +2062,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Surf à un Pokémon compatible.",
+    "effect_fr": "Apprend Surf à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "surf"
+    "move": "surf",
+    "move_type": "water"
   },
   "tm93": {
     "id": 659,
@@ -1976,9 +2075,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Luminocanon à un Pokémon compatible.",
+    "effect_fr": "Apprend Luminocanon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "flash-cannon"
+    "move": "flash-cannon",
+    "move_type": "steel"
   },
   "hm08": {
     "id": 404,
@@ -1988,9 +2088,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Escalade à un Pokémon compatible.",
+    "effect_fr": "Apprend Escalade à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 45 au point d'impact. 100 % sur la cible seule. 20 % de chance : confusion.",
-    "move": "rock-climb"
+    "move": "rock-climb",
+    "move_type": "normal"
   },
   "tm94": {
     "id": 660,
@@ -2000,9 +2101,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vibrobscur à un Pokémon compatible.",
+    "effect_fr": "Apprend Vibrobscur à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 20 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "dark-pulse"
+    "move": "dark-pulse",
+    "move_type": "dark"
   },
   "tm95": {
     "id": 661,
@@ -2012,9 +2114,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vampirisme à un Pokémon compatible.",
+    "effect_fr": "Apprend Vampirisme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier.",
-    "move": "leech-life"
+    "move": "leech-life",
+    "move_type": "bug"
   },
   "tm96": {
     "id": 745,
@@ -2024,9 +2127,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ondes Étranges à un Pokémon compatible.",
+    "effect_fr": "Apprend Ondes Étranges à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Atq. Spé. −2 pour la cible.",
-    "move": "eerie-impulse"
+    "move": "eerie-impulse",
+    "move_type": "electric"
   },
   "tm98": {
     "id": 747,
@@ -2036,9 +2140,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Échange à un Pokémon compatible.",
+    "effect_fr": "Apprend Échange à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Échange son rôle avec celui de la cible.",
-    "move": "skill-swap"
+    "move": "skill-swap",
+    "move_type": "psychic"
   },
   "tm99": {
     "id": 748,
@@ -2048,9 +2153,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tête de Fer à un Pokémon compatible.",
+    "effect_fr": "Apprend Tête de Fer à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 30 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "iron-head"
+    "move": "iron-head",
+    "move_type": "steel"
   },
   "tr00": {
     "id": 1188,
@@ -2060,9 +2166,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Danse Lames à un Pokémon compatible.",
+    "effect_fr": "Apprend Danse Lames à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Attaque +2 pour le lanceur.",
-    "move": "swords-dance"
+    "move": "swords-dance",
+    "move_type": "normal"
   },
   "tm97": {
     "id": 746,
@@ -2072,9 +2179,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vol à un Pokémon compatible.",
+    "effect_fr": "Apprend Vol à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 45 au point d'impact. 100 % sur la cible seule. Plongée : disparaît, intouchable jusqu'à son prochain tour, puis frappe n'importe quelle case (même à l'arrière au contact).",
-    "move": "fly"
+    "move": "fly",
+    "move_type": "flying"
   },
   "tm100": {
     "id": 1943,
@@ -2084,9 +2192,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Danse Draco à un Pokémon compatible.",
+    "effect_fr": "Apprend Danse Draco à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Attaque +1, Vitesse +1 et +20 % de jauge.",
-    "move": "dragon-dance"
+    "move": "dragon-dance",
+    "move_type": "dragon"
   },
   "tr07": {
     "id": 1195,
@@ -2096,9 +2205,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Balayage à un Pokémon compatible.",
+    "effect_fr": "Apprend Balayage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule.",
-    "move": "low-kick"
+    "move": "low-kick",
+    "move_type": "fighting"
   },
   "tr06": {
     "id": 1194,
@@ -2108,9 +2218,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Blizzard à un Pokémon compatible.",
+    "effect_fr": "Apprend Blizzard à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 22 au point d'impact. 50 % sur chaque ennemi, quelle que soit sa ligne. 10 % de chance : gel.",
-    "move": "blizzard"
+    "move": "blizzard",
+    "move_type": "ice"
   },
   "tr03": {
     "id": 1191,
@@ -2120,9 +2231,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Hydrocanon à un Pokémon compatible.",
+    "effect_fr": "Apprend Hydrocanon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 34 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "hydro-pump"
+    "move": "hydro-pump",
+    "move_type": "water"
   },
   "tr05": {
     "id": 1193,
@@ -2132,9 +2244,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Laser Glace à un Pokémon compatible.",
+    "effect_fr": "Apprend Laser Glace à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 28 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 10 % de chance : gel.",
-    "move": "ice-beam"
+    "move": "ice-beam",
+    "move_type": "ice"
   },
   "tr10": {
     "id": 1198,
@@ -2144,9 +2257,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Séisme à un Pokémon compatible.",
+    "effect_fr": "Apprend Séisme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 20 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "earthquake"
+    "move": "earthquake",
+    "move_type": "ground"
   },
   "tr01": {
     "id": 1189,
@@ -2156,9 +2270,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Plaquage à un Pokémon compatible.",
+    "effect_fr": "Apprend Plaquage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : paralysie.",
-    "move": "body-slam"
+    "move": "body-slam",
+    "move_type": "normal"
   },
   "tr04": {
     "id": 1192,
@@ -2168,9 +2283,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Surf à un Pokémon compatible.",
+    "effect_fr": "Apprend Surf à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "surf"
+    "move": "surf",
+    "move_type": "water"
   },
   "tr08": {
     "id": 1196,
@@ -2180,9 +2296,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tonnerre à un Pokémon compatible.",
+    "effect_fr": "Apprend Tonnerre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 27 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). 10 % de chance : paralysie.",
-    "move": "thunderbolt"
+    "move": "thunderbolt",
+    "move_type": "electric"
   },
   "tr02": {
     "id": 1190,
@@ -2192,9 +2309,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lance-Flammes à un Pokémon compatible.",
+    "effect_fr": "Apprend Lance-Flammes à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible, 50 % sur les 3 cases de la ligne derrière elle. 10 % de chance : brûlure.",
-    "move": "flamethrower"
+    "move": "flamethrower",
+    "move_type": "fire"
   },
   "tr11": {
     "id": 1199,
@@ -2204,9 +2322,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Psyko à un Pokémon compatible.",
+    "effect_fr": "Apprend Psyko à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 22 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "psychic"
+    "move": "psychic",
+    "move_type": "psychic"
   },
   "tr12": {
     "id": 1200,
@@ -2216,9 +2335,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Hâte à un Pokémon compatible.",
+    "effect_fr": "Apprend Hâte à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Vitesse +2 et +40 % de jauge tout de suite.",
-    "move": "agility"
+    "move": "agility",
+    "move_type": "psychic"
   },
   "tr09": {
     "id": 1197,
@@ -2228,9 +2348,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Fatal-Foudre à un Pokémon compatible.",
+    "effect_fr": "Apprend Fatal-Foudre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 32 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). 30 % de chance : paralysie.",
-    "move": "thunder"
+    "move": "thunder",
+    "move_type": "electric"
   },
   "tr13": {
     "id": 1201,
@@ -2240,9 +2361,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Puissance à un Pokémon compatible.",
+    "effect_fr": "Apprend Puissance à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Taux de critique +2.",
-    "move": "focus-energy"
+    "move": "focus-energy",
+    "move_type": "normal"
   },
   "tr14": {
     "id": 1202,
@@ -2252,9 +2374,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Métronome à un Pokémon compatible.",
+    "effect_fr": "Apprend Métronome à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Utilise une attaque offensive tirée au hasard.",
-    "move": "metronome"
+    "move": "metronome",
+    "move_type": "normal"
   },
   "tr15": {
     "id": 1203,
@@ -2264,9 +2387,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Déflagration à un Pokémon compatible.",
+    "effect_fr": "Apprend Déflagration à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. 10 % de chance : brûlure.",
-    "move": "fire-blast"
+    "move": "fire-blast",
+    "move_type": "fire"
   },
   "tr16": {
     "id": 1204,
@@ -2276,9 +2400,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cascade à un Pokémon compatible.",
+    "effect_fr": "Apprend Cascade à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 20 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "waterfall"
+    "move": "waterfall",
+    "move_type": "water"
   },
   "tr17": {
     "id": 1205,
@@ -2288,9 +2413,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Amnésie à un Pokémon compatible.",
+    "effect_fr": "Apprend Amnésie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Déf. Spé. +2, bouclier de 15 % des PV pour le lanceur.",
-    "move": "amnesia"
+    "move": "amnesia",
+    "move_type": "psychic"
   },
   "tr18": {
     "id": 1206,
@@ -2300,9 +2426,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vampirisme à un Pokémon compatible.",
+    "effect_fr": "Apprend Vampirisme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier.",
-    "move": "leech-life"
+    "move": "leech-life",
+    "move_type": "bug"
   },
   "tr21": {
     "id": 1209,
@@ -2312,9 +2439,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Contre à un Pokémon compatible.",
+    "effect_fr": "Apprend Contre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 80 au point d'impact. 100 % sur la cible seule. Puissance ×2 si le lanceur a moins de 50 % de PV.",
-    "move": "reversal"
+    "move": "reversal",
+    "move_type": "fighting"
   },
   "tr19": {
     "id": 1207,
@@ -2324,9 +2452,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Triplattaque à un Pokémon compatible.",
+    "effect_fr": "Apprend Triplattaque à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 40. 100 % sur un ennemi tiré au hasard.",
-    "move": "tri-attack"
+    "move": "tri-attack",
+    "move_type": "normal"
   },
   "tr20": {
     "id": 1208,
@@ -2336,9 +2465,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Clonage à un Pokémon compatible.",
+    "effect_fr": "Apprend Clonage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Sacrifie 20 % de ses PV pour un bouclier de 35 % de ses PV max (bloque aussi les altérations).",
-    "move": "substitute"
+    "move": "substitute",
+    "move_type": "normal"
   },
   "tr25": {
     "id": 1213,
@@ -2348,9 +2478,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Choc Psy à un Pokémon compatible.",
+    "effect_fr": "Apprend Choc Psy à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "psyshock"
+    "move": "psyshock",
+    "move_type": "psychic"
   },
   "tr24": {
     "id": 1212,
@@ -2360,9 +2491,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Colère à un Pokémon compatible.",
+    "effect_fr": "Apprend Colère à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 60. 100 % sur un ennemi tiré au hasard.",
-    "move": "outrage"
+    "move": "outrage",
+    "move_type": "dragon"
   },
   "tr22": {
     "id": 1210,
@@ -2372,9 +2504,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Bombe Beurk à un Pokémon compatible.",
+    "effect_fr": "Apprend Bombe Beurk à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : empoisonnement.",
-    "move": "sludge-bomb"
+    "move": "sludge-bomb",
+    "move_type": "poison"
   },
   "tr23": {
     "id": 1211,
@@ -2384,9 +2517,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Picots à un Pokémon compatible.",
+    "effect_fr": "Apprend Picots à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Pose 1 couche de Picots : chaque ennemi perd 3 % de PV à chacun de ses tours.",
-    "move": "spikes"
+    "move": "spikes",
+    "move_type": "ground"
   },
   "tr27": {
     "id": 1215,
@@ -2396,9 +2530,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Blabla Dodo à un Pokémon compatible.",
+    "effect_fr": "Apprend Blabla Dodo à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Utilise une de ses attaques offensives au hasard.",
-    "move": "sleep-talk"
+    "move": "sleep-talk",
+    "move_type": "normal"
   },
   "tr26": {
     "id": 1214,
@@ -2408,9 +2543,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ténacité à un Pokémon compatible.",
+    "effect_fr": "Apprend Ténacité à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Survit avec 1 PV.",
-    "move": "endure"
+    "move": "endure",
+    "move_type": "normal"
   },
   "tr30": {
     "id": 1218,
@@ -2420,9 +2556,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Encore à un Pokémon compatible.",
+    "effect_fr": "Apprend Encore à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Le lanceur déconcentre l'ennemi, le forçant à baisser sa garde et diminuant sa Défense et sa Défense Spéciale.",
-    "move": "encore"
+    "move": "encore",
+    "move_type": "normal"
   },
   "tr28": {
     "id": 1216,
@@ -2432,9 +2569,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mégacorne à un Pokémon compatible.",
+    "effect_fr": "Apprend Mégacorne à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 37 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "megahorn"
+    "move": "megahorn",
+    "move_type": "bug"
   },
   "tr31": {
     "id": 1219,
@@ -2444,9 +2582,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Queue de Fer à un Pokémon compatible.",
+    "effect_fr": "Apprend Queue de Fer à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 28 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. 30 % de chance : Défense −1 pour la cible.",
-    "move": "iron-tail"
+    "move": "iron-tail",
+    "move_type": "steel"
   },
   "tr33": {
     "id": 1221,
@@ -2456,9 +2595,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ball’Ombre à un Pokémon compatible.",
+    "effect_fr": "Apprend Ball’Ombre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 20 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "shadow-ball"
+    "move": "shadow-ball",
+    "move_type": "ghost"
   },
   "tr32": {
     "id": 1220,
@@ -2468,9 +2608,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mâchouille à un Pokémon compatible.",
+    "effect_fr": "Apprend Mâchouille à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 20 % de chance : Défense −1 pour la cible.",
-    "move": "crunch"
+    "move": "crunch",
+    "move_type": "dark"
   },
   "tr29": {
     "id": 1217,
@@ -2480,9 +2621,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Relais à un Pokémon compatible.",
+    "effect_fr": "Apprend Relais à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Relais : échange sa place avec l'allié le plus en arrière et lui transmet ses bonus de stats.",
-    "move": "baton-pass"
+    "move": "baton-pass",
+    "move_type": "normal"
   },
   "tr35": {
     "id": 1223,
@@ -2492,9 +2634,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Brouhaha à un Pokémon compatible.",
+    "effect_fr": "Apprend Brouhaha à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 45. 100 % sur un ennemi tiré au hasard.",
-    "move": "uproar"
+    "move": "uproar",
+    "move_type": "normal"
   },
   "tr39": {
     "id": 1227,
@@ -2504,9 +2647,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Surpuissance à un Pokémon compatible.",
+    "effect_fr": "Apprend Surpuissance à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule. Toujours : Attaque −1, Défense −1 pour le lanceur.",
-    "move": "superpower"
+    "move": "superpower",
+    "move_type": "fighting"
   },
   "tr37": {
     "id": 1225,
@@ -2516,9 +2660,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Provoc à un Pokémon compatible.",
+    "effect_fr": "Apprend Provoc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Pendant 3 tours, la cible ne peut utiliser que des attaques offensives.",
-    "move": "taunt"
+    "move": "taunt",
+    "move_type": "dark"
   },
   "tr34": {
     "id": 1222,
@@ -2528,9 +2673,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Prescience à un Pokémon compatible.",
+    "effect_fr": "Apprend Prescience à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 26 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins.",
-    "move": "future-sight"
+    "move": "future-sight",
+    "move_type": "psychic"
   },
   "tr38": {
     "id": 1226,
@@ -2540,9 +2686,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tour de Magie à un Pokémon compatible.",
+    "effect_fr": "Apprend Tour de Magie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Échange son objet tenu avec celui de la cible.",
-    "move": "trick"
+    "move": "trick",
+    "move_type": "psychic"
   },
   "tr36": {
     "id": 1224,
@@ -2552,9 +2699,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Canicule à un Pokémon compatible.",
+    "effect_fr": "Apprend Canicule à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 19 au point d'impact. 50 % sur chaque ennemi, quelle que soit sa ligne. 10 % de chance : brûlure.",
-    "move": "heat-wave"
+    "move": "heat-wave",
+    "move_type": "fire"
   },
   "tr41": {
     "id": 1229,
@@ -2564,9 +2712,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Pied Brûleur à un Pokémon compatible.",
+    "effect_fr": "Apprend Pied Brûleur à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 43 au point d'impact. 100 % sur la cible seule. Taux de critique +1. 10 % de chance : brûlure.",
-    "move": "blaze-kick"
+    "move": "blaze-kick",
+    "move_type": "fire"
   },
   "tr40": {
     "id": 1228,
@@ -2576,9 +2725,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Échange à un Pokémon compatible.",
+    "effect_fr": "Apprend Échange à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Échange son rôle avec celui de la cible.",
-    "move": "skill-swap"
+    "move": "skill-swap",
+    "move_type": "psychic"
   },
   "tr42": {
     "id": 1230,
@@ -2588,9 +2738,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mégaphone à un Pokémon compatible.",
+    "effect_fr": "Apprend Mégaphone à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "hyper-voice"
+    "move": "hyper-voice",
+    "move_type": "normal"
   },
   "tr44": {
     "id": 1232,
@@ -2600,9 +2751,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Force Cosmique à un Pokémon compatible.",
+    "effect_fr": "Apprend Force Cosmique à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Défense +1, Déf. Spé. +1, bouclier de 10 % des PV pour le lanceur.",
-    "move": "cosmic-power"
+    "move": "cosmic-power",
+    "move_type": "psychic"
   },
   "tr43": {
     "id": 1231,
@@ -2612,9 +2764,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Surchauffe à un Pokémon compatible.",
+    "effect_fr": "Apprend Surchauffe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 29 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. Toujours : Atq. Spé. −2 pour le lanceur.",
-    "move": "overheat"
+    "move": "overheat",
+    "move_type": "fire"
   },
   "tr45": {
     "id": 1233,
@@ -2624,9 +2777,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ocroupi à un Pokémon compatible.",
+    "effect_fr": "Apprend Ocroupi à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. 30 % de chance : Précision −1 pour la cible.",
-    "move": "muddy-water"
+    "move": "muddy-water",
+    "move_type": "water"
   },
   "tr51": {
     "id": 1239,
@@ -2636,9 +2790,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Danse Draco à un Pokémon compatible.",
+    "effect_fr": "Apprend Danse Draco à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Attaque +1, Vitesse +1 et +20 % de jauge.",
-    "move": "dragon-dance"
+    "move": "dragon-dance",
+    "move_type": "dragon"
   },
   "tr49": {
     "id": 1237,
@@ -2648,9 +2803,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Plénitude à un Pokémon compatible.",
+    "effect_fr": "Apprend Plénitude à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Atq. Spé. +1, Déf. Spé. +1, bouclier de 10 % des PV pour le lanceur.",
-    "move": "calm-mind"
+    "move": "calm-mind",
+    "move_type": "psychic"
   },
   "tr48": {
     "id": 1236,
@@ -2660,9 +2816,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Gonflette à un Pokémon compatible.",
+    "effect_fr": "Apprend Gonflette à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Attaque +1, Défense +1, bouclier de 10 % des PV pour le lanceur.",
-    "move": "bulk-up"
+    "move": "bulk-up",
+    "move_type": "fighting"
   },
   "tr46": {
     "id": 1234,
@@ -2672,9 +2829,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mur de Fer à un Pokémon compatible.",
+    "effect_fr": "Apprend Mur de Fer à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Défense +2, bouclier de 15 % des PV pour le lanceur.",
-    "move": "iron-defense"
+    "move": "iron-defense",
+    "move_type": "steel"
   },
   "tr47": {
     "id": 1235,
@@ -2684,9 +2842,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Draco-Griffe à un Pokémon compatible.",
+    "effect_fr": "Apprend Draco-Griffe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 19 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-    "move": "dragon-claw"
+    "move": "dragon-claw",
+    "move_type": "dragon"
   },
   "tr50": {
     "id": 1238,
@@ -2696,9 +2855,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lame Feuille à un Pokémon compatible.",
+    "effect_fr": "Apprend Lame Feuille à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
-    "move": "leaf-blade"
+    "move": "leaf-blade",
+    "move_type": "grass"
   },
   "tr54": {
     "id": 1242,
@@ -2708,9 +2868,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Pics Toxik à un Pokémon compatible.",
+    "effect_fr": "Apprend Pics Toxik à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Pose des Pics Toxik : les ennemis de la ligne de front sont empoisonnés.",
-    "move": "toxic-spikes"
+    "move": "toxic-spikes",
+    "move_type": "poison"
   },
   "tr57": {
     "id": 1245,
@@ -2720,9 +2881,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Direct Toxik à un Pokémon compatible.",
+    "effect_fr": "Apprend Direct Toxik à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 30 % de chance : empoisonnement.",
-    "move": "poison-jab"
+    "move": "poison-jab",
+    "move_type": "poison"
   },
   "tr52": {
     "id": 1240,
@@ -2732,9 +2894,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Gyroballe à un Pokémon compatible.",
+    "effect_fr": "Apprend Gyroballe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule.",
-    "move": "gyro-ball"
+    "move": "gyro-ball",
+    "move_type": "steel"
   },
   "tr55": {
     "id": 1243,
@@ -2744,9 +2907,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boutefeu à un Pokémon compatible.",
+    "effect_fr": "Apprend Boutefeu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 37 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 33 % des dégâts infligés. 10 % de chance : brûlure.",
-    "move": "flare-blitz"
+    "move": "flare-blitz",
+    "move_type": "fire"
   },
   "tr58": {
     "id": 1246,
@@ -2756,9 +2920,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vibrobscur à un Pokémon compatible.",
+    "effect_fr": "Apprend Vibrobscur à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 20 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "dark-pulse"
+    "move": "dark-pulse",
+    "move_type": "dark"
   },
   "tr59": {
     "id": 1247,
@@ -2768,9 +2933,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Canon Graine à un Pokémon compatible.",
+    "effect_fr": "Apprend Canon Graine à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "seed-bomb"
+    "move": "seed-bomb",
+    "move_type": "grass"
   },
   "tr56": {
     "id": 1244,
@@ -2780,9 +2946,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aurasphère à un Pokémon compatible.",
+    "effect_fr": "Apprend Aurasphère à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Tir de précision : vise n'importe quelle case, ignore la Provocation et ne rate jamais.",
-    "move": "aura-sphere"
+    "move": "aura-sphere",
+    "move_type": "fighting"
   },
   "tr61": {
     "id": 1249,
@@ -2792,9 +2959,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Bourdon à un Pokémon compatible.",
+    "effect_fr": "Apprend Bourdon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 28 au point d'impact. Toute la ligne avant ennemie : 70 % chacun. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "bug-buzz"
+    "move": "bug-buzz",
+    "move_type": "bug"
   },
   "tr62": {
     "id": 1250,
@@ -2804,9 +2972,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Draco-Choc à un Pokémon compatible.",
+    "effect_fr": "Apprend Draco-Choc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "dragon-pulse"
+    "move": "dragon-pulse",
+    "move_type": "dragon"
   },
   "tr53": {
     "id": 1241,
@@ -2816,9 +2985,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Close Combat à un Pokémon compatible.",
+    "effect_fr": "Apprend Close Combat à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule. Toujours : Défense −1, Déf. Spé. −1 pour le lanceur.",
-    "move": "close-combat"
+    "move": "close-combat",
+    "move_type": "fighting"
   },
   "tr60": {
     "id": 1248,
@@ -2828,9 +2998,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Plaie Croix à un Pokémon compatible.",
+    "effect_fr": "Apprend Plaie Croix à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 19 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-    "move": "x-scissor"
+    "move": "x-scissor",
+    "move_type": "bug"
   },
   "tr63": {
     "id": 1251,
@@ -2840,9 +3011,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rayon Gemme à un Pokémon compatible.",
+    "effect_fr": "Apprend Rayon Gemme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 22 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-    "move": "power-gem"
+    "move": "power-gem",
+    "move_type": "rock"
   },
   "tr65": {
     "id": 1253,
@@ -2852,9 +3024,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éco-Sphère à un Pokémon compatible.",
+    "effect_fr": "Apprend Éco-Sphère à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "energy-ball"
+    "move": "energy-ball",
+    "move_type": "grass"
   },
   "tr64": {
     "id": 1252,
@@ -2864,9 +3037,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Exploforce à un Pokémon compatible.",
+    "effect_fr": "Apprend Exploforce à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 34 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "focus-blast"
+    "move": "focus-blast",
+    "move_type": "fighting"
   },
   "tr67": {
     "id": 1255,
@@ -2876,9 +3050,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Telluriforce à un Pokémon compatible.",
+    "effect_fr": "Apprend Telluriforce à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 20 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "earth-power"
+    "move": "earth-power",
+    "move_type": "ground"
   },
   "tr66": {
     "id": 1254,
@@ -2888,9 +3063,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rapace à un Pokémon compatible.",
+    "effect_fr": "Apprend Rapace à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 37 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 33 % des dégâts infligés.",
-    "move": "brave-bird"
+    "move": "brave-bird",
+    "move_type": "flying"
   },
   "tr68": {
     "id": 1256,
@@ -2900,9 +3076,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Machination à un Pokémon compatible.",
+    "effect_fr": "Apprend Machination à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Atq. Spé. +2 pour le lanceur.",
-    "move": "nasty-plot"
+    "move": "nasty-plot",
+    "move_type": "dark"
   },
   "tr69": {
     "id": 1257,
@@ -2912,9 +3089,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Psykoud’Boul à un Pokémon compatible.",
+    "effect_fr": "Apprend Psykoud’Boul à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 20 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "zen-headbutt"
+    "move": "zen-headbutt",
+    "move_type": "psychic"
   },
   "tr70": {
     "id": 1258,
@@ -2924,9 +3102,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Luminocanon à un Pokémon compatible.",
+    "effect_fr": "Apprend Luminocanon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "flash-cannon"
+    "move": "flash-cannon",
+    "move_type": "steel"
   },
   "tr71": {
     "id": 1259,
@@ -2936,9 +3115,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tempête Verte à un Pokémon compatible.",
+    "effect_fr": "Apprend Tempête Verte à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 26 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Toujours : Atq. Spé. −2 pour le lanceur.",
-    "move": "leaf-storm"
+    "move": "leaf-storm",
+    "move_type": "grass"
   },
   "tr73": {
     "id": 1261,
@@ -2948,9 +3128,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Détricanon à un Pokémon compatible.",
+    "effect_fr": "Apprend Détricanon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 34 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : empoisonnement.",
-    "move": "gunk-shot"
+    "move": "gunk-shot",
+    "move_type": "poison"
   },
   "tr74": {
     "id": 1262,
@@ -2960,9 +3141,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tête de Fer à un Pokémon compatible.",
+    "effect_fr": "Apprend Tête de Fer à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 30 % de chance : la cible perd 30 % de jauge (peur).",
-    "move": "iron-head"
+    "move": "iron-head",
+    "move_type": "steel"
   },
   "tr72": {
     "id": 1260,
@@ -2972,9 +3154,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mégafouet à un Pokémon compatible.",
+    "effect_fr": "Apprend Mégafouet à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule. Attraction : vise n'importe quelle case et tire la cible d'une ligne vers l'avant (elle échange sa place avec celui qui s'y trouve).",
-    "move": "power-whip"
+    "move": "power-whip",
+    "move_type": "grass"
   },
   "tr77": {
     "id": 1265,
@@ -2984,9 +3167,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Nœud Herbe à un Pokémon compatible.",
+    "effect_fr": "Apprend Nœud Herbe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule.",
-    "move": "grass-knot"
+    "move": "grass-knot",
+    "move_type": "grass"
   },
   "tr76": {
     "id": 1264,
@@ -2996,9 +3180,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Piège de Roc à un Pokémon compatible.",
+    "effect_fr": "Apprend Piège de Roc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Pose un Piège de Roc : chaque ennemi perd 8 % de PV (×efficacité Roche) à son premier tour.",
-    "move": "stealth-rock"
+    "move": "stealth-rock",
+    "move_type": "rock"
   },
   "tr75": {
     "id": 1263,
@@ -3008,9 +3193,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lame de Roc à un Pokémon compatible.",
+    "effect_fr": "Apprend Lame de Roc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 22 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. Taux de critique +1.",
-    "move": "stone-edge"
+    "move": "stone-edge",
+    "move_type": "rock"
   },
   "tr79": {
     "id": 1267,
@@ -3020,9 +3206,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tacle Lourd à un Pokémon compatible.",
+    "effect_fr": "Apprend Tacle Lourd à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "heavy-slam"
+    "move": "heavy-slam",
+    "move_type": "steel"
   },
   "tr82": {
     "id": 1270,
@@ -3032,9 +3219,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Force Ajoutée à un Pokémon compatible.",
+    "effect_fr": "Apprend Force Ajoutée à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 10 au point d'impact. 100 % sur la cible seule.",
-    "move": "stored-power"
+    "move": "stored-power",
+    "move_type": "psychic"
   },
   "tr88": {
     "id": 1276,
@@ -3044,9 +3232,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tacle Feu à un Pokémon compatible.",
+    "effect_fr": "Apprend Tacle Feu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "heat-crash"
+    "move": "heat-crash",
+    "move_type": "fire"
   },
   "tr78": {
     "id": 1266,
@@ -3056,9 +3245,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cradovague à un Pokémon compatible.",
+    "effect_fr": "Apprend Cradovague à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 19 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. 10 % de chance : empoisonnement.",
-    "move": "sludge-wave"
+    "move": "sludge-wave",
+    "move_type": "poison"
   },
   "tr83": {
     "id": 1271,
@@ -3068,9 +3258,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Interversion à un Pokémon compatible.",
+    "effect_fr": "Apprend Interversion à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Interversion : échange sa place avec n'importe quel allié et gagne +20 % de jauge.",
-    "move": "ally-switch"
+    "move": "ally-switch",
+    "move_type": "psychic"
   },
   "tr80": {
     "id": 1268,
@@ -3080,9 +3271,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boule Élek à un Pokémon compatible.",
+    "effect_fr": "Apprend Boule Élek à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %).",
-    "move": "electro-ball"
+    "move": "electro-ball",
+    "move_type": "electric"
   },
   "tr85": {
     "id": 1273,
@@ -3092,9 +3284,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rengorgement à un Pokémon compatible.",
+    "effect_fr": "Apprend Rengorgement à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Attaque +1, Atq. Spé. +1 pour le lanceur.",
-    "move": "work-up"
+    "move": "work-up",
+    "move_type": "normal"
   },
   "tr86": {
     "id": 1274,
@@ -3104,9 +3297,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éclair Fou à un Pokémon compatible.",
+    "effect_fr": "Apprend Éclair Fou à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 28 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 25 % des dégâts infligés.",
-    "move": "wild-charge"
+    "move": "wild-charge",
+    "move_type": "electric"
   },
   "tr89": {
     "id": 1277,
@@ -3116,9 +3310,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vent Violent à un Pokémon compatible.",
+    "effect_fr": "Apprend Vent Violent à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. 30 % de chance : confusion. Repousse la cible d'une case vers l'arrière (choc de 10 % si la case est occupée).",
-    "move": "hurricane"
+    "move": "hurricane",
+    "move_type": "flying"
   },
   "tr81": {
     "id": 1269,
@@ -3128,9 +3323,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tricherie à un Pokémon compatible.",
+    "effect_fr": "Apprend Tricherie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 48 au point d'impact. 100 % sur la cible seule.",
-    "move": "foul-play"
+    "move": "foul-play",
+    "move_type": "dark"
   },
   "tr90": {
     "id": 1278,
@@ -3140,9 +3336,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Câlinerie à un Pokémon compatible.",
+    "effect_fr": "Apprend Câlinerie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 45 au point d'impact. 100 % sur la cible seule. 10 % de chance : Attaque −1 pour la cible.",
-    "move": "play-rough"
+    "move": "play-rough",
+    "move_type": "fairy"
   },
   "tr87": {
     "id": 1275,
@@ -3152,9 +3349,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tunnelier à un Pokémon compatible.",
+    "effect_fr": "Apprend Tunnelier à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Taux de critique +1.",
-    "move": "drill-run"
+    "move": "drill-run",
+    "move_type": "ground"
   },
   "tr84": {
     "id": 1272,
@@ -3164,9 +3362,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ébullition à un Pokémon compatible.",
+    "effect_fr": "Apprend Ébullition à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 30 % de chance : brûlure.",
-    "move": "scald"
+    "move": "scald",
+    "move_type": "water"
   },
   "tr91": {
     "id": 1279,
@@ -3176,9 +3375,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Piège de Venin à un Pokémon compatible.",
+    "effect_fr": "Apprend Piège de Venin à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Attaque −1, Atq. Spé. −1, Vitesse −1, −20 % de jauge pour tous les ennemis.",
-    "move": "venom-drench"
+    "move": "venom-drench",
+    "move_type": "poison"
   },
   "tr95": {
     "id": 1283,
@@ -3188,9 +3388,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Exécu-Son à un Pokémon compatible.",
+    "effect_fr": "Apprend Exécu-Son à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Toujours : silence (capacités sonores bloquées).",
-    "move": "throat-chop"
+    "move": "throat-chop",
+    "move_type": "dark"
   },
   "tr94": {
     "id": 1282,
@@ -3200,9 +3401,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cavalerie Lourde à un Pokémon compatible.",
+    "effect_fr": "Apprend Cavalerie Lourde à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 27 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "high-horsepower"
+    "move": "high-horsepower",
+    "move_type": "ground"
   },
   "tr93": {
     "id": 1281,
@@ -3212,9 +3414,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Dark Lariat à un Pokémon compatible.",
+    "effect_fr": "Apprend Dark Lariat à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 43 au point d'impact. 100 % sur la cible seule.",
-    "move": "darkest-lariat"
+    "move": "darkest-lariat",
+    "move_type": "dark"
   },
   "tr96": {
     "id": 1284,
@@ -3224,9 +3427,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boule Pollen à un Pokémon compatible.",
+    "effect_fr": "Apprend Boule Pollen à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 28 au point d'impact. Toute la ligne avant ennemie : 70 % chacun.",
-    "move": "pollen-puff"
+    "move": "pollen-puff",
+    "move_type": "bug"
   },
   "tr92": {
     "id": 1280,
@@ -3236,9 +3440,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éclat Magique à un Pokémon compatible.",
+    "effect_fr": "Apprend Éclat Magique à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 16 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "dazzling-gleam"
+    "move": "dazzling-gleam",
+    "move_type": "fairy"
   },
   "tr97": {
     "id": 1285,
@@ -3248,9 +3453,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Psycho-Croc à un Pokémon compatible.",
+    "effect_fr": "Apprend Psycho-Croc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 43 au point d'impact. 100 % sur la cible seule. Brise d'abord les boucliers et murs (Protection, Mur Lumière) de la cible.",
-    "move": "psychic-fangs"
+    "move": "psychic-fangs",
+    "move_type": "psychic"
   },
   "tr98": {
     "id": 1286,
@@ -3260,9 +3466,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aqua-Brèche à un Pokémon compatible.",
+    "effect_fr": "Apprend Aqua-Brèche à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 43 au point d'impact. 100 % sur la cible seule. 20 % de chance : Défense −1 pour la cible.",
-    "move": "liquidation"
+    "move": "liquidation",
+    "move_type": "water"
   },
   "tm00": {
     "id": 1288,
@@ -3272,9 +3479,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ultimapoing à un Pokémon compatible.",
+    "effect_fr": "Apprend Ultimapoing à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule.",
-    "move": "mega-punch"
+    "move": "mega-punch",
+    "move_type": "normal"
   },
   "tm102": {
     "id": 1945,
@@ -3284,9 +3492,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Détricanon à un Pokémon compatible.",
+    "effect_fr": "Apprend Détricanon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 34 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : empoisonnement.",
-    "move": "gunk-shot"
+    "move": "gunk-shot",
+    "move_type": "poison"
   },
   "tr99": {
     "id": 1287,
@@ -3296,9 +3505,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Big Splash à un Pokémon compatible.",
+    "effect_fr": "Apprend Big Splash à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "body-press"
+    "move": "body-press",
+    "move_type": "fighting"
   },
   "tm101": {
     "id": 1944,
@@ -3308,9 +3518,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rayon Gemme à un Pokémon compatible.",
+    "effect_fr": "Apprend Rayon Gemme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 22 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-    "move": "power-gem"
+    "move": "power-gem",
+    "move_type": "rock"
   },
   "tm107": {
     "id": 1950,
@@ -3320,9 +3531,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Feu Follet à un Pokémon compatible.",
+    "effect_fr": "Apprend Feu Follet à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Inflige brûlure (précision 85 %) à la cible.",
-    "move": "will-o-wisp"
+    "move": "will-o-wisp",
+    "move_type": "fire"
   },
   "tm103": {
     "id": 1946,
@@ -3332,9 +3544,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Clonage à un Pokémon compatible.",
+    "effect_fr": "Apprend Clonage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Sacrifie 20 % de ses PV pour un bouclier de 35 % de ses PV max (bloque aussi les altérations).",
-    "move": "substitute"
+    "move": "substitute",
+    "move_type": "normal"
   },
   "tm105": {
     "id": 1948,
@@ -3344,9 +3557,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Plaie Croix à un Pokémon compatible.",
+    "effect_fr": "Apprend Plaie Croix à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 19 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-    "move": "x-scissor"
+    "move": "x-scissor",
+    "move_type": "bug"
   },
   "tm104": {
     "id": 1947,
@@ -3356,9 +3570,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mur de Fer à un Pokémon compatible.",
+    "effect_fr": "Apprend Mur de Fer à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Défense +2, bouclier de 15 % des PV pour le lanceur.",
-    "move": "iron-defense"
+    "move": "iron-defense",
+    "move_type": "steel"
   },
   "tm110": {
     "id": 1953,
@@ -3368,9 +3583,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aqua-Brèche à un Pokémon compatible.",
+    "effect_fr": "Apprend Aqua-Brèche à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 43 au point d'impact. 100 % sur la cible seule. 20 % de chance : Défense −1 pour la cible.",
-    "move": "liquidation"
+    "move": "liquidation",
+    "move_type": "water"
   },
   "tm111": {
     "id": 1954,
@@ -3380,9 +3596,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Giga-Sangsue à un Pokémon compatible.",
+    "effect_fr": "Apprend Giga-Sangsue à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 21 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Draine 50 % des dégâts ; l'excédent devient un bouclier.",
-    "move": "giga-drain"
+    "move": "giga-drain",
+    "move_type": "grass"
   },
   "tm108": {
     "id": 1951,
@@ -3392,9 +3609,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mâchouille à un Pokémon compatible.",
+    "effect_fr": "Apprend Mâchouille à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. 20 % de chance : Défense −1 pour la cible.",
-    "move": "crunch"
+    "move": "crunch",
+    "move_type": "dark"
   },
   "tm106": {
     "id": 1949,
@@ -3404,9 +3622,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tunnelier à un Pokémon compatible.",
+    "effect_fr": "Apprend Tunnelier à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Taux de critique +1.",
-    "move": "drill-run"
+    "move": "drill-run",
+    "move_type": "ground"
   },
   "tm109": {
     "id": 1952,
@@ -3416,9 +3635,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tour de Magie à un Pokémon compatible.",
+    "effect_fr": "Apprend Tour de Magie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Échange son objet tenu avec celui de la cible.",
-    "move": "trick"
+    "move": "trick",
+    "move_type": "psychic"
   },
   "tm112": {
     "id": 1955,
@@ -3428,9 +3648,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aurasphère à un Pokémon compatible.",
+    "effect_fr": "Apprend Aurasphère à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Tir de précision : vise n'importe quelle case, ignore la Provocation et ne rate jamais.",
-    "move": "aura-sphere"
+    "move": "aura-sphere",
+    "move_type": "fighting"
   },
   "tm113": {
     "id": 1956,
@@ -3440,9 +3661,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vent Arrière à un Pokémon compatible.",
+    "effect_fr": "Apprend Vent Arrière à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Arrière-vent 4 tours : Vitesse +1 et +30 % de jauge tout de suite pour l'équipe.",
-    "move": "tailwind"
+    "move": "tailwind",
+    "move_type": "flying"
   },
   "tm118": {
     "id": 1961,
@@ -3452,9 +3674,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Canicule à un Pokémon compatible.",
+    "effect_fr": "Apprend Canicule à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 19 au point d'impact. 50 % sur chaque ennemi, quelle que soit sa ligne. 10 % de chance : brûlure.",
-    "move": "heat-wave"
+    "move": "heat-wave",
+    "move_type": "fire"
   },
   "tm114": {
     "id": 1957,
@@ -3464,9 +3687,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ball’Ombre à un Pokémon compatible.",
+    "effect_fr": "Apprend Ball’Ombre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 20 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "shadow-ball"
+    "move": "shadow-ball",
+    "move_type": "ghost"
   },
   "tm117": {
     "id": 1960,
@@ -3476,9 +3700,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mégaphone à un Pokémon compatible.",
+    "effect_fr": "Apprend Mégaphone à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "hyper-voice"
+    "move": "hyper-voice",
+    "move_type": "normal"
   },
   "tm116": {
     "id": 1959,
@@ -3488,9 +3713,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Piège de Roc à un Pokémon compatible.",
+    "effect_fr": "Apprend Piège de Roc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Pose un Piège de Roc : chaque ennemi perd 8 % de PV (×efficacité Roche) à son premier tour.",
-    "move": "stealth-rock"
+    "move": "stealth-rock",
+    "move_type": "rock"
   },
   "tm115": {
     "id": 1958,
@@ -3500,9 +3726,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Draco-Choc à un Pokémon compatible.",
+    "effect_fr": "Apprend Draco-Choc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "dragon-pulse"
+    "move": "dragon-pulse",
+    "move_type": "dragon"
   },
   "tm119": {
     "id": 1962,
@@ -3512,9 +3739,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éco-Sphère à un Pokémon compatible.",
+    "effect_fr": "Apprend Éco-Sphère à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "energy-ball"
+    "move": "energy-ball",
+    "move_type": "grass"
   },
   "tm120": {
     "id": 1963,
@@ -3524,9 +3752,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Psyko à un Pokémon compatible.",
+    "effect_fr": "Apprend Psyko à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 22 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "psychic"
+    "move": "psychic",
+    "move_type": "psychic"
   },
   "tm121": {
     "id": 1964,
@@ -3536,9 +3765,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tacle Lourd à un Pokémon compatible.",
+    "effect_fr": "Apprend Tacle Lourd à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "heavy-slam"
+    "move": "heavy-slam",
+    "move_type": "steel"
   },
   "tm123": {
     "id": 1966,
@@ -3548,9 +3778,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Surf à un Pokémon compatible.",
+    "effect_fr": "Apprend Surf à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "surf"
+    "move": "surf",
+    "move_type": "water"
   },
   "tm122": {
     "id": 1965,
@@ -3560,9 +3791,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Encore à un Pokémon compatible.",
+    "effect_fr": "Apprend Encore à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Le lanceur déconcentre l'ennemi, le forçant à baisser sa garde et diminuant sa Défense et sa Défense Spéciale.",
-    "move": "encore"
+    "move": "encore",
+    "move_type": "normal"
   },
   "tm126": {
     "id": 1969,
@@ -3572,9 +3804,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tonnerre à un Pokémon compatible.",
+    "effect_fr": "Apprend Tonnerre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 27 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). 10 % de chance : paralysie.",
-    "move": "thunderbolt"
+    "move": "thunderbolt",
+    "move_type": "electric"
   },
   "tm125": {
     "id": 1968,
@@ -3584,9 +3817,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lance-Flammes à un Pokémon compatible.",
+    "effect_fr": "Apprend Lance-Flammes à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible, 50 % sur les 3 cases de la ligne derrière elle. 10 % de chance : brûlure.",
-    "move": "flamethrower"
+    "move": "flamethrower",
+    "move_type": "fire"
   },
   "tm124": {
     "id": 1967,
@@ -3596,9 +3830,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cryo-Pirouette à un Pokémon compatible.",
+    "effect_fr": "Apprend Cryo-Pirouette à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 22 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-    "move": "ice-spinner"
+    "move": "ice-spinner",
+    "move_type": "ice"
   },
   "tm131": {
     "id": 1974,
@@ -3608,9 +3843,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boule Pollen à un Pokémon compatible.",
+    "effect_fr": "Apprend Boule Pollen à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 28 au point d'impact. Toute la ligne avant ennemie : 70 % chacun.",
-    "move": "pollen-puff"
+    "move": "pollen-puff",
+    "move_type": "bug"
   },
   "tm129": {
     "id": 1972,
@@ -3620,9 +3856,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Plénitude à un Pokémon compatible.",
+    "effect_fr": "Apprend Plénitude à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Atq. Spé. +1, Déf. Spé. +1, bouclier de 10 % des PV pour le lanceur.",
-    "move": "calm-mind"
+    "move": "calm-mind",
+    "move_type": "psychic"
   },
   "tm130": {
     "id": 1973,
@@ -3632,9 +3869,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Coup d’Main à un Pokémon compatible.",
+    "effect_fr": "Apprend Coup d’Main à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Ses voisins de ligne font +20 % de dégâts.",
-    "move": "helping-hand"
+    "move": "helping-hand",
+    "move_type": "normal"
   },
   "tm127": {
     "id": 1970,
@@ -3644,9 +3882,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Câlinerie à un Pokémon compatible.",
+    "effect_fr": "Apprend Câlinerie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 45 au point d'impact. 100 % sur la cible seule. 10 % de chance : Attaque −1 pour la cible.",
-    "move": "play-rough"
+    "move": "play-rough",
+    "move_type": "fairy"
   },
   "tm128": {
     "id": 1971,
@@ -3656,9 +3895,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Amnésie à un Pokémon compatible.",
+    "effect_fr": "Apprend Amnésie à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Déf. Spé. +2, bouclier de 15 % des PV pour le lanceur.",
-    "move": "amnesia"
+    "move": "amnesia",
+    "move_type": "psychic"
   },
   "tm132": {
     "id": 1975,
@@ -3668,9 +3908,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Relais à un Pokémon compatible.",
+    "effect_fr": "Apprend Relais à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Relais : échange sa place avec l'allié le plus en arrière et lui transmet ses bonus de stats.",
-    "move": "baton-pass"
+    "move": "baton-pass",
+    "move_type": "normal"
   },
   "tm133": {
     "id": 1976,
@@ -3680,9 +3921,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Telluriforce à un Pokémon compatible.",
+    "effect_fr": "Apprend Telluriforce à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 20 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "earth-power"
+    "move": "earth-power",
+    "move_type": "ground"
   },
   "tm137": {
     "id": 1980,
@@ -3692,9 +3934,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Champ Herbu à un Pokémon compatible.",
+    "effect_fr": "Apprend Champ Herbu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Champ Herbu 4 tours : tous les Pokémon régénèrent 6 % par tour ; Plante ×1,3.",
-    "move": "grassy-terrain"
+    "move": "grassy-terrain",
+    "move_type": "grass"
   },
   "tm135": {
     "id": 1978,
@@ -3704,9 +3947,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Laser Glace à un Pokémon compatible.",
+    "effect_fr": "Apprend Laser Glace à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 28 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 10 % de chance : gel.",
-    "move": "ice-beam"
+    "move": "ice-beam",
+    "move_type": "ice"
   },
   "tm136": {
     "id": 1979,
@@ -3716,9 +3960,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Champ Électrifié à un Pokémon compatible.",
+    "effect_fr": "Apprend Champ Électrifié à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Champ Électrifié 4 tours : personne ne s'endort ; Électrik ×1,3.",
-    "move": "electric-terrain"
+    "move": "electric-terrain",
+    "move_type": "electric"
   },
   "tm134": {
     "id": 1977,
@@ -3728,9 +3973,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Contre à un Pokémon compatible.",
+    "effect_fr": "Apprend Contre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 80 au point d'impact. 100 % sur la cible seule. Puissance ×2 si le lanceur a moins de 50 % de PV.",
-    "move": "reversal"
+    "move": "reversal",
+    "move_type": "fighting"
   },
   "tm138": {
     "id": 1981,
@@ -3740,9 +3986,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Champ Psychique à un Pokémon compatible.",
+    "effect_fr": "Apprend Champ Psychique à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Champ Psychique 4 tours : les attaques prioritaires échouent ; Psy ×1,3.",
-    "move": "psychic-terrain"
+    "move": "psychic-terrain",
+    "move_type": "psychic"
   },
   "tm139": {
     "id": 1982,
@@ -3752,9 +3999,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Champ Brumeux à un Pokémon compatible.",
+    "effect_fr": "Apprend Champ Brumeux à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Champ Brumeux 4 tours : aucune altération d'état ; Dragon ×0,5.",
-    "move": "misty-terrain"
+    "move": "misty-terrain",
+    "move_type": "fairy"
   },
   "tm143": {
     "id": 1986,
@@ -3764,9 +4012,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Blizzard à un Pokémon compatible.",
+    "effect_fr": "Apprend Blizzard à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 22 au point d'impact. 50 % sur chaque ennemi, quelle que soit sa ligne. 10 % de chance : gel.",
-    "move": "blizzard"
+    "move": "blizzard",
+    "move_type": "ice"
   },
   "tm141": {
     "id": 1984,
@@ -3776,9 +4025,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Déflagration à un Pokémon compatible.",
+    "effect_fr": "Apprend Déflagration à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. 10 % de chance : brûlure.",
-    "move": "fire-blast"
+    "move": "fire-blast",
+    "move_type": "fire"
   },
   "tm142": {
     "id": 1985,
@@ -3788,9 +4038,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Hydrocanon à un Pokémon compatible.",
+    "effect_fr": "Apprend Hydrocanon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 34 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "hydro-pump"
+    "move": "hydro-pump",
+    "move_type": "water"
   },
   "tm140": {
     "id": 1983,
@@ -3800,9 +4051,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Machination à un Pokémon compatible.",
+    "effect_fr": "Apprend Machination à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Atq. Spé. +2 pour le lanceur.",
-    "move": "nasty-plot"
+    "move": "nasty-plot",
+    "move_type": "dark"
   },
   "tm144": {
     "id": 1987,
@@ -3812,9 +4064,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aire de Feu à un Pokémon compatible.",
+    "effect_fr": "Apprend Aire de Feu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "fire-pledge"
+    "move": "fire-pledge",
+    "move_type": "fire"
   },
   "tm146": {
     "id": 1989,
@@ -3824,9 +4077,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aire d’Herbe à un Pokémon compatible.",
+    "effect_fr": "Apprend Aire d’Herbe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 23 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "grass-pledge"
+    "move": "grass-pledge",
+    "move_type": "grass"
   },
   "tm150": {
     "id": 1993,
@@ -3836,9 +4090,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lame de Roc à un Pokémon compatible.",
+    "effect_fr": "Apprend Lame de Roc à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 22 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. Taux de critique +1.",
-    "move": "stone-edge"
+    "move": "stone-edge",
+    "move_type": "rock"
   },
   "tm149": {
     "id": 1992,
@@ -3848,9 +4103,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Séisme à un Pokémon compatible.",
+    "effect_fr": "Apprend Séisme à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 20 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "earthquake"
+    "move": "earthquake",
+    "move_type": "ground"
   },
   "tm147": {
     "id": 1990,
@@ -3860,9 +4116,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Éclair Fou à un Pokémon compatible.",
+    "effect_fr": "Apprend Éclair Fou à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 28 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 25 % des dégâts infligés.",
-    "move": "wild-charge"
+    "move": "wild-charge",
+    "move_type": "electric"
   },
   "tm148": {
     "id": 1991,
@@ -3872,9 +4129,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Bombe Beurk à un Pokémon compatible.",
+    "effect_fr": "Apprend Bombe Beurk à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : empoisonnement.",
-    "move": "sludge-bomb"
+    "move": "sludge-bomb",
+    "move_type": "poison"
   },
   "tm151": {
     "id": 1994,
@@ -3884,9 +4142,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Hantise à un Pokémon compatible.",
+    "effect_fr": "Apprend Hantise à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Puissance 45 au point d'impact. 100 % sur la cible seule. Plongée : disparaît, intouchable jusqu'à son prochain tour, puis frappe n'importe quelle case (même à l'arrière au contact). Traverse Abri et boucliers.",
-    "move": "phantom-force"
+    "move": "phantom-force",
+    "move_type": "ghost"
   },
   "tm145": {
     "id": 1988,
@@ -3896,9 +4155,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Aire d’Eau à un Pokémon compatible.",
+    "effect_fr": "Apprend Aire d’Eau à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "water-pledge"
+    "move": "water-pledge",
+    "move_type": "water"
   },
   "tm153": {
     "id": 1996,
@@ -3908,9 +4168,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rafale Feu à un Pokémon compatible.",
+    "effect_fr": "Apprend Rafale Feu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 27 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Recharge : le lanceur perd son prochain tour.",
-    "move": "blast-burn"
+    "move": "blast-burn",
+    "move_type": "fire"
   },
   "tm152": {
     "id": 1995,
@@ -3920,9 +4181,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Giga Impact à un Pokémon compatible.",
+    "effect_fr": "Apprend Giga Impact à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 46 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Recharge : le lanceur perd son prochain tour.",
-    "move": "giga-impact"
+    "move": "giga-impact",
+    "move_type": "normal"
   },
   "tm154": {
     "id": 1997,
@@ -3932,9 +4194,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Hydroblast à un Pokémon compatible.",
+    "effect_fr": "Apprend Hydroblast à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 46 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Recharge : le lanceur perd son prochain tour.",
-    "move": "hydro-cannon"
+    "move": "hydro-cannon",
+    "move_type": "water"
   },
   "tm156": {
     "id": 1999,
@@ -3944,9 +4207,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Colère à un Pokémon compatible.",
+    "effect_fr": "Apprend Colère à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 60. 100 % sur un ennemi tiré au hasard.",
-    "move": "outrage"
+    "move": "outrage",
+    "move_type": "dragon"
   },
   "tm157": {
     "id": 2000,
@@ -3956,9 +4220,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Surchauffe à un Pokémon compatible.",
+    "effect_fr": "Apprend Surchauffe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 29 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. Toujours : Atq. Spé. −2 pour le lanceur.",
-    "move": "overheat"
+    "move": "overheat",
+    "move_type": "fire"
   },
   "tm159": {
     "id": 2002,
@@ -3968,9 +4233,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tempête Verte à un Pokémon compatible.",
+    "effect_fr": "Apprend Tempête Verte à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 26 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Toujours : Atq. Spé. −2 pour le lanceur.",
-    "move": "leaf-storm"
+    "move": "leaf-storm",
+    "move_type": "grass"
   },
   "tm160": {
     "id": 2003,
@@ -3980,9 +4246,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vent Violent à un Pokémon compatible.",
+    "effect_fr": "Apprend Vent Violent à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 24 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. 30 % de chance : confusion. Repousse la cible d'une case vers l'arrière (choc de 10 % si la case est occupée).",
-    "move": "hurricane"
+    "move": "hurricane",
+    "move_type": "flying"
   },
   "tm158": {
     "id": 2001,
@@ -3992,9 +4259,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Exploforce à un Pokémon compatible.",
+    "effect_fr": "Apprend Exploforce à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 34 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "focus-blast"
+    "move": "focus-blast",
+    "move_type": "fighting"
   },
   "tm161": {
     "id": 2004,
@@ -4004,9 +4272,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Distorsion à un Pokémon compatible.",
+    "effect_fr": "Apprend Distorsion à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Distorsion 4 tours : les plus lents remplissent leur jauge le plus vite.",
-    "move": "trick-room"
+    "move": "trick-room",
+    "move_type": "psychic"
   },
   "tm155": {
     "id": 1998,
@@ -4016,9 +4285,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Végé-Attaque à un Pokémon compatible.",
+    "effect_fr": "Apprend Végé-Attaque à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 46 au point d'impact. Toute la ligne avant ennemie : 70 % chacun. Recharge : le lanceur perd son prochain tour.",
-    "move": "frenzy-plant"
+    "move": "frenzy-plant",
+    "move_type": "grass"
   },
   "tm164": {
     "id": 2007,
@@ -4028,9 +4298,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rapace à un Pokémon compatible.",
+    "effect_fr": "Apprend Rapace à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 37 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 33 % des dégâts infligés.",
-    "move": "brave-bird"
+    "move": "brave-bird",
+    "move_type": "flying"
   },
   "tm163": {
     "id": 2006,
@@ -4040,9 +4311,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ultralaser à un Pokémon compatible.",
+    "effect_fr": "Apprend Ultralaser à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 46 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Recharge : le lanceur perd son prochain tour.",
-    "move": "hyper-beam"
+    "move": "hyper-beam",
+    "move_type": "normal"
   },
   "tm165": {
     "id": 2008,
@@ -4052,9 +4324,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boutefeu à un Pokémon compatible.",
+    "effect_fr": "Apprend Boutefeu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 37 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 33 % des dégâts infligés. 10 % de chance : brûlure.",
-    "move": "flare-blitz"
+    "move": "flare-blitz",
+    "move_type": "fire"
   },
   "tm169": {
     "id": 2012,
@@ -4064,9 +4337,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Draco-Météore à un Pokémon compatible.",
+    "effect_fr": "Apprend Draco-Météore à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 49 par projectile. 3 projectiles sur des cases au hasard, 45 % chacun (une case peut être touchée plusieurs fois). Toujours : Atq. Spé. −2 pour le lanceur.",
-    "move": "draco-meteor"
+    "move": "draco-meteor",
+    "move_type": "dragon"
   },
   "tm162": {
     "id": 2005,
@@ -4076,9 +4350,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Bourdon à un Pokémon compatible.",
+    "effect_fr": "Apprend Bourdon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 28 au point d'impact. Toute la ligne avant ennemie : 70 % chacun. 10 % de chance : Déf. Spé. −1 pour la cible.",
-    "move": "bug-buzz"
+    "move": "bug-buzz",
+    "move_type": "bug"
   },
   "tm166": {
     "id": 2009,
@@ -4088,9 +4363,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Fatal-Foudre à un Pokémon compatible.",
+    "effect_fr": "Apprend Fatal-Foudre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 32 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). 30 % de chance : paralysie.",
-    "move": "thunder"
+    "move": "thunder",
+    "move_type": "electric"
   },
   "tm168": {
     "id": 2011,
@@ -4100,9 +4376,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lance-Soleil à un Pokémon compatible.",
+    "effect_fr": "Apprend Lance-Soleil à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 37 au point d'impact. Toute la ligne avant ennemie : 70 % chacun. Recharge : le lanceur perd son prochain tour.",
-    "move": "solar-beam"
+    "move": "solar-beam",
+    "move_type": "grass"
   },
   "tm167": {
     "id": 2010,
@@ -4112,9 +4389,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Close Combat à un Pokémon compatible.",
+    "effect_fr": "Apprend Close Combat à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule. Toujours : Défense −1, Déf. Spé. −1 pour le lanceur.",
-    "move": "close-combat"
+    "move": "close-combat",
+    "move_type": "fighting"
   },
   "tm170": {
     "id": 2013,
@@ -4124,9 +4402,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Métalaser à un Pokémon compatible.",
+    "effect_fr": "Apprend Métalaser à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 43 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "move": "steel-beam"
+    "move": "steel-beam",
+    "move_type": "steel"
   },
   "tm172": {
     "id": 2161,
@@ -4136,9 +4415,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Hurlement à un Pokémon compatible.",
+    "effect_fr": "Apprend Hurlement à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Hurlement : projette la cible au fond de sa colonne et lui retire 30 % de jauge ; si la case derrière est occupée, choc de 15 % des PV max pour les deux.",
-    "move": "roar"
+    "move": "roar",
+    "move_type": "normal"
   },
   "tm173": {
     "id": 2162,
@@ -4148,9 +4428,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Chargeur à un Pokémon compatible.",
+    "effect_fr": "Apprend Chargeur à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Déf. Spé. +1, bouclier de 10 % des PV pour le lanceur.",
-    "move": "charge"
+    "move": "charge",
+    "move_type": "electric"
   },
   "tm174": {
     "id": 2163,
@@ -4160,9 +4441,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Buée Noire à un Pokémon compatible.",
+    "effect_fr": "Apprend Buée Noire à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Annule toutes les modifications de stats de tous les Pokémon.",
-    "move": "haze"
+    "move": "haze",
+    "move_type": "ice"
   },
   "tm176": {
     "id": 2165,
@@ -4172,9 +4454,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tourbi-Sable à un Pokémon compatible.",
+    "effect_fr": "Apprend Tourbi-Sable à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 9 au point d'impact. 100 % sur la cible, 40 % sur ses 4 voisins ; toute la zone est piégée 3 tours (6 % de PV par tour, impossible d'en déplacer les Pokémon). Piège 3 tours : la cible perd 6 % de PV par tour et ne peut pas changer de ligne.",
-    "move": "sand-tomb"
+    "move": "sand-tomb",
+    "move_type": "ground"
   },
   "tm171": {
     "id": 2014,
@@ -4184,9 +4467,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Téra Explosion à un Pokémon compatible.",
+    "effect_fr": "Apprend Téra Explosion à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 40. 100 % sur un ennemi tiré au hasard. Toujours : Attaque −1, Atq. Spé. −1 pour la cible.",
-    "move": "tera-blast"
+    "move": "tera-blast",
+    "move_type": "normal"
   },
   "tm175": {
     "id": 2164,
@@ -4196,9 +4480,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Toxik à un Pokémon compatible.",
+    "effect_fr": "Apprend Toxik à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Inflige empoisonnement (précision 90 %) à la cible.",
-    "move": "toxic"
+    "move": "toxic",
+    "move_type": "poison"
   },
   "tm179": {
     "id": 2168,
@@ -4208,9 +4493,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Anti-Air à un Pokémon compatible.",
+    "effect_fr": "Apprend Anti-Air à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 25 au point d'impact. 100 % sur la cible seule. Anti-Air : fait retomber une cible en Plongée ou en lévitation et la ramène sur la ligne avant.",
-    "move": "smack-down"
+    "move": "smack-down",
+    "move_type": "rock"
   },
   "tm178": {
     "id": 2167,
@@ -4220,9 +4506,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Gravité à un Pokémon compatible.",
+    "effect_fr": "Apprend Gravité à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Gravité 4 tours : Précision +2 pour tous, plus de lévitation.",
-    "move": "gravity"
+    "move": "gravity",
+    "move_type": "psychic"
   },
   "tm177": {
     "id": 2166,
@@ -4232,9 +4519,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Dépit à un Pokémon compatible.",
+    "effect_fr": "Apprend Dépit à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Le lanceur exprime son ressentiment, ce qui déstabilise l'ennemi et baisse son Attaque Spéciale.",
-    "move": "spite"
+    "move": "spite",
+    "move_type": "ghost"
   },
   "tm181": {
     "id": 2170,
@@ -4244,9 +4532,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Sabotage à un Pokémon compatible.",
+    "effect_fr": "Apprend Sabotage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 33 au point d'impact. 100 % sur la cible seule. Fait tomber l'objet tenu par la cible (dégâts ×1,5 si elle en tenait un).",
-    "move": "knock-off"
+    "move": "knock-off",
+    "move_type": "dark"
   },
   "tm182": {
     "id": 2171,
@@ -4256,9 +4545,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Piqûre à un Pokémon compatible.",
+    "effect_fr": "Apprend Piqûre à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 30 au point d'impact. 100 % sur la cible seule. Mange la baie de la cible et en profite.",
-    "move": "bug-bite"
+    "move": "bug-bite",
+    "move_type": "bug"
   },
   "tm180": {
     "id": 2169,
@@ -4268,9 +4558,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Gyroballe à un Pokémon compatible.",
+    "effect_fr": "Apprend Gyroballe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible seule.",
-    "move": "gyro-ball"
+    "move": "gyro-ball",
+    "move_type": "steel"
   },
   "tm188": {
     "id": 2177,
@@ -4280,9 +4571,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ébullition à un Pokémon compatible.",
+    "effect_fr": "Apprend Ébullition à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 24 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 30 % de chance : brûlure.",
-    "move": "scald"
+    "move": "scald",
+    "move_type": "water"
   },
   "tm183": {
     "id": 2172,
@@ -4292,9 +4584,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Croc Fatal à un Pokémon compatible.",
+    "effect_fr": "Apprend Croc Fatal à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 1 au point d'impact. 100 % sur la cible seule.",
-    "move": "super-fang"
+    "move": "super-fang",
+    "move_type": "normal"
   },
   "tm189": {
     "id": 2178,
@@ -4304,9 +4597,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tacle Feu à un Pokémon compatible.",
+    "effect_fr": "Apprend Tacle Feu à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 60 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "heat-crash"
+    "move": "heat-crash",
+    "move_type": "fire"
   },
   "tm186": {
     "id": 2175,
@@ -4316,9 +4610,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cavalerie Lourde à un Pokémon compatible.",
+    "effect_fr": "Apprend Cavalerie Lourde à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 27 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "high-horsepower"
+    "move": "high-horsepower",
+    "move_type": "ground"
   },
   "tm184": {
     "id": 2173,
@@ -4328,9 +4623,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Onde Vide à un Pokémon compatible.",
+    "effect_fr": "Apprend Onde Vide à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 20. 100 % sur un ennemi tiré au hasard. Prioritaire : passe devant et rend 25 % de jauge après l'attaque.",
-    "move": "vacuum-wave"
+    "move": "vacuum-wave",
+    "move_type": "fighting"
   },
   "tm187": {
     "id": 2176,
@@ -4340,9 +4636,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Stalactite à un Pokémon compatible.",
+    "effect_fr": "Apprend Stalactite à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-    "move": "icicle-spear"
+    "move": "icicle-spear",
+    "move_type": "ice"
   },
   "tm185": {
     "id": 2174,
@@ -4352,9 +4649,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Furie-Bond à un Pokémon compatible.",
+    "effect_fr": "Apprend Furie-Bond à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Toujours : Attaque −1 pour la cible.",
-    "move": "lunge"
+    "move": "lunge",
+    "move_type": "bug"
   },
   "tm190": {
     "id": 2179,
@@ -4364,9 +4662,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Lame Solaire à un Pokémon compatible.",
+    "effect_fr": "Apprend Lame Solaire à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 63 au point d'impact. 100 % sur la cible seule. Recharge : le lanceur perd son prochain tour.",
-    "move": "solar-blade"
+    "move": "solar-blade",
+    "move_type": "grass"
   },
   "tm194": {
     "id": 2183,
@@ -4376,9 +4675,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Gliss’Herbe à un Pokémon compatible.",
+    "effect_fr": "Apprend Gliss’Herbe à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 28 au point d'impact. 100 % sur la cible seule. Prioritaire : passe devant et rend 25 % de jauge après l'attaque.",
-    "move": "grassy-glide"
+    "move": "grassy-glide",
+    "move_type": "grass"
   },
   "tm195": {
     "id": 2184,
@@ -4388,9 +4688,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Feu Envieux à un Pokémon compatible.",
+    "effect_fr": "Apprend Feu Envieux à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 19 au point d'impact. 100 % sur la cible, 50 % sur les 3 cases de la ligne derrière elle. Toujours : brûlure.",
-    "move": "burning-jealousy"
+    "move": "burning-jealousy",
+    "move_type": "fire"
   },
   "tm191": {
     "id": 2180,
@@ -4400,9 +4701,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Brouhaha à un Pokémon compatible.",
+    "effect_fr": "Apprend Brouhaha à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 45. 100 % sur un ennemi tiré au hasard.",
-    "move": "uproar"
+    "move": "uproar",
+    "move_type": "normal"
   },
   "tm193": {
     "id": 2182,
@@ -4412,9 +4714,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ball’Météo à un Pokémon compatible.",
+    "effect_fr": "Apprend Ball’Météo à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 14 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-    "move": "weather-ball"
+    "move": "weather-ball",
+    "move_type": "normal"
   },
   "tm198": {
     "id": 2187,
@@ -4424,9 +4727,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Esprit Frappeur à un Pokémon compatible.",
+    "effect_fr": "Apprend Esprit Frappeur à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Puissance 55 au point d'impact. 100 % sur la cible seule.",
-    "move": "poltergeist"
+    "move": "poltergeist",
+    "move_type": "ghost"
   },
   "tm197": {
     "id": 2186,
@@ -4436,9 +4740,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Double Volée à un Pokémon compatible.",
+    "effect_fr": "Apprend Double Volée à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Puissance 21 par coup. Un coup sur la cible, puis un coup sur un deuxième ennemi voisin de sa ligne (100 % chacun) ; s'il est seul, les deux coups le touchent.",
-    "move": "dual-wingbeat"
+    "move": "dual-wingbeat",
+    "move_type": "flying"
   },
   "tm196": {
     "id": 2185,
@@ -4448,9 +4753,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Eau Revoir à un Pokémon compatible.",
+    "effect_fr": "Apprend Eau Revoir à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 30 au point d'impact. 100 % sur la cible seule. Relais : après l'attaque, le lanceur échange sa place avec l'allié de sa colonne qui a le plus de PV.",
-    "move": "flip-turn"
+    "move": "flip-turn",
+    "move_type": "water"
   },
   "tm192": {
     "id": 2181,
@@ -4460,9 +4766,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Mitra-Poing à un Pokémon compatible.",
+    "effect_fr": "Apprend Mitra-Poing à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 75 au point d'impact. 100 % sur la cible seule. Lente : le lanceur perd 20 % de jauge après coup.",
-    "move": "focus-punch"
+    "move": "focus-punch",
+    "move_type": "fighting"
   },
   "tm204": {
     "id": 2193,
@@ -4472,9 +4779,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Damoclès à un Pokémon compatible.",
+    "effect_fr": "Apprend Damoclès à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 37 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 33 % des dégâts infligés.",
-    "move": "double-edge"
+    "move": "double-edge",
+    "move_type": "normal"
   },
   "tm202": {
     "id": 2191,
@@ -4484,9 +4792,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Balance à un Pokémon compatible.",
+    "effect_fr": "Apprend Balance à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Partage les PV : le lanceur et la cible prennent la moyenne de leurs PV.",
-    "move": "pain-split"
+    "move": "pain-split",
+    "move_type": "normal"
   },
   "tm200": {
     "id": 2189,
@@ -4496,9 +4805,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Rafale Écailles à un Pokémon compatible.",
+    "effect_fr": "Apprend Rafale Écailles à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-    "move": "scale-shot"
+    "move": "scale-shot",
+    "move_type": "dragon"
   },
   "tm201": {
     "id": 2190,
@@ -4508,9 +4818,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Explo-Brume à un Pokémon compatible.",
+    "effect_fr": "Apprend Explo-Brume à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 18 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Le lanceur est mis K.O.",
-    "move": "misty-explosion"
+    "move": "misty-explosion",
+    "move_type": "fairy"
   },
   "tm199": {
     "id": 2188,
@@ -4520,9 +4831,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cent Rancunes à un Pokémon compatible.",
+    "effect_fr": "Apprend Cent Rancunes à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 38 au point d'impact. 100 % sur la cible seule.",
-    "move": "lash-out"
+    "move": "lash-out",
+    "move_type": "dark"
   },
   "tm205": {
     "id": 2194,
@@ -4532,9 +4844,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Effort à un Pokémon compatible.",
+    "effect_fr": "Apprend Effort à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Puissance 1 au point d'impact. 100 % sur la cible seule.",
-    "move": "endeavor"
+    "move": "endeavor",
+    "move_type": "normal"
   },
   "tm210": {
     "id": 2199,
@@ -4544,9 +4857,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Volt Assaut à un Pokémon compatible.",
+    "effect_fr": "Apprend Volt Assaut à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 50 au point d'impact. 100 % sur la cible seule.",
-    "move": "supercell-slam"
+    "move": "supercell-slam",
+    "move_type": "electric"
   },
   "tm209": {
     "id": 2198,
@@ -4556,9 +4870,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ocroupi à un Pokémon compatible.",
+    "effect_fr": "Apprend Ocroupi à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. 30 % de chance : Précision −1 pour la cible.",
-    "move": "muddy-water"
+    "move": "muddy-water",
+    "move_type": "water"
   },
   "tm206": {
     "id": 2195,
@@ -4568,9 +4883,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Tempête Florale à un Pokémon compatible.",
+    "effect_fr": "Apprend Tempête Florale à un Pokémon compatible. Sert aussi à améliorer les capacités de type Plante.",
     "description_fr": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-    "move": "petal-blizzard"
+    "move": "petal-blizzard",
+    "move_type": "grass"
   },
   "tm208": {
     "id": 2197,
@@ -4580,9 +4896,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Siphon à un Pokémon compatible.",
+    "effect_fr": "Apprend Siphon à un Pokémon compatible. Sert aussi à améliorer les capacités de type Eau.",
     "description_fr": "Puissance 9 au point d'impact. 100 % sur la cible, 40 % sur ses 4 voisins ; toute la zone est piégée 3 tours (6 % de PV par tour, impossible d'en déplacer les Pokémon). Piège 3 tours : la cible perd 6 % de PV par tour et ne peut pas changer de ligne.",
-    "move": "whirlpool"
+    "move": "whirlpool",
+    "move_type": "water"
   },
   "tm203": {
     "id": 2192,
@@ -4592,9 +4909,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Boost à un Pokémon compatible.",
+    "effect_fr": "Apprend Boost à un Pokémon compatible. Sert aussi à améliorer les capacités de type Normal.",
     "description_fr": "Copie les modifications de stats de la cible.",
-    "move": "psych-up"
+    "move": "psych-up",
+    "move_type": "normal"
   },
   "tm207": {
     "id": 2196,
@@ -4604,9 +4922,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Indignition à un Pokémon compatible.",
+    "effect_fr": "Apprend Indignition à un Pokémon compatible. Sert aussi à améliorer les capacités de type Feu.",
     "description_fr": "Puissance 38 au point d'impact. 100 % sur la cible seule.",
-    "move": "temper-flare"
+    "move": "temper-flare",
+    "move_type": "fire"
   },
   "tm211": {
     "id": 2200,
@@ -4616,9 +4935,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Toile Élek à un Pokémon compatible.",
+    "effect_fr": "Apprend Toile Élek à un Pokémon compatible. Sert aussi à améliorer les capacités de type Électrik.",
     "description_fr": "Puissance 15 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-    "move": "electroweb"
+    "move": "electroweb",
+    "move_type": "electric"
   },
   "tm213": {
     "id": 2202,
@@ -4628,9 +4948,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Coaching à un Pokémon compatible.",
+    "effect_fr": "Apprend Coaching à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Attaque +1, Défense +1, bouclier de 10 % des PV pour toute l'équipe.",
-    "move": "coaching"
+    "move": "coaching",
+    "move_type": "fighting"
   },
   "tm212": {
     "id": 2201,
@@ -4640,9 +4961,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Triple Axel à un Pokémon compatible.",
+    "effect_fr": "Apprend Triple Axel à un Pokémon compatible. Sert aussi à améliorer les capacités de type Glace.",
     "description_fr": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 3 fois (chaque coup entame les boucliers).",
-    "move": "triple-axel"
+    "move": "triple-axel",
+    "move_type": "ice"
   },
   "tm214": {
     "id": 2203,
@@ -4652,9 +4974,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cradovague à un Pokémon compatible.",
+    "effect_fr": "Apprend Cradovague à un Pokémon compatible. Sert aussi à améliorer les capacités de type Poison.",
     "description_fr": "Puissance 19 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. 10 % de chance : empoisonnement.",
-    "move": "sludge-wave"
+    "move": "sludge-wave",
+    "move_type": "poison"
   },
   "tm217": {
     "id": 2206,
@@ -4664,9 +4987,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Prescience à un Pokémon compatible.",
+    "effect_fr": "Apprend Prescience à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 26 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins.",
-    "move": "future-sight"
+    "move": "future-sight",
+    "move_type": "psychic"
   },
   "tm219": {
     "id": 2208,
@@ -4676,9 +5000,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Ravage Rampant à un Pokémon compatible.",
+    "effect_fr": "Apprend Ravage Rampant à un Pokémon compatible. Sert aussi à améliorer les capacités de type Insecte.",
     "description_fr": "Puissance 35 au point d'impact. 100 % sur la cible seule. Toujours : Atq. Spé. −1 pour la cible.",
-    "move": "skitter-smack"
+    "move": "skitter-smack",
+    "move_type": "bug"
   },
   "tm216": {
     "id": 2205,
@@ -4688,9 +5013,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Danse Plumes à un Pokémon compatible.",
+    "effect_fr": "Apprend Danse Plumes à un Pokémon compatible. Sert aussi à améliorer les capacités de type Vol.",
     "description_fr": "Attaque −2 pour la cible.",
-    "move": "feather-dance"
+    "move": "feather-dance",
+    "move_type": "flying"
   },
   "tm215": {
     "id": 2204,
@@ -4700,9 +5026,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Sable Ardent à un Pokémon compatible.",
+    "effect_fr": "Apprend Sable Ardent à un Pokémon compatible. Sert aussi à améliorer les capacités de type Sol.",
     "description_fr": "Puissance 19 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. 30 % de chance : brûlure.",
-    "move": "scorching-sands"
+    "move": "scorching-sands",
+    "move_type": "ground"
   },
   "tm218": {
     "id": 2207,
@@ -4712,9 +5039,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Vaste Pouvoir à un Pokémon compatible.",
+    "effect_fr": "Apprend Vaste Pouvoir à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 19 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-    "move": "expanding-force"
+    "move": "expanding-force",
+    "move_type": "psychic"
   },
   "tm220": {
     "id": 2209,
@@ -4724,9 +5052,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Laser Météore à un Pokémon compatible.",
+    "effect_fr": "Apprend Laser Météore à un Pokémon compatible. Sert aussi à améliorer les capacités de type Roche.",
     "description_fr": "Puissance 33 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Recharge : le lanceur perd son prochain tour.",
-    "move": "meteor-beam"
+    "move": "meteor-beam",
+    "move_type": "rock"
   },
   "tm221": {
     "id": 2210,
@@ -4736,9 +5065,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Exécu-Son à un Pokémon compatible.",
+    "effect_fr": "Apprend Exécu-Son à un Pokémon compatible. Sert aussi à améliorer les capacités de type Ténèbres.",
     "description_fr": "Puissance 40 au point d'impact. 100 % sur la cible seule. Toujours : silence (capacités sonores bloquées).",
-    "move": "throat-chop"
+    "move": "throat-chop",
+    "move_type": "dark"
   },
   "tm222": {
     "id": 2211,
@@ -4748,9 +5078,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Abattage à un Pokémon compatible.",
+    "effect_fr": "Apprend Abattage à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Puissance 17 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Attaque −1 pour la cible.",
-    "move": "breaking-swipe"
+    "move": "breaking-swipe",
+    "move_type": "dragon"
   },
   "tm225": {
     "id": 2214,
@@ -4760,9 +5091,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Pression Extrême à un Pokémon compatible.",
+    "effect_fr": "Apprend Pression Extrême à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Puissance 100 au point d'impact. 100 % sur la cible seule.",
-    "move": "hard-press"
+    "move": "hard-press",
+    "move_type": "steel"
   },
   "tm223": {
     "id": 2212,
@@ -4772,9 +5104,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Strido-Son à un Pokémon compatible.",
+    "effect_fr": "Apprend Strido-Son à un Pokémon compatible. Sert aussi à améliorer les capacités de type Acier.",
     "description_fr": "Déf. Spé. −2 pour la cible.",
-    "move": "metal-sound"
+    "move": "metal-sound",
+    "move_type": "steel"
   },
   "tm224": {
     "id": 2213,
@@ -4784,9 +5117,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Malédiction à un Pokémon compatible.",
+    "effect_fr": "Apprend Malédiction à un Pokémon compatible. Sert aussi à améliorer les capacités de type Spectre.",
     "description_fr": "Spectre : sacrifie 50 % de ses PV pour maudire la cible (−25 % PV par tour). Autres : Vitesse −1, Attaque et Défense +1.",
-    "move": "curse"
+    "move": "curse",
+    "move_type": "ghost"
   },
   "tm226": {
     "id": 2215,
@@ -4796,9 +5130,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Cri Draconique à un Pokémon compatible.",
+    "effect_fr": "Apprend Cri Draconique à un Pokémon compatible. Sert aussi à améliorer les capacités de type Dragon.",
     "description_fr": "Taux de critique +1 pour l'équipe (+2 pour les Dragon).",
-    "move": "dragon-cheer"
+    "move": "dragon-cheer",
+    "move_type": "dragon"
   },
   "tm227": {
     "id": 2216,
@@ -4808,9 +5143,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Voix Envoûtante à un Pokémon compatible.",
+    "effect_fr": "Apprend Voix Envoûtante à un Pokémon compatible. Sert aussi à améliorer les capacités de type Fée.",
     "description_fr": "Puissance 18 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins.",
-    "move": "alluring-voice"
+    "move": "alluring-voice",
+    "move_type": "fairy"
   },
   "tm228": {
     "id": 2217,
@@ -4820,9 +5156,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Dissonance Psy à un Pokémon compatible.",
+    "effect_fr": "Apprend Dissonance Psy à un Pokémon compatible. Sert aussi à améliorer les capacités de type Psy.",
     "description_fr": "Puissance 18 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-    "move": "psychic-noise"
+    "move": "psychic-noise",
+    "move_type": "psychic"
   },
   "tm229": {
     "id": 2218,
@@ -4832,9 +5169,10 @@
     "category": "Toutes les capsules",
     "pocket": "ct",
     "attributes": [],
-    "effect_fr": "Apprend Prio-Parade à un Pokémon compatible.",
+    "effect_fr": "Apprend Prio-Parade à un Pokémon compatible. Sert aussi à améliorer les capacités de type Combat.",
     "description_fr": "Puissance 33 au point d'impact. 100 % sur la cible seule. Prioritaire : passe devant et rend 25 % de jauge après l'attaque.",
-    "move": "upper-hand"
+    "move": "upper-hand",
+    "move_type": "fighting"
   },
   "wingull-feather": {
     "id": 1800,

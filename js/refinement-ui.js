@@ -443,7 +443,7 @@ const RefinementUI = (() => {
         return `
             <div class="refinement-section">
                 <h4>Entraînement des capacités</h4>
-                <p class="small info">Chaque niveau : 1 PP Plus. Tous les 20 niveaux, un palier : PP Max. L'amélioration renforce les dégâts, mais aussi les boucliers, soins et régénérations de la capacité.</p>
+                <p class="small info">Chaque niveau : des CT du même type que la capacité (n'importe laquelle ; un PP Plus remplace une CT manquante). Tous les 20 niveaux, un palier : PP Max. L'amélioration renforce les dégâts, mais aussi les boucliers, soins et régénérations de la capacité.</p>
                 <div class="moves-list">
                     ${keys.map(key => {
                         const mv = db[key] || {};
@@ -452,9 +452,11 @@ const RefinementUI = (() => {
                         const atMax = lvl >= Refinement.getMaxRefineLevel(stars);
                         const mult = Refinement.getMultiplier(lvl, stars);
                         const cost = Refinement.getRefinementCost('move', lvl, stars);
-                        const pp = atMax ? 'pp-max' : 'pp-up', ppCount = atMax ? stars + 1 : 1;
-                        const tierKey = atMax ? Refinement.getStarKey(stars + 1) : null;
-                        const ok = data.money >= cost.money && (inv[pp] || 0) >= ppCount;
+                        const mc = GameData.moveTrainingCost(key, ref, mv.type);
+                        const tierKey = mc.key || null;
+                        const resOk = mc.star ? mc.haveJoker >= mc.count : (mc.haveCt + mc.haveJoker) >= mc.count;
+                        const typeName = GameData.TYPE_LABEL[mc.type] || mc.type;
+                        const ok = data.money >= cost.money && resOk;
                         const power = mv.rw?.kind === 'attack' ? mv.rw.power : null;
                         const kind = mv.rw?.kind === 'passive' ? 'Passif' : mv.rw?.kind === 'tactic' ? 'Tactique' : 'Attaque';
                         return `
@@ -467,7 +469,7 @@ const RefinementUI = (() => {
                                     <div>${kind} · ×${mult.toFixed(2)}${power ? ` · Puissance ${Math.round(power * mult)}` : ''}</div>
                                 </div>
                                 <button class="refine-btn small ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.refineMove('${key}')">
-                                    ${Art.item(pp, 22)}×${ppCount}${tierKey ? ` ${Art.item(tierKey.item, 20)}×${tierKey.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $ · ${atMax ? 'Palier ★' : 'Améliorer'}
+                                    ${mc.star ? `${Art.item('pp-max', 22)}×${mc.count}` : `${Art.item('tm-' + mc.type, 22)} CT ${typeName} ×${mc.count} <small>(${mc.haveCt} + ${mc.haveJoker} PP Plus)</small>`}${tierKey ? ` ${Art.item(tierKey.item, 20)}×${tierKey.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $ · ${atMax ? 'Palier ★' : 'Améliorer'}
                                 </button>
                             </div>`;
                     }).join('') || '<p class="small">Aucune capacité équipée.</p>'}

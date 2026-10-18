@@ -17,6 +17,7 @@ const official = read('moves_official.json');
 const moves = { ...read('status_moves.json'), ...read('special_moves.json'), ...read('physical_moves.json') };
 
 const round100 = n => Math.round(n / 100) * 100;
+const TYPE_FR = { normal: 'Normal', fire: 'Feu', water: 'Eau', grass: 'Plante', electric: 'Électrik', ice: 'Glace', fighting: 'Combat', poison: 'Poison', ground: 'Sol', flying: 'Vol', psychic: 'Psy', bug: 'Insecte', rock: 'Roche', ghost: 'Spectre', dragon: 'Dragon', dark: 'Ténèbres', steel: 'Acier', fairy: 'Fée' };
 function price(slug) {
     const m = moves[slug] || {};
     const kind = m.rw?.kind;
@@ -36,7 +37,8 @@ for (const [id, entry] of Object.entries(ctMap)) {
     if (!m) continue;
     const it = items[id];
     it.move = entry.move;
-    it.effect_fr = `Apprend ${m.name_fr} à un Pokémon compatible.`;
+    it.move_type = m.type || 'normal';
+    it.effect_fr = `Apprend ${m.name_fr} à un Pokémon compatible. Sert aussi à améliorer les capacités de type ${TYPE_FR[it.move_type] || it.move_type}.`;
     it.description_fr = m.description_game || m.description_fr || '';
     it.cost = price(entry.move);
     it.sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tm-${m.type || 'normal'}.png`;

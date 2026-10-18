@@ -2129,7 +2129,29 @@ const GameData = (() => {
 
 
 
-    function refineMove(pokemonInstanceId, moveName) {
+    // --- Capacités : un niveau = des CT du même type que l'attaque (PP Plus = joker) ; un palier = PP Max + déblocage ---
+    const TYPE_LABEL = { normal: 'Normal', fire: 'Feu', water: 'Eau', grass: 'Plante', electric: 'Électrik', ice: 'Glace', fighting: 'Combat', poison: 'Poison', ground: 'Sol', flying: 'Vol', psychic: 'Psy', bug: 'Insecte', rock: 'Roche', ghost: 'Spectre', dragon: 'Dragon', dark: 'Ténèbres', steel: 'Acier', fairy: 'Fée' };
+    function ctIdsOfType(type) {
+        return Object.keys(itemsCatalog).filter(id => itemsCatalog[id].move_type === type);
+    }
+    function moveTypeOf(moveName) {
+        if (typeof MovesDB !== 'undefined' && MovesDB?.[moveName]?.type) return MovesDB[moveName].type;
+        return Object.values(itemsCatalog).find(it => it.move === moveName)?.move_type || 'normal';
+    }
+    function moveTrainingCost(moveName, ref, moveType = null) {
+        const inv = loadData()?.inventory?.items || {};
+        const lvl = Refinement.levelOf(ref || {}), stars = Refinement.starsOf(ref || {});
+        const atMax = lvl >= Refinement.getMaxRefineLevel(stars);
+        const type = moveType || moveTypeOf(moveName);
+        if (atMax) return { star: true, type, count: stars + 1, key: Refinement.getStarKey(stars + 1), haveJoker: inv['pp-max'] || 0 };
+        return {
+            star: false, type, count: 1 + Math.floor(stars / 2),
+            haveCt: ctIdsOfType(type).reduce((a, id) => a + (inv[id] || 0), 0),
+            haveJoker: inv['pp-up'] || 0,
+        };
+    }
+
+    function refineMove(pokemonInstanceId, moveName, moveType = null) {
         const data = loadData();
         const pokemon = data.pokemons.find(p => p.instanceId === pokemonInstanceId);
         if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
@@ -2148,16 +2170,29 @@ const GameData = (() => {
         if (!check.possible) {
             return { success: false, reason: check.reason };
         }
-        const ppItem = atMax ? 'pp-max' : 'pp-up';
-        const ppCount = atMax ? Refinement.starsOf(currentRef) + 1 : 1;
         const inv = data.inventory.items = data.inventory.items || {};
-        if ((inv[ppItem] || 0) < ppCount) return { success: false, reason: `Il faut ${ppCount} × ${itemsCatalog[ppItem]?.name_fr || ppItem}.` };
-        const moveKey = atMax ? Refinement.getStarKey(Refinement.starsOf(currentRef) + 1) : null;
-        const moveLocked = keyMissing(inv, moveKey);
+        const cost = moveTrainingCost(moveName, currentRef, moveType);
+        if (cost.star) {
+            if ((inv['pp-max'] || 0) < cost.count) return { success: false, reason: `Il faut ${cost.count} × ${itemsCatalog['pp-max']?.name_fr || 'PP Max'}.` };
+        } else if (cost.haveCt + cost.haveJoker < cost.count) {
+            return { success: false, reason: `Il faut ${cost.count} CT de type ${TYPE_LABEL[cost.type] || cost.type} (ou des PP Plus en joker).` };
+        }
+        const moveLocked = keyMissing(inv, cost.key);
         if (moveLocked) return { success: false, reason: moveLocked };
-        consumeKey(inv, moveKey);
-        inv[ppItem] -= ppCount;
-        if (inv[ppItem] <= 0) delete inv[ppItem];
+        consumeKey(inv, cost.key);
+        if (cost.star) {
+            inv['pp-max'] -= cost.count;
+            if (inv['pp-max'] <= 0) delete inv['pp-max'];
+        } else {
+            // CT du type, les moins chères d'abord, puis PP Plus pour le reste
+            let left = cost.count;
+            for (const id of ctIdsOfType(cost.type).sort((a, b) => (itemsCatalog[a].cost || 0) - (itemsCatalog[b].cost || 0))) {
+                const take = Math.min(left, inv[id] || 0);
+                if (take) { inv[id] -= take; left -= take; if (inv[id] <= 0) delete inv[id]; }
+                if (!left) break;
+            }
+            if (left) { inv['pp-up'] -= left; if (inv['pp-up'] <= 0) delete inv['pp-up']; }
+        }
         data.money -= check.cost.money;
         pokemon.moveRefinements[moveName] = atMax ? Refinement.applyAddStar(currentRef) : Refinement.applyLevelUp(currentRef);
         pokemon.stats = calculateStats(pokemon); 
@@ -2408,6 +2443,8 @@ const GameData = (() => {
         refinePokemonLevel,
         refinePokemonStar,
         pokemonStarCost,
+        moveTrainingCost,
+        TYPE_LABEL,
         refineIV,
         refineEV,
         refineMove,
