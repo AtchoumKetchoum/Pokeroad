@@ -44,12 +44,16 @@ const BattleRules = (() => {
 
     // Attaque de contact : physique, avec une cible choisie (pas « tout le monde » ni « au hasard »)
     function isContact(move) {
+        const rw = typeof MoveRework !== 'undefined' ? MoveRework.isContact(move) : null;
+        if (rw !== null) return rw;
         return move && move.damage_class === 'physical' && (move.power || 0) > 0
             && !['all', 'random_single'].includes(move.aoe || 'single');
     }
 
     function canTarget(attacker, move, target) {
         if (!target || target.isKO) return false;
+        if (target.flags?.diving && target._side !== attacker._side) return false; // Plongée : intouchable
+        if (move?.rw?.anyCell) return true; // Plongée, tir de précision, attraction : n'importe quelle case
         if (target._side === attacker._side) return true;
         if (!isContact(move) || attacker.ignoresFrontline) return true;
         return frontLineUnits(target._side).includes(target);
@@ -236,6 +240,8 @@ const BattleRules = (() => {
         if (id === 'STAT_SOM' && (field.terrain?.type === 'electric' || hasFlag(target, 'insomnia'))) return false;
         if (rule.category === 'Majeur' && target.activeEffects.some(e => RulesDB[e.id]?.category === 'Majeur')) return false;
         if (target.activeEffects.some(e => e.id === id)) return false;
+        if (rule.category === 'Majeur' && target.flags?.safeguard) { spawnEffectText(target, 'Rune Protect', 'info'); return false; }
+        if (id === 'STAT_CONF' && target.flags?.noConfusion) return false;
         target.activeEffects.push({ id, duration: getEffectDuration(id, rule, {}), source: source?.id });
         spawnEffectText(target, rule.name, 'status');
         updateStatusIcons(target);
@@ -312,6 +318,8 @@ const BattleRules = (() => {
             units.forEach(u => { animateHpGrid(u._side, u._index, u.maxHp, u.hp, u.maxHp); updateStatusIcons(u); });
         });
         if (typeof FormationUI !== 'undefined') FormationUI.refresh();
+        // Refonte : passifs du premier tour (météo, pièges, bonus…)
+        if (typeof MoveRework !== 'undefined') MoveRework.onBattleStart();
     }
 
     // ------------------------------------------------------------------
@@ -348,6 +356,8 @@ const BattleRules = (() => {
         // Poudre : une attaque Feu explose au visage du lanceur (géré dans beforeAttack)
         // Boss en phase 2 : frappe plus fort
         if (attacker.isBoss && attacker.bossPhase === 2) m *= 1.3;
+        // Refonte : en face, distance, Coup de Main, murs, Lance-Boue…
+        if (typeof MoveRework !== 'undefined') m *= MoveRework.damageMult(attacker, defender, move, moveType);
         return m;
     }
 
@@ -408,7 +418,10 @@ const BattleRules = (() => {
         const dealt = results.reduce((sum, r) => sum + (r.dmg || 0), 0);
         if (dealt > 0) {
             const drain = (mech.drain || 0) + (attacker.lifesteal || 0);
-            if (drain > 0) heal(attacker, dealt * drain, null);
+            if (drain > 0) {
+                const gained = heal(attacker, dealt * drain, null);
+                if (typeof MoveRework !== 'undefined') MoveRework.drainOverflow(attacker, move, dealt * drain, gained);
+            }
             if (mech.recoil) damage(attacker, dealt * mech.recoil, 'Contrecoup');
         }
         // Riposte / Voile Miroir / Patience / Fulmifer : renvoient le double des dégâts reçus
@@ -650,7 +663,8 @@ const BattleRules = (() => {
                 case 'swapSpeed': list.forEach(u => { const tmp = attacker.speed; attacker.speed = u.speed; u.speed = tmp; }); spawnEffectText(attacker, 'Vitesse échangée', 'buff'); break;
                 case 'setType': list.forEach(u => {
                     let types = op.types;
-                    if (op.mode === 'firstMove') types = [moveTypeFor(attacker, (attacker.moves || [])[0] || move)];
+                    if (op.mode === 'firstMove') types = [moveTypeFor(attacker, (attacker.moves || []).find(m => !m?._passive) || move)];
+                    if (op.mode === 'terrain') types = [({ grassy: 'grass', electric: 'electric', misty: 'fairy', psychic: 'psychic' })[field.terrain?.type] || ({ rain: 'water', sun: 'fire', sand: 'rock', hail: 'ice', snow: 'ice' })[field.weather?.type] || 'normal'];
                     if (op.mode === 'copyTarget') { types = [...(target?.types || [])]; u = attacker; }
                     if (op.mode === 'resistTarget') {
                         const threat = (target?.types || ['normal'])[0];

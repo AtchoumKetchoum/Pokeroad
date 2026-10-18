@@ -98,3 +98,8 @@
 .pk-sheet .held-item-info { flex: 1; display: flex; align-items: center; gap: 8px; font-weight: 700; }
 .pk-sheet .detail-evolution { font-size: 16px; font-weight: 700; }
 .pk-sheet #evolution-actions .pk-btn-action { width: 100%; }
+
+/* Refonte des capacités : genre de la capacité (attaque et sa zone, tactique, passif) */
+.pk-sheet .move-kind { padding: 0 6px; border-radius: 4px; color: #f7ecdc; background: #8a6f5a; }
+.pk-sheet .move-kind.kind-tactic { background: #5e7f9a; }
+.pk-sheet .move-kind.kind-passive { background: #7b6497; }

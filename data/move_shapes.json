@@ -1,0 +1,630 @@
+{
+ "cible": {
+  "name": "Cible unique",
+  "grid": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    100,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible seule."
+ },
+ "duo": {
+  "name": "Doublé (2 cibles)",
+  "grid": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    100,
+    100
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "order": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ]
+  ],
+  "text": "Un coup sur la cible, puis un coup sur un deuxième ennemi voisin de sa ligne (100 % chacun) ; s'il est seul, les deux coups le touchent."
+ },
+ "hasard": {
+  "name": "Au hasard",
+  "grid": null,
+  "text": "100 % sur un ennemi tiré au hasard."
+ },
+ "eclabous": {
+  "name": "Éclaboussure",
+  "grid": [
+   [
+    0,
+    35,
+    0
+   ],
+   [
+    35,
+    100,
+    35
+   ],
+   [
+    0,
+    35,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible, 35 % sur ses 4 voisins."
+ },
+ "croix": {
+  "name": "Croix",
+  "grid": [
+   [
+    0,
+    60,
+    0
+   ],
+   [
+    60,
+    100,
+    60
+   ],
+   [
+    0,
+    60,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible, 60 % sur ses 4 voisins."
+ },
+ "diag": {
+  "name": "Diagonales (X)",
+  "grid": [
+   [
+    50,
+    0,
+    50
+   ],
+   [
+    0,
+    100,
+    0
+   ],
+   [
+    50,
+    0,
+    50
+   ]
+  ],
+  "text": "100 % sur la cible, 50 % sur ses 4 diagonales."
+ },
+ "explosion": {
+  "name": "Explosion",
+  "grid": [
+   [
+    30,
+    55,
+    30
+   ],
+   [
+    55,
+    100,
+    55
+   ],
+   [
+    30,
+    55,
+    30
+   ]
+  ],
+  "text": "100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins."
+ },
+ "ligne": {
+  "name": "Balayage (ligne)",
+  "grid": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    75,
+    100,
+    75
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible, 75 % sur les deux autres cases de sa ligne."
+ },
+ "percee": {
+  "name": "Perçante (colonne)",
+  "grid": [
+   [
+    0,
+    45,
+    0
+   ],
+   [
+    0,
+    70,
+    0
+   ],
+   [
+    0,
+    100,
+    0
+   ]
+  ],
+  "text": "Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière."
+ },
+ "cone": {
+  "name": "Cône (souffle)",
+  "grid": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    50,
+    50,
+    50
+   ],
+   [
+    0,
+    100,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible, 50 % sur les 3 cases de la ligne derrière elle."
+ },
+ "onde": {
+  "name": "Onde",
+  "grid": [
+   [
+    30,
+    30,
+    30
+   ],
+   [
+    50,
+    50,
+    50
+   ],
+   [
+    70,
+    70,
+    70
+   ]
+  ],
+  "text": "Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière."
+ },
+ "tempete": {
+  "name": "Tempête",
+  "grid": [
+   [
+    50,
+    50,
+    50
+   ],
+   [
+    50,
+    50,
+    50
+   ],
+   [
+    50,
+    50,
+    50
+   ]
+  ],
+  "text": "50 % sur chaque ennemi, quelle que soit sa ligne."
+ },
+ "front": {
+  "name": "Ligne de front",
+  "grid": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    70,
+    70,
+    70
+   ]
+  ],
+  "text": "Toute la ligne avant ennemie : 70 % chacun."
+ },
+ "ricochet": {
+  "name": "Ricochet",
+  "grid": [
+   [
+    0,
+    0,
+    35
+   ],
+   [
+    0,
+    100,
+    60
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "order": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    0,
+    2
+   ]
+  ],
+  "text": "100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %)."
+ },
+ "salve": {
+  "name": "Salve",
+  "grid": null,
+  "hits": 3,
+  "text": "3 projectiles sur des cases au hasard, 45 % chacun (une case peut être touchée plusieurs fois)."
+ },
+ "explosion_z": {
+  "name": "Grande explosion",
+  "grid": [
+   [
+    60,
+    80,
+    60
+   ],
+   [
+    80,
+    100,
+    80
+   ],
+   [
+    60,
+    80,
+    60
+   ]
+  ],
+  "text": "100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins."
+ },
+ "percee_large": {
+  "name": "Perçante large",
+  "grid": [
+   [
+    25,
+    45,
+    25
+   ],
+   [
+    35,
+    70,
+    35
+   ],
+   [
+    50,
+    100,
+    50
+   ]
+  ],
+  "text": "Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines."
+ },
+ "cone_large": {
+  "name": "Grand souffle",
+  "grid": [
+   [
+    40,
+    40,
+    40
+   ],
+   [
+    70,
+    70,
+    70
+   ],
+   [
+    0,
+    100,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible, 70 % sur la ligne derrière, 40 % tout au fond."
+ },
+ "onde_forte": {
+  "name": "Raz-de-marée",
+  "grid": [
+   [
+    50,
+    50,
+    50
+   ],
+   [
+    75,
+    75,
+    75
+   ],
+   [
+    100,
+    100,
+    100
+   ]
+  ],
+  "text": "Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière."
+ },
+ "tempete_forte": {
+  "name": "Ouragan",
+  "grid": [
+   [
+    80,
+    80,
+    80
+   ],
+   [
+    80,
+    80,
+    80
+   ],
+   [
+    80,
+    80,
+    80
+   ]
+  ],
+  "text": "80 % sur chaque ennemi."
+ },
+ "ricochet_z": {
+  "name": "Ricochet en chaîne",
+  "grid": [
+   [
+    25,
+    45,
+    65
+   ],
+   [
+    0,
+    100,
+    80
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "order": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    0,
+    2
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %)."
+ },
+ "trio": {
+  "name": "Triplé (3 cibles)",
+  "grid": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    100,
+    100,
+    100
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "order": [
+   [
+    1,
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    0
+   ]
+  ],
+  "text": "Un coup sur la cible puis un sur chacun de ses voisins de ligne (100 % chacun)."
+ },
+ "salve_z": {
+  "name": "Déluge",
+  "grid": null,
+  "hits": 6,
+  "text": "6 projectiles sur des cases au hasard, 50 % chacun."
+ },
+ "encercle": {
+  "name": "Encerclement",
+  "grid": [
+   [
+    0,
+    40,
+    0
+   ],
+   [
+    40,
+    100,
+    40
+   ],
+   [
+    0,
+    40,
+    0
+   ]
+  ],
+  "text": "100 % sur la cible, 40 % sur ses 4 voisins ; toute la zone est piégée 3 tours (6 % de PV par tour, impossible d'en déplacer les Pokémon)."
+ },
+ "soin_cible": {
+  "name": "Soin ciblé",
+  "side": "ally",
+  "grid": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    100,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "text": "Soigne l'allié le plus blessé."
+ },
+ "soin_eclabous": {
+  "name": "Soin en éclaboussure",
+  "side": "ally",
+  "grid": [
+   [
+    0,
+    40,
+    0
+   ],
+   [
+    40,
+    100,
+    40
+   ],
+   [
+    0,
+    40,
+    0
+   ]
+  ],
+  "text": "100 % du soin sur l'allié le plus blessé, 40 % sur ses 4 voisins."
+ },
+ "soin_onde": {
+  "name": "Onde de soin",
+  "side": "ally",
+  "grid": [
+   [
+    100,
+    100,
+    100
+   ],
+   [
+    80,
+    80,
+    80
+   ],
+   [
+    60,
+    60,
+    60
+   ]
+  ],
+  "text": "Toute l'équipe : 100 % du soin sur la ligne avant, 80 % au milieu, 60 % à l'arrière."
+ },
+ "bouclier_front": {
+  "name": "Mur de la ligne avant",
+  "side": "ally",
+  "grid": [
+   [
+    100,
+    100,
+    100
+   ],
+   [
+    60,
+    60,
+    60
+   ],
+   [
+    30,
+    30,
+    30
+   ]
+  ],
+  "text": "Bouclier complet sur la ligne avant, 60 % au milieu, 30 % à l'arrière."
+ },
+ "garde_colonne": {
+  "name": "Garde de colonne",
+  "side": "ally",
+  "grid": [
+   [
+    0,
+    100,
+    0
+   ],
+   [
+    0,
+    100,
+    0
+   ],
+   [
+    0,
+    100,
+    0
+   ]
+  ],
+  "text": "Protège toute la colonne du lanceur."
+ }
+}

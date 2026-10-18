@@ -672,6 +672,8 @@ function renderMovesManager() {
         const isSelected = selectionState.selected.includes(move.name);
         const isBoosted = selectionState.boosted === move.name;
         const isStatusMove = moveData.damage_class === 'status';
+        // Refonte : chaque capacité a une version Z (attaques, tactiques et Éveil des passifs)
+        const rw = moveData.rw || null;
 
         const moveItem = document.createElement('div');
         moveItem.className = 'move-item';
@@ -679,7 +681,7 @@ function renderMovesManager() {
         let actionHtml = '';
         if (isSelected) {
             let boostRadioHtml = '';
-            if (!isStatusMove) {
+            if (!isStatusMove || rw) {
                 boostRadioHtml = `
                     <div class="boost-radio">
                         <input type="radio" name="boosted-move" id="boost-${move.name}" 
@@ -706,10 +708,14 @@ function renderMovesManager() {
         const refLevel = ref ? Refinement.levelOf(ref) : 1;
         const refStars = ref ? Refinement.starsOf(ref) : 0;
         const refMult = Refinement.getMultiplier(refLevel, refStars);
-        const shownPower = typeof power === 'number' && power > 1 ? Math.round(power * refMult) : power;
+        const basePower = rw?.kind === 'attack' ? rw.power : power;
+        const shownPower = typeof basePower === 'number' && basePower > 1 ? Math.round(basePower * refMult) : basePower;
         const reach = typeof BattleRules !== 'undefined' && (moveData.power || 0) > 0 && moveData.damage_class !== 'status'
             ? (BattleRules.isContact(moveData) ? 'Contact' : 'Distance') : '';
-        moveItem.title = moveData.description_game || moveData.description_fr || '';
+        moveItem.title = (moveData.description_game || moveData.description_fr || '') + (moveData.description_z ? `
+Version Z : ${moveData.description_z}` : '');
+        // Genre de la capacité : un passif occupe un emplacement mais ne se lance jamais
+        const kindHtml = rw ? `<span class="move-kind kind-${rw.kind}">${rw.kind === 'passive' ? `Passif · ${rw.triggerLabel || ''}` : rw.kind === 'tactic' ? 'Tactique' : (moveData.zone_label || 'Attaque').replace(/\s*\(.*\)$/, '')}</span>` : '';
         moveItem.innerHTML = `
             <div class="move-header">
                 <span class="move-name">${nameFr}</span>
@@ -717,7 +723,8 @@ function renderMovesManager() {
             </div>
             <div class="move-details">
                 <div class="move-stats">
-                    <span>Puiss. ${shownPower}</span>
+                    ${kindHtml}
+                    ${rw?.kind === 'passive' ? '' : `<span>Puiss. ${shownPower}</span>`}
                     <span>Préc. ${accuracy}</span>
                     <span>${damage_class}</span>
                     ${reach ? `<span class="move-reach ${reach === 'Contact' ? 'contact' : 'ranged'}">${reach}</span>` : ''}

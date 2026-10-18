@@ -1043,26 +1043,33 @@
 
 .aoe-grid {
     display: grid;
-    grid-template-columns: repeat(3, 10px);
-    grid-template-rows: repeat(3, 10px);
+    grid-template-columns: repeat(3, 18px);
+    grid-template-rows: repeat(3, 18px);
     gap: 2px;
     background: rgba(0,0,0,0.05);
     padding: 3px;
     border-radius: 4px;
     border: 1px solid rgba(0,0,0,0.08);
-    transform: rotate(90deg);
+    /* Écran vertical : la vignette se lit comme la grille ennemie à l'écran (arrière en haut, ligne avant en bas) */
 }
 
 .aoe-grid-cell {
-    width: 10px;
-    height: 10px;
+    width: 18px;
+    height: 18px;
     background-color: rgba(255,255,255,0.6);
     border-radius: 2px;
 }
 
 .aoe-grid-cell.hit {
     background-color: #da8c80; /* Rouge clair pour la zone touchée */
+    opacity: var(--hit-alpha, 1); /* part de la puissance reçue par la case */
 }
+.aoe-grid.ally .aoe-grid-cell.hit { background-color: #7fae7a; } /* soins et boucliers sur ton camp */
+
+/* Refonte des capacités : passif (non lançable) et Pokémon en Plongée */
+.move-btn.is-passive { opacity: .6; border-style: dashed !important; cursor: help; }
+.unit.is-diving { opacity: .25; transition: opacity .3s; }
+.move-description.z { margin-top: 4px; }
 
 .aoe-grid-cell.center {
     box-shadow: inset 0 0 0 1px rgba(0,0,0,0.4); /* Cible principale */

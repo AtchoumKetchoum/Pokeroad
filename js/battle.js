@@ -35,6 +35,7 @@ async function loadMovesDB() {
     ]);
 
     MovesDB = { ...statusMoves, ...specialMoves, ...physicalMoves };
+    if (typeof MoveRework !== 'undefined') await MoveRework.load();
   } catch (e) {
     console.error("Échec du chargement des fichiers de capacités, utilisation du fallback.", e);
     // Fallback minimal pour les starters
@@ -346,7 +347,7 @@ function getEffectiveSpeed(unit) {
 // --- Dégâts (style Pokémon) ---
 function computeDamage(attacker, defender, move, options = {}) {
     let power = move.power || 0;
-    if (move._isBoosted) {
+    if (move._isBoosted && !move.rw) {
         power = getZPower(power);
         // Si le Z-Move est une attaque de zone, on applique une réduction de 25% pour l'équilibrage.
         if (move.aoe && move.aoe !== 'single' && move.aoe !== 'random_single') {
@@ -356,6 +357,8 @@ function computeDamage(attacker, defender, move, options = {}) {
     if (power === 0 || move.damage_class === 'status') return { damage: 0, typeMod: 1.0 };
 
     // Dégâts fixes (Frappe Atlas, Croc Fatal, K.O. en un coup…) : seule l'immunité de type compte
+    const executed = typeof MoveRework !== 'undefined' ? MoveRework.executeDamage(attacker, defender, move) : null;
+    if (executed !== null) return { damage: executed, typeMod: 1, isCrit: false, executed: true };
     const fixed = BattleRules.fixedDamage(attacker, defender, move);
     if (fixed !== null) {
         const fixedType = BattleRules.moveTypeFor(attacker, move);
@@ -396,7 +399,8 @@ function computeDamage(attacker, defender, move, options = {}) {
     // Coup critique : 6.25% / 12.5% / 50% / 100% selon le palier
     const critStage = clamp((attacker.statMods.CRIT || 0) + (move.crit_rate_stage || 0), 0, MAX_CRIT_STAGE);
     const critChance = [6.25, 12.5, 50, 100][critStage];
-    const isCrit = !options.noRandom && Math.random() * 100 < critChance;
+    const forcedCrit = attacker.flags?.nextCrit && !options.noRandom;
+    const isCrit = !defender.flags?.noCrit && (forcedCrit || (!options.noRandom && Math.random() * 100 < critChance));
     if (isCrit) damage = Math.floor(damage * 1.5);
 
     // Random (R) — l'IA estime avec la moyenne (92%)
@@ -854,8 +858,12 @@ function applyDamageGrid(target) {
       if (target.shield <= 0) spawnEffectText(target, "Bouclier brisé", 'info');
   }
 
+  // Refonte : Ténacité (coup fatal), puis passifs « sous 50 % de PV »
+  if (typeof MoveRework !== 'undefined' && pendingDamage > 0) pendingDamage = MoveRework.beforeHpLoss(target, pendingDamage);
+  const hpBefore = target.hp;
   target.hp = Math.max(0, target.hp - pendingDamage);
   const newHp = target.hp;
+  if (typeof MoveRework !== 'undefined' && newHp > 0) MoveRework.afterHpLoss(target, hpBefore);
 
   // Berries check (Trigger at 50% HP or less)
   if (target.heldItem && newHp > 0 && newHp <= (target.maxHp || 0) * 0.5) {
@@ -891,6 +899,7 @@ function applyDamageGrid(target) {
       }
 
       if (used) {
+          target._consumedBerry = berry;
           target.heldItem = null; // Berry consumed
           updateStatusIcons(target);
       }
@@ -961,7 +970,9 @@ function buildActorsFromDom() {
     const base = Array.isArray(pk?.selectedMoves) && pk.selectedMoves.length ? pk.selectedMoves : pickFromLevel(pk?.moves);
     const keys = base.slice(0, 4);
     // Sans attaque offensive, un Pokémon ne peut rien faire : on ajoute Charge
-    if (!keys.some(k => (db[k]?.power || 0) > 0)) {
+    // (sauf si le joueur a choisi lui-même ses capacités : avec seulement des passifs, il ne joue pas)
+    const chosen = pk?.instanceId && Array.isArray(pk?.selectedMoves) && pk.selectedMoves.length;
+    if (!chosen && !keys.some(k => (db[k]?.power || 0) > 0)) {
         if (keys.length >= 4) keys.pop();
         keys.push('tackle');
     }
@@ -969,7 +980,7 @@ function buildActorsFromDom() {
       const info = db[key] || {};
       // Si damage_class n'est pas défini, on essaie de le deviner : sans puissance > 0 -> statut, sinon -> physique.
       const damage_class = info.damage_class || (info.power > 0 ? 'physical' : 'status');
-      return { 
+      return MoveRework.normalize({
           ...info, // Copie toutes les données du JSON (effect, v_stat_count, etc.)
           // Amélioration de l'attaque (Laboratoire) : multiplie sa puissance
           _refMult: pk?.moveRefinements?.[key] ? Refinement.getMultiplier(Refinement.levelOf(pk.moveRefinements[key]), Refinement.starsOf(pk.moveRefinements[key])) : 1,
@@ -978,7 +989,7 @@ function buildActorsFromDom() {
           type: (info.type || firstTypeFrom(pk)).toLowerCase(),
           damage_class: damage_class,
           description: info.description_game || info.description_fr || '',
-      };
+      });
     });
   };
   // Joueur
@@ -1282,6 +1293,7 @@ function showTerrainInfo() {
 
 function showMoveDetails(move, unit, isZMove = false) {
     if (!dom.infoDisplayPanel || !move) return;
+    if (move.rw && typeof MoveRework !== 'undefined') return showReworkMoveDetails(move, unit, isZMove);
 
     let power = move.power ?? '—';
     const accuracy = move.accuracy ?? '—';
@@ -1422,6 +1434,18 @@ async function renderMovesForUnit(unit) {
     btn.textContent = mv.name;
     const type = (mv.type || 'normal').toLowerCase();
     btn.style.setProperty('--type-color', `var(--type-${type})`);
+    const passive = typeof MoveRework !== 'undefined' && MoveRework.isPassive(mv);
+    if (passive) {
+        // Un passif occupe un emplacement mais ne se lance jamais : il se déclenche seul
+        btn.classList.add('is-passive');
+        btn.textContent = `${mv.name} · passif`;
+        btn.setAttribute('aria-disabled', 'true');
+        btn.addEventListener('mouseover', () => showMoveDetails(mv, unit, false));
+        btn.addEventListener('click', () => showMoveDetails(mv, unit, false));
+        btn.addEventListener('mouseout', showTerrainInfo);
+        dom.movesRow.appendChild(btn);
+        return;
+    }
     btn.addEventListener('mouseover', (e) => {
         showMoveDetails(mv, unit, isZMoveReady); // Pass isZMoveReady to showMoveDetails
         btn.classList.add('is-hovered');
@@ -1445,7 +1469,9 @@ async function renderMovesForUnit(unit) {
       uiLocked = true;
 
       // Gérer les capacités qui ne nécessitent pas de sélection de cible
-      if (['all', 'random_single'].includes(mv.aoe)) {
+      const AUTO_SHAPES = ['onde', 'tempete', 'front', 'salve', 'hasard', 'onde_forte', 'tempete_forte', 'salve_z'];
+      const autoTarget = mv.rw?.kind === 'attack' ? AUTO_SHAPES.includes(mv.rw.shape) : ['all', 'random_single'].includes(mv.aoe);
+      if (autoTarget) {
         const potentialTargets = aliveOnSide('enemy');
         if (potentialTargets.length > 0) {
           clearActionUI();
@@ -1554,7 +1580,10 @@ function promptTargetSelection(move, unit) {
             // --- NOUVEAU: Listeners pour la prévisualisation de l'AOE ---
             slot.addEventListener('mouseover', () => {
                 clearHighlights();
-                const aoeIndexes = getAoePreviewIndexes(move.aoe || 'single', idx, 'enemy');
+                const hovered = grid.enemy[idx];
+                const aoeIndexes = (move.rw?.kind === 'attack' && hovered && typeof MoveRework !== 'undefined')
+                    ? MoveRework.previewHits(move, unit, hovered).map(h => h.unit._index)
+                    : getAoePreviewIndexes(move.aoe || 'single', idx, 'enemy');
                 
                 aoeIndexes.forEach(targetIndex => {
                     const targetSlot = getSlotEl('enemy', targetIndex);
@@ -1622,20 +1651,28 @@ function getCandidateTargets(unit, move) {
     if (move.zone === 'self') return [unit];
     if (move.zone === 'ally') return aliveOnSide(unit._side);
     // Les attaques de contact ne peuvent viser que la ligne de front
-    return aliveOnSide(unit._side === 'player' ? 'enemy' : 'player').filter(t => BattleRules.canTarget(unit, move, t));
+    return aliveOnSide(unit._side === 'player' ? 'enemy' : 'player').filter(t => !t.flags?.diving && BattleRules.canTarget(unit, move, t));
 }
 
 // Intérêt d'une action : dégâts attendus (en fraction des PV max), bonus de KO, ou utilité d'un statut
 function scoreAction(unit, move, primaryTarget) {
     const accuracy = (move.accuracy == null ? 100 : move.accuracy) / 100;
-    const targets = move.zone === 'self'
-        ? [unit]
-        : getAoeTargets(move.aoe || 'single', primaryTarget, primaryTarget._side).filter(t => t && !t.isKO);
+    const plan = move.zone === 'self'
+        ? [{ unit, mult: 1 }]
+        : (typeof MoveRework !== 'undefined' && move.rw?.kind === 'attack'
+            ? MoveRework.previewHits(move, unit, primaryTarget)
+            : getAoeTargets(move.aoe || 'single', primaryTarget, primaryTarget._side).map(u => ({ unit: u, mult: 1 })));
+    const targets = [...new Set(plan.map(h => h.unit))].filter(t => t && !t.isKO);
 
     if (isDamagingMove(move)) {
         let score = 0;
-        for (const t of targets) {
+        const dealt = new Map();
+        for (const { unit: t, mult } of plan) {
+            if (!t || t.isKO) continue;
             const { damage } = computeDamage(unit, t, move, { noRandom: true });
+            dealt.set(t, (dealt.get(t) || 0) + damage * (mult ?? 1));
+        }
+        for (const [t, damage] of dealt) {
             score += Math.min(damage, t.hp) / t.maxHp;
             if (damage >= t.hp) score += 0.5; // Mettre KO est prioritaire
         }
@@ -1675,7 +1712,9 @@ function scoreAction(unit, move, primaryTarget) {
 
 // Meilleure action pour une unité. Les ennemis choisissent parmi les bonnes options pour rester imprévisibles.
 function chooseBestAction(unit, { varied = false } = {}) {
-    const moves = (Array.isArray(unit.moves) && unit.moves.length ? unit.moves : defaultMovesFor(unit)).filter(Boolean);
+    let moves = (Array.isArray(unit.moves) && unit.moves.length ? unit.moves : defaultMovesFor(unit)).filter(Boolean);
+    if (typeof MoveRework !== 'undefined') moves = moves.filter(m => !MoveRework.isPassive(m));
+    if (!moves.length) return null; // seulement des passifs : ne joue pas
     const actions = [];
     for (const move of moves) {
         for (const target of getCandidateTargets(unit, move)) {
@@ -1687,7 +1726,7 @@ function chooseBestAction(unit, { varied = false } = {}) {
     if (actions.length === 0 || actions[0].score <= 0) {
         // Rien d'utile : première attaque offensive sur un ennemi au hasard
         const foes = aliveOnSide(unit._side === 'player' ? 'enemy' : 'player');
-        const move = moves.find(isDamagingMove) || defaultMovesFor(unit)[0];
+        const move = moves.find(isDamagingMove) || moves[0];
         return foes.length ? { move, target: foes[Math.floor(Math.random() * foes.length)] } : null;
     }
     if (!varied) return actions[0];
@@ -1733,8 +1772,26 @@ async function triggerZMove(unit) {
         return;
     }
 
-    const mv = { ...boostInfo, id: unit._boostedMoveId, name: `Z-${boostInfo.name_fr}`, _isBoosted: true };
+    const own = (unit.moves || []).find(m => m && m.id === unit._boostedMoveId);
+    const zRw = typeof MoveRework !== 'undefined' ? MoveRework.zVersion({ ...(own || boostInfo), id: unit._boostedMoveId }) : null;
+    const mv = zRw ? { ...zRw, name: `Z-${boostInfo.name_fr}` } : { ...boostInfo, id: unit._boostedMoveId, name: `Z-${boostInfo.name_fr}`, _isBoosted: true };
     await Epic.zMoveCutin(unit, boostInfo.name_fr || unit._boostedMoveId);
+
+    // Refonte : la version Z a sa propre forme ; un passif déclenche son Éveil, une tactique son effet Z
+    if (zRw) {
+        if (zRw.rw.kind === 'passive') {
+            BattleAnimation.say(`${unit.name} : Éveil de ${boostInfo.name_fr} !`);
+            await MoveRework.runSupportZ(unit, mv, null);
+        } else {
+            const pick = chooseBestAction({ ...unit, moves: [mv] }) || {};
+            const target = pick.target || (mv.damage_class === 'status' ? unit : aliveOnSide(unit._side === 'player' ? 'enemy' : 'player')[0]);
+            if (target) await attack(unit, target, mv);
+        }
+        unit.boostGauge = 0;
+        updateZMoveIndicators();
+        uiLocked = false;
+        return;
+    }
 
     // Les Z-Moves sont considérés comme des attaques de zone sur tous les ennemis.
     // On a juste besoin d'une cible principale pour lancer la fonction attack.
@@ -1750,6 +1807,41 @@ async function triggerZMove(unit) {
     }
 
     uiLocked = false; // Déverrouiller l'interface
+}
+
+// Fiche d'une capacité de la refonte : forme de zone (vignette orientée comme l'écran), effets, version Z
+function showReworkMoveDetails(move, unit, isZMove) {
+    const rw = move.rw;
+    const typeName = typeToFrench(move.type);
+    const isBase = unit && unit._boostedMoveId === move.id;
+    const z = isZMove ? MoveRework.zVersion(move) : null;
+    const shown = z || move;
+    const pattern = rw.kind === 'attack' ? MoveRework.displayPattern(shown) : (rw.shape || rw.z?.shape) ? MoveRework.displayPattern({ ...move, rw: { ...rw, kind: 'attack', shape: rw.shape } }) : null;
+    let zone = '';
+    if (pattern) {
+        const cells = pattern.values.map(v => `<div class="aoe-grid-cell ${v ? 'hit' : ''} ${v === 100 ? 'center' : ''}" style="${v ? `--hit-alpha:${Math.max(0.25, v / 100)}` : ''}" title="${v ? v + ' %' : ''}"></div>`).join('');
+        zone = `<div class="info-item aoe-display"><span><strong>Zone :</strong> ${pattern.name}${pattern.ally ? ' (ton camp, ta ligne avant en haut)' : ''}</span><div class="aoe-grid${pattern.ally ? ' ally' : ''}">${cells}</div></div>`;
+    } else if (rw.kind === 'attack') {
+        const sh = MoveRework.shapes[(z ? rw.z?.shape : rw.shape)] || {};
+        zone = `<div class="info-item aoe-display"><span><strong>Zone :</strong> ${sh.name || 'Cible unique'}</span></div>`;
+    }
+    const head = rw.kind === 'passive'
+        ? `<span class="info-item"><strong>Passif</strong> · ${rw.triggerLabel || ''}</span>`
+        : rw.kind === 'attack'
+            ? `<span class="info-item"><strong>Puiss. :</strong> ${shown.power ?? '—'}</span><span class="info-item"><strong>Préc. :</strong> ${shown.accuracy ?? '—'}</span><span class="info-item"><strong>Catégorie :</strong> ${move.damage_class === 'physical' ? 'Physique' : 'Spéciale'}${BattleRules.isContact(move) ? ' · Contact (ligne de front)' : ' · Distance'}</span>`
+            : `<span class="info-item"><strong>Tactique</strong></span>`;
+    const zLine = (isZMove || isBase) && move.description_z ? `<div class="move-description z"><strong>${isZMove ? 'Version Z :' : 'Z (jauge pleine) :'}</strong> ${move.description_z}</div>` : '';
+    dom.infoDisplayPanel.innerHTML = `
+        <div class="info-section">
+            <span class="info-item"><strong>${isZMove ? 'Z-' : ''}${move.name}</strong></span>
+            <span class="info-item"><strong>Type :</strong> ${typeName}</span>
+            ${head}
+            ${zone}
+        </div>
+        <div class="move-description">${isZMove ? '' : (move.description || '')}</div>
+        ${zLine}`;
+    dom.infoDisplayPanel.classList.remove('terrain-mode');
+    dom.infoDisplayPanel.style.display = 'block';
 }
 
 // --- Résolution d'attaque ---
@@ -1771,6 +1863,10 @@ async function attack(attacker, primaryTarget, move) {
         return;
     }
     BattleRules.recordMove(attacker, moveToDo);
+    const RW = typeof MoveRework !== 'undefined' ? MoveRework : null;
+    if (RW && !RW.canUse(attacker, moveToDo)) { await sleep(400); return; }
+    // Plongée : disparaît ce tour-ci, le coup part à son prochain tour
+    if (RW && RW.startDive(attacker, moveToDo, primaryTarget)) { await sleep(600); globalTurnCount += 1; return; }
 
     // --- LOGIQUE D'ATTAQUE REFACTORISÉE ---
     const moveForThisHit = { ...moveToDo };
@@ -1782,7 +1878,12 @@ async function attack(attacker, primaryTarget, move) {
         const lane = BattleRules.laneOf(primaryTarget._index);
         primaryTarget = front.reduce((a, b) => (Math.abs(BattleRules.laneOf(a._index) - lane) <= Math.abs(BattleRules.laneOf(b._index) - lane) ? a : b));
     }
-    const targets = getAoeTargets(moveForThisHit.aoe || 'single', primaryTarget, primaryTarget._side);
+    // Cases touchées : formes pondérées (refonte) ou zones d'origine, à 100 %
+    const isRwAttack = RW && moveForThisHit.rw?.kind === 'attack';
+    const hitPlan = isRwAttack
+        ? RW.hitList(moveForThisHit, attacker, primaryTarget)
+        : getAoeTargets(moveForThisHit.aoe || 'single', primaryTarget, primaryTarget._side).map(unit => ({ unit, mult: 1 }));
+    const targets = [...new Set(hitPlan.map(h => h.unit))];
     if (targets.length === 0) {
         console.warn(`[ATTACK] No valid targets for ${moveForThisHit.name}`);
         return;
@@ -1800,10 +1901,19 @@ async function attack(attacker, primaryTarget, move) {
     const successfulTargets = [];
     let allTargetsThisTurn = new Set();
 
-    // 1. Vérifier la précision et calculer les dégâts pour chaque cible
-    for (const target of targets) {
-        if (target.isKO) continue;
+    // Une version Z brise boucliers et Abri
+    if (moveForThisHit._isBoosted && moveForThisHit.damage_class !== 'status') {
+        targets.forEach(t => { if (t._side !== attacker._side) { t.protect = null; if (t.shield > 0) { t.shield = 0; spawnEffectText(t, 'Bouclier brisé', 'info'); } } });
+    }
+    const protectedTargets = new Set();
+    const damageByTarget = new Map();
+
+    // 1. Vérifier la précision et calculer les dégâts pour chaque coup
+    for (const { unit: target, mult } of hitPlan) {
+        if (target.isKO || protectedTargets.has(target)) continue;
         allTargetsThisTurn.add(target);
+        // Reflet Magik : la capacité de statut ennemie échoue
+        if (RW && RW.blocksStatusMove(target, attacker, moveForThisHit)) continue;
 
         let finalAccuracy = moveForThisHit.accuracy;
 
@@ -1818,15 +1928,17 @@ async function attack(attacker, primaryTarget, move) {
             if (BattleRules.field.room?.type === 'gravity') finalAccuracy *= 1.3;
         }
 
+        if (attacker.flags?.sureHit) finalAccuracy = null;
         if (finalAccuracy !== null && Math.random() * 100 >= finalAccuracy) {
             spawnEffectText(target, "Raté !", 'info');
             continue; // La cible a esquivé
         }
 
-        // Abri et variantes
-        if (BattleRules.checkProtect(attacker, target, moveForThisHit)) continue;
+        // Abri et variantes (Garde Large protège sa colonne des attaques de zone)
+        if (BattleRules.checkProtect(attacker, target, moveForThisHit)) { protectedTargets.add(target); continue; }
+        if (target.flags?.wideGuard && targets.length > 1 && target._side !== attacker._side) { spawnEffectText(target, 'Garde Large', 'info'); protectedTargets.add(target); continue; }
 
-        successfulTargets.push(target);
+        if (!successfulTargets.includes(target)) successfulTargets.push(target);
         // Attaques multi-coups (Torgnoles, Double Pied…)
         const hitsRange = moveForThisHit.multihit || moveForThisHit.mech?.multihit;
         const hits = Array.isArray(hitsRange) ? hitsRange[0] + Math.floor(Math.random() * (hitsRange[1] - hitsRange[0] + 1)) : 1;
@@ -1836,13 +1948,15 @@ async function attack(attacker, primaryTarget, move) {
             damageResult = { ...damageResult, damage: damageResult.damage + extra.damage, isCrit: damageResult.isCrit || extra.isCrit };
         }
         if (hits > 1) spawnEffectText(target, `Touché ${hits} fois !`, 'info', -90);
-        damages.push({
-            target,
-            dmg: damageResult.damage,
-            typeMod: damageResult.typeMod
-        });
+        // Part de la puissance reçue par cette case de la forme
+        const dmg = damageResult.executed ? damageResult.damage : Math.max(damageResult.damage > 0 ? 1 : 0, Math.floor(damageResult.damage * (mult ?? 1)));
+        if (damageResult.executed) spawnEffectText(target, 'Exécution !', 'debuff', -60);
+        const prev = damageByTarget.get(target);
+        if (prev) prev.dmg += dmg;
+        else { const entry = { target, dmg, typeMod: damageResult.typeMod }; damageByTarget.set(target, entry); damages.push(entry); }
         if (damageResult.isCrit) spawnEffectText(target, "Coup critique !", 'debuff', -60);
     }
+    if (attacker.flags?.nextCrit) delete attacker.flags.nextCrit;
 
   // Mettre à jour les jauges de boost (une seule fois par action)
   // La jauge de boost ne doit augmenter que pour les capacités offensives (physiques ou spéciales) qui ne sont pas déjà des Z-Moves.
@@ -1886,6 +2000,7 @@ async function attack(attacker, primaryTarget, move) {
         if (dmg > 0) {
             target._pendingDamage = (target._pendingDamage || 0) + dmg;
             applyDamageGrid(target);
+            if (RW && target._side !== attacker._side) await RW.onDamaged(target, attacker, moveForThisHit, dmg);
         }
         // Appliquer l'effet si la capacité en a un (après le check de précision)
         if (moveForThisHit.effect) {
@@ -1896,7 +2011,15 @@ async function attack(attacker, primaryTarget, move) {
     // Vol de vie, contrecoup, recharge, priorité, piège, Lien du Destin…
     if ((moveForThisHit.power || 0) > 0) BattleRules.afterDamage(attacker, moveForThisHit, damages);
     // Effets décrits par des « ops » (météo, champs, abris, échanges, appels d'autres capacités…)
-    if (moveForThisHit.ops && moveForThisHit.ops.length) await BattleRules.executeOps(attacker, primaryTarget, moveForThisHit, successfulTargets);
+    if (moveForThisHit.ops && moveForThisHit.ops.length) {
+        if (RW && moveForThisHit.rw) await RW.runOps(attacker, moveForThisHit.ops, { target: primaryTarget, targets: successfulTargets, move: moveForThisHit });
+        else await BattleRules.executeOps(attacker, primaryTarget, moveForThisHit, successfulTargets);
+    }
+    // Refonte : effets secondaires, jauge, versions Z (attaques et tactiques)
+    if (RW && moveForThisHit.rw) {
+        if (moveForThisHit.rw.kind === 'attack') await RW.afterAttack(attacker, moveForThisHit, primaryTarget, damages);
+        else if (moveForThisHit._isBoosted) await RW.runSupportZ(attacker, moveForThisHit, primaryTarget);
+    }
     
     // --- NOUVEAU: Contrecoup Objets ---
     if (attacker.heldItem === 'life-orb' && successfulTargets.length > 0 && !attacker.isKO) {
@@ -2012,6 +2135,9 @@ async function handleStartOfTurnEffects(unit) {
 
     // Météo, champs, pièges, effets sur la durée, phase de boss
     const ruleResult = await BattleRules.onTurnStart(unit);
+    if (unit.isKO) return { canAct: false };
+    // Refonte : passifs « chaque tour », régénérations, piège, vœux
+    if (typeof MoveRework !== 'undefined') await MoveRework.onTurnStart(unit);
     if (unit.isKO) return { canAct: false };
 
     let canAct = ruleResult.canAct;
@@ -2185,7 +2311,18 @@ async function runCombatLoop() {
 
         // --- Le Pokémon agit ---
         const actionPanel = document.getElementById('actionPanel');
-        if (unit._side === 'player') {
+        const RWL = typeof MoveRework !== 'undefined' ? MoveRework : null;
+        const dive = RWL ? RWL.pendingDive(unit) : null;
+        if (dive) {
+            // Plongée : le coup part maintenant, sur n'importe quelle case
+            BattleAnimation.say(`${unit.name} réapparaît !`);
+            await sleep(350);
+            await attack(unit, dive.target, dive.move);
+        } else if (RWL && RWL.hasOnlyPassives(unit)) {
+            // Seulement des passifs : le Pokémon ne joue pas
+            spawnEffectText(unit, 'Passifs seulement', 'info');
+            await sleep(500);
+        } else if (unit._side === 'player') {
             if (actionPanel) actionPanel.classList.remove('enemy-turn');
             // Vérifie si le combat auto est activé
             if (typeof isAutoBattle !== 'undefined' && isAutoBattle) {
@@ -2213,6 +2350,7 @@ async function runCombatLoop() {
 
         // Dépenser les AP.
         unit.actionPoints -= 100;
+        if (RWL) RWL.onAction(unit);
         updateActionPointsUI(unit);
         currentTurnUnit = null;
 
