@@ -513,6 +513,18 @@ function closeItemInfoModal() {
     document.getElementById('item-info-modal').style.display = 'none';
 }
 
+// Bouton de poche : grande vignette seule, le nom en infobulle
+const POCKET_ICONS = {
+    ct: ['tm-normal', 'CT'], vitamins: ['protein', 'Vitamines'], feathers: ['health-wing', 'Plumes'],
+    battle: ['choice-band', 'Combat'], berries: ['oran-berry', 'Baies'], evolution: ['fire-stone', 'Évolution'],
+    exp: ['exp-candy-m', 'Bonbons EXP'], mega: ['charizardite-x', 'Méga-Gemmes'], misc: ['poke-ball', 'Divers'], loot: ['nugget', 'Butin'],
+};
+function pocketButton(p, active, onclick) {
+    const [icon, label] = p === 'eggs' ? [null, 'Œufs'] : (POCKET_ICONS[p] || [null, p]);
+    const art = p === 'eggs' ? Art.egg('Commun', 44) : (icon ? Art.item(icon, 44) : label);
+    return `<button class="pocket-tab pocket-icon ${active ? 'active' : ''}" title="${label}" aria-label="${label}" onclick="${onclick}">${art}</button>`;
+}
+
 function renderItemBagPockets() {
     const container = document.getElementById('item-bag-pockets');
     if (!container) return;
@@ -524,11 +536,7 @@ function renderItemBagPockets() {
         currentItemBagPocket = pockets[0];
     }
 
-    container.innerHTML = pockets.map(p => `
-        <button class="pocket-tab ${currentItemBagPocket === p ? 'active' : ''}" onclick="switchItemBagPocket('${p}')">
-            ${POCKET_LABELS[p] || p}
-        </button>
-    `).join('');
+    container.innerHTML = pockets.map(p => pocketButton(p, currentItemBagPocket === p, `switchItemBagPocket('${p}')`)).join('');
 }
 
 function switchItemBagPocket(pocket) {
@@ -668,11 +676,7 @@ function renderShopPockets() {
         currentShopPocket = pockets[0];
     }
 
-    container.innerHTML = pockets.map(p => `
-        <button class="pocket-tab ${currentShopPocket === p ? 'active' : ''}" onclick="switchShopPocket('${p}')">
-            ${p === 'eggs' ? `${Art.egg('Commun', 20)} Œufs` : (POCKET_LABELS[p] || p)}
-        </button>
-    `).join('');
+    container.innerHTML = pockets.map(p => pocketButton(p, currentShopPocket === p, `switchShopPocket('${p}')`)).join('');
 }
 
 function switchShopPocket(pocket) {
