@@ -391,14 +391,14 @@ function computeDamage(attacker, defender, move, options = {}) {
     damage = Math.floor(damage / Math.max(1, def));
 
     // Mod1 : la brûlure réduit les dégâts infligés
-    if (attacker.activeEffects && attacker.activeEffects.some(e => e.id === 'STAT_BRU')) {
+    if (attacker.activeEffects && attacker.activeEffects.some(e => e.id === 'STAT_BRU') && !(typeof HeldItems !== 'undefined' && HeldItems.ignoresBurnPenalty(attacker))) {
         const burnRule = RulesDB && RulesDB['STAT_BRU'];
         damage = Math.floor(damage * (1 + (burnRule ? burnRule.effect_value : -30) / 100));
     }
     damage += 2;
 
     // Coup critique : 6.25% / 12.5% / 50% / 100% selon le palier
-    const critStage = clamp((attacker.statMods.CRIT || 0) + (move.crit_rate_stage || 0), 0, MAX_CRIT_STAGE);
+    const critStage = clamp((attacker.statMods.CRIT || 0) + (move.crit_rate_stage || 0) + (typeof HeldItems !== 'undefined' ? HeldItems.critStages(attacker) : 0), 0, MAX_CRIT_STAGE);
     const critChance = [6.25, 12.5, 50, 100][critStage];
     const forcedCrit = attacker.flags?.nextCrit && !options.noRandom;
     const isCrit = !defender.flags?.noCrit && (forcedCrit || (!options.noRandom && Math.random() * 100 < critChance));
@@ -425,30 +425,10 @@ function computeDamage(attacker, defender, move, options = {}) {
     }
     damage = Math.floor(damage * typeMod);
     
-    // --- NOUVEAU: Objets tenus ---
-    if (attacker.heldItem) {
-        const item = attacker.heldItem;
-        // Type boosters (1.2x)
-        const typeBoosters = {
-            'silk-scarf': 'normal', 'charcoal': 'fire', 'mystic-water': 'water',
-            'miracle-seed': 'grass', 'sharp-beak': 'flying', 'poison-barb': 'poison',
-            'soft-sand': 'ground', 'hard-stone': 'rock', 'magnet': 'electric',
-            'never-melt-ice': 'ice', 'black-belt': 'fighting', 'dragon-fang': 'dragon',
-            'spell-tag': 'ghost', 'metal-coat': 'steel', 'twisted-spoon': 'psychic',
-            'silver-powder': 'bug'
-        };
-        const im = attacker.itemMult || 1; // amélioration de l'objet (Atelier)
-        if (typeBoosters[item] === moveType) {
-            damage = Math.floor(damage * (1 + 0.2 * im));
-        }
-        // Life Orb (1.3x)
-        if (item === 'life-orb') {
-            damage = Math.floor(damage * (1 + 0.3 * im));
-        }
-        // Expert Belt (1.2x if super effective)
-        if (item === 'expert-belt' && typeMod > 1.0) {
-            damage = Math.floor(damage * (1 + 0.2 * im));
-        }
+    // Objets tenus et baies (js/held-items.js) : bonus de l'attaquant, résistances du défenseur
+    if (typeof HeldItems !== 'undefined') {
+        const itemCtx = { moveType, typeMod, isCrit, estimate: !!options.noRandom, cellMult: options.cellMult, contact: BattleRules.isContact(move), contactMove: BattleRules.isContact(move) };
+        damage = Math.floor(damage * HeldItems.offenseMult(attacker, defender, move, itemCtx) * HeldItems.defenseMult(defender, attacker, move, itemCtx));
     }
 
     // Mod3 (non implémenté)
@@ -790,12 +770,6 @@ function applyDamageGrid(target) {
   let pendingDamage = target._pendingDamage || 0;
   target._pendingDamage = 0;
 
-  // Focus Sash check
-  if (target.heldItem === 'focus-sash' && target.hp === target.maxHp && pendingDamage >= target.hp) {
-      pendingDamage = target.maxHp - 1;
-      spawnEffectText(target, "Ceinture Force", 'info');
-      target.heldItem = null; // Consommé
-  }
 
   // Le bouclier absorbe les dégâts avant les PV
   if (target.shield > 0 && pendingDamage > 0) {
@@ -805,52 +779,16 @@ function applyDamageGrid(target) {
       if (target.shield <= 0) spawnEffectText(target, "Bouclier brisé", 'info');
   }
 
-  // Refonte : Ténacité (coup fatal), puis passifs « sous 50 % de PV »
+  // Objets (Ceinture Force, Bandeau), puis refonte : Ténacité (coup fatal), passifs « sous 50 % de PV »
+  if (typeof HeldItems !== 'undefined' && pendingDamage > 0) pendingDamage = HeldItems.beforeHpLoss(target, pendingDamage);
   if (typeof MoveRework !== 'undefined' && pendingDamage > 0) pendingDamage = MoveRework.beforeHpLoss(target, pendingDamage);
   const hpBefore = target.hp;
   target.hp = Math.max(0, target.hp - pendingDamage);
   const newHp = target.hp;
   if (typeof MoveRework !== 'undefined' && newHp > 0) MoveRework.afterHpLoss(target, hpBefore);
+  // Baies et objets « sous X % de PV »
+  if (typeof HeldItems !== 'undefined' && newHp > 0) HeldItems.afterHpLoss(target, hpBefore);
 
-  // Berries check (Trigger at 50% HP or less)
-  if (target.heldItem && newHp > 0 && newHp <= (target.maxHp || 0) * 0.5) {
-      const berry = target.heldItem;
-      let used = false;
-
-      if (berry === 'sitrus-berry') {
-          const heal = Math.floor(target.maxHp * 0.20 * (target.itemMult || 1)); // 20 %, plus avec l'amélioration
-          target.hp = Math.min(target.maxHp, target.hp + heal);
-          spawnEffectText(target, "Baie Sitrus", 'buff');
-          used = true;
-      } else if (berry === 'liechi-berry') {
-          target.statMods.ATK = clamp((target.statMods.ATK || 0) + 1, -6, 6);
-          spawnEffectText(target, "+ATT Baie", 'buff');
-          used = true;
-      } else if (berry === 'ganlon-berry') {
-          target.statMods.DEF = clamp((target.statMods.DEF || 0) + 1, -6, 6);
-          spawnEffectText(target, "+DEF Baie", 'buff');
-          used = true;
-      } else if (berry === 'petaya-berry') {
-          target.statMods.SPA = clamp((target.statMods.SPA || 0) + 1, -6, 6);
-          spawnEffectText(target, "+ATK SP Baie", 'buff');
-          used = true;
-      } else if (berry === 'apicot-berry') {
-          target.statMods.SPD = clamp((target.statMods.SPD || 0) + 1, -6, 6);
-          spawnEffectText(target, "+DEF SP Baie", 'buff');
-          used = true;
-      } else if (berry === 'salac-berry') {
-          target.speedMultiplier = (target.speedMultiplier || 1.0) * 1.15; // 15% increase
-          target.effectiveSpeed = getEffectiveSpeed(target);
-          spawnEffectText(target, "+VIT Baie", 'buff');
-          used = true;
-      }
-
-      if (used) {
-          target._consumedBerry = berry;
-          target.heldItem = null; // Berry consumed
-          updateStatusIcons(target);
-      }
-  }
 
   // Met à jour la barre de vie visuellement
   const slot = getSlotEl(target._side, target._index);
@@ -1054,9 +992,9 @@ function buildActorsFromDom() {
         actor.hp = actor.maxHp;
         actor.heldItem = tier.item || null;
         actor.itemMult = Refinement.getMultiplier(tier.itemLevel, tier.itemStars);
-        actor.heldItems = tier.item ? [tier.item] : [];
-        actor.berries = [];
-        actor.itemMults = tier.item ? { [tier.item]: actor.itemMult } : {};
+        actor.heldItems = tier.items || (tier.item ? [tier.item] : []);
+        actor.berries = tier.berries || [];
+        actor.itemMults = Object.fromEntries([...actor.heldItems, ...actor.berries].map(id => [id, actor.itemMult]));
         actor.tier = tier;
     }
     if (srcPk) {
@@ -1666,6 +1604,7 @@ function scoreAction(unit, move, primaryTarget) {
         }
         // Les ennemis s'acharnent sur un Tank bien placé (provocation)
         if (unit._side === 'enemy' && BattleRules.roleActive(primaryTarget, 'tank')) score *= 1.6;
+        if (typeof HeldItems !== 'undefined' && HeldItems.isAggro(primaryTarget) && primaryTarget._side !== unit._side) score *= 2;
         // Par Ici ! / Poudre Fureur : attire toutes les attaques
         if (primaryTarget.flags?.provoke) score *= 2.5;
         return score * accuracy + (move.ops ? BattleRules.scoreOps(unit, move, primaryTarget) : 0);
@@ -1776,6 +1715,7 @@ async function triggerZMove(unit) {
             if (target) await attack(unit, target, mv);
         }
         unit.boostGauge = 0;
+        if (typeof HeldItems !== 'undefined') HeldItems.afterZMove(unit);
         updateZMoveIndicators();
         uiLocked = false;
         return;
@@ -1791,6 +1731,7 @@ async function triggerZMove(unit) {
         await attack(unit, potentialTargets[0], mv);
 
         unit.boostGauge = 0; // Vider la jauge
+        if (typeof HeldItems !== 'undefined') HeldItems.afterZMove(unit);
         updateZMoveIndicators(); // Mettre à jour l'interface
     }
 
@@ -1895,6 +1836,7 @@ async function attack(attacker, primaryTarget, move) {
     }
     const protectedTargets = new Set();
     const damageByTarget = new Map();
+    let missedAny = false, anyCrit = false;
 
     // 1. Vérifier la précision et calculer les dégâts pour chaque coup
     for (const { unit: target, mult } of hitPlan) {
@@ -1916,9 +1858,11 @@ async function attack(attacker, primaryTarget, move) {
             if (BattleRules.field.room?.type === 'gravity') finalAccuracy *= 1.3;
         }
 
+        if (finalAccuracy !== null && typeof HeldItems !== 'undefined') { const am = HeldItems.accuracyMult(attacker, target); finalAccuracy = am === Infinity ? null : finalAccuracy * am; }
         if (attacker.flags?.sureHit) finalAccuracy = null;
         if (finalAccuracy !== null && Math.random() * 100 >= finalAccuracy) {
             spawnEffectText(target, "Raté !", 'info');
+            missedAny = true;
             continue; // La cible a esquivé
         }
 
@@ -1930,14 +1874,23 @@ async function attack(attacker, primaryTarget, move) {
         // Attaques multi-coups (Torgnoles, Double Pied…)
         const hitsRange = moveForThisHit.multihit || moveForThisHit.mech?.multihit;
         const hits = Array.isArray(hitsRange) ? hitsRange[0] + Math.floor(Math.random() * (hitsRange[1] - hitsRange[0] + 1)) : 1;
-        let damageResult = computeDamage(attacker, target, moveForThisHit);
+        const cellMult = (mult ?? 1) < 1 && typeof HeldItems !== 'undefined' ? Math.min(1, mult + HeldItems.waveSplash(attacker, BattleRules.moveTypeFor(attacker, moveForThisHit))) : (mult ?? 1);
+        let damageResult = computeDamage(attacker, target, moveForThisHit, { cellMult });
         for (let h = 1; h < hits && damageResult.damage > 0; h++) {
-            const extra = computeDamage(attacker, target, moveForThisHit);
+            const extra = computeDamage(attacker, target, moveForThisHit, { cellMult });
             damageResult = { ...damageResult, damage: damageResult.damage + extra.damage, isCrit: damageResult.isCrit || extra.isCrit };
         }
+        // Dé Pipé : un coup de plus sur les attaques à coups multiples
+        if (hits > 1 && typeof HeldItems !== 'undefined' && HeldItems.extraHitPct(attacker) > 0 && damageResult.damage > 0) {
+            const extra = computeDamage(attacker, target, moveForThisHit, { cellMult });
+            damageResult = { ...damageResult, damage: damageResult.damage + Math.floor(extra.damage * HeldItems.extraHitPct(attacker) / 100) };
+        }
+        // Griffe Rasoir : les coups critiques percent une partie du bouclier
+        if (damageResult.isCrit && target.shield > 0 && typeof HeldItems !== 'undefined' && HeldItems.critPierce(attacker) > 0) target.shield = Math.floor(target.shield * (1 - HeldItems.critPierce(attacker) / 100));
+        if (damageResult.isCrit) anyCrit = true;
         if (hits > 1) spawnEffectText(target, `Touché ${hits} fois !`, 'info', -90);
         // Part de la puissance reçue par cette case de la forme
-        const dmg = damageResult.executed ? damageResult.damage : Math.max(damageResult.damage > 0 ? 1 : 0, Math.floor(damageResult.damage * (mult ?? 1)));
+        const dmg = damageResult.executed ? damageResult.damage : Math.max(damageResult.damage > 0 ? 1 : 0, Math.floor(damageResult.damage * cellMult));
         if (damageResult.executed) spawnEffectText(target, 'Exécution !', 'debuff', -60);
         const prev = damageByTarget.get(target);
         if (prev) prev.dmg += dmg;
@@ -1951,7 +1904,7 @@ async function attack(attacker, primaryTarget, move) {
   if (!moveToDo._isBoosted && (moveForThisHit.damage_class === 'physical' || moveForThisHit.damage_class === 'special') && (moveForThisHit.power && moveForThisHit.power > 0)) {
       // Attacker's boost gauge
       if (attacker.boostGauge < 50) {
-          attacker.boostGauge = Math.min(50, (attacker.boostGauge || 0) + Math.round(10 * (attacker.zGainMult || 1))); // 20% de la jauge (plus avec la synergie Dragon)
+          attacker.boostGauge = Math.min(50, (attacker.boostGauge || 0) + Math.round(10 * (attacker.zGainMult || 1) * (typeof HeldItems !== 'undefined' ? HeldItems.zGainMult(attacker, BattleRules.moveTypeFor(attacker, moveForThisHit)) : 1))); // 20% de la jauge (plus avec la synergie Dragon et les cristaux Z)
       }
       // Target's boost gauge (only primary target for AOE, as per user's rule)
       // Check if primaryTarget is still valid (not KO'd before this move)
@@ -1989,6 +1942,10 @@ async function attack(attacker, primaryTarget, move) {
             target._pendingDamage = (target._pendingDamage || 0) + dmg;
             applyDamageGrid(target);
             if (RW && target._side !== attacker._side) await RW.onDamaged(target, attacker, moveForThisHit, dmg);
+            if (typeof HeldItems !== 'undefined') {
+                const entry = damageByTarget.get(target);
+                await HeldItems.onHit(target, attacker, moveForThisHit, dmg, { typeMod: entry?.typeMod ?? 1, moveType: BattleRules.moveTypeFor(attacker, moveForThisHit), contact: BattleRules.isContact(moveForThisHit) });
+            }
         }
         // Appliquer l'effet si la capacité en a un (après le check de précision)
         if (moveForThisHit.effect) {
@@ -2009,15 +1966,8 @@ async function attack(attacker, primaryTarget, move) {
         else if (moveForThisHit._isBoosted) await RW.runSupportZ(attacker, moveForThisHit, primaryTarget);
     }
     
-    // --- NOUVEAU: Contrecoup Objets ---
-    if (attacker.heldItem === 'life-orb' && successfulTargets.length > 0 && !attacker.isKO) {
-        const recoil = Math.max(1, Math.floor(attacker.maxHp / 10));
-        attacker.hp = Math.max(0, attacker.hp - recoil);
-        spawnEffectText(attacker, "Orbe Vie", 'status');
-        animateHpGrid(attacker._side, attacker._index, attacker.maxHp, attacker.hp, attacker.maxHp);
-        if (attacker.hp <= 0) applyDamageGrid(attacker);
-        await sleep(400);
-    }
+    // Objets après l'action : Orbe Vie, Grelot Coque, Roche Royale, Vive Griffe, Métronome…
+    if (typeof HeldItems !== 'undefined') await HeldItems.afterAction(attacker, moveForThisHit, { damages, primary: primaryTarget, missed: missedAny, crit: anyCrit, moveType: BattleRules.moveTypeFor(attacker, moveForThisHit) });
   // Mettre à jour la timeline et les boutons Z-Move après application des dégâts et potentiels KO
   updateTurnOrderDisplay();
   updateZMoveIndicators();
@@ -2133,14 +2083,8 @@ async function handleStartOfTurnEffects(unit) {
     let canAct = ruleResult.canAct;
     let selfHit = false;
 
-    // Objets tenus (Début de tour)
-    if (unit.heldItem === 'leftovers' && unit.hp > 0 && unit.hp < unit.maxHp) {
-        const leftoversHeal = Math.max(1, Math.floor(unit.maxHp / 16 * (unit.itemMult || 1)));
-        unit.hp = Math.min(unit.maxHp, unit.hp + leftoversHeal);
-        animateHpGrid(unit._side, unit._index, unit.maxHp, unit.hp, unit.maxHp);
-        spawnEffectText(unit, "Restes", 'buff');
-        await sleep(400);
-    }
+    // Objets tenus (début de tour) : Restes, Boue Noire, Grelot, orbes, graines…
+    if (typeof HeldItems !== 'undefined') { await HeldItems.onTurnStart(unit); if (unit.isKO) return { canAct: false }; }
 
     // Copie pour pouvoir modifier l'original dans la boucle
     const effectsToProcess = [...unit.activeEffects];
@@ -2151,6 +2095,8 @@ async function handleStartOfTurnEffects(unit) {
 
         switch (effect.id) {
             case 'STAT_PSN':
+                if (typeof HeldItems !== 'undefined' && HeldItems.poisonHeals(unit)) { BattleRules.heal(unit, unit.maxHp * HeldItems.poisonHealPct(unit) / 100, null); spawnEffectText(unit, 'Orbe Toxique', 'buff'); await sleep(300); break; }
+                const poisonBefore = unit.hp;
                 const poisonDamage = Math.floor(unit.maxHp * (rule.effect_value / -100));
                 unit.hp = Math.max(0, unit.hp - poisonDamage);
                 animateHpGrid(unit._side, unit._index, unit.maxHp, unit.hp, unit.maxHp);
@@ -2158,8 +2104,10 @@ async function handleStartOfTurnEffects(unit) {
                 spawnEffectText(unit, "Poison", 'status');
                 await sleep(400);
                 if (unit.hp <= 0) { applyDamageGrid(unit); canAct = false; }
+                else if (typeof HeldItems !== 'undefined') HeldItems.afterHpLoss(unit, poisonBefore);
                 break;
             case 'STAT_BRU':
+                const burnBefore = unit.hp;
                 const burnDamage = Math.floor(unit.maxHp * 0.0625); // 1/16th
                 unit.hp = Math.max(0, unit.hp - burnDamage);
                 animateHpGrid(unit._side, unit._index, unit.maxHp, unit.hp, unit.maxHp);
@@ -2167,6 +2115,7 @@ async function handleStartOfTurnEffects(unit) {
                 spawnEffectText(unit, "Brûlure", 'status');
                 await sleep(400);
                 if (unit.hp <= 0) { applyDamageGrid(unit); canAct = false; }
+                else if (typeof HeldItems !== 'undefined') HeldItems.afterHpLoss(unit, burnBefore);
                 break;
             case 'BUFF_REG':
                 const regenAmount = Math.floor(unit.maxHp * (rule.effect_value / 100));
@@ -2487,7 +2436,8 @@ async function checkWinCondition() {
 
 
     // Ajout de la récompense en argent rééquilibrée
-    const reward = Math.round((40 + (getEnemyLevel() * 20)) * (BattleRules.field.moneyMult || 1)); // Récompense qui suit le niveau des ennemis
+    const itemBonus = typeof HeldItems !== 'undefined' ? HeldItems.rewardBonus((grid.player || []).filter(Boolean)) : { moneyMult: 1, extraLootChance: 0 };
+    const reward = Math.round((40 + (getEnemyLevel() * 20)) * (BattleRules.field.moneyMult || 1) * itemBonus.moneyMult); // Récompense qui suit le niveau des ennemis
     if (typeof GameData !== 'undefined' && GameData.addMoney) {
         GameData.addMoney(reward);
     }
@@ -2502,19 +2452,16 @@ async function checkWinCondition() {
     }
 
     // --- NOUVELLES RÉCOMPENSES (Objets & Baies) ---
+    // Objets tenus du catalogue (hors objets d'espèce), plus des objets d'évolution
+    const heldPool = (GameData.getItemsByPocket().battle || []).filter(it => !it.species_only && !it.not_sold).map(it => it.id);
     const dropableItems = [
-        'silk-scarf', 'charcoal', 'mystic-water', 'miracle-seed', 'sharp-beak', 
-        'poison-barb', 'soft-sand', 'hard-stone', 'magnet', 'never-melt-ice', 
-        'black-belt', 'dragon-fang', 'spell-tag', 'metal-coat', 'twisted-spoon', 
-        'silver-powder', 'leftovers', 'life-orb', 'focus-sash', 'rocky-helmet', 'expert-belt',
+        ...heldPool,
         // Objets d'évolution
-        'sun-stone', 'moon-stone', 'fire-stone', 'water-stone', 'thunder-stone', 'leaf-stone', 
-        'shiny-stone', 'dawn-stone', 'dusk-stone', 'ice-stone', 'dragon-scale', 'up-grade', 
+        'sun-stone', 'moon-stone', 'fire-stone', 'water-stone', 'thunder-stone', 'leaf-stone',
+        'shiny-stone', 'dawn-stone', 'dusk-stone', 'ice-stone', 'dragon-scale', 'up-grade',
         'electirizer', 'protector', 'magmarizer', 'dubious-disc', 'reaper-cloth', 'prism-scale'
     ];
-    const dropableBerries = [
-        'liechi-berry', 'ganlon-berry', 'petaya-berry', 'apicot-berry', 'sitrus-berry', 'salac-berry'
-    ];
+    const dropableBerries = (GameData.getItemsByPocket().berries || []).map(it => it.id);
     
     const droppedItems = [];
     
@@ -2543,6 +2490,13 @@ async function checkWinCondition() {
     const randomBerry = dropableBerries[Math.floor(Math.random() * dropableBerries.length)];
     GameData.addItem(randomBerry, 1);
     droppedItems.push({ id: randomBerry, name: getCleanItemNameFr(randomBerry), icon: Art.item(randomBerry, 22) });
+    // Œuf Chance : un butin de plus
+    if (Math.random() < itemBonus.extraLootChance) {
+        const pool = Math.random() < 0.5 ? dropableItems : dropableBerries;
+        const bonus = pool[Math.floor(Math.random() * pool.length)];
+        GameData.addItem(bonus, 1);
+        droppedItems.push({ id: bonus, name: getCleanItemNameFr(bonus), icon: Art.item(bonus, 22) });
+    }
 
     // CT drop chance (fixed 20%)
     let droppedTM = null;

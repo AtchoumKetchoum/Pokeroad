@@ -206,7 +206,7 @@ const MoveRework = (() => {
     // ------------------------------------------------------------------
     // DÉPLACEMENTS SUR LA GRILLE
     // ------------------------------------------------------------------
-    const canMove = u => u && !u.isKO && !u.flags?.locked && !u.flags?.rooted && !(extra.fieldFlags.noMove > 0) && !u._trap;
+    const canMove = u => u && !u.isKO && !u.flags?.locked && !u.flags?.rooted && !(extra.fieldFlags.noMove > 0) && !u._trap && !(typeof HeldItems !== 'undefined' && HeldItems.isImmovable(u));
     function moveTo(unit, idx) {
         const side = unit._side;
         if (grid[side][idx]) return false;
@@ -214,6 +214,7 @@ const MoveRework = (() => {
         grid[side][unit._index] = null; grid[side][idx] = unit; unit._index = idx;
         const to = getSlotEl(side, idx);
         if (el && to) to.appendChild(el);
+        if (typeof HeldItems !== 'undefined') HeldItems.onMoved(unit);
         return true;
     }
     function swap(a, b) {
@@ -223,6 +224,7 @@ const MoveRework = (() => {
         grid[side][ia] = b; grid[side][ib] = a; a._index = ib; b._index = ia;
         if (elA) getSlotEl(side, ib)?.appendChild(elA);
         if (elB) getSlotEl(side, ia)?.appendChild(elB);
+        if (typeof HeldItems !== 'undefined') { HeldItems.onMoved(a); HeldItems.onMoved(b); }
         return true;
     }
     function collide(a, b, pct) {
@@ -326,7 +328,7 @@ const MoveRework = (() => {
                 return;
             case 'shield':
                 list.forEach(u => {
-                    let value = (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100 * refOf(ctx);
+                    let value = (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100 * refOf(ctx) * (typeof HeldItems !== 'undefined' && HeldItems.itemsOf(attacker).includes('light-clay') ? 1 + HeldItems.valueOf(attacker, 'light-clay') / 100 : 1);
                     if (R().roleActive(attacker, 'support')) value *= 1.5;
                     u.shield = (u.shield || 0) + Math.round(value);
                     say(u, 'Bouclier', 'buff');
@@ -341,7 +343,10 @@ const MoveRework = (() => {
                 list.forEach(u => { (u._delayedHeals = u._delayedHeals || []).push({ amount: (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100 * refOf(ctx), turns: op.turns }); say(u, 'Vœu', 'buff'); });
                 return;
             case 'trap':
-                list.forEach(u => { if (!u._trap) { u._trap = { turns: op.turns || 3 }; say(u, 'Piégé', 'debuff'); } });
+                list.forEach(u => {
+                    if (typeof HeldItems !== 'undefined' && HeldItems.shedsTrap(u)) { say(u, 'Carapace Mue', 'info'); return; }
+                    if (!u._trap) { u._trap = { turns: (op.turns || 3) + (typeof HeldItems !== 'undefined' ? HeldItems.trapTurnsBonus(attacker) : 0), pct: typeof HeldItems !== 'undefined' ? HeldItems.trapDamagePct(attacker) : 6 }; say(u, 'Piégé', 'debuff'); }
+                });
                 return;
             case 'status':
                 list.forEach(u => {
@@ -429,10 +434,15 @@ const MoveRework = (() => {
                 R().damage(u, u.maxHp * op.pct / 100 * eff, 'Piège de Roc');
             }); return;
             case 'recycleBerry':
-                if (attacker._consumedBerry && !attacker.heldItem) { attacker.heldItem = attacker._consumedBerry; say(attacker, 'Recyclage', 'buff'); }
+                if (attacker._consumedBerry && attacker._usedItems?.has(attacker._consumedBerry)) { attacker._usedItems.delete(attacker._consumedBerry); say(attacker, 'Recyclage', 'buff'); }
                 else if (op.fallbackHeal) R().heal(attacker, attacker.maxHp * op.fallbackHeal / 100, attacker);
                 return;
-            case 'eatBerry': list.forEach(u => { if (u.heldItem && /berry/.test(u.heldItem)) { u._consumedBerry = u.heldItem; u.heldItem = null; R().heal(u, u.maxHp * 0.15, null); } }); return;
+            case 'eatBerry': list.forEach(u => {
+                const berry = (typeof HeldItems !== 'undefined' ? HeldItems.itemsOf(u) : []).find(id => /-berry$/.test(id));
+                if (!berry) return;
+                (u._usedItems = u._usedItems || new Set()).add(berry); u._consumedBerry = berry;
+                R().heal(u, u.maxHp * 0.15, null); say(u, 'Baie croquée', 'buff');
+            }); return;
             case 'stockpile': {
                 const n = Math.min(3, (attacker._stock || 0) + (op.count || 1)) - (attacker._stock || 0);
                 if (n <= 0) { say(attacker, 'Stockage plein', 'info'); return; }
@@ -463,8 +473,11 @@ const MoveRework = (() => {
 
     // Modification de stats avec Brume (protège des baisses) et Saisie (vole un bonus)
     function applyStages(unit, stats, source) {
+        const fromFoe = source && source._side !== unit._side;
+        if (fromFoe && typeof HeldItems !== 'undefined') stats = HeldItems.filterEnemyDrops(unit, stats || {});
         const entries = Object.entries(stats || {});
         const negative = entries.some(([, v]) => v < 0);
+        if (negative && fromFoe && typeof HeldItems !== 'undefined') setTimeout(() => HeldItems.afterEnemyDrops(unit), 0);
         if (negative && source && source._side !== unit._side && unit.flags?.mist) { say(unit, 'Brume', 'info'); return; }
         const positive = Object.fromEntries(entries.filter(([, v]) => v > 0));
         if (Object.keys(positive).length && source === unit) {
@@ -639,7 +652,7 @@ const MoveRework = (() => {
         });
         // Piège : 6 % des PV par tour
         if (unit._trap) {
-            R().damage(unit, unit.maxHp * 0.06, 'Piégé');
+            R().damage(unit, unit.maxHp * (unit._trap.pct || 6) / 100, 'Piégé');
             if (--unit._trap.turns <= 0) unit._trap = null;
         }
         // Drapeaux de terrain
@@ -709,7 +722,7 @@ const MoveRework = (() => {
     return {
         load, normalize, isPassive, actionMoves, hasOnlyPassives, isContact, hitList, previewHits, displayPattern,
         damageMult, runOps, afterAttack, drainOverflow, executeDamage, zVersion, runSupportZ, canUse, startDive, pendingDive,
-        onBattleStart, onTurnStart, onAction, onDamaged, beforeHpLoss, afterHpLoss, onStatus, blocksStatusMove, untargetable,
+        onBattleStart, onTurnStart, onAction, onDamaged, pushUnit: (u, steps, collision) => pushBack(u, steps, collision), swapUnits: (a, b) => swap(a, b), beforeHpLoss, afterHpLoss, onStatus, blocksStatusMove, untargetable,
         get shapes() { return SHAPES; },
     };
 })();

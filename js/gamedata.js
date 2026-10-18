@@ -360,12 +360,15 @@ const GameData = (() => {
     function heldItemStatBonus(pokemon) {
         const out = {};
         const refs = (() => { try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null')?.itemRefinements || {}; } catch { return {}; } })();
+        const multOf = (id) => {
+            const ref = refs[id] || { level: 1, stars: 0 };
+            return typeof Refinement !== 'undefined' ? Refinement.getMultiplier(Refinement.levelOf(ref), Refinement.starsOf(ref)) : 1;
+        };
+        if (typeof HeldItems !== 'undefined') return HeldItems.statBonusFor(pokemon, id => HeldItems.valueAt(id, multOf(id)));
         [...(pokemon.heldItems || []), ...(pokemon.berries || [])].forEach(id => {
             const bonus = itemsCatalog?.[id]?.stat_bonus;
             if (!bonus) return;
-            const ref = refs[id] || { level: 1, stars: 0 };
-            const mult = typeof Refinement !== 'undefined' ? Refinement.getMultiplier(Refinement.levelOf(ref), Refinement.starsOf(ref)) : 1;
-            Object.entries(bonus).forEach(([k, pct]) => { out[k] = (out[k] || 0) + pct * mult; });
+            Object.entries(bonus).forEach(([k, pct]) => { out[k] = (out[k] || 0) + pct * multOf(id); });
         });
         return out;
     }
@@ -2045,6 +2048,11 @@ const GameData = (() => {
         if (!(data.inventory.items?.[itemId] > 0)) return { success: false, reason: "Objet non possédé." };
         const kind = isBerryId(itemId) ? 'berries' : 'heldItems';
         const list = pokemon[kind] = (pokemon[kind] || []).filter(Boolean);
+        const item = itemsCatalog[itemId] || {};
+        if (Array.isArray(item.species_only) && !item.species_only.includes(pokemon.id)) return { success: false, reason: "Cet objet ne fonctionne qu'avec une espèce précise." };
+        if (kind === 'berries' && list.includes(itemId)) return { success: false, reason: "Cette baie est déjà tenue." };
+        const others = [...(pokemon.heldItems || []), ...(pokemon.berries || [])].filter((id, i) => !(slot != null && (pokemon[kind] || [])[slot] === id));
+        if (item.exclusive_group && others.some(id => id !== itemId && itemsCatalog[id]?.exclusive_group === item.exclusive_group)) return { success: false, reason: "Un objet du même groupe est déjà tenu (un seul à la fois)." };
         const slots = getHoldSlots(pokemon)[kind === 'berries' ? 'berries' : 'items'];
         if (kind === 'heldItems' && list.includes(itemId)) return { success: false, reason: "Cet objet est déjà tenu." };
         const index = slot != null ? slot : (list.length < slots ? list.length : slots - 1);

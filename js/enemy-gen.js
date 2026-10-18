@@ -126,11 +126,23 @@ const EnemyGen = (() => {
             return [...Array(9).keys()].find(i => !taken.has(i));
         };
         picks.forEach(p => { p.slot = slotFor(p); taken.add(p.slot); });
-        // Objet tenu adapté au rôle (à partir de la zone 2), amélioré comme ceux du joueur
+        // Objets tenus et baies adaptés au rôle, de plus en plus nombreux avec la zone (comme le joueur)
         picks.forEach(p => {
+            p.tier.items = []; p.tier.berries = [];
             if (zoneIndex < 2 && !p.boss) { p.tier.item = null; return; }
             const firstType = (MovesDB?.[p.moves[0]]?.type || p.pk.types[0] || 'normal').toLowerCase();
-            p.tier.item = p.role === 'tank' || p.role === 'support' ? 'leftovers' : (TYPE_BOOSTER[firstType] || 'life-orb');
+            const byRole = {
+                tank: ['leftovers', 'rocky-helmet', 'assault-vest', 'sitrus-berry'],
+                support: ['leftovers', 'light-clay', 'soothe-bell', 'sitrus-berry'],
+                speedster: ['quick-claw', 'scope-lens', 'focus-sash', 'salac-berry'],
+                attacker: [TYPE_BOOSTER[firstType] || 'muscle-band', 'life-orb', 'expert-belt', 'liechi-berry'],
+                caster: [TYPE_BOOSTER[firstType] || 'wise-glasses', 'life-orb', 'expert-belt', 'petaya-berry'],
+            }[p.role] || ['leftovers', 'life-orb', 'expert-belt', 'sitrus-berry'];
+            const nItems = Math.min(3, 1 + (zoneIndex >= 5 ? 1 : 0) + (zoneIndex >= 8 ? 1 : 0) + (p.boss ? 1 : 0));
+            const nBerries = Math.min(3, (zoneIndex >= 3 ? 1 : 0) + (zoneIndex >= 6 ? 1 : 0) + (p.boss ? 1 : 0));
+            byRole.filter(id => !/-berry$/.test(id)).slice(0, nItems).forEach(id => p.tier.items.push(id));
+            [byRole.find(id => /-berry$/.test(id)), 'lum-berry', 'enigma-berry'].filter(Boolean).slice(0, nBerries).forEach(id => p.tier.berries.push(id));
+            p.tier.item = p.tier.items[0] || null;
         });
         return picks;
     }

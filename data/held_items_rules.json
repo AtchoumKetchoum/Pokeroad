@@ -1,0 +1,290 @@
+{
+  "slots": {
+    "items": 3,
+    "berries": 3
+  },
+  "unlock": {
+    "rule": "Réutilise Refinement.getItemSlots / getBerrySlots (1 + ⌊niveau du Pokémon / 100⌋ + étoiles, plafond 3).",
+    "items": [
+      {
+        "slot": 1,
+        "condition": "Dès l'obtention du Pokémon."
+      },
+      {
+        "slot": 2,
+        "condition": "1re étoile du Pokémon, ou niveau de raffinement 100."
+      },
+      {
+        "slot": 3,
+        "condition": "2e étoile, ou 1 étoile + niveau 100."
+      }
+    ],
+    "berries": [
+      {
+        "slot": 1,
+        "condition": "Dès l'obtention du Pokémon."
+      },
+      {
+        "slot": 2,
+        "condition": "Grade 2 du Pokémon (niveau max 40)."
+      },
+      {
+        "slot": 3,
+        "condition": "Grade 4 (niveau max 80) ou 1 étoile."
+      }
+    ],
+    "note": "Les baies se débloquent plus tôt que les objets : elles sont consommables et moins puissantes, ce qui permet d'apprendre les combinaisons sans grind."
+  },
+  "stacking": [
+    {
+      "id": "doublon",
+      "rule": "Un Pokémon ne peut pas tenir deux exemplaires d'un objet marqué unique: true ; toutes les baies sont uniques (une Baie Sitrus par Pokémon). Les objets non uniques peuvent être doublés."
+    },
+    {
+      "id": "groupe_exclusif",
+      "rule": "Deux objets du même exclusive_group ne peuvent pas être tenus ensemble.",
+      "groups": {
+        "plaque": {
+          "desc": "Plaques : une seule (une identité de type supplémentaire).",
+          "items": [
+            "flame-plate",
+            "splash-plate",
+            "zap-plate",
+            "meadow-plate",
+            "icicle-plate",
+            "fist-plate",
+            "toxic-plate",
+            "earth-plate",
+            "sky-plate",
+            "mind-plate",
+            "insect-plate",
+            "stone-plate",
+            "spooky-plate",
+            "draco-plate",
+            "dread-plate",
+            "iron-plate",
+            "pixie-plate",
+            "blank-plate",
+            "legend-plate"
+          ]
+        },
+        "choix": {
+          "desc": "Objets Choix : un seul (verrous incompatibles).",
+          "items": [
+            "choice-band",
+            "choice-specs",
+            "choice-scarf"
+          ]
+        },
+        "critique_palier": {
+          "desc": "Lentilscope / Griffe Rasoir : un seul palier de critique d'objet.",
+          "items": [
+            "scope-lens",
+            "razor-claw"
+          ]
+        },
+        "pouvoir": {
+          "desc": "Objets de puissance : un seul (le malus de Vitesse ne se cumule pas en avantage).",
+          "items": [
+            "power-bracer",
+            "power-belt",
+            "power-lens",
+            "power-band",
+            "power-weight",
+            "power-anklet",
+            "macho-brace"
+          ]
+        },
+        "esquive": {
+          "desc": "Poudre Claire / Encens Doux : une seule source d'esquive d'objet.",
+          "items": [
+            "bright-powder",
+            "lax-incense"
+          ]
+        },
+        "survie": {
+          "desc": "Ceinture Force / Bandeau : un seul effet de survie.",
+          "items": [
+            "focus-sash",
+            "focus-band"
+          ]
+        },
+        "regen_passive": {
+          "desc": "Restes / Boue Noire : une seule régénération passive d'objet.",
+          "items": [
+            "leftovers",
+            "black-sludge"
+          ]
+        },
+        "cristal_z": {
+          "desc": "Cristaux Z : un seul (comme dans les jeux).",
+          "items": [
+            "normalium-z--held",
+            "firium-z--held",
+            "waterium-z--held",
+            "electrium-z--held",
+            "grassium-z--held",
+            "icium-z--held",
+            "fightinium-z--held",
+            "poisonium-z--held",
+            "groundium-z--held",
+            "flyinium-z--held",
+            "psychium-z--held",
+            "buginium-z--held",
+            "rockium-z--held",
+            "ghostium-z--held",
+            "dragonium-z--held",
+            "darkinium-z--held",
+            "steelium-z--held",
+            "fairium-z--held",
+            "pikanium-z--held",
+            "pikashunium-z--held",
+            "aloraichium-z--held",
+            "decidium-z--held",
+            "incinium-z--held",
+            "primarium-z--held",
+            "tapunium-z--held",
+            "marshadium-z--held",
+            "snorlium-z--held",
+            "eevium-z--held",
+            "mewnium-z--held"
+          ]
+        },
+        "orbe_statut": {
+          "desc": "Orbe Flamme / Orbe Toxique : une seule altération.",
+          "items": [
+            "flame-orb",
+            "toxic-orb"
+          ]
+        },
+        "roche_meteo": {
+          "desc": "Roches météo : une seule (une météo par lanceur).",
+          "items": [
+            "heat-rock",
+            "damp-rock",
+            "smooth-rock",
+            "icy-rock"
+          ]
+        },
+        "argent": {
+          "desc": "Pièce Rune / Encens Veine : ne se cumulent pas (comme dans les jeux).",
+          "items": [
+            "amulet-coin",
+            "luck-incense"
+          ]
+        },
+        "foulard": {
+          "desc": "Foulards : un seul rôle forcé.",
+          "items": [
+            "red-scarf",
+            "blue-scarf",
+            "pink-scarf",
+            "green-scarf",
+            "yellow-scarf"
+          ]
+        },
+        "rom": {
+          "desc": "ROM : une seule (un seul type pour Silvallié).",
+          "items": [
+            "fighting-memory",
+            "flying-memory",
+            "poison-memory",
+            "ground-memory",
+            "rock-memory",
+            "bug-memory",
+            "ghost-memory",
+            "steel-memory",
+            "fire-memory",
+            "water-memory",
+            "grass-memory",
+            "electric-memory",
+            "psychic-memory",
+            "ice-memory",
+            "dragon-memory",
+            "dark-memory",
+            "fairy-memory"
+          ]
+        },
+        "module": {
+          "desc": "Modules : un seul.",
+          "items": [
+            "douse-drive",
+            "shock-drive",
+            "burn-drive",
+            "chill-drive"
+          ]
+        },
+        "nectar": {
+          "desc": "Nectars : un seul style.",
+          "items": [
+            "red-nectar",
+            "yellow-nectar",
+            "pink-nectar",
+            "purple-nectar"
+          ]
+        },
+        "masque": {
+          "desc": "Masques : un seul.",
+          "items": [
+            "wellspring-mask",
+            "hearthflame-mask",
+            "cornerstone-mask"
+          ]
+        }
+      }
+    },
+    {
+      "id": "meme_effet_additif",
+      "rule": "Les valeurs d'une même clé d'effet (ex. dégâts Feu, précision, régénération) s'additionnent avec rendements décroissants : la plus forte compte à 100 %, la deuxième à 60 %, la troisième à 30 %, puis le plafond de l'objet le plus fort s'applique.",
+      "example": "Charbon (+20 %) + Plaque Flamme (+10 %) = 20 + 0,6 × 10 = +26 % sur les attaques Feu."
+    },
+    {
+      "id": "multiplicateurs",
+      "rule": "Des familles différentes (type, physique/spécial, super efficace, Orbe Vie, Métronome, météo) se multiplient entre elles, mais le multiplicateur total d'objets sur un coup est plafonné à ×2,0."
+    },
+    {
+      "id": "chances",
+      "rule": "Les chances (peur, survie, Vive Griffe, gel de jauge…) se combinent en 1 − Π(1 − p) et sont plafonnées à 60 %."
+    },
+    {
+      "id": "boucliers",
+      "rule": "Les boucliers issus d'objets et de baies sont plafonnés à 50 % des PV max par source de déclenchement ; le bouclier total d'un Pokémon ne peut pas dépasser 100 % de ses PV max."
+    },
+    {
+      "id": "regeneration",
+      "rule": "La régénération par tour issue d'objets est plafonnée à 20 % des PV max (Grosse Racine comprise)."
+    },
+    {
+      "id": "jauge",
+      "rule": "Les gains de jauge d'action d'objets sont plafonnés à +100 par déclencheur ; une jauge ne dépasse jamais 150 (le surplus est perdu) pour éviter les boucles d'actions."
+    },
+    {
+      "id": "jauge_z",
+      "rule": "Les accélérations de jauge Z (cristaux Z, Boule de Neige, Poing Chance…) s'additionnent avec rendements décroissants, plafond ×2,5 de remplissage."
+    },
+    {
+      "id": "paliers",
+      "rule": "Les paliers de stats donnés par des objets respectent le plafond de Rules.json (MOD_STAT) ; les paliers de critique d'objets ne dépassent pas +2."
+    },
+    {
+      "id": "baies_simultanees",
+      "rule": "Toutes les baies dont la condition est remplie par un même événement se déclenchent ensemble, dans l'ordre des emplacements (combo voulu : Sitrus + Lichii sous 50 %). Chaque baie se consomme une fois par combat et est restaurée après."
+    },
+    {
+      "id": "consommables",
+      "rule": "Les objets consommables (joyaux, herbes, graines, Bouton Fuite…) se consomment une fois par combat et sont restaurés après, comme les baies."
+    },
+    {
+      "id": "zone_magique",
+      "rule": "Zone Magique neutralise tous les objets et baies tenus (déjà géré pour un objet : à étendre aux 3 + 3 emplacements)."
+    },
+    {
+      "id": "especes",
+      "rule": "Les objets avec species_only ne peuvent être équipés que par les espèces listées (vérifié à l'équipement et au combat)."
+    },
+    {
+      "id": "amelioration",
+      "rule": "Chaque objet garde son raffinement global par id ; avec des doublons d'un objet non unique, chaque exemplaire utilise le même mult."
+    }
+  ]
+}

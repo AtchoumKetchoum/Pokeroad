@@ -55,7 +55,7 @@ const BattleRules = (() => {
         if (target.flags?.diving && target._side !== attacker._side) return false; // Plongée : intouchable
         if (move?.rw?.anyCell) return true; // Plongée, tir de précision, attraction : n'importe quelle case
         if (target._side === attacker._side) return true;
-        if (!isContact(move) || attacker.ignoresFrontline) return true;
+        if (!isContact(move) || attacker.ignoresFrontline || (typeof HeldItems !== 'undefined' && HeldItems.ignoresContact(attacker))) return true;
         return frontLineUnits(target._side).includes(target);
     }
 
@@ -120,7 +120,7 @@ const BattleRules = (() => {
 
     function synergyCounts(units) {
         const counts = {};
-        units.forEach(u => (u.types || []).forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
+        units.forEach(u => [...(u.types || []), ...(typeof HeldItems !== 'undefined' ? HeldItems.extraTypes(u) : [])].forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
         return counts;
     }
     const synergyTier = (count) => (count >= 4 ? 3 : count >= 3 ? 2 : count >= 2 ? 1 : 0);
@@ -190,6 +190,7 @@ const BattleRules = (() => {
     const alliesOf = (unit) => (grid[unit._side] || []).filter(u => u && !u.isKO);
 
     function addStages(unit, stats, announce = false) {
+        if (typeof HeldItems !== 'undefined' && HeldItems.freezesStages(unit)) { if (announce) spawnEffectText(unit, 'Pierre Stase', 'info'); return; }
         Object.entries(stats).forEach(([stat, delta]) => {
             const key = stat.toUpperCase();
             const mult = unit.flags?.simple ? 2 : 1;
@@ -242,9 +243,11 @@ const BattleRules = (() => {
         if (target.activeEffects.some(e => e.id === id)) return false;
         if (rule.category === 'Majeur' && target.flags?.safeguard) { spawnEffectText(target, 'Rune Protect', 'info'); return false; }
         if (id === 'STAT_CONF' && target.flags?.noConfusion) return false;
+        if (typeof HeldItems !== 'undefined' && HeldItems.blocksStatus(target, id)) return false;
         target.activeEffects.push({ id, duration: getEffectDuration(id, rule, {}), source: source?.id });
         spawnEffectText(target, rule.name, 'status');
         updateStatusIcons(target);
+        if (typeof HeldItems !== 'undefined') HeldItems.onStatus(target, id, source);
         return true;
     }
 
@@ -291,8 +294,9 @@ const BattleRules = (() => {
             units.forEach(u => {
                 u.flags = {};
                 u.shield = u.shield || 0;
+                if (typeof HeldItems !== 'undefined') HeldItems.prepare(u);
                 const base = (typeof PokedexDB !== 'undefined' && PokedexDB) ? PokedexDB[u._pokemonId]?.stats : null;
-                u.role = computeRole(base, u.moves);
+                u.role = (typeof HeldItems !== 'undefined' && HeldItems.forcedRole(u)) || computeRole(base, u.moves);
                 if (roleActive(u, 'speedster')) { u.actionPoints += 50; addStages(u, { CRIT: 1 }); }
             });
             // Synergies : bonus de dégâts par type + bonus spécial dès 3
@@ -315,6 +319,7 @@ const BattleRules = (() => {
                 u.bossPhase = 1;
                 spawnEffectText(u, 'BOSS', 'debuff', -70);
             });
+            if (typeof HeldItems !== 'undefined') units.forEach(u => { HeldItems.onBattleStart(u); HeldItems.primeFirstCrit(u); });
             units.forEach(u => { animateHpGrid(u._side, u._index, u.maxHp, u.hp, u.maxHp); updateStatusIcons(u); });
         });
         if (typeof FormationUI !== 'undefined') FormationUI.refresh();
@@ -327,6 +332,7 @@ const BattleRules = (() => {
     // ------------------------------------------------------------------
     function moveTypeFor(attacker, move) {
         let type = (move.type || 'normal').toLowerCase();
+        if (attacker?._normalTo && type === 'normal') type = attacker._normalTo;
         if (hasFlag(attacker, 'electrify')) type = 'electric';
         if (field.ionDeluge > 0 && type === 'normal') type = 'electric';
         return type;
@@ -569,7 +575,7 @@ const BattleRules = (() => {
 
     function restoreItems() {
         [...(grid.player || []), ...(grid.enemy || [])].forEach(u => {
-            if (u && u._stashedItem !== undefined) { u.heldItem = u._stashedItem; delete u._stashedItem; }
+            if (u && u._itemsOff) delete u._itemsOff;
         });
     }
 
@@ -616,12 +622,12 @@ const BattleRules = (() => {
                 }); break;
                 case 'status': list.forEach(u => addStatus(u, op.id, attacker, op.chance ?? 100)); break;
                 case 'cleanse': list.forEach(u => { u.activeEffects = u.activeEffects.filter(e => !['Majeur', 'Mineur'].includes(RulesDB?.[e.id]?.category)); updateStatusIcons(u); spawnEffectText(u, 'Soigné', 'buff'); }); break;
-                case 'weather': field.weather = { type: op.type, left: roundsToActions(op.rounds || 5) }; BattleAnimation.say(`${WEATHER[op.type].label} !`); showTerrainInfo(); break;
-                case 'terrain': field.terrain = { type: op.type, left: roundsToActions(op.rounds || 5) }; BattleAnimation.say(`${TERRAIN[op.type].label} !`); showTerrainInfo(); break;
+                case 'weather': field.weather = { type: op.type, left: roundsToActions((op.rounds || 5) + (typeof HeldItems !== 'undefined' ? HeldItems.weatherBonus(attacker, op.type) : 0)) }; BattleAnimation.say(`${WEATHER[op.type].label} !`); showTerrainInfo(); break;
+                case 'terrain': field.terrain = { type: op.type, left: roundsToActions((op.rounds || 5) + (typeof HeldItems !== 'undefined' ? HeldItems.terrainBonus(attacker) : 0)) }; BattleAnimation.say(`${TERRAIN[op.type].label} !`); showTerrainInfo(); break;
                 case 'room': {
                     if (field.room?.type === op.type) { if (op.type === 'magic') restoreItems(); field.room = null; }
                     else {
-                        if (op.type === 'magic') [...(grid.player || []), ...(grid.enemy || [])].forEach(u => { if (u && u._stashedItem === undefined) { u._stashedItem = u.heldItem; u.heldItem = null; } });
+                        if (op.type === 'magic') [...(grid.player || []), ...(grid.enemy || [])].forEach(u => { if (u) u._itemsOff = true; });
                         field.room = { type: op.type, left: roundsToActions(op.rounds || 5) };
                         BattleAnimation.say(`${ROOM[op.type].label} !`);
                     }
@@ -693,8 +699,30 @@ const BattleRules = (() => {
                     }
                     break;
                 }
-                case 'swapItems': list.forEach(u => { const tmp = attacker.heldItem; attacker.heldItem = u.heldItem; u.heldItem = tmp; spawnEffectText(u, 'Objets échangés', 'status'); }); break;
-                case 'giveItem': { const ally = resolveOpTargets('mostWoundedAlly', attacker)[0]; if (ally && attacker.heldItem && !ally.heldItem) { ally.heldItem = attacker.heldItem; attacker.heldItem = null; spawnEffectText(ally, 'Objet reçu', 'buff'); } break; }
+                case 'swapItems': list.forEach(u => {
+                    if (typeof HeldItems !== 'undefined' && (HeldItems.protectsItems(u) || HeldItems.protectsItems(attacker))) return;
+                    const a = (attacker.heldItems || []), b = (u.heldItems || []);
+                    const ia = a.findIndex(Boolean), ib = b.findIndex(Boolean);
+                    const ta = ia >= 0 ? a[ia] : null, tb = ib >= 0 ? b[ib] : null;
+                    if (!ta && !tb) return;
+                    if (ia >= 0) a.splice(ia, 1); if (ib >= 0) b.splice(ib, 1);
+                    if (tb) a.push(tb); if (ta) b.push(ta);
+                    attacker.heldItems = a; u.heldItems = b;
+                    attacker.itemMults = attacker.itemMults || {}; u.itemMults = u.itemMults || {};
+                    if (tb) attacker.itemMults[tb] = u.itemMults[tb] || 1;
+                    if (ta) u.itemMults[ta] = attacker.itemMults[ta] || 1;
+                    spawnEffectText(u, 'Objets échangés', 'status');
+                }); break;
+                case 'giveItem': {
+                    const ally = resolveOpTargets('mostWoundedAlly', attacker)[0];
+                    const item = (attacker.heldItems || [])[0];
+                    if (ally && item && (ally.heldItems || []).length < 3) {
+                        attacker.heldItems = attacker.heldItems.slice(1); ally.heldItems = [...(ally.heldItems || []), item];
+                        (ally.itemMults = ally.itemMults || {})[item] = attacker.itemMults?.[item] || 1;
+                        spawnEffectText(ally, 'Objet reçu', 'buff');
+                    }
+                    break;
+                }
                 case 'gainZ': list.forEach(u => { u.boostGauge = Math.min(50, (u.boostGauge || 0) + op.amount); spawnEffectText(u, 'Jauge Z +', 'buff'); }); updateZMoveIndicators(); break;
                 case 'gainAP': list.forEach(u => { u.actionPoints += op.amount; updateActionPointsUI(u); spawnEffectText(u, 'Accélère', 'buff'); }); break;
                 case 'money': field.moneyMult = Math.max(field.moneyMult, op.mult || 2); spawnEffectText(attacker, 'Argent ×2 !', 'buff'); break;
