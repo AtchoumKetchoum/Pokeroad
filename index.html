@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="css/modals.css">
     <link rel="stylesheet" href="css/unit-tiles.css">
     <link rel="stylesheet" href="css/back-bar.css">
+    <link rel="stylesheet" href="css/iso-view.css">
 
     <style>
         /* View Manager Display Logic */
@@ -141,6 +142,14 @@
                             <h3>Appli</h3>
                             <button class="pk-btn-action small" id="install-app-btn" onclick="PWA.install()">Installer l'appli sur l'écran d'accueil</button>
                             <p class="install-hint" id="install-hint"></p>
+                        </div>
+                        <div class="settings-group">
+                            <h3>Vue du combat (prototype)</h3>
+                            <div class="view-choice">
+                                <button class="pk-btn-action small" data-battle-view="classic" onclick="IsoView.set('classic')">Classique</button>
+                                <button class="pk-btn-action small" data-battle-view="light" onclick="IsoView.set('light')">Iso léger</button>
+                                <button class="pk-btn-action small" data-battle-view="iso" onclick="IsoView.set('iso')">Vraie iso</button>
+                            </div>
                         </div>
                         <div class="settings-group">
                             <h3>Données</h3>
@@ -473,6 +482,7 @@
     <script src="js/view-manager.js"></script>
     <script src="js/back-bar.js"></script>
     <script src="js/long-press.js"></script>
+    <script src="js/iso-view.js"></script>
     <script src="js/min-font.js"></script>
 </body>
 </html>

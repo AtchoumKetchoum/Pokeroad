@@ -1,0 +1,44 @@
+/* ==========================================================================
+   iso-view.css — Prototype de vue du combat (js/iso-view.js)
+   Le sol des grilles s'incline (iso léger) ou tourne en losanges (vraie iso) ;
+   les Pokémon restent debout, face à l'écran.
+   ========================================================================== */
+
+/* Scène en 3D : perspective commune, plateaux et cases en 3D */
+#view-battle .scaler-view.view-light { perspective: 1300px; }
+#view-battle .scaler-view.view-iso { perspective: none; }
+#view-battle .scaler-view:is(.view-light, .view-iso) .team-grid { transform-style: preserve-3d; transition: transform .35s ease; }
+#view-battle .scaler-view:is(.view-light, .view-iso) .team-grid .unit-slot {
+  transform-style: preserve-3d;
+  transform: none !important; /* plus de fausse perspective par ligne */
+}
+
+/* Pokémon debout face à l'écran (rotation inverse du plateau) */
+#view-battle .scaler-view:is(.view-light, .view-iso) .team-grid .unit {
+  rotate: var(--iso-billboard);
+  transform-origin: 50% 85%;
+}
+
+/* Iso léger : plateformes un peu plus larges pour l'effet de sol */
+#view-battle .scaler-view.view-light .team-grid .unit-slot::before { left: 2%; right: 2%; height: 46%; bottom: 0; }
+
+/* Vraie iso : cases en losange (carrés au sol, tournés par le plateau) */
+#view-battle .scaler-view.view-iso .team-grid { row-gap: 10px !important; column-gap: 10px !important; }
+#view-battle .scaler-view.view-iso .team-grid .unit-slot::before {
+  left: 4%; right: 4%; top: 4%; bottom: 4%; height: auto;
+  border-radius: 14%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .15) 60%, rgba(27, 31, 59, .18));
+  border-width: 4px;
+}
+
+/* Bouton « Vue » du bandeau de combat */
+#view-battle .battle-view-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0 8px !important; min-width: 0; }
+#view-battle .battle-view-btn[data-mode="light"], #view-battle .battle-view-btn[data-mode="iso"] { background: var(--yellow) !important; }
+
+/* Paramètres : choix de la vue */
+.view-choice { display: flex; gap: 8px; flex-wrap: wrap; }
+.view-choice .pk-btn-action.active { background: var(--yellow) !important; }
+
+/* Vraie iso : les pieds du Pokémon au centre du losange (pivot = centre de la case) */
+#view-battle .scaler-view.view-iso .team-grid .unit { top: -40%; transform-origin: 50% 90%; }
+#view-battle .scaler-view.view-iso .team-grid .shadow { bottom: 6%; width: 46%; height: 10%; }
