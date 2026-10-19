@@ -132,3 +132,12 @@
 
 /* Plateau : plus de libellés de rangées (positions des grilles dans iso-view.css) */
 #view-battle .row-labels { display: none !important; }
+
+/* Bandeau du haut : fonds clairs à liseré encre (plus de fonds noirs) */
+#view-battle #hudProgress .hud-step { background: #efe2c4 !important; color: #2b2118 !important; border: 2px solid #2b2118; }
+#view-battle #hudProgress .hud-step b { color: #b06a10 !important; }
+#view-battle #hudProgress .hud-step.boss { background: #f3c6c0 !important; color: #8a1a14 !important; }
+#view-battle #top-right-actions .speed-controls { background: #efe2c4 !important; border: 2px solid #2b2118 !important; box-shadow: none !important; }
+#view-battle #top-right-actions .speed-btn { color: #2b2118 !important; }
+#view-battle #top-right-actions .speed-btn.active { background: #ffd25a !important; color: #2b2118 !important; }
+#view-battle #battle-top-bar .turn-order-sidebar { background: #efe2c4 !important; border: 2px solid #2b2118 !important; }

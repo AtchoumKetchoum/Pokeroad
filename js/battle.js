@@ -720,6 +720,7 @@ function updateTurnDisplay(unit) {
     const stars = pk ? (pk.refinementStars || 0) : (unit.tier?.stars || 0);
     const hpPct = Math.max(0, Math.min(100, unit.hp / unit.maxHp * 100));
     const z = Math.min(100, Math.round(unit.boostGauge || 0));
+    const ap = Math.max(0, Math.min(100, Math.round(unit.actionPoints || 0)));
     const types = (unit.types || []).map(t => `<span class="chip type-${t}">${typeof formatTypeLabel === 'function' ? formatTypeLabel(t) : t}</span>`).join('');
 
     // Fiche du Pokémon actif : portrait, nom, niveau (couleur du grade), étoiles, types, PV chiffrés, jauge Z
@@ -733,7 +734,10 @@ function updateTurnDisplay(unit) {
                 <span class="tud-types">${types}</span>
             </div>
             <div class="tud-hp ${hpPct < 25 ? 'low' : hpPct < 50 ? 'mid' : ''}"><div class="tud-hp-fill" style="width:${hpPct}%"></div><span class="turn-unit-hp" id="turn-unit-hp">${Math.max(0, unit.hp)} / ${unit.maxHp}</span></div>
-            <div class="tud-z ${z >= 100 ? 'full' : ''}" title="Jauge Z ${z} %"><div style="width:${z}%"></div></div>
+            <div class="tud-gauges">
+                <div class="tud-ap" title="Jauge d'action"><div style="width:${ap}%"></div></div>
+                <div class="tud-z ${z >= 100 ? 'full' : ''}" title="Jauge Z ${z} %"><div style="width:${z}%"></div></div>
+            </div>
         </div>
     `;
 }
@@ -1354,7 +1358,14 @@ function moveBtnHtml(mv, sub = null, isZ = false) {
         }
         sub = parts.join(' · ');
     }
-    return `<span class="mb-name">${isZ ? 'Z · ' : ''}${esc(mv.name)}</span><span class="mb-sub no-minfont">${esc(sub)}</span>`;
+    // Mini-zone : la forme touchée (3 × 3), ou « Z » quand l'attaque Z est prête
+    let zone = '';
+    if (isZ) zone = '<span class="mb-z">Z</span>';
+    else if (typeof MoveRework !== 'undefined') {
+        const pat = MoveRework.displayPattern(mv);
+        if (pat?.values?.length === 9) zone = `<span class="mb-zone">${pat.values.map(v => `<i class="${v > 0 ? 'on' : ''}"></i>`).join('')}</span>`;
+    }
+    return `<span class="mb-stripe"></span><span class="mb-text"><span class="mb-name">${esc(mv.name)}</span><span class="mb-sub no-minfont">${esc(sub)}</span></span>${zone}`;
 }
 
 async function renderMovesForUnit(unit) {
