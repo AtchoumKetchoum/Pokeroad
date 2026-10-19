@@ -750,7 +750,6 @@ function updateTurnDisplay(unit) {
                 <span class="tud-lvl g${Math.min(6, grade)}" title="Niveau ${unit.level} · Grade ${grade}">${unit.level}</span>
                 ${stars ? `<span class="tud-stars">★${stars}</span>` : ''}
                 <span class="tud-types">${types}</span>
-                ${held ? `<span class="tud-items">${held}</span>` : ''}
             </div>
             <div class="tud-hp ${hpPct < 25 ? 'low' : hpPct < 50 ? 'mid' : ''}"><div class="tud-hp-fill" style="width:${hpPct}%"></div><span class="turn-unit-hp" id="turn-unit-hp">${Math.max(0, unit.hp)} / ${unit.maxHp}</span></div>
             <div class="tud-gauges">
@@ -758,6 +757,7 @@ function updateTurnDisplay(unit) {
                 <div class="tud-z ${z >= 100 ? 'full' : ''}" title="Jauge Z ${z} %"><div style="width:${z}%"></div></div>
             </div>
         </div>
+        <div class="tud-items">${held}</div>
     `;
 }
 

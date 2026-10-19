@@ -168,3 +168,13 @@
 #view-battle #turn-unit-display, #view-battle #actionPanel { min-width: 0; max-width: 100%; }
 #view-battle .tud-line > :not(.turn-unit-name) { flex-shrink: 0; }
 #view-battle #turn-unit-display .tud-line .turn-unit-name { flex: 0 1 auto; min-width: 40px; }
+
+/* Objets (ligne du haut) et baies (ligne du bas) : petite colonne à droite de la fiche */
+#view-battle #turn-unit-display .tud-items {
+    margin-left: 0 !important; height: auto !important; flex: none; align-self: center;
+    display: flex !important; flex-direction: column; gap: 4px; padding-left: 8px; border-left: 2px dashed rgba(43, 33, 24, .25);
+}
+#view-battle #turn-unit-display .tud-group { display: flex; gap: 3px; justify-content: flex-start; min-height: 32px; align-items: center; }
+#view-battle #turn-unit-display .tud-item:not(.tud-empty) { width: 32px !important; height: 32px !important; margin: 0 !important; }
+#view-battle #turn-unit-display .tud-item:not(.tud-empty) img, #view-battle #turn-unit-display .tud-item:not(.tud-empty) svg { width: 32px !important; height: 32px !important; }
+#view-battle #turn-unit-display .tud-empty { width: 28px !important; height: 28px !important; margin: 2px !important; }
