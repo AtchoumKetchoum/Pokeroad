@@ -430,6 +430,8 @@ function computeDamage(attacker, defender, move, options = {}) {
         const itemCtx = { moveType, typeMod, isCrit, estimate: !!options.noRandom, cellMult: options.cellMult, contact: BattleRules.isContact(move), contactMove: BattleRules.isContact(move) };
         damage = Math.floor(damage * HeldItems.offenseMult(attacker, defender, move, itemCtx) * HeldItems.defenseMult(defender, attacker, move, itemCtx));
     }
+    // Synergies du défenseur : Ancrage (Sol), Blindage (Acier)
+    if (typeof Synergies !== 'undefined') damage = Math.floor(damage * Synergies.defenseMult(defender, { typeMod }));
 
     // Mod3 (non implémenté)
 
@@ -1200,6 +1202,8 @@ function showTerrainInfo() {
     dom.infoDisplayPanel.innerHTML = `<div class="info-section">${parts.map(p => `<span class="info-item">${p}</span>`).join('')}</div>`;
     // État par défaut : simple bandeau entre les deux camps (les fiches s'affichent en haut)
     dom.infoDisplayPanel.classList.add('visible', 'terrain-mode');
+    // Temps clair et terrain normal : rien à signaler, le bandeau se cache
+    dom.infoDisplayPanel.classList.toggle('field-default', parts.every(p => /: (Clair|Normal)$/.test(p)));
 }
 
 function showMoveDetails(move, unit, isZMove = false) {
@@ -1877,6 +1881,7 @@ async function attack(attacker, primaryTarget, move) {
         }
 
         if (finalAccuracy !== null && typeof HeldItems !== 'undefined') { const am = HeldItems.accuracyMult(attacker, target); finalAccuracy = am === Infinity ? null : finalAccuracy * am; }
+        if (finalAccuracy !== null && typeof Synergies !== 'undefined') finalAccuracy *= Synergies.evasionMult(target);
         if (attacker.flags?.sureHit) finalAccuracy = null;
         if (finalAccuracy !== null && Math.random() * 100 >= finalAccuracy) {
             spawnEffectText(target, "Raté !", 'info');
@@ -1964,6 +1969,7 @@ async function attack(attacker, primaryTarget, move) {
                 const entry = damageByTarget.get(target);
                 await HeldItems.onHit(target, attacker, moveForThisHit, dmg, { typeMod: entry?.typeMod ?? 1, moveType: BattleRules.moveTypeFor(attacker, moveForThisHit), contact: BattleRules.isContact(moveForThisHit) });
             }
+            if (typeof Synergies !== 'undefined') Synergies.onHit(target, attacker, dmg, { contact: BattleRules.isContact(moveForThisHit) });
         }
         // Appliquer l'effet si la capacité en a un (après le check de précision)
         if (moveForThisHit.effect) {
@@ -1986,6 +1992,7 @@ async function attack(attacker, primaryTarget, move) {
     
     // Objets après l'action : Orbe Vie, Grelot Coque, Roche Royale, Vive Griffe, Métronome…
     if (typeof HeldItems !== 'undefined') await HeldItems.afterAction(attacker, moveForThisHit, { damages, primary: primaryTarget, missed: missedAny, crit: anyCrit, moveType: BattleRules.moveTypeFor(attacker, moveForThisHit) });
+    if (typeof Synergies !== 'undefined') Synergies.afterAction(attacker, moveForThisHit, { damages, primary: primaryTarget, moveType: BattleRules.moveTypeFor(attacker, moveForThisHit) });
   // Mettre à jour la timeline et les boutons Z-Move après application des dégâts et potentiels KO
   updateTurnOrderDisplay();
   updateZMoveIndicators();
@@ -2103,6 +2110,7 @@ async function handleStartOfTurnEffects(unit) {
 
     // Objets tenus (début de tour) : Restes, Boue Noire, Grelot, orbes, graines…
     if (typeof HeldItems !== 'undefined') { await HeldItems.onTurnStart(unit); if (unit.isKO) return { canAct: false }; }
+    if (typeof Synergies !== 'undefined') Synergies.onTurnStart(unit);
 
     // Copie pour pouvoir modifier l'original dans la boucle
     const effectsToProcess = [...unit.activeEffects];

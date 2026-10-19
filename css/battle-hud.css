@@ -1,0 +1,81 @@
+/* Bandeau du haut du combat : un seul panneau, deux lignes
+   1) zone (rang, nom, vague, combat) à gauche · vitesse, auto, vue, sortie à droite
+   2) frise des tours sur toute la largeur
+   Dessous : synergies ennemies (si actives), météo / terrain (si particuliers), crédits des sprites. */
+
+#view-battle #battle-top-bar {
+    position: absolute !important; top: 10px !important; left: 12px !important; right: 12px !important;
+    height: auto !important; z-index: 210;
+    display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "hud actions" "turns turns";
+    align-items: center; gap: 8px 10px !important;
+    padding: 8px 10px 10px !important; box-sizing: border-box;
+    background: rgba(247, 236, 220, .95); border: 3px solid var(--ink); border-radius: 18px;
+    box-shadow: 0 4px 0 rgba(43, 33, 24, .3);
+}
+
+/* Zone */
+#view-battle #battle-top-bar #hudProgress {
+    grid-area: hud; position: static !important; width: auto !important; height: auto !important; min-height: 0 !important;
+    margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important;
+    display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 4px 6px !important; overflow: hidden !important;
+}
+#view-battle #hudProgress .rank-chip { order: 0; flex: none; margin: 0 !important; }
+#view-battle #hudProgress .hud-zone {
+    order: 1; flex: 1 1 0 !important; min-width: 0; font-size: 24px !important; line-height: 1.1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#view-battle #hudProgress .hud-step { order: 2; flex: none; font-size: 22px !important; padding: 1px 10px !important; line-height: 1.25; }
+#view-battle #hudProgress .hud-step b { font-size: 22px !important; }
+/* Les étapes passent sous le nom */
+#view-battle #hudProgress::after { content: ''; order: 1; flex: 0 0 100%; height: 0; }
+
+/* Boutons */
+#view-battle #battle-top-bar #top-right-actions {
+    grid-area: actions; position: static !important; display: flex !important; flex-direction: row !important;
+    align-items: center; gap: 6px !important; margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important;
+}
+#view-battle #top-right-actions .speed-controls { order: 1; height: 50px; padding: 3px !important; display: flex; align-items: center; gap: 2px; }
+#view-battle #top-right-actions .speed-btn { height: 42px !important; min-width: 44px !important; padding: 0 6px !important; }
+#view-battle #top-right-actions #auto-battle-btn { order: 2; height: 50px !important; padding: 0 12px !important; margin: 0 !important; }
+#view-battle #top-right-actions .battle-view-btn { order: 3; width: 50px !important; height: 50px !important; margin: 0 !important; }
+#view-battle #top-right-actions .exit-btn { order: 4; width: 50px !important; height: 50px !important; margin: 0 !important; }
+
+/* Frise des tours */
+#view-battle #battle-top-bar #turnOrderContainer {
+    grid-area: turns; position: static !important; width: auto !important; height: 62px !important; margin: 0 !important;
+    display: flex !important; justify-content: center; align-items: center; overflow: hidden;
+    border-top: 2px dashed rgba(43, 33, 24, .25); padding-top: 8px;
+}
+#view-battle #battle-top-bar .turn-order-sidebar { position: static !important; transform: none !important; margin: 0 !important; max-width: 100%; }
+#view-battle #battle-top-bar #turnOrderContainer:not(:has(.timeline-unit-container)) { display: none !important; }
+
+/* Ligne sous le bandeau : synergies ennemies à gauche, météo et crédits à droite */
+#view-battle .synergy-panel.synergy-enemy {
+    top: 212px !important; left: 12px !important; right: auto !important; width: auto !important; max-width: calc(100% - 84px) !important;
+}
+#view-battle .synergy-panel.synergy-enemy:has(.synergy-empty) { display: none !important; }
+#view-battle #pmd-credits-btn {
+    top: 214px !important; right: 12px !important; width: 40px; height: 40px; padding: 0 !important; max-width: none !important;
+    border-radius: 50%; font-size: 22px !important; line-height: 1; display: grid; place-items: center; opacity: .75;
+}
+#view-battle #infoDisplayPanel.terrain-mode {
+    top: 212px !important; bottom: auto !important; left: auto !important; right: 62px !important; transform: none !important;
+    width: auto !important; max-width: 280px; padding: 4px 12px !important; z-index: 205;
+}
+#view-battle #infoDisplayPanel.terrain-mode .info-section { display: flex; flex-direction: column; gap: 0; }
+#view-battle #infoDisplayPanel.terrain-mode.field-default { display: none !important; }
+
+/* Synergies : pastilles de palier (2 / 3 / 4 Pokémon) */
+#view-battle .synergy-panel { overflow-x: auto !important; scrollbar-width: none; }
+#view-battle .synergy-chip { flex: none; display: flex; align-items: center; gap: 6px; padding: 2px 10px 2px 2px; border-radius: 10px; border: 2px solid transparent; opacity: .5; }
+#view-battle .synergy-chip.active { opacity: 1; background: #ffe7b0; border-color: var(--ink); }
+#view-battle .synergy-chip.tier-3 { background: #ffc94f; }
+#view-battle .syn-pips { display: inline-flex; gap: 4px; }
+#view-battle .syn-pips i { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--ink); background: #f7ecdc; box-sizing: border-box; }
+#view-battle .syn-pips i.on { background: var(--ink); }
+#view-battle .synergy-chip.active .syn-pips i.on { background: #e07a20; }
+
+/* Boss : un peu plus grand qu'un Pokémon normal, sans déborder sur la case de devant */
+#view-battle .unit.is-boss .pmd-sprite { --pmd-scale: 4.2; }
+#view-battle .unit.is-boss .sprite { filter: drop-shadow(0 0 3px #d46962) drop-shadow(0 2px 0 var(--gba-frame, #2b2118)) !important; }
+#view-battle .unit.is-boss.has-aura::before { width: 150px !important; height: 150px !important; }

@@ -23,6 +23,7 @@ const PmdSprite = (() => {
         preload: ['Attack', 'Hurt'],
         // Hauteur de frame Idle (px natifs) au-delà de laquelle le sprite est réduit (gros Pokémon)
         fitHeight: 56,
+        fitWidth: 60,
     };
 
     const DIRECTIONS = ['down', 'downright', 'right', 'upright', 'up', 'upleft', 'left', 'downleft'];
@@ -228,9 +229,11 @@ const PmdSprite = (() => {
         // Taille proportionnelle à la taille réelle du Pokémon (Onix bien plus grand que Pikachu),
         // sur une échelle logarithmique pour que les géants restent dans l'écran
         const realHeight = parseFloat(host.dataset.pmdHeight) || (typeof PokedexDB !== 'undefined' && PokedexDB?.[host.dataset.pmdDex]?.height) || 1;
-        const sizeFactor = Math.min(1.35, Math.max(0.72, 0.72 + 0.2 * Math.log2(realHeight / 0.5)));
+        const sizeFactor = Math.min(1.2, Math.max(0.72, 0.72 + 0.2 * Math.log2(realHeight / 0.5)));
         host.style.setProperty('--pmd-size', sizeFactor.toFixed(3));
-        host.style.setProperty('--pmd-fit', (CONFIG.fitHeight * sizeFactor / idle.frameHeight).toFixed(3));
+        // Les planches larges (serpents, oiseaux en vol…) sont aussi bornées en largeur, pour rester dans leur case
+        const fit = sizeFactor * Math.min(CONFIG.fitHeight / idle.frameHeight, CONFIG.fitWidth / (idle.frameWidth || idle.frameHeight));
+        host.style.setProperty('--pmd-fit', fit.toFixed(3));
         host.style.setProperty('--transform-base', 'scaleX(1)'); // La direction est portée par la planche
         player.start('Idle', { loop: true }); // Boucle : la promesse ne se résout jamais
         host.dataset.pmdState = 'ready';

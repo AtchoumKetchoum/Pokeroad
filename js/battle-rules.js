@@ -95,41 +95,11 @@ const BattleRules = (() => {
     // ------------------------------------------------------------------
     // SYNERGIES DE TYPES
     // ------------------------------------------------------------------
-    // Bonus commun : +10 / +20 / +30 % de dégâts pour les attaques du type (2 / 3 / 4 Pokémon).
-    // Bonus spécial dès 3 Pokémon du type.
-    const SYNERGY_PERKS = {
-        normal:   { desc: '+10 % de PV max',                    apply: u => { u.maxHp = Math.round(u.maxHp * 1.1); u.hp = u.maxHp; } },
-        fire:     { desc: 'Attaque et Att. Spé. +1',             apply: u => addStages(u, { ATK: 1, SPA: 1 }) },
-        water:    { desc: 'Régénère 4 % des PV à chaque tour',    apply: u => { u.regen = (u.regen || 0) + 4; } },
-        grass:    { desc: 'Vole 15 % des dégâts infligés',        apply: u => { u.lifesteal = (u.lifesteal || 0) + 0.15; } },
-        electric: { desc: 'Vitesse +1',                          apply: u => addStages(u, { SPE: 1 }) },
-        ice:      { desc: '15 % de chance de geler au contact',   apply: u => { u.onHitStatus = { id: 'STAT_GEL', chance: 15 }; } },
-        fighting: { desc: 'Attaque +2',                          apply: u => addStages(u, { ATK: 2 }) },
-        poison:   { desc: '25 % de chance d\'empoisonner en frappant', apply: u => { u.onHitStatus = { id: 'STAT_PSN', chance: 25 }; } },
-        ground:   { desc: 'Défense +2',                          apply: u => addStages(u, { DEF: 2 }) },
-        flying:   { desc: 'Esquive +1',                          apply: u => addStages(u, { EVA: 1 }) },
-        psychic:  { desc: 'Att. Spé. +2',                        apply: u => addStages(u, { SPA: 2 }) },
-        bug:      { desc: 'Démarre avec 40 % de jauge d\'action', apply: u => { u.actionPoints += 40; } },
-        rock:     { desc: 'Défense et Déf. Spé. +1',             apply: u => addStages(u, { DEF: 1, SPD: 1 }) },
-        ghost:    { desc: 'Ignore la ligne de front',            apply: u => { u.ignoresFrontline = true; } },
-        dragon:   { desc: 'Jauge Z remplie 50 % plus vite',      apply: u => { u.zGainMult = 1.5; } },
-        dark:     { desc: 'Critique +2 paliers',                 apply: u => addStages(u, { CRIT: 2 }) },
-        steel:    { desc: 'Bouclier de 15 % des PV au départ',   apply: u => { u.shield = (u.shield || 0) + Math.round(u.maxHp * 0.15); } },
-        fairy:    { desc: 'Déf. Spé. +2',                        apply: u => addStages(u, { SPD: 2 }) },
-    };
-
-    function synergyCounts(units) {
-        const counts = {};
-        units.forEach(u => [...(u.types || []), ...(typeof HeldItems !== 'undefined' ? HeldItems.extraTypes(u) : [])].forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
-        return counts;
-    }
-    const synergyTier = (count) => (count >= 4 ? 3 : count >= 3 ? 2 : count >= 2 ? 1 : 0);
-
-    function describeSynergies(units) {
-        return Object.entries(synergyCounts(units))
-            .map(([type, count]) => ({ type, count, tier: synergyTier(count), perk: SYNERGY_PERKS[type]?.desc || '' }))
-            .sort((a, b) => b.count - a.count);
-    }
+    // Un effet propre à chaque type (js/synergies.js), paliers à 2 / 3 / 4 Pokémon du type.
+    const SYNERGY_PERKS = Object.fromEntries(Object.entries(Synergies.DEFS).map(([t, d]) => [t, { desc: `${d.name} : ${d.text(d.values[1], 2)}` }]));
+    const synergyCounts = (units) => Synergies.counts(units);
+    const synergyTier = (count) => Synergies.tierOf(count);
+    const describeSynergies = (units) => Synergies.describe(units);
 
     // ------------------------------------------------------------------
     // ÉTAT DU TERRAIN
@@ -244,6 +214,7 @@ const BattleRules = (() => {
         if (rule.category === 'Majeur' && target.flags?.safeguard) { spawnEffectText(target, 'Rune Protect', 'info'); return false; }
         if (id === 'STAT_CONF' && target.flags?.noConfusion) return false;
         if (typeof HeldItems !== 'undefined' && HeldItems.blocksStatus(target, id)) return false;
+        if (Synergies.blocksStatus(target, id)) return false;
         target.activeEffects.push({ id, duration: getEffectDuration(id, rule, {}), source: source?.id });
         spawnEffectText(target, rule.name, 'status');
         updateStatusIcons(target);
@@ -299,18 +270,10 @@ const BattleRules = (() => {
                 u.role = (typeof HeldItems !== 'undefined' && HeldItems.forcedRole(u)) || computeRole(base, u.moves);
                 if (roleActive(u, 'speedster')) { u.actionPoints += 50; addStages(u, { CRIT: 1 }); }
             });
-            // Synergies : bonus de dégâts par type + bonus spécial dès 3
+            // Synergies : un effet par type (js/synergies.js)
             // Zone 1 = apprentissage : les ennemis n'ont pas encore de synergies
             const counts = (side === 'enemy' && typeof zoneIndex !== 'undefined' && zoneIndex <= 1) ? {} : synergyCounts(units);
-            units.forEach(u => {
-                u.synergyTypeBonus = {};
-                Object.entries(counts).forEach(([type, count]) => {
-                    const tier = synergyTier(count);
-                    if (!tier) return;
-                    u.synergyTypeBonus[type] = tier * 0.1;
-                    if (tier >= 2 && SYNERGY_PERKS[type]) SYNERGY_PERKS[type].apply(u);
-                });
-            });
+            Synergies.setup(units, counts);
             // Boss : PV multipliés et mécanique de phase
             units.filter(u => u.isBoss).forEach(u => {
                 // PV ×1,6 en zone 1, puis plus robustes jusqu'à ×2,5 à partir de la zone 5
@@ -348,8 +311,6 @@ const BattleRules = (() => {
         if (physical && roleActive(attacker, 'attacker')) m *= 1.2;
         if (!physical && roleActive(attacker, 'caster')) m *= 1.2;
         if (roleActive(defender, 'tank')) m *= 0.75;
-        // Synergie du type de l'attaque
-        m *= 1 + (attacker.synergyTypeBonus?.[moveType] || 0);
         // Météo et champs
         const w = field.weather && WEATHER[field.weather.type];
         if (w?.boost === moveType) m *= 1.5;

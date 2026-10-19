@@ -51,6 +51,7 @@
     <link rel="stylesheet" href="css/unit-tiles.css">
     <link rel="stylesheet" href="css/back-bar.css">
     <link rel="stylesheet" href="css/iso-view.css">
+    <link rel="stylesheet" href="css/battle-hud.css">
 
     <style>
         /* View Manager Display Logic */
@@ -251,7 +252,7 @@
                     <div id="enemy-grid" class="team-grid"></div>
                     <div id="infoDisplayPanel" class="glass-panel"></div>
                     <div id="battleStatus"></div>
-                    <button id="pmd-credits-btn" type="button" onclick="PmdSprite.showCredits(document.getElementById('view-battle'))" title="Sprites : PMD Sprite Repository · CC BY-NC">© Sprites</button>
+                    <button id="pmd-credits-btn" type="button" onclick="PmdSprite.showCredits(document.getElementById('view-battle'))" title="Sprites : PMD Sprite Repository · CC BY-NC" aria-label="Crédits des sprites">©</button>
                     <div id="battle-footer">
                         <div id="selection-banner"></div>
                         <div id="combat-panel">
@@ -468,6 +469,7 @@
     <script src="js/pmd-sprite.js"></script>
     <script src="js/battle.js"></script>
     <script src="js/battle_animation.js"></script>
+    <script src="js/synergies.js"></script>
     <script src="js/battle-rules.js"></script>
     <script src="js/move-rework.js"></script>
     <script src="js/held-items.js"></script>

@@ -58,15 +58,15 @@ const InfoModal = (() => {
     // --- Contenus ---
     function synergies(side) {
         const units = ((typeof grid !== 'undefined' && grid[side]) || []).filter(u => u && !u.isKO);
-        const counts = BattleRules.synergyCounts(units);
-        const rows = Object.entries(BattleRules.SYNERGY_PERKS).map(([type, perk]) => {
-            const n = counts[type] || 0, tier = BattleRules.synergyTier(n);
+        const counts = Synergies.counts(units);
+        const rows = Object.entries(Synergies.DEFS).map(([type, d]) => {
+            const n = counts[type] || 0, tier = Synergies.tierOf(n);
             return `<div class="syn-row ${tier ? 'on' : ''}">${chip(type)}<b>${n}</b>
-                <span>+10 % / +20 % / +30 % de dégâts ${LABEL(type)} (2 / 3 / 4 Pokémon) · dès 3 : ${perk.desc}${tier ? ` · <strong>actif : +${tier * 10} %</strong>` : ''}</span></div>`;
+                <span><strong>${d.name}</strong>${d.scope === 'team' ? ' (équipe)' : ''} · ${d.values.map((v, i) => `${i + 2} : ${i + 1 === tier ? `<strong>${d.text(v, i + 1)}</strong>` : d.text(v, i + 1)}`).join(' · ')}</span></div>`;
         }).join('');
         open({
             title: side === 'player' ? 'Tes synergies' : 'Synergies ennemies',
-            html: `<p class="info-lede">Placer plusieurs Pokémon d'un même type renforce leurs attaques de ce type. Les plaques tenues comptent comme un Pokémon du type.</p><div class="syn-list">${rows}</div>`,
+            html: `<p class="info-lede">Chaque type a son propre effet, qui grandit à 2, 3 et 4 Pokémon du type. Les plaques tenues comptent comme un Pokémon du type.</p><div class="syn-list">${rows}</div>`,
         });
     }
     function ranks() {

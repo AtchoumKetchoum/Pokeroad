@@ -48,15 +48,15 @@ const InfoTip = (() => {
     // --- Contenus ---
     function synergies(side) {
         const units = ((typeof grid !== 'undefined' && grid[side]) || []).filter(u => u && !u.isKO);
-        const counts = BattleRules.synergyCounts(units);
-        const active = Object.entries(counts).filter(([, n]) => BattleRules.synergyTier(n) > 0);
-        const rows = active.map(([t, n]) => {
-            const tier = BattleRules.synergyTier(n);
-            return `<div class="tip-row">${chip(t)} <b>×${n}</b> +${tier * 10} %${tier >= 2 ? ` · ${BattleRules.SYNERGY_PERKS[t]?.desc || ''}` : ''}</div>`;
-        }).join('');
-        return `<b>${side === 'player' ? 'Tes synergies' : 'Synergies ennemies'}</b>
-            ${rows || '<div>Aucune pour l\'instant.</div>'}
-            <small>2 / 3 / 4 Pokémon du même type : +10 / +20 / +30 % de dégâts du type, et un bonus spécial dès 3.</small>`;
+        if (side === 'enemy' && typeof zoneIndex !== 'undefined' && zoneIndex <= 1) return '<b>Synergies ennemies</b><div>Aucune en zone 1 : les ennemis les gagnent dès la zone 2.</div>';
+        const list = Synergies.describe(units);
+        const rows = list.map(s => `<div class="tip-syn ${s.tier ? 'on' : ''}">
+                <div class="tip-row">${chip(s.type)} <b>${esc(s.name)}</b> <span class="tip-count">${s.count} / ${s.next || 4}</span>${s.scope === 'team' ? '<span class="tip-label">équipe</span>' : ''}</div>
+                ${s.tier ? `<div>${esc(s.effect)}</div>` : ''}
+                ${s.tier < 3 ? `<small>${s.next ? `À ${s.next} : ${esc(s.nextEffect)}` : ''}</small>` : '<small>Palier maximum</small>'}
+            </div>`).join('');
+        return `<b>${side === 'player' ? 'Tes synergies' : 'Synergies ennemies'}</b>${rows || '<div>Aucun Pokémon.</div>'}
+            <small>Paliers à 2, 3 et 4 Pokémon du même type (les plaques comptent). « Équipe » : profite à tous, sinon aux Pokémon du type.</small>`;
     }
     function rank() {
         const z = typeof zoneIndex !== 'undefined' ? zoneIndex : 1;

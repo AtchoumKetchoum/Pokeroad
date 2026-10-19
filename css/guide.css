@@ -96,3 +96,10 @@
 .info-tip .tip-type.type-dark { background: var(--t-dark, var(--type-dark, #8a7f6a)); }
 .info-tip .tip-type.type-steel { background: var(--t-steel, var(--type-steel, #8a7f6a)); }
 .info-tip .tip-type.type-fairy { background: var(--t-fairy, var(--type-fairy, #8a7f6a)); }
+
+/* Synergies dans la bulle : une ligne par type, actives en clair */
+.info-tip .tip-syn { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(243, 227, 181, .2); opacity: .7; }
+.info-tip .tip-syn.on { opacity: 1; }
+.info-tip .tip-syn small { margin-top: 1px; }
+.info-tip .tip-count { margin-left: auto; font-size: 12px; font-weight: 700; color: #ffd88a; }
+.info-tip { max-height: calc(100vh - 16px); overflow-y: auto; }

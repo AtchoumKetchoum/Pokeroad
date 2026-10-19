@@ -84,16 +84,15 @@ const FormationUI = (() => {
             panel.innerHTML = `${synergyIcon(side)}<div class="synergy-empty">Aucune en zone 1</div>`;
             return;
         }
+        // Chaque type présent : pastilles de palier (2 / 3 / 4) et nom de la synergie ; détail dans la bulle
         const list = BattleRules.describeSynergies(units);
-        const active = list.filter(s => s.tier > 0);
-        const next = list.filter(s => s.tier === 0).slice(0, 3);
-        panel.innerHTML = synergyIcon(side)
-            + (active.length ? active : []).map(s => `
-                <div class="synergy-chip active" title="${formatTypeLabel(s.type)} : +${s.tier * 10} % de dégâts ${formatTypeLabel(s.type)}${s.tier >= 2 ? ' · ' + s.perk : ' · à 3 : ' + s.perk}">
-                    <span class="chip type-${s.type}">${formatTypeLabel(s.type)}</span><b>${s.count}</b>
-                    <span class="synergy-desc">+${s.tier * 10} %${s.tier >= 2 ? ' · ' + s.perk : ''}</span>
-                </div>`).join('')
-            + (!active.length ? `<div class="synergy-empty">Aucune : 2 Pokémon d'un même type${next.length ? ` (${next.map(s => formatTypeLabel(s.type)).join(', ')}…)` : ''}</div>` : '');
+        const pips = (n) => Synergies.THRESHOLDS.map(t => `<i class="${n >= t ? 'on' : ''}"></i>`).join('');
+        panel.innerHTML = synergyIcon(side) + (list.length ? list.map(s => `
+                <div class="synergy-chip tier-${s.tier} ${s.tier ? 'active' : ''}">
+                    <span class="chip type-${s.type}">${formatTypeLabel(s.type)}</span>
+                    <span class="syn-pips">${pips(s.count)}</span>
+                    <span class="synergy-desc">${s.name}</span>
+                </div>`).join('') : '<div class="synergy-empty">Aucun Pokémon</div>');
     }
 
     function refresh() {
