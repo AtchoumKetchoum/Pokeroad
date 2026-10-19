@@ -21,8 +21,28 @@ const InfoTip = (() => {
         document.body.appendChild(bubble);
         return bubble;
     }
+    // Attaque survolée : son détail s'affiche sur la fiche du Pokémon actif, juste au-dessus des boutons
+    function peek(btn) {
+        const host = document.getElementById('turn-unit-display');
+        if (!host || !host.firstElementChild) return false;
+        const mv = btn.__move, rw = mv.rw || {};
+        const kind = rw.kind === 'passive' ? `Passif${rw.triggerLabel ? ` · ${rw.triggerLabel}` : ''}` : rw.kind === 'tactic' ? 'Tactique' : mv.damage_class === 'status' ? 'Statut' : 'Attaque';
+        const power = rw.kind === 'attack' || (!rw.kind && mv.power) ? Math.round((rw.power || mv.power || 0) * (mv._refMult || 1)) : 0;
+        const facts = [power ? `Puissance ${power}` : '', mv.accuracy ? `Préc. ${mv.accuracy}` : '',
+            typeof BattleRules !== 'undefined' && power ? (BattleRules.isContact(mv) ? 'Contact' : 'Distance') : '', (mv.zone_label || '').replace(/\s*\(.*\)$/, '')].filter(Boolean).join(' · ');
+        let box = host.querySelector('.tud-peek');
+        if (!box) { box = document.createElement('div'); box.className = 'tud-peek no-minfont'; host.appendChild(box); }
+        box.innerHTML = `<div class="tp-line"><b>${esc(mv.name)}</b>${chip((mv.type || 'normal').toLowerCase())}<span class="tp-kind">${esc(kind)}</span></div>
+            <div class="tp-facts">${esc(facts)}</div>
+            <div class="tp-desc">${esc(mv.description_game || mv.description || '')}</div>`;
+        box.classList.add('on');
+        return true;
+    }
+    const unpeek = () => document.querySelector('#turn-unit-display .tud-peek')?.classList.remove('on');
+
     function show(el, html) {
         if (!html) return;
+        if (el.matches?.('#view-battle .move-btn') && el.__move && peek(el)) { anchor = el; bubble?.classList.remove('visible'); return; } // pas de bulle : la fiche du dessus sert
         const b = ensure();
         anchor = el;
         b.innerHTML = html;
@@ -43,7 +63,7 @@ const InfoTip = (() => {
         bubble.classList.toggle('below', below);
         bubble.style.setProperty('--arrow-x', `${Math.max(12, Math.min(bw - 12, r.left + r.width / 2 - left))}px`);
     }
-    function hide() { bubble?.classList.remove('visible'); anchor = null; }
+    function hide() { bubble?.classList.remove('visible'); anchor = null; unpeek(); }
 
     // --- Contenus ---
     function synergies(side) {

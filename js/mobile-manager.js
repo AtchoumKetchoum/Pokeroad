@@ -13,6 +13,8 @@ const MobileManager = (() => {
     // (Safari sur iPhone ne permet pas le plein écran d'une page web).
     let started = false;
     let isMobile = false;
+    // Appli installée (écran d'accueil) : déjà en plein écran, sans demande ni notification du navigateur
+    const isInstalledApp = () => window.matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true;
 
     function init() {
         isMobile = detectMobile();
@@ -46,17 +48,8 @@ const MobileManager = (() => {
         updateScaling();
         if (isMobile) updateOverlayVisibility();
 
-        document.addEventListener("touchstart", (e) => {
-            if (isMobile && !isFullscreenActive()) {
-                requestFullscreen();
-            }
-        }, { capture: true, passive: false });
-        
-        document.addEventListener("click", (e) => {
-            if (isMobile && !isFullscreenActive()) {
-                requestFullscreen();
-            }
-        }, { capture: true, passive: false });
+        // Plus de redemande à chaque toucher : le navigateur réafficherait sa notification
+        // « Pour quitter le mode plein écran… » à chaque fois. Une seule demande, au toucher de l'écran titre.
     }
 
     function updateScaling() {
@@ -109,7 +102,7 @@ const MobileManager = (() => {
                 <div class="title-ball">${Art.pokeball(120)}</div>
                 <h1 class="title-logo">Poké<span>Road</span></h1>
                 <div class="title-tap">Touche l'écran pour jouer</div>
-                <small class="title-hint">Le jeu passe en plein écran</small>
+                ${isInstalledApp() ? '' : '<small class="title-hint">Le jeu passe en plein écran</small>'}
             </div>
         `;
         Art.hydrate(overlay);
@@ -118,7 +111,7 @@ const MobileManager = (() => {
             e.stopPropagation();
             started = true;
             updateOverlayVisibility();
-            if (isMobile) requestFullscreen();
+            if (isMobile && !isInstalledApp()) requestFullscreen();
         };
 
         document.body.appendChild(overlay);
@@ -136,6 +129,7 @@ const MobileManager = (() => {
     }
 
     function requestFullscreen() {
+        if (isInstalledApp() || isFullscreenActive()) return; // déjà en plein écran : pas de notification
         const docEl = document.documentElement;
         const fn = docEl.requestFullscreen || docEl.webkitRequestFullScreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
 

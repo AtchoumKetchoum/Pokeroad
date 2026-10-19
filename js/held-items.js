@@ -300,11 +300,20 @@ const HeldItems = (() => {
         const isPassive = (m) => typeof MoveRework !== 'undefined' && MoveRework.isPassive(m);
         if (ids.some(id => S[id].choice) && Array.isArray(u.moves)) {
             const firstAttack = u.moves.find(m => !isPassive(m) && (m.power || 0) > 0);
-            if (firstAttack) u.moves = u.moves.filter(m => m === firstAttack || isPassive(m));
+            if (firstAttack) {
+                // Les attaques verrouillées restent affichées (grisées) avec la raison
+                const lockId = ids.find(id => S[id].choice);
+                u._lockedMoves = u.moves.filter(m => m !== firstAttack && !isPassive(m)).map(m => ({ move: m, reason: nameOf(lockId) }));
+                u.moves = u.moves.filter(m => m === firstAttack || isPassive(m));
+            }
         }
         if (ids.some(id => S[id].noTactics) && Array.isArray(u.moves)) {
             const kept = u.moves.filter(m => isPassive(m) || (m.power || 0) > 0);
-            if (kept.length) u.moves = kept;
+            if (kept.length) {
+                const vestId = ids.find(id => S[id].noTactics);
+                u._lockedMoves = [...(u._lockedMoves || []), ...u.moves.filter(m => !kept.includes(m)).map(m => ({ move: m, reason: nameOf(vestId) }))];
+                u.moves = kept;
+            }
         }
         if (ids.some(id => S[id].glove)) u._glove = true;
         if (ids.some(id => S[id].pads)) u._pads = true;

@@ -722,6 +722,16 @@ function updateTurnDisplay(unit) {
     const z = Math.min(100, Math.round(unit.boostGauge || 0));
     const ap = Math.max(0, Math.min(100, Math.round(unit.actionPoints || 0)));
     const types = (unit.types || []).map(t => `<span class="chip type-${t}">${typeof formatTypeLabel === 'function' ? formatTypeLabel(t) : t}</span>`).join('');
+    // Objets tenus et baies : icônes à droite (grisées une fois utilisées), effet dans l'infobulle ;
+    // les emplacements débloqués mais vides restent visibles en pointillés
+    const slots = typeof GameData !== 'undefined' && GameData.getHoldSlots ? GameData.getHoldSlots({ refinementLevel: grade }) : { items: 1, berries: 1 };
+    const itemChip = id => `<span class="held-chip tud-item ${unit._usedItems?.has(id) ? 'used' : ''} ${unit._itemsOff ? 'off' : ''}" data-item="${id}" data-side="${unit._side}" data-index="${unit._index}">${Art.item(id, 30)}</span>`;
+    const group = (ids, n, kind) => {
+        const list = (ids || []).slice(0, Math.max(n, (ids || []).length));
+        const empty = Math.max(0, n - list.length);
+        return list.map(itemChip).join('') + Array.from({ length: empty }, () => `<span class="tud-item tud-empty ${kind}" title="${kind === 'berry' ? 'Emplacement de baie libre' : "Emplacement d’objet libre"}"></span>`).join('');
+    };
+    const held = `<span class="tud-group">${group(unit.heldItems, slots.items, 'item')}</span><span class="tud-group">${group(unit.berries, slots.berries, 'berry')}</span>`;
 
     // Fiche du Pokémon actif : portrait, nom, niveau (couleur du grade), étoiles, types, PV chiffrés, jauge Z
     dom.turnUnitDisplay.innerHTML = `
@@ -732,6 +742,7 @@ function updateTurnDisplay(unit) {
                 <span class="tud-lvl g${Math.min(6, grade)}" title="Niveau ${unit.level} · Grade ${grade}">${unit.level}</span>
                 ${stars ? `<span class="tud-stars">★${stars}</span>` : ''}
                 <span class="tud-types">${types}</span>
+                ${held ? `<span class="tud-items">${held}</span>` : ''}
             </div>
             <div class="tud-hp ${hpPct < 25 ? 'low' : hpPct < 50 ? 'mid' : ''}"><div class="tud-hp-fill" style="width:${hpPct}%"></div><span class="turn-unit-hp" id="turn-unit-hp">${Math.max(0, unit.hp)} / ${unit.maxHp}</span></div>
             <div class="tud-gauges">
@@ -1374,6 +1385,18 @@ async function renderMovesForUnit(unit) {
   dom.movesRow.innerHTML = '';
   const moves = Array.isArray(unit.moves) && unit.moves.length ? unit.moves : defaultMovesFor(unit);
   if (dom.targetPrompt) dom.targetPrompt.style.display = 'none';
+  // Attaques verrouillées (objet Choix, Veste de Combat) : affichées grisées, avec la raison
+  const locked = (unit._lockedMoves || []).slice(0, Math.max(0, 4 - Math.min(4, moves.length)));
+  setTimeout(() => locked.forEach(({ move: lm, reason }) => {
+    if (!dom.movesRow || dom.movesRow.children.length >= 4) return;
+    const b = document.createElement('button');
+    b.className = 'move-btn is-locked';
+    b.setAttribute('aria-disabled', 'true');
+    b.style.setProperty('--type-color', `var(--type-${(lm.type || 'normal').toLowerCase()})`);
+    b.innerHTML = moveBtnHtml(lm, `Bloquée · ${reason}`);
+    b.__move = lm; b.__unit = unit;
+    dom.movesRow.appendChild(b);
+  }), 0);
   moves.slice(0, 4).forEach(mv => {
     const btn = document.createElement('button');
     btn.className = 'move-btn';

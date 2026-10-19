@@ -50,7 +50,19 @@
 #view-battle .tud-lvl.g5 { background: #d0782a; }
 #view-battle .tud-lvl.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a); color: #2b2118; }
 #view-battle .tud-stars { flex: none; display: inline-flex; align-items: center; height: 26px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #2b2118; color: #ffd25a; font: 900 18px/1 'Nunito', var(--font-body), sans-serif; }
-#view-battle .tud-types { margin-left: auto; display: flex; gap: 4px; flex: none; }
+#view-battle .tud-types { display: flex; gap: 4px; flex: none; }
+/* À droite de la ligne du nom : objets tenus et baies */
+#view-battle .tud-items { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+#view-battle .tud-group { display: flex; gap: 3px; }
+#view-battle .tud-items { height: 28px; }
+#view-battle #turn-unit-display .tud-item {
+    display: grid !important; place-items: center; width: 28px; height: 28px; padding: 0 !important; margin: 0 !important; box-sizing: border-box;
+    border-radius: 8px !important; border: 2px solid #2b2118 !important; background: #fffaf0 !important; font-size: 0 !important; cursor: help;
+    box-shadow: inset 0 -2px 0 rgba(43, 33, 24, .15);
+}
+#view-battle #turn-unit-display .tud-item img, #view-battle #turn-unit-display .tud-item svg { width: 22px !important; height: 22px !important; image-rendering: pixelated; }
+#view-battle #turn-unit-display .tud-item.used { opacity: .4; filter: grayscale(1); }
+#view-battle #turn-unit-display .tud-item.off { opacity: .4; }
 #view-battle .tud-types .chip { margin: 0 !important; height: 26px; display: inline-flex !important; align-items: center; box-sizing: border-box; }
 #view-battle .tud-hp { position: relative; height: 24px; border-radius: 12px; background: #4a3d33; overflow: hidden; }
 #view-battle .tud-hp-fill { height: 100%; background: #6cc15f; transition: width .3s ease; }
@@ -96,5 +108,46 @@
 #view-battle .movesRow .move-btn .mb-zone i.on { background: #2b2118; }
 #view-battle .movesRow .move-btn .mb-z { flex: none; font: 900 26px/1 'Nunito', var(--font-body), sans-serif; color: #c48a10; }
 #view-battle .movesRow .move-btn.is-passive { opacity: .6; }
+#view-battle .movesRow .move-btn.is-locked { opacity: .45; filter: grayscale(.7); cursor: not-allowed; border-style: dashed !important; }
 #view-battle .movesRow .move-btn.z-ready { background: #fff3c4 !important; box-shadow: 0 0 0 3px #ffc93c !important; }
 #view-battle .movesRow .move-btn:active { transform: translateY(1px); }
+
+/* Emplacements libres : pointillés, petit « + » discret */
+#view-battle #turn-unit-display .tud-empty { border: 2px dashed rgba(43, 33, 24, .4) !important; background: rgba(239, 226, 196, .5) !important; cursor: default; }
+#view-battle #turn-unit-display .tud-empty::after { content: ''; width: 10px; height: 10px; background:
+    linear-gradient(rgba(43, 33, 24, .35), rgba(43, 33, 24, .35)) center / 10px 2px no-repeat,
+    linear-gradient(rgba(43, 33, 24, .35), rgba(43, 33, 24, .35)) center / 2px 10px no-repeat; }
+#view-battle #turn-unit-display .tud-empty.berry { border-radius: 50% !important; }
+
+/* Attaque survolée : son détail par-dessus la fiche du Pokémon actif */
+#view-battle #turn-unit-display { position: relative; }
+#view-battle #turn-unit-display .tud-peek {
+    position: absolute; inset: -4px; z-index: 5; display: none; flex-direction: column; justify-content: center; gap: 1px;
+    padding: 6px 12px; box-sizing: border-box; border-radius: 12px; background: #fffaf0; border: 3px solid #2b2118;
+    color: #2b2118; font: 700 16px/1.25 'Nunito', var(--font-body), sans-serif; overflow: hidden;
+}
+#view-battle #turn-unit-display .tud-peek.on { display: flex; }
+#view-battle .tud-peek .tp-line { display: flex; align-items: center; gap: 8px; }
+#view-battle .tud-peek .tp-line b { font-size: 20px; font-weight: 900; }
+#view-battle .tud-peek .tp-kind { margin-left: auto; font-weight: 900; color: #6b5a45; }
+#view-battle .tud-peek .tip-type { padding: 1px 8px; border-radius: 7px; font-size: 13px; font-weight: 900; color: #fff; background: #8a7f6a; }
+#view-battle .tud-peek .tp-facts { font-weight: 900; color: #4a3d33; }
+#view-battle .tud-peek .tp-desc { color: #6b5a45; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+#view-battle .tud-peek .tip-type.type-normal { background: var(--t-normal, var(--type-normal, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-fire { background: var(--t-fire, var(--type-fire, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-water { background: var(--t-water, var(--type-water, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-grass { background: var(--t-grass, var(--type-grass, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-electric { background: var(--t-electric, var(--type-electric, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-ice { background: var(--t-ice, var(--type-ice, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-fighting { background: var(--t-fighting, var(--type-fighting, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-poison { background: var(--t-poison, var(--type-poison, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-ground { background: var(--t-ground, var(--type-ground, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-flying { background: var(--t-flying, var(--type-flying, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-psychic { background: var(--t-psychic, var(--type-psychic, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-bug { background: var(--t-bug, var(--type-bug, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-rock { background: var(--t-rock, var(--type-rock, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-ghost { background: var(--t-ghost, var(--type-ghost, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-dragon { background: var(--t-dragon, var(--type-dragon, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-dark { background: var(--t-dark, var(--type-dark, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-steel { background: var(--t-steel, var(--type-steel, #8a7f6a)); }
+#view-battle .tud-peek .tip-type.type-fairy { background: var(--t-fairy, var(--type-fairy, #8a7f6a)); }
