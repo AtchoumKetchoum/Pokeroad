@@ -25,27 +25,33 @@
 #view-battle #turn-unit-display:empty { display: none !important; }
 #view-battle .tud-portrait {
     flex: none; width: 64px; height: 64px; border-radius: 50%; background: #c1cfda; border: 3px solid #2b2118;
-    display: grid; place-items: center; overflow: hidden; box-sizing: border-box;
+    display: block; position: relative; overflow: hidden; box-sizing: border-box;
 }
-#view-battle .tud-portrait img { width: 70px !important; height: 70px !important; object-fit: contain; image-rendering: pixelated; }
+/* L'ancienne vignette carrée (fond, bord, coins) est neutralisée : l'illustration flotte dans le rond */
+#view-battle #turn-unit-display .tud-portrait img {
+    width: 88% !important; height: 88% !important; margin: 0 !important; padding: 0 !important; object-fit: contain;
+    background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+    filter: drop-shadow(0 2px 0 rgba(43, 33, 24, .25)) !important; image-rendering: auto;
+    position: absolute !important; left: 50% !important; top: 50% !important; translate: -50% -50%; /* garde le retournement en ligne */
+}
 #view-battle .tud-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-#view-battle .tud-line { display: flex; align-items: center; gap: 6px; min-width: 0; }
+#view-battle .tud-line { display: flex; align-items: center; gap: 6px; min-width: 0; height: 28px; }
 #view-battle #turn-unit-display .tud-line .turn-unit-name {
     font: 900 24px/1.1 'Nunito', var(--font-body), sans-serif !important; color: #2b2118 !important;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 0 1 auto;
 }
 #view-battle .tud-lvl {
-    flex: none; padding: 2px 9px; border-radius: 12px; background: #8a7f6a; color: #fff; line-height: 1.1;
-    font: 900 18px/1.1 'Nunito', var(--font-body), sans-serif;
+    flex: none; display: inline-flex; align-items: center; height: 26px; padding: 0 10px; box-sizing: border-box; border-radius: 13px;
+    background: #8a7f6a; color: #fff; font: 900 18px/1 'Nunito', var(--font-body), sans-serif;
 }
 #view-battle .tud-lvl.g2 { background: #5f9a5a; }
 #view-battle .tud-lvl.g3 { background: #4a78b8; }
 #view-battle .tud-lvl.g4 { background: #8a5ab0; }
 #view-battle .tud-lvl.g5 { background: #d0782a; }
 #view-battle .tud-lvl.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a); color: #2b2118; }
-#view-battle .tud-stars { flex: none; padding: 2px 7px; border-radius: 7px; background: #2b2118; color: #ffd25a; font: 900 18px/1.1 'Nunito', var(--font-body), sans-serif; }
+#view-battle .tud-stars { flex: none; display: inline-flex; align-items: center; height: 26px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: #2b2118; color: #ffd25a; font: 900 18px/1 'Nunito', var(--font-body), sans-serif; }
 #view-battle .tud-types { margin-left: auto; display: flex; gap: 4px; flex: none; }
-#view-battle .tud-types .chip { margin: 0 !important; }
+#view-battle .tud-types .chip { margin: 0 !important; height: 26px; display: inline-flex !important; align-items: center; box-sizing: border-box; }
 #view-battle .tud-hp { position: relative; height: 24px; border-radius: 12px; background: #4a3d33; overflow: hidden; }
 #view-battle .tud-hp-fill { height: 100%; background: #6cc15f; transition: width .3s ease; }
 #view-battle .tud-hp.mid .tud-hp-fill { background: #e0b33a; }
@@ -76,8 +82,8 @@
     border: 3px solid #2b2118 !important; border-radius: 12px !important; box-shadow: none !important; text-shadow: none !important;
 }
 #view-battle .movesRow .move-btn::before, #view-battle .movesRow .move-btn::after { display: none !important; }
-#view-battle .movesRow .move-btn .mb-stripe { flex: none; align-self: stretch; width: 8px; border-radius: 4px; background: var(--type-color, #a8a878); }
-#view-battle .movesRow .move-btn .mb-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+#view-battle .movesRow .move-btn .mb-stripe { flex: none; align-self: stretch; width: 8px; margin: 2px 0; border-radius: 4px; background: var(--type-color, #a8a878); }
+#view-battle .movesRow .move-btn .mb-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
 #view-battle .movesRow .move-btn .mb-name {
     font: 900 22px/1.1 'Nunito', var(--font-body), sans-serif !important; color: #2b2118;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
@@ -85,7 +91,7 @@
 #view-battle .movesRow .move-btn .mb-sub {
     font: 700 15px/1.1 'Nunito', var(--font-body), sans-serif; color: #6b5a45; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
-#view-battle .movesRow .move-btn .mb-zone { flex: none; display: grid; grid-template-columns: repeat(3, 7px); gap: 2px; }
+#view-battle .movesRow .move-btn .mb-zone { flex: none; align-self: center; display: grid; grid-template-columns: repeat(3, 7px); grid-auto-rows: 7px; gap: 2px; margin-right: 2px; }
 #view-battle .movesRow .move-btn .mb-zone i { width: 7px; height: 7px; border-radius: 2px; background: rgba(43, 33, 24, .15); }
 #view-battle .movesRow .move-btn .mb-zone i.on { background: #2b2118; }
 #view-battle .movesRow .move-btn .mb-z { flex: none; font: 900 26px/1 'Nunito', var(--font-body), sans-serif; color: #c48a10; }
