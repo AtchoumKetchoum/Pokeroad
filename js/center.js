@@ -369,7 +369,7 @@ function renderPokemonList(pokemons, targetId = 'pokemon-list') {
         
         item.innerHTML = `
             ${pokemon.isFavorite ? '<span class="favorite-star">★</span>' : ''}
-            <span class="level-badge">Lv.${level}</span>
+            <span class="level-badge g${Math.min(6, pokemon.refinementLevel || 1)} no-minfont" title="Niveau ${level} · Grade ${pokemon.refinementLevel || 1}">${level}</span>
             <div class="mini-shadow"></div>
             <img src="${spriteUrl}" alt="${name}" onerror="this.style.display='none'">
             <div class="name">${name}</div>

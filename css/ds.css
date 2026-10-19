@@ -63,3 +63,51 @@
 #view-battle .synergy-panel .synergy-icon { height: var(--ds-h-sm) !important; border-radius: var(--ds-r-sm) !important; }
 #view-battle .tud-lvl, #view-battle .tud-stars { border-radius: var(--ds-r-sm) !important; }
 #view-battle .tud-peek, .info-tip.big { border-width: var(--ds-bw) !important; border-radius: var(--ds-r) !important; }
+
+/* --- Centre : vignettes de la Boîte --- */
+/* Niveau : même pastille qu'en combat (chiffre seul, couleur du grade) */
+.pokemon-item .level-badge {
+    top: 5px !important; left: 5px !important; padding: 0 7px !important; height: 22px; display: inline-flex !important; align-items: center;
+    border-radius: var(--ds-r-sm) !important; background: #8a7f6a !important; color: #fff !important;
+    font: 800 15px/1 'Nunito', var(--font-body), sans-serif !important; letter-spacing: 0;
+}
+.pokemon-item .level-badge.g2 { background: #5f9a5a !important; }
+.pokemon-item .level-badge.g3 { background: #4a78b8 !important; }
+.pokemon-item .level-badge.g4 { background: #8a5ab0 !important; }
+.pokemon-item .level-badge.g5 { background: #d0782a !important; }
+.pokemon-item .level-badge.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a) !important; color: #2b2118 !important; }
+/* Améliorations possibles : pastille et icônes à l'intérieur de la carte */
+.pokemon-item { overflow: hidden; }
+.pokemon-item .qu-dot { top: 5px !important; right: 5px !important; min-width: 22px !important; height: 22px !important; border-radius: 11px !important;
+    font: 800 14px/18px 'Nunito', var(--font-body), sans-serif !important; padding: 0 5px !important; }
+.pokemon-item .qu-preview { top: 31px !important; right: 5px !important; }
+.pokemon-item .qu-mini { width: 22px !important; height: 22px !important; border-radius: 6px !important; border-width: var(--ds-bw) !important; }
+.pokemon-item .qu-mini img, .pokemon-item .qu-mini svg { width: 16px !important; height: 16px !important; }
+/* Vignettes plus hautes : l'illustration respire, le nom reste en bas */
+.pokemon-item { min-height: 178px; justify-content: flex-end !important; padding: 30px 6px 10px !important; box-sizing: border-box; }
+.pokemon-item img { width: 112px !important; height: 112px !important; margin-top: auto; }
+
+/* --- Combat en illustrations : plus grandes, posées sur la case, qui respirent --- */
+#view-battle .pmd-sprite[data-pmd-state="art"] { overflow: visible; }
+#view-battle .pmd-sprite[data-pmd-state="art"] .pmd-fallback {
+    display: block !important; position: absolute; left: 50%; bottom: 4%; width: 128%; height: 128%; max-width: none;
+    object-fit: contain; object-position: center bottom; translate: -50% 0;
+    filter: drop-shadow(0 3px 0 rgba(43, 33, 24, .3)); transform-origin: 50% 100%;
+    animation: art-breathe 2.6s ease-in-out infinite;
+}
+#view-battle .unit.is-boss .pmd-sprite[data-pmd-state="art"] .pmd-fallback { width: 140%; height: 140%; }
+@keyframes art-breathe { 50% { transform: scale(1.02, 1.035); } }
+.view-choice .pk-btn-action.active { background: var(--yellow, #ffd25a) !important; }
+
+/* Sprites animés (Showdown, face et dos) : pixel net, un peu plus grands car la planche a des marges */
+#view-battle .pmd-sprite[data-pmd-kind="anim"] .pmd-fallback { image-rendering: pixelated; width: 150%; height: 150%; bottom: -2%; }
+/* Respiration de tous les Pokémon en combat (pixel compris, sur la boîte) */
+#view-battle .pmd-sprite[data-pmd-state="ready"] { animation: art-breathe 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+@media (prefers-reduced-motion: reduce) { #view-battle .pmd-sprite .pmd-fallback, #view-battle .pmd-sprite[data-pmd-state="ready"] { animation: none !important; } }
+
+/* Tous les Pokémon du combat 25 % plus petits (illustrations, 3D, animés et pixel) */
+#view-battle .pmd-sprite[data-pmd-state="art"] .pmd-fallback { width: 96% !important; height: 96% !important; }
+#view-battle .unit.is-boss .pmd-sprite[data-pmd-state="art"] .pmd-fallback { width: 105% !important; height: 105% !important; }
+#view-battle .pmd-sprite[data-pmd-kind="anim"] .pmd-fallback { width: 86% !important; height: 86% !important; }
+#view-battle .pmd-sprite { --pmd-scale: 3.6; }
+#view-battle .unit.is-boss .pmd-sprite { --pmd-scale: 3.15; }

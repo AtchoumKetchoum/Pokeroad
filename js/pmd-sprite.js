@@ -258,10 +258,52 @@ const PmdSprite = (() => {
             + `<img class="pmd-fallback" src="${escapeAttr(fallback)}" alt="${escapeAttr(alt)}" draggable="false"></div>`;
     }
 
+    // Style des Pokémon en combat (Paramètres) :
+    //  - « art » : illustrations officielles (par défaut) ; « home » : rendus 3D Pokémon HOME ;
+    //  - « showdown » : sprites animés (face et dos) ; « pixel » : sprites PMD animés.
+    // Illustrations et rendus 3D n'existent que de face : nos Pokémon (vus de dos) prennent alors le dos animé Showdown.
+    const STYLES = ['art', 'home', 'showdown', 'pixel'];
+    const STYLE_KEY = 'pokeroad_battle_sprites';
+    let battleStyle = 'art';
+    try { battleStyle = localStorage.getItem(STYLE_KEY) || 'art'; } catch { /* sans stockage */ }
+    if (!STYLES.includes(battleStyle)) battleStyle = 'art';
+    const ART_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
+    function artUrl(dex, shiny, back) {
+        const sh = shiny ? 'shiny/' : '';
+        if (back || battleStyle === 'showdown') return `${ART_BASE}other/showdown/${back ? 'back/' : ''}${sh}${dex}.gif`;
+        if (battleStyle === 'home') return `${ART_BASE}other/home/${sh}${dex}.png`;
+        return `${ART_BASE}other/official-artwork/${sh}${dex}.png`;
+    }
+    function setBattleStyle(style) {
+        battleStyle = STYLES.includes(style) ? style : 'art';
+        try { localStorage.setItem(STYLE_KEY, battleStyle); } catch { /* sans stockage */ }
+        document.querySelectorAll('[data-battle-sprites]').forEach(b => b.classList.toggle('active', b.dataset.battleSprites === battleStyle));
+    }
+
+    // Boutons des Paramètres : le choix en cours en surbrillance
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setBattleStyle(battleStyle));
+    else setTimeout(() => setBattleStyle(battleStyle), 0);
+
     /** Active les sprites animés de tous les éléments .pmd-sprite de root. */
     function hydrate(root = document) {
         const hosts = root.matches?.('.pmd-sprite') ? [root] : root.querySelectorAll('.pmd-sprite');
-        hosts.forEach(host => { mount(host); });
+        hosts.forEach(host => {
+            // En combat, mode illustrations : on garde l'illustration officielle (pas de planche animée)
+            if (battleStyle !== 'pixel' && host.closest('#view-battle, .unit')) {
+                const img = host.querySelector('.pmd-fallback');
+                const dex = parseInt(host.dataset.pmdDex, 10);
+                if (img && dex) {
+                    const back = host.dataset.pmdFacing === 'up'; // nos Pokémon, vus de dos
+                    const original = img.getAttribute('src');
+                    img.onerror = () => { img.onerror = null; img.src = original; host.dataset.pmdKind = 'art'; };
+                    img.src = artUrl(dex, host.dataset.pmdShiny === '1', back);
+                    host.dataset.pmdKind = back || battleStyle === 'showdown' ? 'anim' : battleStyle;
+                }
+                host.dataset.pmdState = 'art';
+                return;
+            }
+            mount(host);
+        });
     }
 
     /**
@@ -344,5 +386,5 @@ const PmdSprite = (() => {
         modal.classList.add('open');
     }
 
-    return { CONFIG, markup, hydrate, play, stop, setSpeed, credits, showCredits };
+    return { CONFIG, markup, hydrate, play, stop, setSpeed, credits, showCredits, setBattleStyle, get battleStyle() { return battleStyle; } };
 })();

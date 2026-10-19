@@ -193,7 +193,7 @@ const QuickUpgrades = (() => {
                 const list = forPokemon(pk, data);
                 if (!list.length) continue;
                 card.title = list.map(a => '• ' + a.label).join('\n');
-                card.insertAdjacentHTML('beforeend', `<span class="qu-dot">${list.length}</span><span class="qu-preview">${list.slice(0, 3).map(a => `<i class="qu-mini qu-${a.kind}">${a.icon || ''}</i>`).join('')}</span>`);
+                card.insertAdjacentHTML('beforeend', `<span class="qu-dot no-minfont">${list.length}</span><span class="qu-preview">${list.slice(0, 3).map(a => `<i class="qu-mini qu-${a.kind}">${a.icon || ''}</i>`).join('')}</span>`);
             }
             if (i < cards.length) setTimeout(step, 0);
         };
