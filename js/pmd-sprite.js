@@ -259,10 +259,10 @@ const PmdSprite = (() => {
     }
 
     // Style des Pokémon en combat (Paramètres) :
-    //  - « art » : illustrations officielles (par défaut) ; « home » : rendus 3D Pokémon HOME ;
-    //  - « showdown » : sprites animés (face et dos) ; « pixel » : sprites PMD animés.
-    // Illustrations et rendus 3D n'existent que de face : nos Pokémon (vus de dos) prennent alors le dos animé Showdown.
-    const STYLES = ['art', 'home', 'showdown', 'pixel'];
+    //  - « art » (par défaut) : illustrations officielles pour les ennemis (de face) ;
+    //    nos Pokémon, vus de dos, en sprites animés (l'illustration n'existe que de face) ;
+    //  - « pixel » : sprites PMD animés, face et dos.
+    const STYLES = ['art', 'pixel'];
     const STYLE_KEY = 'pokeroad_battle_sprites';
     let battleStyle = 'art';
     try { battleStyle = localStorage.getItem(STYLE_KEY) || 'art'; } catch { /* sans stockage */ }
@@ -270,8 +270,7 @@ const PmdSprite = (() => {
     const ART_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
     function artUrl(dex, shiny, back) {
         const sh = shiny ? 'shiny/' : '';
-        if (back || battleStyle === 'showdown') return `${ART_BASE}other/showdown/${back ? 'back/' : ''}${sh}${dex}.gif`;
-        if (battleStyle === 'home') return `${ART_BASE}other/home/${sh}${dex}.png`;
+        if (back) return `${ART_BASE}other/showdown/back/${sh}${dex}.gif`;
         return `${ART_BASE}other/official-artwork/${sh}${dex}.png`;
     }
     function setBattleStyle(style) {
@@ -297,7 +296,7 @@ const PmdSprite = (() => {
                     const original = img.getAttribute('src');
                     img.onerror = () => { img.onerror = null; img.src = original; host.dataset.pmdKind = 'art'; };
                     img.src = artUrl(dex, host.dataset.pmdShiny === '1', back);
-                    host.dataset.pmdKind = back || battleStyle === 'showdown' ? 'anim' : battleStyle;
+                    host.dataset.pmdKind = back ? 'anim' : 'art';
                 }
                 host.dataset.pmdState = 'art';
                 return;

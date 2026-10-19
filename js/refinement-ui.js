@@ -177,7 +177,7 @@ const RefinementUI = (() => {
                     <div class="pokemon-details">
                         <h3>${selectedPokemon.name}</h3>
                         <div class="refinement-display">
-                            Niveau ${selectedPokemon.level} · Grade ${selectedPokemon.refinementLevel || 1}${selectedPokemon.refinementStars ? ` ${'★'.repeat(selectedPokemon.refinementStars)}` : ''}
+                            Niveau ${selectedPokemon.level} · Grade ${selectedPokemon.refinementLevel || 1}${selectedPokemon.refinementStars ? ` <span class="ds-stars">★${selectedPokemon.refinementStars}</span>` : ''}
                         </div>
                         <div class="multiplier">Multiplicateur: ×${mult.toFixed(2)} (${Math.floor(mult * 100)}%)</div>
                     </div>
@@ -397,7 +397,7 @@ const RefinementUI = (() => {
                     <div class="train-row ${cost.star ? 'is-cap' : ''}">
                         <div class="train-stat"><b>${neutral ? 'Neutre' : `+${b.plus} %`}</b><span>${neutral ? 'aucun effet' : `${STAT_LABEL[nature.plus]} · −${b.minus} % ${STAT_LABEL[nature.minus]}`}</span></div>
                         <div class="train-track">
-                            <div class="train-level">Niv. ${t.level}/${GameData.trainingMax(t.stars)} ${'★'.repeat(t.stars)}</div>
+                            <div class="train-level">Niv. ${t.level}/${GameData.trainingMax(t.stars)}${t.stars ? ` <span class="ds-stars">★${t.stars}</span>` : ''}</div>
                             <div class="train-bar"><i style="width:${Math.min(100, (t.level - (GameData.trainingMax(t.stars) - 20)) / 20 * 100)}%"></i></div>
                         </div>
                         <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.trainNature()">
@@ -602,9 +602,9 @@ const RefinementUI = (() => {
                         ${otherPokemons.map(p => {
                             const isSelected = selectedFoodIds.includes(p.instanceId);
                             return `
-                            <div class="food-item ${isSelected ? 'selected' : ''}" data-instance-id="${p.instanceId}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:2px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
-                                <img src="${p.sprite || Art.FALLBACK}" style="width:100%; height:auto;">
-                                <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.7); font-size:10px; padding:0 2px;">L.${p.level}</div>
+                            <div class="food-item ${isSelected ? 'selected' : ''}" data-instance-id="${p.instanceId}" onclick="RefinementUI.toggleFood('${p.instanceId}')" title="${safeName(p)} · niveau ${p.level}">
+                                <img src="${p.sprite || Art.FALLBACK}" alt="${safeName(p)}">
+                                <span class="food-lvl no-minfont">${p.level}</span>
                             </div>
                             `;
                         }).join('')}
@@ -763,7 +763,7 @@ const RefinementUI = (() => {
                             <div class="pokemon-sprite">
                                 <img src="${item.sprite || Art.FALLBACK}" alt="${item.name_fr}" onerror="this.onerror=null;this.src=Art.FALLBACK">
                             </div>
-                            <div class="item-owned-count">${item.quantity} + ${item.heldCount} tenu(s)</div>
+                            <div class="item-owned-count no-minfont" title="${item.quantity} en stock, ${item.heldCount} tenu(s)">×${item.quantity}${item.heldCount ? ` · ${item.heldCount} tenu${item.heldCount > 1 ? 's' : ''}` : ''}</div>
                             <div class="pokemon-info">
                                 <div class="pokemon-name">${item.name_fr}</div>
                                 <div class="pokemon-refinement">
@@ -940,7 +940,7 @@ const RefinementUI = (() => {
                             <div class="pokemon-sprite">
                                 ${Art.disc(tm.type)}
                             </div>
-                            <div class="item-owned-count">x${tm.quantity}</div>
+                            <div class="item-owned-count no-minfont">×${tm.quantity}</div>
                             <div class="pokemon-info">
                                 <div class="pokemon-name">${tm.name}</div>
                                 <div class="pokemon-refinement">${Refinement.formatDisplay(ref.level, ref.stars)}</div>
