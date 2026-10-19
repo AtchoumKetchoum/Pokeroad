@@ -54,7 +54,7 @@
 #view-battle .unit .lvl-cell.g5 { background: #d0782a; }
 #view-battle .unit .lvl-cell.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a); color: #2b2118; }
 #view-battle .unit .lvl-cell .lvl-badge {
-    all: unset; font-family: 'Nunito', var(--font-body), sans-serif !important; font-weight: 900 !important; font-size: 16px !important; line-height: 1 !important; color: inherit !important;
+    all: unset; font-family: 'Nunito', var(--font-body), sans-serif !important; font-weight: 800 !important; font-size: 16px !important; line-height: 1 !important; color: inherit !important;
     background: none !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
     text-shadow: 0 1px 0 rgba(0, 0, 0, .3); letter-spacing: 0;
 }
@@ -62,7 +62,7 @@
 #view-battle .unit .star-badge {
     display: flex; align-items: center; height: 20px; padding: 0 4px; box-sizing: border-box; border-radius: 6px; font-size: 13px;
     background: #2b2118; color: #ffd25a; border: 2px solid #2b2118;
-    font-family: 'Nunito', var(--font-body), sans-serif; font-weight: 900; line-height: 1 !important; white-space: nowrap;
+    font-family: 'Nunito', var(--font-body), sans-serif; font-weight: 800; line-height: 1 !important; white-space: nowrap;
 }
 #view-battle .unit .star-badge[hidden] { display: none !important; }
 #view-battle .unit .plate-head > .role-badge {
@@ -93,4 +93,4 @@
 #view-battle .unit .ut-col.two .ut-ico { width: 13px; height: 13px; }
 #view-battle .unit .ut-col .ut-stg { width: 6px; }
 #view-battle .unit .ut-col .ut-tile:has(.ut-stg) .ut-ico { margin-right: 4px; }
-#view-battle .unit .ut-col .ut-more { font-size: 13px !important; font-weight: 900; }
+#view-battle .unit .ut-col .ut-more { font-size: 13px !important; font-weight: 800; }

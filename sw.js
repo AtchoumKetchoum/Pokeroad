@@ -4,7 +4,7 @@
  *   avec repli sur le cache si l'appareil est hors ligne.
  * - Sprites distants (PMD, PokeAPI sur GitHub) : cache d'abord, ils ne changent pas.
  */
-const VERSION = 'pokeroad-v1';
+const VERSION = 'pokeroad-v2'; // nouvelle version : styles et polices revus
 const SHELL = ['./', './index.html', './manifest.webmanifest', './assets/icons/icon-192.png', './assets/icons/icon-512.png'];
 const SPRITE_HOSTS = ['raw.githubusercontent.com'];
 

@@ -8,7 +8,7 @@
     height: auto !important; z-index: 210;
     display: flex !important; flex-wrap: wrap !important; align-items: stretch; gap: 8px 10px !important;
     padding: 8px 10px 10px !important; box-sizing: border-box;
-    background: rgba(247, 236, 220, .95); border: 3px solid var(--ink); border-radius: 18px;
+    background: rgba(247, 236, 220, .95); border: 2px solid var(--ink); border-radius: 18px;
     box-shadow: 0 4px 0 rgba(43, 33, 24, .3);
 }
 
@@ -79,7 +79,7 @@
 #view-battle .synergy-panel.compact .synergy-chip .lbl-long { display: none; }
 #view-battle .synergy-panel.compact .synergy-chip .lbl-short { display: inline; }
 #view-battle .syn-pips { display: inline-flex; gap: 4px; }
-#view-battle .syn-pips i { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--ink); background: #f7ecdc; box-sizing: border-box; }
+#view-battle .syn-pips i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ink); background: #f7ecdc; box-sizing: border-box; }
 #view-battle .syn-pips i.on { background: #e07a20; }
 /* Types pas encore actifs : points de couleur */
 #view-battle .syn-waiting { flex: 0 1 auto; min-width: 0; display: flex; align-items: center; gap: 4px; overflow: hidden; }
@@ -154,7 +154,7 @@
 #view-battle #top-right-actions .speed-controls { padding: 0 !important; background: none !important; border: 0 !important; }
 #view-battle #top-right-actions .speed-btn:not(.active) { display: none !important; }
 #view-battle #top-right-actions .speed-btn.active {
-    height: 50px !important; min-width: 54px !important; border-radius: 14px !important; border: 3px solid #2b2118 !important;
-    background: #ffd25a !important; color: #2b2118 !important; font-weight: 900; box-shadow: 0 3px 0 #2b2118 !important;
+    height: 50px !important; min-width: 54px !important; border-radius: 14px !important; border: 2px solid #2b2118 !important;
+    background: #ffd25a !important; color: #2b2118 !important; font-weight: 800; box-shadow: 0 2px 0 #2b2118 !important;
 }
 #view-battle #top-right-actions .speed-btn.active:active { transform: translateY(2px); box-shadow: 0 1px 0 #2b2118 !important; }

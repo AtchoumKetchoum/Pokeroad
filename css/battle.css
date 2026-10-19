@@ -652,7 +652,7 @@
 .lvl-badge {
     flex-shrink: 0;
     font-size: 10px;
-    font-weight: 900;
+    font-weight: 800;
     color: #c3a837;
     text-shadow: 1px 1px 2px #231c16;
     background: #49433d;
@@ -947,7 +947,7 @@
     position: absolute;
     transform: translateX(-50%);
     font-size: 28px; /* Énorme */
-    font-weight: 900; /* Criard */
+    font-weight: 800; /* Criard */
     -webkit-text-stroke: 1.5px black; /* Contour pour lisibilité */
     text-shadow: 0 0 6px black;
     animation: float-shake-fade 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; /* Animation avec secousse */
@@ -960,7 +960,7 @@
 .move-name-float-text {
     position: absolute;
     transform: translateX(-50%);
-    font-weight: 900;
+    font-weight: 800;
     color: #f7ecdc; /* White for move names */
     -webkit-text-stroke: 2px #231c16; /* Thicker black stroke */
     text-shadow: 0 0 8px rgba(0,0,0,0.8);
@@ -1269,7 +1269,7 @@
     background: #c7a038; /* Jaune Z-Move */
     color: #49433d;
     font-size: 10px;
-    font-weight: 900;
+    font-weight: 800;
     border-radius: 50%;
     display: flex;
     z-index: 10000;
@@ -1346,7 +1346,7 @@
     background: #d1bf56;
     color: #49433d;
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 800;
     padding: 2px 6px;
     bottom: -8px;
     animation: z-letter-blink 1.2s infinite ease-in-out;
@@ -1547,7 +1547,7 @@
     font-size: 42px !important;
     animation: explosive-float 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards !important;
     text-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    font-weight: 900;
+    font-weight: 800;
 }
 
 @keyframes explosive-float {

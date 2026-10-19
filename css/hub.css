@@ -23,7 +23,7 @@
 .hub .hub-money {
   display: inline-flex; align-items: center; gap: 6px; margin-top: 4px;
   background: var(--ink); color: var(--yellow);
-  border-radius: 999px; padding: 2px 12px 2px 4px; font-weight: 900; font-size: 16px;
+  border-radius: 999px; padding: 2px 12px 2px 4px; font-weight: 800; font-size: 16px;
 }
 .hub .coin {
   width: 18px; height: 18px; border-radius: 50%;
@@ -42,10 +42,10 @@
   min-width: 0 !important; height: auto !important;
 }
 .hub .hub-mission:active { transform: translate(-50%, 4px); box-shadow: 0 1px 0 var(--ink); }
-.hub .hub-mission-icon { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--orange); color: #f7ecdc; border: 3px solid var(--ink); }
+.hub .hub-mission-icon { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--orange); color: #f7ecdc; border: 2px solid var(--ink); }
 .hub .hub-mission .mission-hud-content { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; }
 .hub #mission-btn-label { font-family: var(--font-title); font-size: 18px; color: var(--ink); text-transform: uppercase; }
-.hub .timer-mini { font-family: var(--font-body); font-weight: 900; font-size: 14px; color: var(--blue); }
+.hub .timer-mini { font-family: var(--font-body); font-weight: 800; font-size: 14px; color: var(--blue); }
 .hub .hub-mission.active { background: #e4d5a8 !important; }
 .hub .hub-mission.finished { background: #c1e0b6 !important; animation: hub-wiggle 1.2s ease-in-out infinite; }
 .hub .hub-mission.finished .hub-mission-icon { background: var(--green); }
@@ -108,7 +108,7 @@
 .hub .hub-adventure-ball { width: 58px; height: 58px; animation: hub-spin 6s linear infinite; }
 .hub .hub-adventure-text {
   font-family: var(--font-title); font-size: 46px; text-transform: uppercase; letter-spacing: 1px;
-  text-shadow: 0 4px 0 var(--ink), 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 -3px 0 var(--ink);
+  text-shadow: 0 3px 0 var(--ink), 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 -3px 0 var(--ink);
 }
 .hub .hub-adventure:active { transform: translateY(6px); box-shadow: 0 1px 0 var(--ink); animation: none; }
 @keyframes hub-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }

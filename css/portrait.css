@@ -131,7 +131,7 @@
 /* Météo et terrain : bandeau fin dans l'allée entre les deux camps */
 #view-battle #infoDisplayPanel.terrain-mode {
   top: 574px !important; transform: translate(-50%, -50%) !important; width: auto !important; max-width: 600px;
-  min-height: 0 !important; padding: 3px 14px !important; border-width: 3px !important; opacity: .92;
+  min-height: 0 !important; padding: 3px 14px !important; border-width: 2px !important; opacity: .92;
 }
 #view-battle #infoDisplayPanel.terrain-mode .info-section { flex-wrap: nowrap; justify-content: center; white-space: nowrap; }
 #view-battle #infoDisplayPanel.terrain-mode .info-item { font-size: 12px; line-height: 1.3; }

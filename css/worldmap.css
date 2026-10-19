@@ -18,9 +18,9 @@
   padding: 8px 16px;
 }
 .map-title .progress-text { font-family: var(--font-title); font-size: 17px; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
-.map-title .progress-pct { font-weight: 900; color: var(--blue); }
-.map-progress-bg { flex: 1; min-width: 80px; height: 16px; border-radius: 999px; background: #cacacf; border: 3px solid var(--ink); overflow: hidden; }
-.map-progress-fill { height: 100%; background: repeating-linear-gradient(45deg, var(--yellow) 0 10px, #d7be70 10px 20px); border-right: 3px solid var(--ink); transition: width .6s; }
+.map-title .progress-pct { font-weight: 800; color: var(--blue); }
+.map-progress-bg { flex: 1; min-width: 80px; height: 16px; border-radius: 999px; background: #cacacf; border: 2px solid var(--ink); overflow: hidden; }
+.map-progress-fill { height: 100%; background: repeating-linear-gradient(45deg, var(--yellow) 0 10px, #d7be70 10px 20px); border-right: 2px solid var(--ink); transition: width .6s; }
 
 /* --- Zones --- */
 .map-pin {

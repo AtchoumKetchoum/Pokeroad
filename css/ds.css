@@ -1,0 +1,65 @@
+/* ==========================================================================
+   ds.css — Base commune de l'interface (chargée en dernier)
+   Une seule épaisseur de bord, trois arrondis, deux hauteurs de contrôle :
+   les boutons, vignettes, pastilles et fenêtres d'une même ligne s'alignent.
+   ========================================================================== */
+:root {
+    --ds-ink: #2b2118;
+    --ds-bw: 2px;            /* bordure de tous les éléments */
+    --ds-r-sm: 8px;          /* pastilles, petites vignettes */
+    --ds-r: 12px;            /* boutons, cartes, cases */
+    --ds-r-lg: 18px;         /* fenêtres et grands panneaux */
+    --ds-h: 46px;            /* hauteur d'un bouton */
+    --ds-h-sm: 34px;         /* hauteur d'un petit bouton ou d'une pastille */
+}
+
+/* --- Boutons --- */
+.pk-btn-action, .refine-btn, .filter-btn, .move-action-btn, .modal-back-btn, .exit-btn, .hub-dock-btn, .close-btn {
+    border-width: var(--ds-bw) !important; border-style: solid !important; border-color: var(--ds-ink) !important;
+    border-radius: var(--ds-r) !important;
+}
+.pk-btn-action:not(.small), .refine-btn:not(.small), .modal-back-btn { min-height: var(--ds-h); }
+.pk-btn-action.small, .refine-btn.small, .filter-btn { min-height: var(--ds-h-sm); border-radius: var(--ds-r-sm) !important; }
+.close-btn { width: var(--ds-h) !important; height: var(--ds-h) !important; display: grid !important; place-items: center; line-height: 1 !important; }
+
+/* --- Fenêtres et panneaux --- */
+.modal-content, .info-modal-content, .glass-premium, .panel-pop {
+    border-width: var(--ds-bw) !important; border-color: var(--ds-ink) !important; border-radius: var(--ds-r-lg) !important;
+}
+
+/* --- Cartes, cases et vignettes --- */
+.shop-item-card, .pokemon-card, .pokemon-item, .hold-slot, .reward-chip, .reward-item, .cost-item, .food-item, .trait-item, .atelier-card, .lab-column {
+    border-width: var(--ds-bw) !important; border-style: solid !important; border-color: var(--ds-ink) !important; border-radius: var(--ds-r) !important;
+}
+.hold-slot.empty, .hold-slot.locked { border-style: dashed !important; }
+.chip { border-radius: var(--ds-r-sm) !important; }
+
+/* --- Combat : bandeau du haut, tout à la même hauteur et au même arrondi --- */
+#view-battle #battle-top-bar, #view-battle #battle-footer { border-width: var(--ds-bw) !important; border-radius: var(--ds-r-lg) !important; }
+/* Vague et combat : du texte juste après le nom du lieu, pas des vignettes */
+#view-battle #hudProgress { height: var(--ds-h) !important; gap: 0 !important; }
+#view-battle #hudProgress .hud-zone { flex: 0 1 auto !important; }
+#view-battle #hudProgress .hud-step {
+    height: auto; display: inline-flex !important; align-items: center; box-sizing: border-box; white-space: nowrap;
+    background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+    padding: 0 0 0 10px !important; color: #6b5a45 !important; font-weight: 700;
+}
+#view-battle #hudProgress .hud-step::before { content: '·'; margin-right: 10px; color: rgba(43, 33, 24, .35); }
+#view-battle #hudProgress .hud-step b { color: #2b2118 !important; }
+#view-battle #hudProgress .hud-step.boss { color: #b0302a !important; background: none !important; animation: none !important; font-weight: 800; }
+#view-battle #top-right-actions .speed-btn.active,
+#view-battle #top-right-actions #auto-battle-btn,
+#view-battle #top-right-actions .exit-btn {
+    height: var(--ds-h) !important; min-height: var(--ds-h) !important; box-sizing: border-box;
+    border-radius: var(--ds-r) !important; border-width: var(--ds-bw) !important; box-shadow: 0 2px 0 var(--ds-ink) !important;
+}
+#view-battle #top-right-actions .exit-btn { width: var(--ds-h) !important; padding: 0 !important; }
+#view-battle #top-right-actions .speed-controls { height: var(--ds-h) !important; }
+#view-battle #battle-top-bar .turn-order-sidebar { border-width: var(--ds-bw) !important; border-radius: var(--ds-r) !important; }
+
+/* --- Combat : bloc du bas et vignettes --- */
+#view-battle .movesRow .move-btn { border-width: var(--ds-bw) !important; border-radius: var(--ds-r) !important; }
+#view-battle .synergy-chip, #view-battle .field-chip { border-width: var(--ds-bw) !important; border-radius: var(--ds-r-sm) !important; height: var(--ds-h-sm); box-sizing: border-box; }
+#view-battle .synergy-panel .synergy-icon { height: var(--ds-h-sm) !important; border-radius: var(--ds-r-sm) !important; }
+#view-battle .tud-lvl, #view-battle .tud-stars { border-radius: var(--ds-r-sm) !important; }
+#view-battle .tud-peek, .info-tip.big { border-width: var(--ds-bw) !important; border-radius: var(--ds-r) !important; }

@@ -58,6 +58,6 @@
 .zone-go-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; }
 .zone-go-main {
   font-family: var(--font-title); font-size: 40px; text-transform: uppercase; letter-spacing: 1px;
-  text-shadow: 0 4px 0 var(--ink), 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 -3px 0 var(--ink);
+  text-shadow: 0 3px 0 var(--ink), 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 -3px 0 var(--ink);
 }
-.zone-go-sub { font-weight: 900; font-size: 20px; color: #f7ecdc; text-shadow: 0 2px 0 var(--ink); }
+.zone-go-sub { font-weight: 800; font-size: 20px; color: #f7ecdc; text-shadow: 0 2px 0 var(--ink); }

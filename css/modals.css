@@ -97,7 +97,7 @@
 #refinement-modal .refinement-action h5 { color: var(--ink) !important; font-family: var(--font-title); font-size: 17px; }
 #refinement-modal .refinement-section h4 { color: var(--ink) !important; }
 #refinement-modal .grade-req-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
-#refinement-modal .grade-req { text-align: center; background: #f7ecdc; border: 3px solid var(--ink); border-radius: 14px; padding: 8px 4px; color: var(--ink); }
+#refinement-modal .grade-req { text-align: center; background: #f7ecdc; border: 2px solid var(--ink); border-radius: 14px; padding: 8px 4px; color: var(--ink); }
 #refinement-modal .grade-req.met { background: #dcebd2; }
 #refinement-modal .grade-req .req-label { font-size: 12px; font-weight: 800; color: var(--ink-soft); margin-bottom: 4px; }
 #refinement-modal .grade-req .req-value { font-family: var(--font-title); font-size: 20px; line-height: 1.1; }
@@ -257,7 +257,7 @@
 /* Améliorations rapides (js/quick-upgrades.js) */
 .quick-upgrades-btn { position: relative; width: 58px; height: 58px; border-radius: 50%; border: var(--outline-thick); background: var(--paper-2); color: var(--ink); box-shadow: var(--pop); display: grid; place-items: center; cursor: pointer; margin-left: auto; margin-right: 10px; }
 .quick-upgrades-btn.has-items { background: linear-gradient(180deg, #ffe680, var(--yellow)); animation: badge-pop 1.6s infinite; }
-.quick-upgrades-btn .qu-badge { position: absolute; top: -6px; right: -6px; min-width: 28px; height: 28px; padding: 0 6px; box-sizing: border-box; border-radius: 14px; background: var(--red); color: #f7ecdc; border: 3px solid var(--ink); font-family: var(--font-title); font-size: 22px; line-height: 22px; display: none; }
+.quick-upgrades-btn .qu-badge { position: absolute; top: -6px; right: -6px; min-width: 28px; height: 28px; padding: 0 6px; box-sizing: border-box; border-radius: 14px; background: var(--red); color: #f7ecdc; border: 2px solid var(--ink); font-family: var(--font-title); font-size: 22px; line-height: 22px; display: none; }
 .quick-upgrades-btn.has-items .qu-badge { display: block; }
 #info-modal .qu-list { display: grid; gap: 8px; }
 #info-modal .qu-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 8px 10px; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper-2); }
@@ -272,7 +272,7 @@
 .qu-inline .qu-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 6px 8px; border: 2px solid var(--ink); border-radius: 12px; background: #f3e3b5; }
 .qu-inline .qu-icon img, .qu-inline .qu-icon svg { width: 28px; height: 28px; image-rendering: pixelated; }
 .pokemon-item { position: relative; }
-.pokemon-item .qu-dot { position: absolute; top: -6px; right: -6px; min-width: 26px; height: 26px; padding: 0 5px; box-sizing: border-box; border-radius: 13px; background: var(--red); color: #f7ecdc; border: 3px solid var(--ink); font-family: var(--font-title); font-size: 22px; line-height: 20px; text-align: center; z-index: 2; }
+.pokemon-item .qu-dot { position: absolute; top: -6px; right: -6px; min-width: 26px; height: 26px; padding: 0 5px; box-sizing: border-box; border-radius: 13px; background: var(--red); color: #f7ecdc; border: 2px solid var(--ink); font-family: var(--font-title); font-size: 22px; line-height: 20px; text-align: center; z-index: 2; }
 .pokemon-item .qu-preview { position: absolute; right: 2px; top: 24px; display: flex; flex-direction: column; gap: 2px; z-index: 2; pointer-events: none; }
 .pokemon-item .qu-mini { width: 26px; height: 26px; box-sizing: border-box; display: grid; place-items: center; border-radius: 7px; background: #f3e3b5; border: 2px solid var(--ink); overflow: hidden; }
 .pokemon-item .qu-mini img, .pokemon-item .qu-mini svg { width: 20px !important; height: 20px !important; max-width: none; position: static !important; margin: 0 !important; image-rendering: pixelated; filter: none !important; }

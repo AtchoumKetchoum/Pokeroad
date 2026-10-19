@@ -102,13 +102,13 @@
 }
 .hub .hub-gate::after {
   content: ''; position: absolute; left: 50%; top: 100%; width: 10px; height: 40px; transform: translateX(-50%);
-  background: #82634d; border: 3px solid var(--ink); border-top: none; z-index: -1;
+  background: #82634d; border: 2px solid var(--ink); border-top: none; z-index: -1;
 }
 .hub-gate:hover, .modes-back:hover { transform: translateY(-4px); background: #bc956e; }
 .hub-gate:active, .modes-back:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
 .hub-gate-arrow, .modes-back-arrow {
   width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
-  background: var(--yellow); color: var(--ink); border: 3px solid var(--ink);
+  background: var(--yellow); color: var(--ink); border: 2px solid var(--ink);
 }
 .hub-gate-arrow svg { transform: rotate(90deg); }
 .modes-back-arrow svg { transform: rotate(-90deg); }

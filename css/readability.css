@@ -7,7 +7,7 @@
    ========================================================================== */
 
 :root {
-  --font-title: 'Lilita One', 'Arial Black', sans-serif;
+  --font-title: 'Fredoka', 'Lilita One', 'Arial Black', sans-serif;
   --font-body: 'Nunito', 'Segoe UI', sans-serif;
   --font-pixel: var(--font-body);
   --sprite-tone: sepia(.6) saturate(.85) contrast(1.05);
@@ -22,14 +22,14 @@ body { font-weight: 700; }
 #view-battle .hud-step { font-size: 15px !important; }
 #view-battle .hud-step b { font-size: 16px !important; }
 #view-battle .rank-chip { font-size: 14px !important; }
-#view-battle .lvl-badge, #view-battle .charge-text { font-size: 13px !important; font-weight: 900 !important; }
+#view-battle .lvl-badge, #view-battle .charge-text { font-size: 13px !important; font-weight: 800 !important; }
 #view-battle .role-badge, #view-battle .role-badge span { font-size: 13px !important; font-weight: 800 !important; }
-#view-battle .row-label { font-size: 14px !important; font-weight: 900 !important; }
-#view-battle .synergy-title { font-size: 14px !important; font-weight: 900 !important; }
+#view-battle .row-label { font-size: 14px !important; font-weight: 800 !important; }
+#view-battle .synergy-title { font-size: 14px !important; font-weight: 800 !important; }
 #view-battle .synergy-empty, #view-battle .synergy-desc { font-size: 14px !important; font-weight: 700 !important; }
 #view-battle .banner-lvl-badge { font-size: 13px !important; font-weight: 800 !important; }
 #view-battle .speed-btn { font-size: 17px !important; }
-#view-battle .move-btn { font-size: 21px !important; font-weight: 900 !important; }
+#view-battle .move-btn { font-size: 21px !important; font-weight: 800 !important; }
 #view-battle #infoDisplayPanel { height: auto !important; max-height: 220px !important; }
 #view-battle #infoDisplayPanel .info-item,#view-battle #infoDisplayPanel .info-item * { font-size: 16px !important; }
 #view-battle #infoDisplayPanel .move-description { font-size: 16px !important; line-height: 1.3; }
@@ -40,7 +40,7 @@ body { font-weight: 700; }
 .hub-dock-btn small { font-size: 15px !important; font-weight: 800 !important; }
 #view-center .pk-btn-action.small { font-size: 14px !important; }
 #view-center p { font-size: max(14px, 1em); }
-.pokemon-item .level-badge { font-size: 13px !important; font-weight: 900 !important; }
+.pokemon-item .level-badge { font-size: 13px !important; font-weight: 800 !important; }
 .pokedex-entry h3 { font-size: 15px !important; }
 .pokedex-entry .owned-count { font-size: 13px !important; }
 .evolution-text { font-size: 13px !important; font-weight: 800 !important; }
