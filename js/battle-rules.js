@@ -85,7 +85,8 @@ const BattleRules = (() => {
         const bulk = ((base.hp || 0) + (base.def || 0) + (base.spdef || 0)) / 3;
         const offense = Math.max(base.atk || 0, base.spatk || 0);
         if (bulk > offense * 1.1 && bulk >= (base.speed || 0)) return 'tank';
-        if ((base.speed || 0) >= offense && (base.speed || 0) > bulk) return 'speedster';
+        // Rapide : seulement si la Vitesse domine nettement (sinon presque tous les Pokémon de base le seraient)
+        if ((base.speed || 0) >= Math.max(offense, bulk) * 1.2) return 'speedster';
         return (base.atk || 0) >= (base.spatk || 0) ? 'attacker' : 'caster';
     }
 

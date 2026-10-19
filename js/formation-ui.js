@@ -61,7 +61,7 @@ const FormationUI = (() => {
             }
             badge.className = `role-badge role-${info.role} ${well ? 'well-placed' : 'misplaced'}`;
             badge.innerHTML = `${Art.icon(ROLE_ICON[info.role] || 'star', 11)}<span>${role.label}</span>`;
-            badge.title = `${role.label} — ${role.desc}${well ? '' : ' (mal placé : bonus inactif)'}`;
+            badge.removeAttribute('title'); // explication dans l'infobulle (info-tip.js)
         });
         return units;
     }
@@ -84,15 +84,19 @@ const FormationUI = (() => {
             panel.innerHTML = `${synergyIcon(side)}<div class="synergy-empty">Aucune en zone 1</div>`;
             return;
         }
-        // Chaque type présent : pastilles de palier (2 / 3 / 4) et nom de la synergie ; détail dans la bulle
+        // Une seule ligne : types actifs (étiquette + pastilles de palier 2 / 3 / 4), puis les autres en petits points.
+        // Le nom et l'effet de chaque synergie sont dans l'infobulle.
         const list = BattleRules.describeSynergies(units);
         const pips = (n) => Synergies.THRESHOLDS.map(t => `<i class="${n >= t ? 'on' : ''}"></i>`).join('');
-        panel.innerHTML = synergyIcon(side) + (list.length ? list.map(s => `
-                <div class="synergy-chip tier-${s.tier} ${s.tier ? 'active' : ''}">
-                    <span class="chip type-${s.type}">${formatTypeLabel(s.type)}</span>
-                    <span class="syn-pips">${pips(s.count)}</span>
-                    <span class="synergy-desc">${s.name}</span>
-                </div>`).join('') : '<div class="synergy-empty">Aucun Pokémon</div>');
+        const label = (t) => formatTypeLabel(t);
+        const active = list.filter(s => s.tier), waiting = list.filter(s => !s.tier);
+        panel.classList.remove('compact');
+        panel.innerHTML = synergyIcon(side)
+            + active.map(s => `<div class="synergy-chip active tier-${s.tier}"><span class="chip type-${s.type}"><span class="lbl-long">${label(s.type)}</span><span class="lbl-short">${label(s.type).slice(0, 3)}</span></span><span class="syn-pips">${pips(s.count)}</span></div>`).join('')
+            + (waiting.length ? `<div class="syn-waiting">${waiting.map(s => `<span class="syn-dot type-${s.type}"></span>`).join('')}</div>` : '')
+            + (!list.length ? '<div class="synergy-empty">Aucun Pokémon</div>' : '');
+        // Trop large : étiquettes courtes
+        requestAnimationFrame(() => { if (panel.scrollWidth > panel.clientWidth + 1) panel.classList.add('compact'); });
     }
 
     function refresh() {

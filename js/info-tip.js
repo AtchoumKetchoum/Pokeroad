@@ -114,6 +114,12 @@ const InfoTip = (() => {
         if (rk) return [rk, rank()];
         const hud = el.closest('#view-battle #hudProgress');
         if (hud) return [hud, zone()];
+        const roleEl = el.closest('#view-battle .role-badge');
+        if (roleEl) {
+            const key = [...roleEl.classList].find(c => c.startsWith('role-') && c !== 'role-badge')?.slice(5);
+            const r = BattleRules.ROLES[key];
+            if (r) return [roleEl, `<b>Rôle : ${r.label}</b><div>${esc(r.desc)}</div><small>${roleEl.classList.contains('misplaced') ? 'Mal placé : bonus inactif.' : 'Bien placé : bonus actif.'} Le rôle dépend des stats de base et des attaques.</small>`];
+        }
         const held = el.closest('.held-chip[data-item]');
         if (held) return [held, heldItem(unitFromEl(held), held.dataset.item)];
         const tile = el.closest('#view-battle .ut-tile');
@@ -165,7 +171,7 @@ const InfoTip = (() => {
         const hit = contentFor(e.target);
         if (!hit) { hide(); return; }
         // Toucher sur mobile : la bulle remplace l'action (les vignettes, la frise, les bandeaux n'en ont pas d'autre)
-        if (e.pointerType === 'mouse' && !hit[0].matches('.held-chip, .ut-tile')) return;
+        if (e.pointerType === 'mouse' && !hit[0].matches('.held-chip, .ut-tile, .role-badge')) return;
         e.stopPropagation();
         if (anchor === hit[0] && bubble?.classList.contains('visible')) { hide(); return; }
         show(hit[0], hit[1]);

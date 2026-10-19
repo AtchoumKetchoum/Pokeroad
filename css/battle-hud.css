@@ -66,16 +66,41 @@
 #view-battle #infoDisplayPanel.terrain-mode.field-default { display: none !important; }
 
 /* Synergies : pastilles de palier (2 / 3 / 4 Pokémon) */
-#view-battle .synergy-panel { overflow-x: auto !important; scrollbar-width: none; }
-#view-battle .synergy-chip { flex: none; display: flex; align-items: center; gap: 6px; padding: 2px 10px 2px 2px; border-radius: 10px; border: 2px solid transparent; opacity: .5; }
-#view-battle .synergy-chip.active { opacity: 1; background: #ffe7b0; border-color: var(--ink); }
+#view-battle .synergy-panel { overflow: hidden !important; flex-wrap: nowrap !important; gap: 8px !important; }
+#view-battle .synergy-chip { flex: none; display: flex; align-items: center; gap: 6px; padding: 2px 8px 2px 2px; border-radius: 10px; border: 2px solid var(--ink); background: #ffe7b0; }
 #view-battle .synergy-chip.tier-3 { background: #ffc94f; }
+#view-battle .synergy-chip .chip { flex: none; }
+#view-battle .synergy-chip .lbl-short { display: none; }
+#view-battle .synergy-panel.compact .synergy-chip .lbl-long { display: none; }
+#view-battle .synergy-panel.compact .synergy-chip .lbl-short { display: inline; }
 #view-battle .syn-pips { display: inline-flex; gap: 4px; }
 #view-battle .syn-pips i { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--ink); background: #f7ecdc; box-sizing: border-box; }
-#view-battle .syn-pips i.on { background: var(--ink); }
-#view-battle .synergy-chip.active .syn-pips i.on { background: #e07a20; }
+#view-battle .syn-pips i.on { background: #e07a20; }
+/* Types pas encore actifs : points de couleur */
+#view-battle .syn-waiting { flex: 0 1 auto; min-width: 0; display: flex; align-items: center; gap: 4px; overflow: hidden; }
+#view-battle .syn-dot { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ink); opacity: .8; }
 
 /* Boss : un peu plus grand qu'un Pokémon normal, sans déborder sur la case de devant */
 #view-battle .unit.is-boss .pmd-sprite { --pmd-scale: 4.2; }
 #view-battle .unit.is-boss .sprite { filter: drop-shadow(0 0 3px #d46962) drop-shadow(0 2px 0 var(--gba-frame, #2b2118)) !important; }
 #view-battle .unit.is-boss.has-aura::before { width: 150px !important; height: 150px !important; }
+
+/* Couleurs des points de synergie */
+#view-battle .syn-dot.type-normal { background: var(--t-normal, var(--type-normal, #8a7f6a)); }
+#view-battle .syn-dot.type-fire { background: var(--t-fire, var(--type-fire, #8a7f6a)); }
+#view-battle .syn-dot.type-water { background: var(--t-water, var(--type-water, #8a7f6a)); }
+#view-battle .syn-dot.type-grass { background: var(--t-grass, var(--type-grass, #8a7f6a)); }
+#view-battle .syn-dot.type-electric { background: var(--t-electric, var(--type-electric, #8a7f6a)); }
+#view-battle .syn-dot.type-ice { background: var(--t-ice, var(--type-ice, #8a7f6a)); }
+#view-battle .syn-dot.type-fighting { background: var(--t-fighting, var(--type-fighting, #8a7f6a)); }
+#view-battle .syn-dot.type-poison { background: var(--t-poison, var(--type-poison, #8a7f6a)); }
+#view-battle .syn-dot.type-ground { background: var(--t-ground, var(--type-ground, #8a7f6a)); }
+#view-battle .syn-dot.type-flying { background: var(--t-flying, var(--type-flying, #8a7f6a)); }
+#view-battle .syn-dot.type-psychic { background: var(--t-psychic, var(--type-psychic, #8a7f6a)); }
+#view-battle .syn-dot.type-bug { background: var(--t-bug, var(--type-bug, #8a7f6a)); }
+#view-battle .syn-dot.type-rock { background: var(--t-rock, var(--type-rock, #8a7f6a)); }
+#view-battle .syn-dot.type-ghost { background: var(--t-ghost, var(--type-ghost, #8a7f6a)); }
+#view-battle .syn-dot.type-dragon { background: var(--t-dragon, var(--type-dragon, #8a7f6a)); }
+#view-battle .syn-dot.type-dark { background: var(--t-dark, var(--type-dark, #8a7f6a)); }
+#view-battle .syn-dot.type-steel { background: var(--t-steel, var(--type-steel, #8a7f6a)); }
+#view-battle .syn-dot.type-fairy { background: var(--t-fairy, var(--type-fairy, #8a7f6a)); }
