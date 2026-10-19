@@ -178,3 +178,6 @@
 #view-battle #turn-unit-display .tud-item:not(.tud-empty) { width: 32px !important; height: 32px !important; margin: 0 !important; }
 #view-battle #turn-unit-display .tud-item:not(.tud-empty) img, #view-battle #turn-unit-display .tud-item:not(.tud-empty) svg { width: 32px !important; height: 32px !important; }
 #view-battle #turn-unit-display .tud-empty { width: 28px !important; height: 28px !important; margin: 2px !important; }
+
+/* PV sur la barre : bien centrés (la police minimale ne s'applique plus, hauteur de ligne calée) */
+#view-battle #turn-unit-display .tud-hp #turn-unit-hp { display: flex !important; align-items: center; justify-content: center; line-height: 1 !important; padding-bottom: 2px; box-sizing: border-box; }
