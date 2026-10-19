@@ -1630,6 +1630,11 @@ function scoreAction(unit, move, primaryTarget) {
             score += Math.min(damage, t.hp) / t.maxHp;
             if (damage >= t.hp) score += 0.5; // Mettre KO est prioritaire
         }
+        // Retardement : l'impact n'arrive que deux tours plus tard (et une seule fois par cible)
+        if (move.rw?.delay && !move._isBoosted) {
+            if (typeof MoveRework !== 'undefined' && MoveRework.pendingDelayOn(primaryTarget)) return 0;
+            score *= 0.6;
+        }
         // Les ennemis s'acharnent sur un Tank bien placé (provocation)
         if (unit._side === 'enemy' && BattleRules.roleActive(primaryTarget, 'tank')) score *= 1.6;
         if (typeof HeldItems !== 'undefined' && HeldItems.isAggro(primaryTarget) && primaryTarget._side !== unit._side) score *= 2;
@@ -1681,6 +1686,11 @@ function chooseBestAction(unit, { varied = false } = {}) {
     if (actions.length === 0 || actions[0].score <= 0) {
         // Rien d'utile : première attaque offensive sur un ennemi au hasard
         const foes = aliveOnSide(unit._side === 'player' ? 'enemy' : 'player');
+        // D'abord une attaque qui peut toucher quelqu'un (pas d'immunité de type)
+        for (const m of moves.filter(isDamagingMove)) {
+            const hittable = getCandidateTargets(unit, m).filter(t => t._side !== unit._side && computeDamage(unit, t, m, { noRandom: true }).typeMod > 0);
+            if (hittable.length) return { move: m, target: hittable[Math.floor(Math.random() * hittable.length)] };
+        }
         const move = moves.find(isDamagingMove) || moves[0];
         return foes.length ? { move, target: foes[Math.floor(Math.random() * foes.length)] } : null;
     }
@@ -1824,6 +1834,8 @@ async function attack(attacker, primaryTarget, move) {
     if (RW && !RW.canUse(attacker, moveToDo)) { await sleep(400); return; }
     // Plongée : disparaît ce tour-ci, le coup part à son prochain tour
     if (RW && RW.startDive(attacker, moveToDo, primaryTarget)) { await sleep(600); globalTurnCount += 1; return; }
+    // Prescience : l'impact part deux tours plus tard
+    if (RW && RW.startDelay(attacker, moveToDo, primaryTarget)) { await sleep(500); globalTurnCount += 1; return; }
 
     // --- LOGIQUE D'ATTAQUE REFACTORISÉE ---
     const moveForThisHit = { ...moveToDo };
@@ -2101,8 +2113,19 @@ function prepareGridsForNewBattle() {
   prepareEnemyGridForNewBattle();
 }
 
+// Épuisement : au-delà de 100 tours, chaque Pokémon perd 5 % de ses PV max au début de son tour,
+// +5 % tous les 10 tours. Un combat finit toujours (ex. Spectre contre Normal, aucun ne peut toucher l'autre).
+const FATIGUE_START = 100;
+let battleTurns = 0;
 async function handleStartOfTurnEffects(unit) {
     if (unit.isKO) return { canAct: false };
+    battleTurns += 1;
+    if (battleTurns === FATIGUE_START + 1) BattleAnimation.say('Les Pokémon s’épuisent : le combat doit finir !');
+    if (battleTurns > FATIGUE_START) {
+        const pct = 5 + 5 * Math.floor((battleTurns - FATIGUE_START - 1) / 10);
+        BattleRules.damage(unit, unit.maxHp * pct / 100, 'Épuisement');
+        if (unit.hp <= 0 || unit.isKO) { if (!unit.isKO) applyDamageGrid(unit); return { canAct: false }; }
+    }
 
     // Météo, champs, pièges, effets sur la durée, phase de boss
     const ruleResult = await BattleRules.onTurnStart(unit);
@@ -2384,6 +2407,7 @@ async function beginBattleSequence() {
 
     // 3. Réinitialiser le compteur de tour pour la nouvelle bataille
     globalTurnCount = 0;
+    battleTurns = 0;
 
     // 4. Construire les objets "acteurs" à partir du DOM maintenant prêt
     debugLog("[DEBUG] Building actors from DOM...");

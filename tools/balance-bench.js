@@ -288,7 +288,7 @@
     // ------------------------------------------------------------------
     // 5. Un combat
     // ------------------------------------------------------------------
-    const MAX_TURNS = 400;
+    const MAX_TURNS = 600; // sécurité : l'épuisement (battle.js) termine les combats après 100 tours
     let turnCount = { player: 0, enemy: 0 };
     let finish = null;
     function installHooks() {

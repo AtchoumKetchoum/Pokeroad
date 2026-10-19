@@ -62,13 +62,18 @@ en zone 8, mauvais choix 0 % contre 88 % pour l'équipe type, alors que l'améli
 - **Argent** (`battle.js`) : un boss rapporte ×2, le boss final de la zone ×3 (consolation comprise). Les coûts
   d'amélioration n'ont pas été touchés : l'équipe type coûte 67 à 90 % des gains, ils montent déjà avec les étoiles.
 
+## Suivi (réglé ensuite)
+
+- **Prescience et Vœu Destructeur** : une seule cible, l'impact arrive au début du 2e tour suivant de la cible
+  (même si le lanceur est K.O.), une seule à la fois sur une même cible ; la version Z frappe tout de suite
+  (règle R24 de la refonte, `tools/propose-moves.mjs`). Avant, Prescience frappait tout de suite en croix
+  (~300 PV répartis sur 4 Pokémon). Zone 10, combats ordinaires : 71 → 83 % (équipe type), 96 → 100 % (améliorée).
+- **Combats sans fin** : au-delà de 100 tours, chaque Pokémon perd 5 % de ses PV max au début de son tour,
+  +5 % tous les 10 tours (épuisement). Sur 792 combats du banc, le plus long dure 139 tours, aucun nul.
+  L'IA qui n'a rien d'utile à faire choisit d'abord une attaque qui peut toucher (pas d'immunité de type).
+
 ## Limites et points repérés (hors leviers de cette passe)
 
-- **Prescience** (future-sight) frappe en croix à pleine puissance : chaque ennemi Psy la choisit et un lancer inflige
-  ~300 PV répartis sur 4 Pokémon. Principale cause de la difficulté de la zone 10 ; à revoir dans la chaîne de la refonte
-  des attaques (`tools/propose-moves.mjs`).
-- **Combat sans fin possible** : un Spectre qui n'a que des attaques Spectre contre des Normal (et l'inverse) ne peut rien
-  toucher ; le banc coupe à 400 actions, le jeu n'a pas de limite.
 - **Bouclier de Vampibaiser** : le drain en bouclier s'accumule sans plafond (un boss Rubombelle atteint 75 PV de bouclier).
 - **IA du combat auto** : à bas niveau, Rugissement ou Mimi-Queue valent autant qu'une attaque dans son calcul.
 - **Grades** : 6 exemplaires de la même famille par Pokémon pour atteindre le Grade 5 ; c'est probablement le vrai goulot
