@@ -151,3 +151,12 @@
 #view-battle .tud-peek .tip-type.type-dark { background: var(--t-dark, var(--type-dark, #8a7f6a)); }
 #view-battle .tud-peek .tip-type.type-steel { background: var(--t-steel, var(--type-steel, #8a7f6a)); }
 #view-battle .tud-peek .tip-type.type-fairy { background: var(--t-fairy, var(--type-fairy, #8a7f6a)); }
+
+/* Objets et baies : juste l'objet, sans case (les emplacements libres gardent leurs pointillés) */
+#view-battle #turn-unit-display .tud-item:not(.tud-empty) {
+    width: 40px !important; height: 40px !important; border: 0 !important; background: none !important; box-shadow: none !important; margin: -6px -2px !important;
+}
+#view-battle #turn-unit-display .tud-item:not(.tud-empty) img, #view-battle #turn-unit-display .tud-item:not(.tud-empty) svg {
+    width: 40px !important; height: 40px !important; filter: drop-shadow(0 1px 0 rgba(43, 33, 24, .35));
+}
+#view-battle #turn-unit-display .tud-empty { width: 24px !important; height: 24px !important; }
