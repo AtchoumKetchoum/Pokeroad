@@ -177,7 +177,7 @@ const RefinementUI = (() => {
                     <div class="pokemon-details">
                         <h3>${selectedPokemon.name}</h3>
                         <div class="refinement-display">
-                            ${Refinement.formatDisplay(selectedPokemon.refinementLevel || 1, selectedPokemon.refinementStars || 0)}
+                            Niveau ${selectedPokemon.level} · Grade ${selectedPokemon.refinementLevel || 1}${selectedPokemon.refinementStars ? ` ${'★'.repeat(selectedPokemon.refinementStars)}` : ''}
                         </div>
                         <div class="multiplier">Multiplicateur: ×${mult.toFixed(2)} (${Math.floor(mult * 100)}%)</div>
                     </div>
@@ -263,18 +263,19 @@ const RefinementUI = (() => {
         const baseSprite = basePkData ? basePkData.sprite : Art.FALLBACK;
 
         const data = GameData._load();
-        const copies = data.pokemons.filter(p => 
-            GameData.getBaseFormId(p.id) === baseFormId && 
-            p.instanceId !== selectedPokemon.instanceId
-        ).length;
+        // Même règle que l'étoile : exemplaires de la même famille, hors favoris et équipe en mission ;
+        // un exemplaire choisi comme nourriture ne compte plus comme exemplaire
+        const foodPool = GameData.sacrificePool(selectedPokemon, data, false);
+        const copyIds = new Set(GameData.sacrificePool(selectedPokemon, data).map(p => p.instanceId));
+        selectedFoodIds = selectedFoodIds.filter(id => foodPool.some(p => p.instanceId === id));
+        const copies = [...copyIds].filter(id => !selectedFoodIds.includes(id)).length;
 
         const gradeCost = Refinement.getRefinementCost('pokemon', currentGrade, currentStars);
         
         // Calcul de la nourriture actuellement sélectionnée
-        const otherPokemons = data.pokemons.filter(p => p.instanceId !== selectedPokemon.instanceId);
         let currentFoodXP = 0;
         selectedFoodIds.forEach(fid => {
-            const p = otherPokemons.find(p => p.instanceId === fid);
+            const p = foodPool.find(p => p.instanceId === fid);
             if (p) currentFoodXP += Refinement.getFoodXP(p);
         });
 
@@ -303,51 +304,35 @@ const RefinementUI = (() => {
 
                 <div class="refinement-action grade-action-card">
                     <h5>Prochain Grade (${currentGrade} → ${currentGrade + 1})</h5>
-                    
-                    <div class="requirements-grid" style="display:flex; gap:20px; margin:15px 0; justify-content:center;">
-                        <div class="req-item ${hasEnoughCopies ? 'met' : 'unmet'}" style="text-align:center;">
-                            <div class="req-label" style="font-size:12px; margin-bottom:5px; color:#888;">Condition 1</div>
-                            <img src="${baseSprite}" style="width:50px; height:50px; background:rgba(255,255,255,0.05); border-radius:10px; padding:5px;">
-                            <div style="font-weight:bold;">x${gradeCost.copies}</div>
-                            <div class="small" style="color:${hasEnoughCopies ? '#4CAF50' : '#f44336'}">${copies} possédés</div>
+                    <div class="grade-req-grid">
+                        <div class="grade-req ${hasEnoughCopies ? 'met' : ''}">
+                            <div class="req-label">Exemplaires</div>
+                            <img src="${baseSprite}" alt="">
+                            <div class="req-value">${copies} / ${gradeCost.copies}</div>
+                            <div class="req-note ${hasEnoughCopies ? 'ok' : 'ko'}">même famille, hors favoris</div>
                         </div>
-                        
-                        <div class="req-item ${hasEnoughFood ? 'met' : 'unmet'}" style="text-align:center;">
-                            <div class="req-label" style="font-size:12px; margin-bottom:5px; color:#888;">Condition 2</div>
-                            <div style="width:60px; height:60px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.2); border-radius:50%; border:2px solid ${hasEnoughFood ? '#4CAF50' : '#333'}; font-size:10px; margin:0 auto 5px;">
-                                ${currentFoodXP.toLocaleString()}<br>/${gradeCost.foodXP.toLocaleString()}
-                            </div>
-                            <div style="font-weight:bold;">Food XP</div>
+                        <div class="grade-req ${hasEnoughFood ? 'met' : ''}">
+                            <div class="req-label">Nourriture</div>
+                            <div class="req-value">${currentFoodXP.toLocaleString('fr-FR')}</div>
+                            <div class="req-note ${hasEnoughFood ? 'ok' : 'ko'}">sur ${gradeCost.foodXP.toLocaleString('fr-FR')} XP</div>
                         </div>
-
-                        <div class="req-item ${isMaxLevelReached ? 'met' : 'unmet'}" style="text-align:center;">
-                            <div class="req-label" style="font-size:12px; margin-bottom:5px; color:#888;">Condition 3</div>
-                            <div style="font-size:24px; color:${isMaxLevelReached ? '#4CAF50' : '#888'}; font-weight:bold;">L.${selectedPokemon.level}</div>
-                            <div style="font-weight:bold;">Niveau</div>
-                            <div class="small" style="color:${isMaxLevelReached ? '#4CAF50' : '#f44336'}">Requis: ${maxLevelForCurrentGrade}</div>
+                        <div class="grade-req ${isMaxLevelReached ? 'met' : ''}">
+                            <div class="req-label">Niveau</div>
+                            <div class="req-value">${selectedPokemon.level} / ${maxLevelForCurrentGrade}</div>
+                            <div class="req-note ${isMaxLevelReached ? 'ok' : 'ko'}">${isMaxLevelReached ? 'niveau max atteint' : 'monte au niveau max'}</div>
                         </div>
                     </div>
 
-                    <div class="food-selection-area">
-                        <p class="small" style="text-align:center; color:#aaa; margin-bottom:10px;">Sélectionnez la nourriture (Any Pokémon) :</p>
-                        <div class="food-selection-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap:5px; max-height:120px; overflow-y:auto; padding:10px; background:rgba(0,0,0,0.2); border-radius:8px; margin-bottom:15px;">
-                            ${otherPokemons.map(p => {
-                                const isSelected = selectedFoodIds.includes(p.instanceId);
-                                return `
-                                <div class="food-item ${isSelected ? 'selected' : ''}" data-instance-id="${p.instanceId}" onclick="RefinementUI.toggleFood('${p.instanceId}')" style="cursor:pointer; border:1px solid ${isSelected ? '#4CAF50' : 'transparent'}; border-radius:4px; padding:2px; position:relative;">
-                                    <img src="${p.sprite || Art.FALLBACK}" style="width:100%; height:auto;">
-                                    <div style="position:absolute; bottom:0; right:0; background:rgba(0,0,0,0.7); font-size:9px; padding:0 2px;">L.${p.level}</div>
-                                </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    </div>
+                    <p class="small food-hint">${foodPool.length ? 'Touche les Pokémon à sacrifier comme nourriture (favoris et équipe en mission exclus) :' : 'Aucun Pokémon à sacrifier (les favoris et l’équipe en mission sont protégés).'}</p>
+                    ${foodPool.length ? `<div class="food-selection-grid">
+                        ${foodPool.map(p => `
+                            <div class="food-item ${selectedFoodIds.includes(p.instanceId) ? 'selected' : ''} ${copyIds.has(p.instanceId) ? 'is-copy' : ''}" data-instance-id="${p.instanceId}" onclick="RefinementUI.toggleFood('${p.instanceId}')" title="${safeName(p)} · ${Refinement.getFoodXP(p).toLocaleString('fr-FR')} XP">
+                                <img src="${p.sprite || Art.FALLBACK}" alt="${safeName(p)}">
+                                <span class="food-lvl">N.${p.level}</span>
+                            </div>`).join('')}
+                    </div>` : ''}
 
-                    <button 
-                        class="refine-btn ${canGradeUp ? '' : 'disabled'}" 
-                        onclick="RefinementUI.refinePokemonLevel()"
-                        ${!canGradeUp ? 'disabled' : ''}
-                    >
+                    <button class="refine-btn ${canGradeUp ? '' : 'disabled'}" onclick="RefinementUI.refinePokemonLevel()" ${!canGradeUp ? 'disabled' : ''}>
                         Monter au Grade ${currentGrade + 1}
                     </button>
                 </div>

@@ -2276,15 +2276,19 @@ const GameData = (() => {
         const currentGrade = pokemon.refinementLevel || 1;
         const currentStars = pokemon.refinementStars || 0;
         
-        const copiesCount = data.pokemons.filter(p => 
-            GameData.getBaseFormId(p.id) === GameData.getBaseFormId(pokemon.id) && 
-            p.instanceId !== pokemonInstanceId
-        ).length;
+        // Exemplaires : même famille, hors favoris, équipe en mission et Pokémon déjà choisis comme nourriture
+        const copyPool = sacrificePool(pokemon, data).filter(p => !foodInstanceIds.includes(p.instanceId));
         const check = Refinement.getRefinementCost('pokemon', currentGrade, currentStars);
-        
-        // Vérification des clones
-        if (copiesCount < check.copies) {
-            return { success: false, reason: `Il faut ${check.copies} exemplaire(s) identique(s).` };
+        if (pokemon.level < Refinement.getMaxLevel(currentGrade, currentStars)) {
+            return { success: false, reason: `Monte d'abord au niveau ${Refinement.getMaxLevel(currentGrade, currentStars)}.` };
+        }
+        if (copyPool.length < check.copies) {
+            return { success: false, reason: `Il faut ${check.copies} exemplaire(s) de la même famille (hors favoris).` };
+        }
+        // La nourriture ne peut pas être un favori ni un Pokémon en mission
+        const allowedFood = new Set(sacrificePool(pokemon, data, false).map(p => p.instanceId));
+        if (foodInstanceIds.some(id => !allowedFood.has(id))) {
+            return { success: false, reason: 'Un favori ou un Pokémon en mission ne peut pas servir de nourriture.' };
         }
 
         // Vérification de la nourriture (FOOD remplace l'argent)
@@ -2298,21 +2302,9 @@ const GameData = (() => {
             return { success: false, reason: `Pas assez de nourriture (${availableFoodXP}/${check.foodXP} XP).` };
         }
         
-        // Consommer les exemplaires
-        const targetBaseFormId = GameData.getBaseFormId(pokemon.id);
-        for (let i = 0; i < check.copies; i++) {
-            const copyIndex = data.pokemons.findIndex(p => 
-                GameData.getBaseFormId(p.id) === targetBaseFormId && 
-                p.instanceId !== pokemonInstanceId &&
-                !foodInstanceIds.includes(p.instanceId) // Ne pas consommer un Pokémon déjà sélectionné comme FOOD
-            );
-            if (copyIndex !== -1) {
-                data.pokemons.splice(copyIndex, 1);
-            }
-        }
-        
-        // Consommer la nourriture
-        data.pokemons = data.pokemons.filter(p => !foodInstanceIds.includes(p.instanceId));
+        // Consommer les exemplaires (les plus faibles d'abord) et la nourriture
+        const eaten = new Set([...copyPool.sort((a, b) => (a.level || 0) - (b.level || 0)).slice(0, check.copies).map(p => p.instanceId), ...foodInstanceIds]);
+        data.pokemons = data.pokemons.filter(p => !eaten.has(p.instanceId));
         
         // Appliquer le raffinement
         pokemon.refinementLevel = currentGrade + 1;
@@ -2322,12 +2314,16 @@ const GameData = (() => {
         return { success: true, pokemon, cost: check };
     }
     
+    // Pokémon sacrifiables pour un Pokémon : hors lui-même, favoris et équipe en mission ; sameFamily = exemplaires seulement
+    function sacrificePool(pokemon, data = loadData(), sameFamily = true) {
+        const family = getBaseFormId(pokemon.id);
+        const busy = new Set(data?.mission?.active ? (data.mission.team || []) : []);
+        return (data?.pokemons || []).filter(p => p.instanceId !== pokemon.instanceId && !p.isFavorite && !busy.has(p.instanceId) && (!sameFamily || getBaseFormId(p.id) === family));
+    }
     // Étoile d'un Pokémon : exemplaires de la même famille (hors favoris et équipe en mission) + argent
     function pokemonStarCost(pokemon, data = loadData()) {
         const stars = pokemon.refinementStars || 0;
-        const family = getBaseFormId(pokemon.id);
-        const busy = new Set(data?.mission?.active ? (data.mission.team || []) : []);
-        const pool = (data?.pokemons || []).filter(p => p.instanceId !== pokemon.instanceId && !p.isFavorite && !busy.has(p.instanceId) && getBaseFormId(p.id) === family);
+        const pool = sacrificePool(pokemon, data);
         const copies = 1 + Math.floor(stars / 2);
         const money = starMoney(10000, stars);
         const key = Refinement.getStarKey(stars + 1);
@@ -2451,6 +2447,7 @@ const GameData = (() => {
         refinePokemonLevel,
         refinePokemonStar,
         pokemonStarCost,
+        sacrificePool,
         moveTrainingCost,
         TYPE_LABEL,
         refineIV,
