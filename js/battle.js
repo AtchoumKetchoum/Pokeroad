@@ -1443,6 +1443,11 @@ function updateZMoveIndicators() {
             if (chargeText) {
                 chargeText.textContent = `${displayPercent}%`;
             }
+            const zBar = unitEl.querySelector('.z-bar');
+            if (zBar) {
+                zBar.querySelector('.z-fill').style.width = `${displayPercent}%`;
+                zBar.classList.toggle('full', displayPercent >= 100);
+            }
         }
     });
 }

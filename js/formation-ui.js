@@ -39,6 +39,45 @@ const FormationUI = (() => {
         gridEl.appendChild(bar);
     }
 
+    // Fiche au-dessus du Pokémon : en-tête (grade, niveau, étoiles, rôle), PV, puis jauges d'action et Z
+    function gradeOf(side, unitEl) {
+        if (side === 'enemy') {
+            try { const t = JSON.parse(unitEl.dataset.tier || 'null'); return { grade: t?.grade || 1, stars: t?.stars || 0 }; } catch { return { grade: 1, stars: 0 }; }
+        }
+        const pk = GameData.getPokemons().find(p => p.instanceId === unitEl.dataset.instanceId);
+        return { grade: pk?.refinementLevel || 1, stars: pk?.refinementStars || 0 };
+    }
+    function ensurePlate(side, unitEl) {
+        const row = unitEl.querySelector('.status-main-row');
+        if (!row) return null;
+        if (!row.querySelector('.plate-head')) {
+            const head = document.createElement('div');
+            head.className = 'plate-head';
+            head.innerHTML = '<span class="grade-badge"></span><span class="plate-spacer"></span><span class="star-badge"></span>';
+            const lvl = row.querySelector('.lvl-badge');
+            if (lvl) {
+                lvl.textContent = lvl.textContent.replace(/\s*★.*$/, ''); // les étoiles ont leur propre badge
+                head.insertBefore(lvl, head.querySelector('.plate-spacer'));
+            }
+            const gauges = document.createElement('div');
+            gauges.className = 'plate-gauges';
+            const ap = row.querySelector('.ap-bar');
+            if (ap) gauges.appendChild(ap);
+            gauges.insertAdjacentHTML('beforeend', '<div class="z-bar" title="Jauge Z"><div class="z-fill"></div></div>');
+            row.prepend(head);
+            row.appendChild(gauges);
+        }
+        const { grade, stars } = gradeOf(side, unitEl);
+        const g = row.querySelector('.grade-badge');
+        g.textContent = ''; g.dataset.g = grade;
+        g.className = `grade-badge g${Math.min(6, grade)}`;
+        g.hidden = grade <= 1;
+        const s = row.querySelector('.star-badge');
+        s.textContent = `★${stars}`;
+        s.hidden = !stars;
+        return row.querySelector('.plate-head');
+    }
+
     function refreshSide(side) {
         const gridEl = document.getElementById(`${side}-grid`);
         if (!gridEl) return [];
@@ -50,6 +89,7 @@ const FormationUI = (() => {
             if (unitEl.classList.contains('is-ko')) return;
             const info = describeUnit(side, index, unitEl);
             units.push(info);
+            const head = ensurePlate(side, unitEl);
             const role = BattleRules.ROLES[info.role];
             if (!role) return;
             const well = role.rows.includes(BattleRules.rowOfIndex(side, index));
@@ -59,6 +99,7 @@ const FormationUI = (() => {
                 badge.className = 'role-badge';
                 (unitEl.querySelector('.hp-box') || unitEl).prepend(badge);
             }
+            if (head && badge.parentElement !== head) head.appendChild(badge);
             badge.className = `role-badge role-${info.role} ${well ? 'well-placed' : 'misplaced'}`;
             badge.innerHTML = `${Art.icon(ROLE_ICON[info.role] || 'star', 11)}<span>${role.label}</span>`;
             badge.removeAttribute('title'); // explication dans l'infobulle (info-tip.js)

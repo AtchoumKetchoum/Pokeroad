@@ -1,0 +1,58 @@
+/* Fiche au-dessus de chaque Pokémon en combat
+   ┌ grade · Lv.xx ········ ★n · rôle ┐
+   │ ████████████ PV ████████░░░░░░░ │
+   └ ▬▬▬ action ▬▬▬▬▬   ▬▬ Z ▬▬      ┘
+   Les vignettes d'effets restent posées au-dessus. */
+
+#view-battle .unit .hp-box {
+    width: 148px !important; padding: 3px 6px 5px !important; box-sizing: border-box;
+    display: block !important; border-radius: 10px !important;
+}
+#view-battle .unit .hp-box[style*="display: none"] { display: none !important; }
+#view-battle .unit .status-main-row {
+    display: flex !important; flex-direction: column !important; align-items: stretch !important;
+    gap: 3px !important; width: 100% !important; height: auto !important; margin: 0 !important;
+}
+
+/* En-tête */
+#view-battle .unit .plate-head { display: flex; align-items: center; gap: 4px; height: 26px; min-width: 0; }
+#view-battle .unit .plate-head .lvl-badge { flex: none; margin: 0 !important; line-height: 1 !important; }
+#view-battle .unit .plate-spacer { flex: 1 1 auto; }
+#view-battle .unit .grade-badge {
+    flex: none; display: grid; place-items: center; width: 24px; height: 24px; box-sizing: border-box;
+    border: 2px solid var(--ink); border-radius: 6px; transform: rotate(45deg);
+    font-family: var(--font-title); line-height: 1; color: #f7ecdc; background: #8a8a8a;
+}
+#view-battle .unit .grade-badge[hidden] { display: none; }
+/* Le chiffre reste droit dans le losange */
+#view-battle .unit .grade-badge { font-size: 0 !important; }
+#view-battle .unit .grade-badge::after { content: attr(data-g); display: block; transform: rotate(-45deg); font-size: 15px; }
+#view-battle .unit .grade-badge.g2 { background: #5f9a5a; }
+#view-battle .unit .grade-badge.g3 { background: #4a78b8; }
+#view-battle .unit .grade-badge.g4 { background: #8a5ab0; }
+#view-battle .unit .grade-badge.g5 { background: #d0782a; }
+#view-battle .unit .grade-badge.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a); color: var(--ink); }
+#view-battle .unit .star-badge { flex: none; color: #c9902a; font-weight: 900; line-height: 1 !important; text-shadow: 0 1px 0 #fff8; }
+#view-battle .unit .star-badge[hidden] { display: none; }
+#view-battle .unit .plate-head > .role-badge {
+    position: static !important; flex: none; width: 24px !important; height: 24px !important; padding: 0 !important;
+    display: grid !important; place-items: center; border-radius: 6px !important; margin: 0 !important;
+}
+#view-battle .unit .plate-head > .role-badge span { display: none !important; }
+#view-battle .unit .plate-head > .role-badge .art-icon { width: 15px !important; height: 15px !important; }
+#view-battle .unit .plate-head > .role-badge.well-placed { box-shadow: 0 0 0 2px #e1d39d; }
+
+/* PV */
+#view-battle .unit .hp-container-minimal { display: block !important; width: 100% !important; height: auto !important; margin: 0 !important; }
+#view-battle .unit .hp-container-minimal .hp-bar-bg { height: 12px !important; width: 100% !important; margin: 0 !important; border-radius: 6px !important; }
+
+/* Jauges d'action et Z côte à côte */
+#view-battle .unit .plate-gauges { display: flex; gap: 4px; height: 6px; }
+#view-battle .unit .plate-gauges .ap-bar { flex: 3 1 0; height: 6px !important; margin: 0 !important; position: static !important; width: auto !important; border-radius: 3px; }
+#view-battle .unit .plate-gauges .z-bar { flex: 2 1 0; height: 6px; border-radius: 3px; background: rgba(43, 33, 24, .35); overflow: hidden; }
+#view-battle .unit .z-fill { height: 100%; width: 0; background: linear-gradient(90deg, #f1c14a, #ffdf6e); transition: width .3s ease; }
+#view-battle .unit .z-bar.full { box-shadow: 0 0 0 2px #ffd88a, 0 0 8px #ffd88a; }
+#view-battle .unit .z-bar.full .z-fill { animation: z-pulse 1s ease-in-out infinite; }
+@keyframes z-pulse { 50% { filter: brightness(1.35); } }
+/* Le pourcentage Z est remplacé par la barre */
+#view-battle .unit .charge-text { display: none !important; }
