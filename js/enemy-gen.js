@@ -4,7 +4,9 @@
  *  - Les Pokémon suivent les types de la zone (Glace au Pic Enneigé, Eau au Lac Azur…).
  *  - Même combat = même équipe, même formation, mêmes attaques : on peut préparer une contre-stratégie.
  *  - Formation logique : Tanks devant, Lanceurs et Soutiens derrière.
- *  - Le 10e combat de chaque vague est un boss (PV ×2,5, fureur sous 50 % de PV).
+ *  - Le 10e combat de chaque vague est un boss entouré de 3 escortes (PV ×1,5 à ×2,5, fureur sous 50 % de PV) ;
+ *    les Légendaires ne sont boss qu'à la 10e vague (boss final de la zone).
+ *  - Réglages vérifiés avec le banc tools/balance-bench.html.
  */
 
 const EnemyGen = (() => {
@@ -23,16 +25,22 @@ const EnemyGen = (() => {
     const FR_TO_TYPE = Object.fromEntries(Object.entries(TYPE_FR).map(([en, fr]) => [fr, en]));
     const bst = (pk) => Object.values(pk.stats || {}).reduce((a, b) => a + b, 0);
 
-    // Puissance de base autorisée selon le niveau : formes de base au début, évolutions ensuite
-    const maxBstFor = (level) => 260 + level * 4.5;
+    // Puissance de base autorisée selon le niveau : formes de base au début, évolutions ensuite.
+    // Au-delà du niveau 53 (~500, évolutions finales), elle monte moins vite : un joueur aligne rarement plus de ~540,
+    // la difficulté passe alors par les niveaux et les paliers plutôt que par des pseudo-légendaires partout.
+    const maxBstFor = (level) => level <= 53 ? 260 + level * 4.5 : 498.5 + (level - 53) * 2.5;
 
+    // forBoss : false, 'boss' (boss de vague) ou 'final' (boss de la 10e vague, qui peut être un Légendaire)
     function zonePool(zoneNumber, level, forBoss) {
         const zone = getZoneInfo(zoneNumber);
         const legendaryZone = zone.types.includes('Légendaire');
         const wanted = zone.types.map(t => FR_TO_TYPE[t]).filter(Boolean);
-        const cap = maxBstFor(level) + (forBoss ? 80 : 0);
+        // Boss de vague : un peu plus puissant que la zone ; boss final : Légendaire possible, mais pas plus fort que la zone
+        const cap = maxBstFor(level) + (forBoss === 'boss' ? 40 : 0);
         const all = Object.values(PokedexDB || {}).filter(pk => pk && pk.stats && pk.types);
-        const allowedRarity = (pk) => legendaryZone || forBoss ? pk.rarity !== 'Mythique' : !['Légendaire', 'Mythique'].includes(pk.rarity);
+        // Légendaires : boss final de chaque zone, et équipes ordinaires de la zone légendaire (jamais boss de vague)
+        const legendOk = forBoss === 'final' || (legendaryZone && !forBoss);
+        const allowedRarity = (pk) => legendOk ? pk.rarity !== 'Mythique' : !['Légendaire', 'Mythique'].includes(pk.rarity);
         let pool = all.filter(pk => allowedRarity(pk) && bst(pk) <= cap && pk.types.some(t => wanted.includes(t)));
         // Toujours de quoi remplir une équipe : on élargit si la zone est trop restrictive
         if (pool.length < 8) pool = all.filter(pk => allowedRarity(pk) && bst(pk) <= cap + 60 && pk.types.some(t => wanted.includes(t)));
@@ -65,16 +73,18 @@ const EnemyGen = (() => {
     }
 
     // Paliers d'amélioration d'un ennemi : grade, étoiles, niveau des attaques et de l'objet.
-    // Ils montent avec la zone, sans plafond, comme ceux du joueur.
+    // Ils montent avec la zone, sans plafond, au rythme de ce qu'un joueur peut financer (banc tools/balance-bench.html) :
+    // une rampe régulière plutôt que des marches (l'ancienne étoile de la zone 6 donnait +20 % de stats d'un coup).
     function enemyTier(level) {
-        const zone = zoneIndex, wave = waveIndex;
-        const moveLevel = 1 + (zone - 1) * 3 + Math.floor(wave / 2);
-        const itemLevel = 1 + (zone - 1) * 3;
+        const progress = (zoneIndex - 1) + (waveIndex - 1) / 10; // 0 au début, 9,9 en fin de zone 10
+        const moveLevel = 1 + Math.floor(progress);
+        const itemLevel = moveLevel;
+        const starsOf = (lvl) => lvl > 20 ? Math.ceil(lvl / 20) - 1 : 0;
         return {
-            grade: Math.max(1, Math.ceil(level / 20)),
-            stars: Math.floor((zone - 1) / 5),
-            moveLevel, moveStars: Math.floor(moveLevel / 20),
-            itemLevel, itemStars: Math.floor(itemLevel / 20),
+            grade: 1 + Math.floor(progress * 1.5), // +1,5 % de stats par zone
+            stars: Math.floor((zoneIndex - 1) / 10),
+            moveLevel, moveStars: starsOf(moveLevel),
+            itemLevel, itemStars: starsOf(itemLevel),
         };
     }
     const TYPE_BOOSTER = {
@@ -91,25 +101,31 @@ const EnemyGen = (() => {
         const isBoss = battleIndex === 10;
         const seed = zoneIndex * 100000 + waveIndex * 1000 + battleIndex * 7 + 13;
         const rand = rng(seed);
-        const count = getEnemyCount(isBoss ? 4 : 5);
+        // Combat de boss : le boss et 3 escortes (le boss compte pour plusieurs ennemis)
+        const count = getEnemyCount(isBoss ? 3 : 5);
         const pool = zonePool(zoneIndex, level, false);
         const top = pool.slice(0, Math.max(12, Math.ceil(pool.length * 0.35)));
 
         const picks = [];
-        while (picks.length < count && top.length) {
+        // Zone légendaire : au plus un Légendaire par équipe ordinaire
+        const isLegend = (pk) => pk.rarity === 'Légendaire';
+        let tries = 0;
+        while (picks.length < count && top.length && tries++ < 200) {
             const pk = top[Math.floor(rand() * top.length)];
+            if (isLegend(pk) && picks.some(p => isLegend(p.pk)) && top.some(x => !isLegend(x))) continue;
             if (!picks.some(p => p.pk.id === pk.id) || top.length < count) picks.push({ pk });
-            if (picks.length > 20) break;
         }
         if (isBoss) {
-            const bossPool = zonePool(zoneIndex, level, true);
-            const boss = bossPool[Math.floor(rand() * Math.min(5, bossPool.length))];
+            const bossPool = zonePool(zoneIndex, level, waveIndex === 10 ? 'final' : 'boss');
+            const boss = bossPool[Math.floor(rand() * Math.min(8, bossPool.length))];
             if (boss) picks.unshift({ pk: boss, boss: true });
         }
 
         const tierBase = enemyTier(level);
+        // Combat de boss : le boss prend tout le bonus de niveau, son escorte reste au niveau de la vague (+1)
+        const escortLevel = isBoss ? Math.min(level, getEnemyLevel(9) + 1) : level;
         picks.forEach(p => {
-            p.level = p.boss ? level + 2 : level;
+            p.level = p.boss ? level + Math.ceil(level * 0.08) : escortLevel;
             p.tier = { ...tierBase };
             p.moves = pickMoves(p.pk, p.level, rand);
             p.role = BattleRules.computeRole(p.pk.stats, p.moves.map(id => ({ ...MovesDB[id], id })));
@@ -138,7 +154,10 @@ const EnemyGen = (() => {
                 attacker: [TYPE_BOOSTER[firstType] || 'muscle-band', 'life-orb', 'expert-belt', 'liechi-berry'],
                 caster: [TYPE_BOOSTER[firstType] || 'wise-glasses', 'life-orb', 'expert-belt', 'petaya-berry'],
             }[p.role] || ['leftovers', 'life-orb', 'expert-belt', 'sitrus-berry'];
-            const nItems = Math.min(3, 1 + (zoneIndex >= 5 ? 1 : 0) + (zoneIndex >= 8 ? 1 : 0) + (p.boss ? 1 : 0));
+            // Autant d'objets que le joueur à ce stade (2e emplacement au Grade 3, 3e au Grade 5) ;
+            // le boss en a un de plus à partir de la zone 3 (en zones 1-2 il apprend au joueur à le battre)
+            const bossExtra = p.boss && zoneIndex >= 3 ? 1 : 0;
+            const nItems = Math.min(3, 1 + (zoneIndex >= 5 ? 1 : 0) + (zoneIndex >= 11 ? 1 : 0) + bossExtra);
             const nBerries = Math.min(3, (zoneIndex >= 3 ? 1 : 0) + (zoneIndex >= 6 ? 1 : 0) + (p.boss ? 1 : 0));
             byRole.filter(id => !/-berry$/.test(id)).slice(0, nItems).forEach(id => p.tier.items.push(id));
             [byRole.find(id => /-berry$/.test(id)), 'lum-berry', 'enigma-berry'].filter(Boolean).slice(0, nBerries).forEach(id => p.tier.berries.push(id));

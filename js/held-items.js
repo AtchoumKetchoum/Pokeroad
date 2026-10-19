@@ -132,7 +132,7 @@ const HeldItems = (() => {
     def('weakness-policy', 30, 100, { weaknessPolicy: true, consumable: true });
     // Altérations
     def('flame-orb', 30, 60, { orb: 'STAT_BRU', guts: true });
-    def('toxic-orb', 8, 15, { orb: 'STAT_PSN', poisonHeal: true });
+    def('toxic-orb', 6.25, 12, { orb: 'STAT_PSN', poisonHeal: true }); // comme les Restes : l'immunité aux autres statuts suffit à le distinguer
     def('mental-herb', 2, 5, { mentalHerb: true, consumable: true });
     def('white-herb', 15, 40, { whiteHerb: true, consumable: true });
     def('mirror-herb', 1, 3, { mirrorHerb: true });
@@ -598,12 +598,13 @@ const HeldItems = (() => {
         if (u._immune && --u._immune.turns <= 0) delete u._immune;
         if (u._anchorTurns > 0) u._anchorTurns--;
         u._turns = (u._turns || 0) + 1;
-        // Régénération passive : le meilleur objet compte (Restes et Boue Noire ne se cumulent pas)
+        // Régénération passive : le meilleur objet compte (Restes et Boue Noire ne se cumulent pas).
+        // Un boss régénère sur ses PV d'avant le bonus de boss : sinon Restes + PV ×2,2 en font un mur.
         const regenIds = itemsOf(u).filter(id => S[id].regenTurn);
         if (regenIds.length) {
             const sludge = regenIds.find(id => S[id].sludge);
             if (sludge && !(u.types || []).includes('poison')) B().damage(u, u.maxHp * 0.125, nameOf(sludge));
-            else if (u.hp < u.maxHp) { const best = Math.max(...regenIds.map(id => valueOf(u, id))); if (healPct(u, best, 'regen') > 0) say(u, nameOf(regenIds[0]), 'buff'); }
+            else if (u.hp < u.maxHp) { const best = Math.max(...regenIds.map(id => valueOf(u, id))) / (u._bossHpMult || 1); if (healPct(u, best, 'regen') > 0) say(u, nameOf(regenIds[0]), 'buff'); }
         }
         for (const id of itemsOf(u)) {
             const s = S[id], v = valueOf(u, id);

@@ -2446,6 +2446,11 @@ function playVictoryWalk() {
   });
 }
 
+// Prime des boss : ×2, ×3 pour le boss final de la zone (10e vague)
+function bossRewardMult() {
+  return battleIndex === 10 ? (waveIndex === 10 ? 3 : 2) : 1;
+}
+
 async function checkWinCondition() {
   const playerAlive = aliveOnSide('player').length;
   const enemyAlive = aliveOnSide('enemy').length;
@@ -2468,7 +2473,9 @@ async function checkWinCondition() {
 
     // Ajout de la récompense en argent rééquilibrée
     const itemBonus = typeof HeldItems !== 'undefined' ? HeldItems.rewardBonus((grid.player || []).filter(Boolean)) : { moneyMult: 1, extraLootChance: 0 };
-    const reward = Math.round((40 + (getEnemyLevel() * 20)) * (BattleRules.field.moneyMult || 1) * itemBonus.moneyMult); // Récompense qui suit le niveau des ennemis
+    // Récompense qui suit le niveau des ennemis ; un boss rapporte ×2 (×3 le boss final de la zone) :
+    // battre un boss par la stratégie finance l'amélioration suivante, plutôt que rejouer des combats faciles
+    const reward = Math.round((40 + (getEnemyLevel() * 20)) * bossRewardMult() * (BattleRules.field.moneyMult || 1) * itemBonus.moneyMult);
     if (typeof GameData !== 'undefined' && GameData.addMoney) {
         GameData.addMoney(reward);
     }
@@ -2590,7 +2597,7 @@ async function checkWinCondition() {
     // Récompense de consolation : de 10 % à 60 % de la récompense selon les ennemis mis K.O., pour pouvoir s'entraîner
     const enemiesTotal = grid.enemy.filter(Boolean).length;
     const enemiesDown = grid.enemy.filter(u => u && u.isKO).length;
-    const consolation = Math.round((40 + getEnemyLevel() * 20) * (0.1 + 0.5 * (enemiesTotal ? enemiesDown / enemiesTotal : 0)));
+    const consolation = Math.round((40 + getEnemyLevel() * 20) * bossRewardMult() * (0.1 + 0.5 * (enemiesTotal ? enemiesDown / enemiesTotal : 0)));
     if (typeof GameData !== 'undefined' && GameData.addMoney) GameData.addMoney(consolation);
     
     if (dom.battleStatus) {
@@ -2639,25 +2646,29 @@ async function loadPokedexDB() {
 }
 
 // Rang du combat dans toute l'aventure : 0 (zone 1, vague 1, combat 1) -> 4999 (zone 50, vague 10, combat 10)
-function getStageIndex() {
-    return ((zoneIndex - 1) * 100) + ((waveIndex - 1) * 10) + (battleIndex - 1);
+function getStageIndex(battle = battleIndex) {
+    return ((zoneIndex - 1) * 100) + ((waveIndex - 1) * 10) + (battle - 1);
 }
 
 // Courbe de difficulté : niv. 1 au départ, ~19 en fin de zone 1, ~50 en zone 5, 200 en zone 50, puis sans fin.
 // Le 10e combat de chaque vague est un « boss » un peu plus fort.
-function getEnemyLevel() {
-    const stage = getStageIndex();
+// battle : numéro du combat dans la vague (par défaut le combat en cours).
+function getEnemyLevel(battle = battleIndex) {
+    const stage = getStageIndex(battle);
     const progress = Math.min(1, stage / 4999);
     // Au-delà de la zone 50, la progression continue sans fin (+1 niveau tous les 20 combats)
     let level = Math.floor(1 + 199 * Math.pow(progress, 0.6)) + Math.max(0, Math.floor((stage - 4999) / 20));
-    if (battleIndex === 10) level = Math.ceil(level * 1.1) + 1;
+    if (battle === 10) level = Math.ceil(level * 1.1) + 1;
     return level;
 }
 
 // Les premiers combats opposent moins d'ennemis pour apprendre les bases
 function getEnemyCount(maxCount) {
     const stage = getStageIndex();
-    return stage < 3 ? Math.min(maxCount, stage + 2) : maxCount;
+    if (stage < 3) return Math.min(maxCount, stage + 2);
+    // Première moitié de la zone 1 : un ennemi de moins, le temps d'apprendre placement et objets
+    if (zoneIndex === 1 && waveIndex <= 5) return maxCount - 1;
+    return maxCount;
 }
 
 function calculateStats(baseStats, level, pokemonId = null) {

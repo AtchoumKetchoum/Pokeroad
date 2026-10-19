@@ -277,9 +277,9 @@ const BattleRules = (() => {
             Synergies.setup(units, counts);
             // Boss : PV multipliés et mécanique de phase
             units.filter(u => u.isBoss).forEach(u => {
-                // PV ×1,6 en zone 1, puis plus robustes jusqu'à ×2,5 à partir de la zone 5
-                const bossHp = Math.min(2.5, 1.6 + (Math.max(1, zoneIndex) - 1) * 0.225);
-                u.maxHp = Math.round(u.maxHp * bossHp); u.hp = u.maxHp;
+                // PV ×1,5 en zone 1, puis plus robustes jusqu'à ×2,5 à partir de la zone 8
+                const bossHp = Math.min(2.5, 1.5 + (Math.max(1, zoneIndex) - 1) * 0.15);
+                u.maxHp = Math.round(u.maxHp * bossHp); u.hp = u.maxHp; u._bossHpMult = bossHp;
                 u.bossPhase = 1;
                 spawnEffectText(u, 'BOSS', 'debuff', -70);
             });

@@ -7415,7 +7415,7 @@
     "category": "Objets tenus",
     "pocket": "battle",
     "attributes": ["holdable"],
-    "effect_fr": "Empoisonne le porteur à la fin de son 1er tour ; le poison le soigne alors de 8 % des PV max par tour. Amélioration à l'Atelier : jusqu'à 15.",
+    "effect_fr": "Empoisonne le porteur à la fin de son 1er tour ; le poison le soigne alors de 6,25 % des PV max par tour. Amélioration à l'Atelier : jusqu'à 12.",
     "description_fr": "Empoisonne gravement le porteur à la fin du tour.",
     "exclusive_group": "orbe_statut",
     "unique": true,
