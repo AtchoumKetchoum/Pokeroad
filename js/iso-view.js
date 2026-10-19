@@ -1,24 +1,14 @@
 /**
- * iso-view.js - Vue du combat : iso léger (par défaut), classique ou vraie iso.
+ * iso-view.js - Vue du combat : iso léger, la seule vue.
  *
- *  - Iso léger : le sol des deux grilles est incliné en perspective (lignes horizontales).
- *  - Vraie iso : le plateau (6 lignes × 3 colonnes) est tourné à 45° et incliné : cases en losange.
- * Les deux grilles tournent autour d'un même point, comme un seul plateau.
- * Les Pokémon, leurs barres et vignettes restent face à l'écran (rotation inverse, « billboard »).
- * Le choix est gardé sur l'appareil (Paramètres ou bouton « Vue » en combat).
+ * Le sol des deux grilles est incliné en perspective (lignes horizontales) ; les deux grilles
+ * tournent autour d'un même point, comme un seul plateau.
+ * Les Pokémon et leurs infos restent face à l'écran (rotation inverse, « billboard »).
  */
 const IsoView = (() => {
-    const KEY = 'pokeroad_battle_view';
-    const MODES = {
-        classic: { label: 'Classique' },
-        light: { label: 'Iso léger', tilt: 34, spin: 0, scale: 0.82 },
-        iso: { label: 'Vraie iso', tilt: 44, spin: 30, scale: 0.76 },
-    };
-    const ORDER = ['classic', 'light', 'iso'];
-    // Iso léger par défaut (choix de l'utilisateur) ; classique et vraie iso restent au choix
-    let mode = 'light';
-    try { mode = localStorage.getItem(KEY) || 'light'; } catch { /* sans stockage */ }
-    if (!MODES[mode]) mode = 'light';
+    const MODES = { light: { label: 'Iso léger', tilt: 34, spin: 0, scale: 0.82 } };
+    const mode = 'light';
+    try { localStorage.removeItem('pokeroad_battle_view'); } catch { /* sans stockage */ }
 
     const screen = () => document.querySelector('#view-battle .scaler-view');
     const grids = () => ['enemy-grid', 'player-grid'].map(id => document.getElementById(id)).filter(Boolean);
@@ -42,14 +32,10 @@ const IsoView = (() => {
     function apply() {
         const sc = screen();
         if (!sc) return;
-        ORDER.forEach(m => sc.classList.toggle(`view-${m}`, m === mode));
+        if (typeof FloorRing !== 'undefined') requestAnimationFrame(FloorRing.refreshAll); // anneaux recalés sur les ronds
+        sc.classList.add('view-light');
+        sc.classList.remove('view-classic', 'view-iso');
         const gs = grids();
-        if (mode === 'classic') {
-            gs.forEach(g => { g.style.transform = ''; g.style.transformOrigin = ''; });
-            sc.style.perspectiveOrigin = '';
-            sc.style.removeProperty('--iso-billboard');
-            return;
-        }
         const cfg = MODES[mode];
         // Centre commun aux deux grilles (coordonnées de la scène, avant transformation)
         const boxes = gs.map(g => ({ g, x: g.offsetLeft, y: g.offsetTop, w: g.offsetWidth, h: g.offsetHeight }));
@@ -76,36 +62,8 @@ const IsoView = (() => {
         }
     }
 
-    function set(next) {
-        if (!MODES[next]) return;
-        mode = next;
-        try { localStorage.setItem(KEY, mode); } catch { /* sans stockage */ }
-        apply();
-        updateButtons();
-    }
-    const cycle = () => set(ORDER[(ORDER.indexOf(mode) + 1) % ORDER.length]);
-
-    function updateButtons() {
-        document.querySelectorAll('[data-battle-view]').forEach(b => b.classList.toggle('active', b.dataset.battleView === mode));
-        const quick = document.getElementById('battle-view-btn');
-        if (quick) { quick.title = `Vue : ${MODES[mode].label} (changer)`; quick.dataset.mode = mode; }
-    }
-
-    // Bouton rapide dans le bandeau du combat
-    function addQuickButton() {
-        const bar = document.querySelector('#view-battle #top-right-actions');
-        if (!bar || document.getElementById('battle-view-btn')) return;
-        const btn = document.createElement('button');
-        btn.id = 'battle-view-btn';
-        btn.className = 'pk-btn-action battle-view-btn';
-        btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5" opacity=".7"/></svg>';
-        btn.addEventListener('click', cycle);
-        bar.insertBefore(btn, document.getElementById('auto-battle-btn'));
-        updateButtons();
-    }
-
     function init() {
-        addQuickButton();
+        document.getElementById('battle-view-btn')?.remove();
         apply();
         // Les grilles bougent avec la taille de la scène : on recalcule le centre
         window.addEventListener('resize', () => requestAnimationFrame(apply));
@@ -117,6 +75,6 @@ const IsoView = (() => {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
 
-    return { set, cycle, apply, get mode() { return mode; }, MODES };
+    return { apply, get mode() { return mode; }, MODES };
 })();
 window.IsoView = IsoView;

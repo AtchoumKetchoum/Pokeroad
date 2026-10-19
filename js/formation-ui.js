@@ -68,6 +68,7 @@ const FormationUI = (() => {
             row.prepend(head);
             row.appendChild(gauges);
         }
+        if (typeof FloorRing !== 'undefined') FloorRing.attach(unitEl); // jauges en anneau sur la case
         const { grade, stars } = gradeOf(side, unitEl);
         // Rond de niveau : le chiffre du niveau, la couleur du grade
         const lvlEl = row.querySelector('.lvl-badge');

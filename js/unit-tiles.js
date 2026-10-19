@@ -9,7 +9,7 @@
  * Les vignettes se mettent à jour seules dès que l'état du Pokémon change.
  */
 const UnitTiles = (() => {
-    const MAX_TILES = 6; // 2 colonnes de 3 à côté du Pokémon ; au-delà : vignette « +N »
+    const MAX_TILES = 10; // par côté : bonus à gauche, malus à droite, 2 colonnes de 5 ; au-delà : vignette « +N »
 
     // Pictogrammes 24×24 (trait blanc sur la vignette)
     const F = 'fill="currentColor" stroke="none"';
@@ -188,9 +188,14 @@ const UnitTiles = (() => {
         if (unit.isKO) { box.innerHTML = ''; box.style.display = 'none'; return; }
         box.style.display = '';
         const tiles = tilesFor(unit);
-        const shown = tiles.length > MAX_TILES ? tiles.slice(0, MAX_TILES - 1) : tiles;
-        box.innerHTML = shown.map(tileHtml).join('') + (tiles.length > shown.length
-            ? `<div class="ut-tile ut-more" data-tip="${esc(tiles.slice(shown.length).map(t => t.title).join(' · '))}">+${tiles.length - shown.length}</div>` : '');
+        // Bonus à gauche du Pokémon, malus à droite
+        const column = (list, cls) => {
+            if (!list.length) return '';
+            const shown = list.length > MAX_TILES ? list.slice(0, MAX_TILES - 1) : list;
+            return `<div class="ut-col ${cls}">${shown.map(tileHtml).join('')}${list.length > shown.length
+                ? `<div class="ut-tile ut-more" data-tip="${esc(list.slice(shown.length).map(t => t.title).join(' · '))}">+${list.length - shown.length}</div>` : ''}</div>`;
+        };
+        box.innerHTML = column(tiles.filter(t => t.good), 'ut-buffs') + column(tiles.filter(t => !t.good), 'ut-debuffs');
         // Bouclier visible sur la barre de PV
         const bar = slot.querySelector('.hp-bar-bg');
         if (bar) {

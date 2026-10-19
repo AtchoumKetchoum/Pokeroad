@@ -1,34 +1,51 @@
-/* Fiche de chaque Pokémon en combat : une ligne fine posée aux pieds (les rangées sont trop serrées
-   pour une fiche au-dessus de la tête, qui recouvrirait le Pokémon de devant).
-     [25 ⁝] ████████ PV ███░░  [rôle]
-            ▬ action ▬  ▬ Z ▬
-   Pastille : le niveau, sa couleur = le grade, les points dorés = les étoiles.
-   Les effets se rangent en petite colonne sur le côté du Pokémon. */
+/* Infos de chaque Pokémon en combat, posées sur sa case (js/floor-ring.js) :
+   - anneau extérieur = PV (se vide de l'arrière vers l'avant), liseré clair = bouclier ;
+   - anneau intérieur = jauge d'action à gauche, jauge Z à droite ;
+   - au-dessus du Pokémon : rôle et pastille de niveau (couleur = grade, points dorés = étoiles) ;
+   - bonus en colonne à gauche du Pokémon, malus à droite (2 colonnes de 5 chacun). */
 
 #view-battle .unit .hp-box {
-    top: calc(100% - 6px) !important; bottom: auto !important; left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 150px !important; min-width: 0 !important; max-width: none !important; box-sizing: border-box;
-    display: flex !important; flex-direction: row !important; align-items: center !important; gap: 4px;
-    padding: 2px 4px 2px 2px !important;
-    background: rgba(247, 236, 220, .9) !important; border: 2px solid #2b2118 !important; border-radius: 13px !important;
-    box-shadow: 0 2px 0 rgba(43, 33, 24, .3) !important; overflow: visible !important; z-index: 30 !important;
+    top: 0 !important; bottom: 0 !important; left: 0 !important; right: 0 !important; transform: none !important;
+    width: auto !important; height: auto !important; min-width: 0 !important; max-width: none !important;
+    padding: 0 !important; margin: 0 !important; display: block !important;
+    background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+    overflow: visible !important; z-index: 3 !important; pointer-events: none;
 }
 #view-battle .unit .hp-box::before, #view-battle .unit .hp-box::after { display: none !important; }
 #view-battle .unit .hp-box[style*="display: none"] { display: none !important; }
-#view-battle .unit .status-main-row {
-    display: grid !important; flex: 1 1 auto; min-width: 0; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: 11px 6px;
-    column-gap: 4px; row-gap: 2px; align-items: center;
-    width: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important;
-    background: none !important; border: 0 !important; box-shadow: none !important;
+#view-battle .unit .sprite { z-index: 2; }
+
+/* Anneau : posé exactement sur le rond de la case (position recopiée par floor-ring.js) */
+#view-battle .unit-slot > .floor-ring { position: absolute; overflow: visible; z-index: 0; pointer-events: none; }
+#view-battle .unit-slot:not(:has(.unit)) > .floor-ring, #view-battle .unit-slot:has(.unit.is-ko) > .floor-ring { display: none; }
+#view-battle .floor-ring * { vector-effect: non-scaling-stroke; }
+#view-battle .floor-ring .fr-track { fill: none; stroke: rgba(43, 33, 24, .55); stroke-width: 6; }
+#view-battle .floor-ring .fr-track-in { stroke-width: 4; stroke: rgba(43, 33, 24, .4); }
+#view-battle .floor-ring path { fill: none; stroke-linecap: butt; transition: stroke-dasharray .3s ease; }
+#view-battle .floor-ring .fr-hp { stroke: #6cc15f; stroke-width: 5; }
+#view-battle .floor-ring.mid .fr-hp { stroke: #e0b33a; }
+#view-battle .floor-ring.low .fr-hp { stroke: #d24a42; }
+#view-battle .floor-ring .fr-shield { stroke: #f4f9ff; stroke-width: 2; }
+#view-battle .floor-ring .fr-ap { stroke: #5aa2ff; stroke-width: 3.5; }
+#view-battle .floor-ring .fr-z { stroke: #ffc93c; stroke-width: 3.5; }
+#view-battle .floor-ring.z-full .fr-z { animation: fr-z 1s ease-in-out infinite; }
+@keyframes fr-z { 50% { stroke: #fff2b0; } }
+
+/* Barres d'origine : cachées, elles restent la source des valeurs */
+#view-battle .unit .status-main-row { display: block !important; position: static !important; width: auto !important; height: 0 !important; margin: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; }
+#view-battle .unit .hp-container-minimal, #view-battle .unit .plate-gauges {
+    position: absolute !important; left: 0; top: 0; width: 100px !important; height: 4px !important; visibility: hidden; pointer-events: none;
 }
-#view-battle .unit .plate-head { display: contents !important; }
 #view-battle .unit .plate-spacer, #view-battle .unit .grade-badge, #view-battle .unit .charge-text { display: none !important; }
 
-/* Pastille niveau (+ étoiles) */
+/* Au-dessus du Pokémon : rôle et niveau */
+#view-battle .unit .plate-head {
+    position: absolute; left: 50%; top: -14px; bottom: auto; transform: translateX(-50%); z-index: 40;
+    display: flex !important; align-items: center; gap: 3px; pointer-events: auto;
+}
 #view-battle .unit .lvl-cell {
-    grid-column: 1; grid-row: 1 / span 2; display: flex; align-items: center; gap: 2px; height: 22px; padding: 0 6px 0 7px;
-    border-radius: 11px; background: #8a7f6a; color: #f7ecdc; box-sizing: border-box;
+    display: flex; align-items: center; gap: 2px; height: 22px; padding: 0 6px 0 7px; box-sizing: border-box;
+    border-radius: 11px; border: 2px solid #2b2118; background: #8a7f6a; color: #f7ecdc;
 }
 #view-battle .unit .lvl-cell.g2 { background: #5f9a5a; }
 #view-battle .unit .lvl-cell.g3 { background: #4a78b8; }
@@ -43,43 +60,26 @@
 #view-battle .unit .star-badge { display: flex; flex-direction: column; gap: 2px; }
 #view-battle .unit .star-badge[hidden] { display: none !important; }
 #view-battle .unit .star-badge i { width: 5px; height: 5px; border-radius: 50%; background: #ffd25a; box-shadow: 0 0 0 1px rgba(43, 33, 24, .7); }
-
-/* PV */
-#view-battle .unit .hp-container-minimal { grid-column: 2; grid-row: 1; display: block !important; width: auto !important; height: 11px !important; margin: 0 !important; }
-#view-battle .unit .hp-container-minimal .hp-bar-bg {
-    height: 11px !important; width: 100% !important; margin: 0 !important; box-sizing: border-box;
-    border: 2px solid #2b2118 !important; border-radius: 6px !important; background: #4a3d33 !important; box-shadow: none !important;
-}
-
-/* Jauges d'action et Z */
-#view-battle .unit .plate-gauges { grid-column: 2; grid-row: 2; display: flex; gap: 3px; height: 6px; }
-#view-battle .unit .plate-gauges .ap-bar, #view-battle .unit .plate-gauges .z-bar {
-    height: 6px !important; margin: 0 !important; position: static !important; width: auto !important; box-sizing: border-box;
-    border: 0 !important; border-radius: 3px; background: rgba(43, 33, 24, .35) !important; overflow: hidden;
-}
-#view-battle .unit .plate-gauges .ap-bar { flex: 3 1 0; }
-#view-battle .unit .plate-gauges .z-bar { flex: 2 1 0; }
-#view-battle .unit .z-fill { height: 100%; width: 0; background: linear-gradient(90deg, #e6a92a, #ffd25a); transition: width .3s ease; }
-#view-battle .unit .z-bar.full { box-shadow: 0 0 5px #ffc94f; }
-#view-battle .unit .z-bar.full .z-fill { animation: z-pulse 1s ease-in-out infinite; }
-@keyframes z-pulse { 50% { filter: brightness(1.3); } }
-
-/* Rôle : petite icône au bout */
 #view-battle .unit .plate-head > .role-badge {
-    grid-column: 3; grid-row: 1 / span 2; position: static !important; width: 20px !important; height: 20px !important; padding: 0 !important;
-    display: grid !important; place-items: center; border-radius: 50% !important; margin: 0 !important; border: 0 !important; box-shadow: none !important;
+    position: static !important; width: 20px !important; height: 20px !important; padding: 0 !important; margin: 0 !important;
+    display: grid !important; place-items: center; border-radius: 50% !important; border: 2px solid #2b2118 !important; box-shadow: none !important; box-sizing: border-box;
 }
 #view-battle .unit .plate-head > .role-badge span { display: none !important; }
-#view-battle .unit .plate-head > .role-badge .art-icon { width: 12px !important; height: 12px !important; }
-#view-battle .unit .plate-head > .role-badge.misplaced { opacity: .45; }
+#view-battle .unit .plate-head > .role-badge .art-icon { width: 11px !important; height: 11px !important; }
+#view-battle .unit .plate-head > .role-badge.misplaced { opacity: .5; }
 
-/* Effets : petite colonne à gauche du Pokémon, dans sa case */
+/* Effets : bonus à gauche, malus à droite, en colonnes de 5 (2 colonnes au plus) */
 #view-battle .unit .hp-box .status-icons {
-    position: absolute !important; left: -6px; bottom: calc(100% + 4px); top: auto !important; transform: none !important;
-    width: auto !important; height: 84px; display: flex; flex-direction: column-reverse; flex-wrap: wrap; align-content: flex-start;
-    gap: 3px; padding: 0; background: none;
+    position: absolute !important; left: 0 !important; right: 0 !important; top: auto !important; bottom: 14px !important;
+    width: auto !important; height: 0 !important; transform: none !important; margin: 0 !important; padding: 0 !important;
+    display: block !important; background: none !important; z-index: 40; pointer-events: auto;
 }
-#view-battle .unit .hp-box .status-icons:empty { display: none !important; }
-#view-battle .unit .hp-box .ut-tile { width: 26px; height: 26px; border-width: 2px; border-radius: 6px; box-shadow: 0 1px 0 #2b2118; }
-#view-battle .unit .hp-box .ut-ico { width: 16px; height: 16px; }
-#view-battle .unit .hp-box .ut-stg { width: 7px; }
+#view-battle .unit .ut-col {
+    position: absolute; bottom: 0; height: 118px; display: flex; flex-direction: column-reverse; gap: 2px;
+}
+#view-battle .unit .ut-buffs { right: calc(50% + 52px); flex-wrap: wrap-reverse; }
+#view-battle .unit .ut-debuffs { left: calc(50% + 52px); flex-wrap: wrap; }
+#view-battle .unit .ut-col .ut-tile { width: 22px; height: 22px; border-width: 2px; border-radius: 5px; box-shadow: 0 1px 0 #2b2118; }
+#view-battle .unit .ut-col .ut-ico { width: 14px; height: 14px; }
+#view-battle .unit .ut-col .ut-stg { width: 6px; }
+#view-battle .unit .ut-col .ut-tile:has(.ut-stg) .ut-ico { margin-right: 4px; }
