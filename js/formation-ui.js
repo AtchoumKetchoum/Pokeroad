@@ -52,12 +52,13 @@ const FormationUI = (() => {
         if (!row) return null;
         if (!row.querySelector('.plate-head')) {
             const head = document.createElement('div');
-            head.className = 'plate-head';
+            head.className = 'plate-head no-minfont'; // tailles fines réglées dans unit-plate.css
             // Pastille du niveau (couleur = grade), puis vignette des étoiles à part
             head.innerHTML = '<span class="lvl-cell"></span><span class="star-badge"></span>';
             const lvl = row.querySelector('.lvl-badge');
             if (lvl) {
                 lvl.textContent = lvl.textContent.replace(/\s*★.*$/, ''); // les étoiles ont leur propre badge
+                lvl.style.removeProperty('font-size');
                 head.querySelector('.lvl-cell').prepend(lvl);
             }
             const gauges = document.createElement('div');
@@ -66,6 +67,7 @@ const FormationUI = (() => {
             if (ap) gauges.appendChild(ap);
             gauges.insertAdjacentHTML('beforeend', '<div class="z-bar" title="Jauge Z"><div class="z-fill"></div></div>');
             row.prepend(head);
+            unitEl.querySelector('.status-icons')?.classList.add('no-minfont');
             row.appendChild(gauges);
         }
         if (typeof FloorRing !== 'undefined') FloorRing.attach(unitEl); // jauges en anneau sur la case

@@ -192,7 +192,7 @@ const UnitTiles = (() => {
         const column = (list, cls) => {
             if (!list.length) return '';
             const shown = list.length > MAX_TILES ? list.slice(0, MAX_TILES - 1) : list;
-            return `<div class="ut-col ${cls}">${shown.map(tileHtml).join('')}${list.length > shown.length
+            return `<div class="ut-col ${cls} ${list.length > 5 ? 'two' : ''}">${shown.map(tileHtml).join('')}${list.length > shown.length
                 ? `<div class="ut-tile ut-more" data-tip="${esc(list.slice(shown.length).map(t => t.title).join(' · '))}">+${list.length - shown.length}</div>` : ''}</div>`;
         };
         box.innerHTML = column(tiles.filter(t => t.good), 'ut-buffs') + column(tiles.filter(t => !t.good), 'ut-debuffs');
