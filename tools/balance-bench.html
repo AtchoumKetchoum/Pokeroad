@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banc d'équilibrage</title>
+    <!-- Les scripts et données du jeu sont lus depuis la racine du site -->
+    <base href="../">
+    <style>
+        :root { --bg: #f6f1e7; --ink: #2b2433; --muted: #7a6f63; --line: #ddd2bf; --win: #2f7a46; --lose: #b8402e; }
+        body { margin: 0; padding: 16px; background: var(--bg); color: var(--ink); font: 14px/1.4 system-ui, sans-serif; }
+        h1 { font-size: 20px; margin: 0 0 8px; }
+        .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+        button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); background: #fff; cursor: pointer; }
+        #log { color: var(--muted); font-size: 12px; white-space: pre-wrap; max-height: 120px; overflow: auto; }
+        table { border-collapse: collapse; margin: 8px 0 20px; font-variant-numeric: tabular-nums; }
+        th, td { border-bottom: 1px solid var(--line); padding: 4px 10px; text-align: right; }
+        th:first-child, td:first-child { text-align: left; }
+        .w { color: var(--win); } .l { color: var(--lose); }
+        #game-root { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Banc d'équilibrage PokéRoad</h1>
+    <p style="color:var(--muted);margin:0 0 12px">Combats automatiques en temps virtuel, sauvegarde en mémoire (la vraie sauvegarde n'est pas touchée).</p>
+    <div class="bar">
+        <button id="run-all">Tout lancer</button>
+        <label>Graines par combat <input id="seeds" type="number" value="2" min="1" max="20" style="width:48px"></label>
+        <span id="status">Chargement…</span>
+    </div>
+    <div id="log"></div>
+    <div id="results"></div>
+    <div id="game-root"></div>
+    <script src="tools/balance-bench.js"></script>
+</body>
+</html>
