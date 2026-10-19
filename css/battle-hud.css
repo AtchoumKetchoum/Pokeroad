@@ -141,3 +141,7 @@
 #view-battle #top-right-actions .speed-btn { color: #2b2118 !important; }
 #view-battle #top-right-actions .speed-btn.active { background: #ffd25a !important; color: #2b2118 !important; }
 #view-battle #battle-top-bar .turn-order-sidebar { background: #efe2c4 !important; border: 2px solid #2b2118 !important; }
+
+/* Vignette BOSS : respiration discrète (3 % au lieu de 15 %, plus lente) */
+#view-battle #hudProgress .hud-step.boss { animation: boss-breathe 2.4s ease-in-out infinite !important; }
+@keyframes boss-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
