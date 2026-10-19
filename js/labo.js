@@ -351,7 +351,7 @@ function renderEggSelectionGrid() {
             <div class="egg-rarity-pill bg-${rarityClass}">${egg.rarity}</div>
             <h5>Œuf ${egg.rarity}</h5>
             <button class="pk-btn-action small" onclick="startIncubation('${egg.instanceId}')">Incuber</button>
-            <button class="egg-recycle-btn" onclick="recycleEgg('${egg.instanceId}')" title="Recycler contre de l'argent">Recycler · ${GameData.getEggRecycleValue(egg.rarity)} $</button>
+            <button class="egg-recycle-btn" onclick="recycleEgg('${egg.instanceId}')" title="Recycler contre ${GameData.getEggRecycleValue(egg.rarity)} $">♻ ${GameData.getEggRecycleValue(egg.rarity)} $</button>
         `;
         grid.appendChild(card);
     });

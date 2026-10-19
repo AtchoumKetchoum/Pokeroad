@@ -141,3 +141,18 @@
 #refinement-modal .food-item.selected { border-color: var(--ds-ink) !important; background: #ffe7b0 !important; }
 /* Le lien « Retour aux Pokémon » double le bouton Précédent */
 #refinement-modal .refinement-footer { display: none !important; }
+
+/* --- Labo : sac d'œufs --- */
+.egg-pick-card { border: var(--ds-bw) solid var(--ds-ink) !important; border-radius: var(--ds-r) !important; background: #fffaf0 !important; }
+.egg-pick-card .pk-btn-action, .egg-pick-card .egg-recycle-btn {
+    width: 100%; min-height: var(--ds-h-sm) !important; height: var(--ds-h-sm); box-sizing: border-box; padding: 0 6px !important;
+    border: var(--ds-bw) solid var(--ds-ink) !important; border-radius: var(--ds-r-sm) !important;
+    display: inline-flex !important; align-items: center; justify-content: center; white-space: nowrap; overflow: hidden;
+}
+.egg-pick-card .egg-recycle-btn { background: #fffaf0 !important; color: #2b2118 !important; }
+
+/* --- Carte : étiquettes des zones toutes de la même taille (l'état se lit à la couleur) --- */
+.map-pin .pin-name, .map-pin.done .pin-name, .map-pin.current .pin-name, .map-pin.locked .pin-name {
+    font-size: 20px !important; padding: 2px 10px !important; border-width: var(--ds-bw) !important; border-radius: var(--ds-r-sm) !important;
+    transform: none !important;
+}
