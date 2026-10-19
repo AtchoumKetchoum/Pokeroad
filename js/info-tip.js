@@ -229,7 +229,8 @@ const InfoTip = (() => {
         const slot = el.closest('.unit-slot');
         if (!slot) return null;
         const side = slot.closest('#player-grid') ? 'player' : 'enemy';
-        return grid[side]?.[[...slot.parentElement.children].indexOf(slot)] || null;
+        // Rang parmi les cases seulement (la grille contient aussi la couche des pièges, etc.)
+        return grid[side]?.[[...slot.parentElement.querySelectorAll(':scope > .unit-slot')].indexOf(slot)] || null;
     }
 
     // --- Déclencheurs ---

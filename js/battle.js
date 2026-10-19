@@ -257,6 +257,8 @@ function getSlotEl(side, index) {
 }
 
 function handleGridHover(event) {
+    // Remplacé par la grande fiche au survol (js/info-tip.js) : une seule fiche à la fois
+    return;
     if (!document.body.classList.contains('combat-active')) return;
 
     const unitSlot = event.target.closest('.unit-slot');
