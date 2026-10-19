@@ -29,7 +29,12 @@ const FieldFx = (() => {
     }
     function weatherLayer(sc) {
         let el = sc.querySelector(':scope > #field-weather');
-        if (!el) { el = document.createElement('div'); el.id = 'field-weather'; sc.appendChild(el); }
+        if (!el) {
+            // Juste au-dessus du décor : la météo passe derrière le plateau, les Pokémon et leurs infos
+            el = document.createElement('div'); el.id = 'field-weather';
+            const decor = sc.querySelector(':scope > #battle-scene');
+            if (decor) decor.after(el); else sc.prepend(el);
+        }
         return el;
     }
 

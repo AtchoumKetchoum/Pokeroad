@@ -714,13 +714,26 @@ function updateTurnDisplay(unit) {
     }
 
     const sprite = unit.spriteSrc || '';
-    const hpText = `HP: ${unit.hp} / ${unit.maxHp}`;
-    
+    // Grade et étoiles : la sauvegarde pour nos Pokémon, le palier pour les ennemis
+    const pk = unit._instanceId && typeof GameData !== 'undefined' ? GameData.getPokemons().find(p => p.instanceId === unit._instanceId) : null;
+    const grade = pk ? (pk.refinementLevel || 1) : (unit.tier?.grade || 1);
+    const stars = pk ? (pk.refinementStars || 0) : (unit.tier?.stars || 0);
+    const hpPct = Math.max(0, Math.min(100, unit.hp / unit.maxHp * 100));
+    const z = Math.min(100, Math.round(unit.boostGauge || 0));
+    const types = (unit.types || []).map(t => `<span class="chip type-${t}">${typeof formatTypeLabel === 'function' ? formatTypeLabel(t) : t}</span>`).join('');
+
+    // Fiche du Pokémon actif : portrait, nom, niveau (couleur du grade), étoiles, types, PV chiffrés, jauge Z
     dom.turnUnitDisplay.innerHTML = `
-        <img src="${sprite}" alt="${unit.name}" style="transform: ${unit._side === 'player' ? 'scaleX(-1)' : 'scaleX(1)'};" id="turn-unit-sprite">
-        <div class="turn-unit-info">
-            <span class="turn-unit-name" id="turn-unit-name">${unit.name}</span>
-            <span class="turn-unit-hp" id="turn-unit-hp">${hpText}</span>
+        <div class="tud-portrait"><img src="${sprite}" alt="${unit.name}" style="transform: ${unit._side === 'player' ? 'scaleX(-1)' : 'scaleX(1)'};" id="turn-unit-sprite"></div>
+        <div class="tud-main">
+            <div class="tud-line">
+                <span class="turn-unit-name" id="turn-unit-name">${unit.name}</span>
+                <span class="tud-lvl g${Math.min(6, grade)}" title="Niveau ${unit.level} · Grade ${grade}">${unit.level}</span>
+                ${stars ? `<span class="tud-stars">★${stars}</span>` : ''}
+                <span class="tud-types">${types}</span>
+            </div>
+            <div class="tud-hp ${hpPct < 25 ? 'low' : hpPct < 50 ? 'mid' : ''}"><div class="tud-hp-fill" style="width:${hpPct}%"></div><span class="turn-unit-hp" id="turn-unit-hp">${Math.max(0, unit.hp)} / ${unit.maxHp}</span></div>
+            <div class="tud-z ${z >= 100 ? 'full' : ''}" title="Jauge Z ${z} %"><div style="width:${z}%"></div></div>
         </div>
     `;
 }
@@ -1325,6 +1338,25 @@ function showMoveDetails(move, unit, isZMove = false) {
     dom.infoDisplayPanel.classList.add('visible');
 }
 
+// Contenu d'un bouton d'attaque : nom, puis genre · puissance · portée (ou un libellé imposé)
+function moveBtnHtml(mv, sub = null, isZ = false) {
+    const esc = (t) => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    if (sub == null) {
+        const rw = mv.rw || {};
+        const parts = [];
+        if (rw.kind === 'tactic') parts.push('Tactique');
+        else if (mv.damage_class === 'status' && rw.kind !== 'attack') parts.push('Statut');
+        else {
+            parts.push('Attaque');
+            const power = Math.round((rw.power || mv.power || 0) * (mv._refMult || 1));
+            if (power) parts.push(power);
+            if (typeof BattleRules !== 'undefined') parts.push(BattleRules.isContact(mv) ? 'contact' : 'distance');
+        }
+        sub = parts.join(' · ');
+    }
+    return `<span class="mb-name">${isZ ? 'Z · ' : ''}${esc(mv.name)}</span><span class="mb-sub no-minfont">${esc(sub)}</span>`;
+}
+
 async function renderMovesForUnit(unit) {
   await Promise.all([loadMovesDB(), loadTypesDB()]);
   if (!dom.movesRow || !dom.targetPrompt) return Promise.resolve();
@@ -1343,7 +1375,8 @@ async function renderMovesForUnit(unit) {
     }
 
     if (isZMoveReady) {
-        btn.textContent = `Z-${mv.name}`; // Change text to indicate Z-Move
+        btn.innerHTML = moveBtnHtml(mv, 'Attaque Z prête', true); // version Z
+        btn.classList.add('z-ready');
         btn.style.setProperty('--type-color', `var(--type-${(mv.type || 'normal').toLowerCase()})`); // Use base move type color
         btn.addEventListener('click', async () => {
             if (uiLocked) return;
@@ -1361,14 +1394,14 @@ async function renderMovesForUnit(unit) {
         btn.classList.add('is-z-move-base');
     }
 
-    btn.textContent = mv.name;
+    btn.innerHTML = moveBtnHtml(mv);
     const type = (mv.type || 'normal').toLowerCase();
     btn.style.setProperty('--type-color', `var(--type-${type})`);
     const passive = typeof MoveRework !== 'undefined' && MoveRework.isPassive(mv);
     if (passive) {
         // Un passif occupe un emplacement mais ne se lance jamais : il se déclenche seul
         btn.classList.add('is-passive');
-        btn.textContent = `${mv.name} · passif`;
+        btn.innerHTML = moveBtnHtml(mv, 'Passif' + (mv.rw?.triggerLabel ? ` · ${mv.rw.triggerLabel}` : ''));
         btn.setAttribute('aria-disabled', 'true');
         btn.addEventListener('mouseover', () => showMoveDetails(mv, unit, false));
         btn.addEventListener('click', () => showMoveDetails(mv, unit, false));

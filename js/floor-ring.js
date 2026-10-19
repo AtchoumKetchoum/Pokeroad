@@ -46,8 +46,9 @@ const FloorRing = (() => {
         const hpFill = box.querySelector('.hp-fill');
         const hp = hpFill ? (hpFill.style.width ? pct(hpFill) : 100) : 0;
         dash(svg.querySelectorAll('.fr-hp'), hp);
-        svg.classList.toggle('mid', !!hpFill?.classList.contains('midHp'));
-        svg.classList.toggle('low', !!hpFill?.classList.contains('lowHp'));
+        // Seuils : jaune sous 50 %, rouge sous 25 % (et l'anneau pulse)
+        svg.classList.toggle('mid', hp < 50 && hp >= 25);
+        svg.classList.toggle('low', hp < 25);
         dash(svg.querySelectorAll('.fr-shield'), pct(box.querySelector('.hp-shield')));
         dash(svg.querySelectorAll('.fr-ap'), pct(box.querySelector('.ap-fill')));
         const z = pct(box.querySelector('.z-fill'));

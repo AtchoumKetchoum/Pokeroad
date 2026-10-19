@@ -24,7 +24,8 @@
 #view-battle .floor-ring path { fill: none; stroke-linecap: butt; transition: stroke-dasharray .3s ease; }
 #view-battle .floor-ring .fr-hp { stroke: #6cc15f; stroke-width: 5; }
 #view-battle .floor-ring.mid .fr-hp { stroke: #e0b33a; }
-#view-battle .floor-ring.low .fr-hp { stroke: #d24a42; }
+#view-battle .floor-ring.low .fr-hp { stroke: #e0352b; animation: fr-low .9s ease-in-out infinite; }
+@keyframes fr-low { 50% { stroke: #ff8a80; } }
 #view-battle .floor-ring .fr-shield { stroke: #f4f9ff; stroke-width: 2; }
 #view-battle .floor-ring .fr-ap { stroke: #5aa2ff; stroke-width: 3.5; }
 #view-battle .floor-ring .fr-z { stroke: #ffc93c; stroke-width: 3.5; }

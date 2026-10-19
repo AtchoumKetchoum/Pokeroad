@@ -2,7 +2,7 @@
 
 /* --- Météo : couche animée au-dessus du plateau (sous le bandeau et les boutons) --- */
 #view-battle #field-weather {
-    position: absolute; left: 0; right: 0; top: 160px; bottom: 300px; z-index: 150; pointer-events: none;
+    position: absolute; left: 0; right: 0; top: 160px; bottom: 300px; z-index: 0; pointer-events: none;
     opacity: 0; transition: opacity .6s ease;
 }
 #view-battle #field-weather[class] { opacity: 1; }

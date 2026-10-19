@@ -1,0 +1,86 @@
+/* Bloc du bas du combat, en flexbox : tes synergies, le Pokémon actif, ses attaques en 2 × 2 */
+
+#view-battle #battle-footer {
+    top: auto !important; bottom: 10px !important; left: 12px !important; right: 12px !important;
+    height: 274px !important; padding: 8px 10px 10px !important; box-sizing: border-box;
+    display: flex !important; flex-direction: column !important; align-items: stretch !important; justify-content: flex-start !important; gap: 8px !important;
+}
+/* Tes synergies : bandeau en tête du bloc */
+#view-battle #battle-footer > .synergy-panel.synergy-player {
+    position: static !important; inset: auto !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important;
+    flex: none; width: auto !important; height: 40px; margin: 0 !important; padding: 0 0 6px !important;
+    background: none !important; border: 0 !important; border-bottom: 2px dashed rgba(43, 33, 24, .25) !important; border-radius: 0 !important; box-shadow: none !important;
+}
+#view-battle #battle-footer > #selection-banner, #view-battle #battle-footer > #side-actions { flex: none; }
+#view-battle #battle-footer > #combat-panel {
+    flex: 1 1 auto; min-height: 0; height: auto !important;
+    grid-template-rows: auto minmax(0, 1fr) !important; gap: 8px !important;
+}
+
+/* Pokémon actif */
+#view-battle #turn-unit-display {
+    display: flex !important; align-items: center; gap: 10px; padding: 6px 10px 6px 6px !important; min-height: 0;
+    background: #2b2118 !important; color: #f7ecdc; border-radius: 14px !important; border: 0 !important;
+}
+#view-battle #turn-unit-display:empty { display: none !important; }
+#view-battle .tud-portrait {
+    flex: none; width: 58px; height: 58px; border-radius: 50%; background: #c1cfda; border: 3px solid #f7ecdc;
+    display: grid; place-items: center; overflow: hidden; box-sizing: border-box;
+}
+#view-battle .tud-portrait img { width: 64px !important; height: 64px !important; object-fit: contain; image-rendering: pixelated; }
+#view-battle .tud-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+#view-battle .tud-line { display: flex; align-items: center; gap: 6px; min-width: 0; }
+#view-battle .tud-line .turn-unit-name {
+    font-family: var(--font-title); color: #f7ecdc !important; line-height: 1.1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 0 1 auto;
+}
+#view-battle .tud-lvl {
+    flex: none; padding: 1px 8px; border-radius: 11px; background: #8a7f6a; color: #f7ecdc; font-weight: 900; line-height: 1.2;
+    border: 2px solid #f7ecdc;
+}
+#view-battle .tud-lvl.g2 { background: #5f9a5a; }
+#view-battle .tud-lvl.g3 { background: #4a78b8; }
+#view-battle .tud-lvl.g4 { background: #8a5ab0; }
+#view-battle .tud-lvl.g5 { background: #d0782a; }
+#view-battle .tud-lvl.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a); color: #2b2118; }
+#view-battle .tud-stars { flex: none; color: #ffd25a; font-weight: 900; line-height: 1.2; }
+#view-battle .tud-types { margin-left: auto; display: flex; gap: 4px; flex: none; }
+#view-battle .tud-types .chip { margin: 0 !important; }
+#view-battle .tud-hp { position: relative; height: 26px; border-radius: 13px; background: #4a3d33; overflow: hidden; }
+#view-battle .tud-hp-fill { height: 100%; background: linear-gradient(180deg, #8bd47c, #5fae54); transition: width .3s ease; }
+#view-battle .tud-hp.mid .tud-hp-fill { background: linear-gradient(180deg, #f0c85a, #d9a531); }
+#view-battle .tud-hp.low .tud-hp-fill { background: linear-gradient(180deg, #f07a70, #d23c33); }
+#view-battle #turn-unit-display .tud-hp #turn-unit-hp {
+    position: absolute; inset: 0; display: grid; place-items: center; color: #fff !important; font-weight: 900; line-height: 1;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .55);
+}
+#view-battle .tud-z { height: 8px; border-radius: 4px; background: #4a3d33; overflow: hidden; }
+#view-battle .tud-z > div { height: 100%; background: linear-gradient(90deg, #e6a92a, #ffd25a); }
+#view-battle .tud-z.full { box-shadow: 0 0 6px #ffc93c; }
+
+/* Attaques : 2 × 2 qui remplissent la hauteur */
+#view-battle #actionPanel { min-height: 0; display: flex !important; flex-direction: column; gap: 6px; }
+#view-battle #actionPanel .movesRow {
+    flex: 1 1 auto; min-height: 0; display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important; grid-auto-rows: minmax(0, 1fr); gap: 8px !important;
+}
+#view-battle .movesRow .move-btn {
+    min-height: 0 !important; height: auto !important; margin: 0 !important;
+    display: flex !important; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+    padding: 4px 10px 4px 18px !important; text-align: left; position: relative; overflow: hidden;
+    background: color-mix(in srgb, var(--type-color, #a8a878) 28%, #f7ecdc) !important; color: #2b2118 !important;
+    border: 3px solid #2b2118 !important; border-radius: 12px !important; box-shadow: 0 3px 0 #2b2118 !important;
+}
+#view-battle .movesRow .move-btn::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 9px; background: var(--type-color, #a8a878);
+}
+#view-battle .movesRow .move-btn .mb-name {
+    font-family: var(--font-title); line-height: 1.05; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#view-battle .movesRow .move-btn .mb-sub {
+    font: 800 15px/1.1 'Nunito', var(--font-body), sans-serif; color: #6b5a45; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+#view-battle .movesRow .move-btn.is-passive { opacity: .6; }
+#view-battle .movesRow .move-btn.z-ready { background: #fff3c4 !important; box-shadow: 0 3px 0 #2b2118, 0 0 0 3px #ffc93c !important; }
+#view-battle .movesRow .move-btn.z-ready .mb-name { color: #b07408; }
+#view-battle .movesRow .move-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #2b2118 !important; }

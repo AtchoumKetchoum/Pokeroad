@@ -130,7 +130,10 @@ const FormationUI = (() => {
             panel.className = `synergy-panel synergy-${side}`;
             // Synergies ennemies : à gauche de la ligne sous le bandeau
             const sub = side === 'enemy' ? document.getElementById('battle-subbar') : null;
-            if (sub) sub.prepend(panel); else footer.appendChild(panel);
+            const dock = side === 'player' ? document.getElementById('battle-footer') : null;
+            if (sub) sub.prepend(panel);
+            else if (dock) dock.prepend(panel); // tes synergies : en tête du bloc du bas
+            else footer.appendChild(panel);
         }
         // Zone 1 (apprentissage) : les ennemis n'ont pas de synergies, comme dans les règles du combat
         if (side === 'enemy' && typeof zoneIndex !== 'undefined' && zoneIndex <= 1) {
