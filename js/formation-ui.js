@@ -68,6 +68,13 @@ const FormationUI = (() => {
             row.appendChild(gauges);
         }
         const { grade, stars } = gradeOf(side, unitEl);
+        // Rond de niveau : le chiffre du niveau, la couleur du grade
+        const lvlEl = row.querySelector('.lvl-badge');
+        if (lvlEl) {
+            lvlEl.textContent = lvlEl.textContent.replace(/^Lv\.?\s*/, '');
+            lvlEl.className = `lvl-badge g${Math.min(6, grade)}`;
+            lvlEl.dataset.grade = grade;
+        }
         const g = row.querySelector('.grade-badge');
         g.textContent = ''; g.dataset.g = grade;
         g.className = `grade-badge g${Math.min(6, grade)}`;

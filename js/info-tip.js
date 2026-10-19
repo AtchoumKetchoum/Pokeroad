@@ -114,6 +114,12 @@ const InfoTip = (() => {
         if (rk) return [rk, rank()];
         const hud = el.closest('#view-battle #hudProgress');
         if (hud) return [hud, zone()];
+        const lvlEl = el.closest('#view-battle .unit .lvl-badge');
+        if (lvlEl) {
+            const star = lvlEl.parentElement?.querySelector('.star-badge');
+            const stars = star && !star.hidden ? star.textContent.replace('★', '') : 0;
+            return [lvlEl, `<b>Niveau ${esc(lvlEl.textContent)}</b><div>Grade ${esc(lvlEl.dataset.grade || 1)}${stars ? ` · ${stars} étoile${stars > 1 ? 's' : ''}` : ''}</div><small>La couleur du rond indique le grade.</small>`];
+        }
         const roleEl = el.closest('#view-battle .role-badge');
         if (roleEl) {
             const key = [...roleEl.classList].find(c => c.startsWith('role-') && c !== 'role-badge')?.slice(5);
@@ -171,7 +177,7 @@ const InfoTip = (() => {
         const hit = contentFor(e.target);
         if (!hit) { hide(); return; }
         // Toucher sur mobile : la bulle remplace l'action (les vignettes, la frise, les bandeaux n'en ont pas d'autre)
-        if (e.pointerType === 'mouse' && !hit[0].matches('.held-chip, .ut-tile, .role-badge')) return;
+        if (e.pointerType === 'mouse' && !hit[0].matches('.held-chip, .ut-tile, .role-badge, .lvl-badge')) return;
         e.stopPropagation();
         if (anchor === hit[0] && bubble?.classList.contains('visible')) { hide(); return; }
         show(hit[0], hit[1]);
