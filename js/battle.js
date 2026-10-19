@@ -1550,10 +1550,11 @@ function promptTargetSelection(move, unit) {
             dom.targetPrompt.textContent = 'Appuie sur une cible pour voir la zone, relâche pour attaquer.';
         }
 
-        // Survol à la souris : aperçu léger de la zone
+        // Survol à la souris : les Pokémon réellement touchés passent en rouge
         slots.forEach((slot, idx) => {
-            slot.addEventListener('mouseenter', () => { if (!pressed) paint('aoe-highlight', slot.classList.contains('targetable') ? hitIndexesFor(idx) : []); }, { signal: ev.signal });
-            slot.addEventListener('mouseleave', () => { if (!pressed) paint('aoe-highlight', []); }, { signal: ev.signal });
+            // (pressed vaut -1 hors appui : tester « < 0 », pas « ! »)
+            slot.addEventListener('mouseenter', () => { if (pressed < 0) paint('aoe-highlight', slot.classList.contains('targetable') ? hitIndexesFor(idx) : []); }, { signal: ev.signal });
+            slot.addEventListener('mouseleave', () => { if (pressed < 0) paint('aoe-highlight', []); }, { signal: ev.signal });
         });
 
         // Appui maintenu (doigt ou souris) : les Pokémon touchés passent en rouge ; relâcher lance l'attaque

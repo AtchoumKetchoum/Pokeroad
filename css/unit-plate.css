@@ -53,8 +53,9 @@
 #view-battle .unit .lvl-cell.g5 { background: #d0782a; }
 #view-battle .unit .lvl-cell.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a); color: #2b2118; }
 #view-battle .unit .lvl-cell .lvl-badge {
-    all: unset; font-family: var(--font-title); line-height: 1 !important; color: inherit !important;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, .35); letter-spacing: -.5px;
+    all: unset; font-family: 'Nunito', var(--font-body), sans-serif !important; font-weight: 900 !important; line-height: 1 !important; color: inherit !important;
+    background: none !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .3); letter-spacing: 0;
 }
 #view-battle .unit .lvl-cell.g6 .lvl-badge { text-shadow: none; }
 #view-battle .unit .star-badge { display: flex; flex-direction: column; gap: 2px; }

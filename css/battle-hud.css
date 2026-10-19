@@ -109,3 +109,23 @@
 #view-battle .syn-dot.type-dark { background: var(--t-dark, var(--type-dark, #8a7f6a)); }
 #view-battle .syn-dot.type-steel { background: var(--t-steel, var(--type-steel, #8a7f6a)); }
 #view-battle .syn-dot.type-fairy { background: var(--t-fairy, var(--type-fairy, #8a7f6a)); }
+
+/* Ciblage d'une attaque : orange = cible possible, gris = hors de portée,
+   rouge = Pokémon réellement touchés (survol à la souris ou appui maintenu) */
+#view-battle #enemy-grid.is-targeting .unit-slot::before { transition: background .12s, border-color .12s; }
+#view-battle #enemy-grid .unit-slot.targetable::before {
+    background: radial-gradient(ellipse, rgba(255, 166, 60, .85), rgba(255, 150, 40, .3)) !important;
+    border-color: #c46a10 !important; animation: none !important;
+}
+#view-battle #enemy-grid .unit-slot.not-targetable::before {
+    background: rgba(120, 116, 110, .45) !important; border-color: rgba(70, 66, 60, .6) !important; animation: none !important;
+}
+#view-battle #enemy-grid .unit-slot.not-targetable .floor-ring { opacity: .35; }
+#view-battle #enemy-grid .unit-slot.aoe-highlight::before,
+#view-battle #enemy-grid .unit-slot.aoe-confirm::before {
+    background: radial-gradient(ellipse, rgba(235, 45, 45, .95), rgba(200, 20, 20, .4)) !important;
+    border-color: #8a1010 !important; animation: none !important;
+}
+#view-battle #enemy-grid .unit-slot.aoe-highlight .unit,
+#view-battle #enemy-grid .unit-slot.aoe-confirm .unit { filter: drop-shadow(0 0 6px rgba(230, 40, 40, .9)); }
+#view-battle #enemy-grid .unit-slot.targetable, #view-battle #enemy-grid .unit-slot.aoe-highlight { outline: none !important; background-color: transparent !important; }
