@@ -128,6 +128,8 @@ const InfoTip = (() => {
         }
         const held = el.closest('.held-chip[data-item]');
         if (held) return [held, heldItem(unitFromEl(held), held.dataset.item)];
+        const fchip = el.closest('#view-battle .field-chip');
+        if (fchip) return [fchip, `<div>${esc(fchip.dataset.tip)}</div>`];
         const tile = el.closest('#view-battle .ut-tile');
         if (tile) return [tile, `<div>${esc(tile.dataset.tip || tile.getAttribute('title') || '')}</div>`];
         const tl = el.closest('#view-battle .timeline-unit-container');
@@ -177,7 +179,7 @@ const InfoTip = (() => {
         const hit = contentFor(e.target);
         if (!hit) { hide(); return; }
         // Toucher sur mobile : la bulle remplace l'action (les vignettes, la frise, les bandeaux n'en ont pas d'autre)
-        if (e.pointerType === 'mouse' && !hit[0].matches('.held-chip, .ut-tile, .role-badge, .lvl-badge')) return;
+        if (e.pointerType === 'mouse' && !hit[0].matches('.held-chip, .ut-tile, .role-badge, .lvl-badge, .field-chip')) return;
         e.stopPropagation();
         if (anchor === hit[0] && bubble?.classList.contains('visible')) { hide(); return; }
         show(hit[0], hit[1]);

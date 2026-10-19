@@ -53,6 +53,7 @@
     <link rel="stylesheet" href="css/iso-view.css">
     <link rel="stylesheet" href="css/battle-hud.css">
     <link rel="stylesheet" href="css/unit-plate.css">
+    <link rel="stylesheet" href="css/field-fx.css">
 
     <style>
         /* View Manager Display Logic */
@@ -237,6 +238,8 @@
                             <button class="exit-btn" id="home-flee-btn" onclick="leaveBattleToHome()" title="Retour à la carte de la zone"><span>Carte</span></button>
                         </div>
                     </div>
+                    <!-- Sous le bandeau : synergies ennemies, météo / terrain / pièges, crédits -->
+                    <div id="battle-subbar"><div id="field-chips" class="no-minfont"></div><button id="pmd-credits-btn" type="button" onclick="PmdSprite.showCredits(document.getElementById('view-battle'))" title="Sprites : PMD Sprite Repository · CC BY-NC" aria-label="Crédits des sprites">©</button></div>
                     <div id="battleArena">
                         <div class="slot side-left"><div class="unit-slot"></div></div>
                         <div class="slot side-right"><div class="unit-slot"></div></div>
@@ -245,7 +248,6 @@
                     <div id="enemy-grid" class="team-grid"></div>
                     <div id="infoDisplayPanel" class="glass-panel"></div>
                     <div id="battleStatus"></div>
-                    <button id="pmd-credits-btn" type="button" onclick="PmdSprite.showCredits(document.getElementById('view-battle'))" title="Sprites : PMD Sprite Repository · CC BY-NC" aria-label="Crédits des sprites">©</button>
                     <div id="battle-footer">
                         <div id="selection-banner"></div>
                         <div id="combat-panel">
@@ -471,6 +473,8 @@
     <script src="js/battle-ui.js"></script>
     <script src="js/unit-tiles.js"></script>
     <script src="js/floor-ring.js"></script>
+    <script src="js/field-fx.js"></script>
+    <script src="js/team-drag.js"></script>
     <script src="js/pokedex.js"></script>
     <script src="js/labo.js"></script>
     <script src="js/center.js"></script>

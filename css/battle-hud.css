@@ -56,15 +56,15 @@
 
 /* Ligne sous le bandeau : synergies ennemies à gauche, météo et crédits à droite */
 #view-battle .synergy-panel.synergy-enemy {
-    top: 212px !important; left: 12px !important; right: auto !important; width: auto !important; max-width: calc(100% - 84px) !important;
+    top: 178px !important; left: 12px !important; right: auto !important; width: auto !important; max-width: calc(100% - 84px) !important;
 }
 #view-battle .synergy-panel.synergy-enemy:has(.synergy-empty) { display: none !important; }
 #view-battle #pmd-credits-btn {
-    top: 214px !important; right: 12px !important; width: 40px; height: 40px; padding: 0 !important; max-width: none !important;
+    top: 180px !important; right: 12px !important; width: 40px; height: 40px; padding: 0 !important; max-width: none !important;
     border-radius: 50%; font-size: 22px !important; line-height: 1; display: grid; place-items: center; opacity: .75;
 }
 #view-battle #infoDisplayPanel.terrain-mode {
-    top: 212px !important; bottom: auto !important; left: auto !important; right: 62px !important; transform: none !important;
+    top: 178px !important; bottom: auto !important; left: auto !important; right: 62px !important; transform: none !important;
     width: auto !important; max-width: 280px; padding: 4px 12px !important; z-index: 205;
 }
 #view-battle #infoDisplayPanel.terrain-mode .info-section { display: flex; flex-direction: column; gap: 0; }
@@ -129,3 +129,6 @@
 #view-battle #enemy-grid .unit-slot.aoe-highlight .unit,
 #view-battle #enemy-grid .unit-slot.aoe-confirm .unit { filter: drop-shadow(0 0 6px rgba(230, 40, 40, .9)); }
 #view-battle #enemy-grid .unit-slot.targetable, #view-battle #enemy-grid .unit-slot.aoe-highlight { outline: none !important; background-color: transparent !important; }
+
+/* Plateau : plus de libellés de rangées (positions des grilles dans iso-view.css) */
+#view-battle .row-labels { display: none !important; }

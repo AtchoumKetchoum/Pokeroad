@@ -5,7 +5,7 @@
    ========================================================================== */
 
 /* Scène en 3D : perspective commune, plateaux et cases en 3D */
-#view-battle .scaler-view.view-light { perspective: 1300px; }
+#view-battle .scaler-view.view-light { perspective: 3000px; } /* perspective douce : l'avant s'élargit peu, le plateau peut être plus grand */
 #view-battle .scaler-view.view-iso { perspective: none; }
 #view-battle .scaler-view:is(.view-light, .view-iso) .team-grid { transform-style: preserve-3d; transition: transform .35s ease; }
 #view-battle .scaler-view:is(.view-light, .view-iso) .team-grid .unit-slot {
@@ -48,7 +48,7 @@
    ========================================================================== */
 /* Grilles plus hautes et lignes plus espacées : l'inclinaison les tasse, les barres ne chevauchent plus */
 #view-battle .scaler-view.view-light #enemy-grid { top: 226px !important; height: 352px !important; }
-#view-battle .scaler-view.view-light #player-grid { top: 706px !important; height: 392px !important; }
+#view-battle .scaler-view.view-light #player-grid { top: 674px !important; height: 392px !important; }
 #view-battle .scaler-view.view-light .team-grid { row-gap: 26px !important; column-gap: 14px !important; }
 /* Tapis de terrain sous chaque camp (bleu pour toi, rouge pour l'ennemi) */
 #view-battle .scaler-view.view-light .team-grid::before {

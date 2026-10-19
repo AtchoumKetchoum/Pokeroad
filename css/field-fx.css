@@ -1,0 +1,120 @@
+/* Effets de terrain visibles sur le plateau (js/field-fx.js) */
+
+/* --- Météo : couche animée au-dessus du plateau (sous le bandeau et les boutons) --- */
+#view-battle #field-weather {
+    position: absolute; left: 0; right: 0; top: 160px; bottom: 300px; z-index: 150; pointer-events: none;
+    opacity: 0; transition: opacity .6s ease;
+}
+#view-battle #field-weather[class] { opacity: 1; }
+#view-battle #field-weather:not([class]), #view-battle #field-weather[class=""] { opacity: 0; }
+
+/* Pluie : traits obliques qui tombent, ciel assombri */
+#view-battle #field-weather.fw-rain {
+    background:
+        repeating-linear-gradient(105deg, transparent 0 22px, rgba(190, 215, 255, .55) 22px 24px, transparent 24px 46px),
+        linear-gradient(rgba(40, 60, 110, .22), rgba(40, 60, 110, .1));
+    background-size: 120px 220px, 100% 100%;
+    animation: fx-rain .45s linear infinite;
+}
+@keyframes fx-rain { to { background-position: -40px 220px, 0 0; } }
+
+/* Soleil : halo chaud en haut à droite, lumière dorée qui pulse */
+#view-battle #field-weather.fw-sun {
+    background:
+        radial-gradient(circle at 92% 0%, rgba(255, 236, 150, .85), rgba(255, 200, 80, .35) 22%, transparent 55%),
+        linear-gradient(rgba(255, 196, 80, .16), rgba(255, 160, 60, .08));
+    animation: fx-sun 3s ease-in-out infinite;
+}
+@keyframes fx-sun { 50% { filter: brightness(1.15); } }
+
+/* Tempête de sable : voile ocre et rafales horizontales */
+#view-battle #field-weather.fw-sand {
+    background:
+        repeating-linear-gradient(8deg, transparent 0 30px, rgba(214, 170, 100, .45) 30px 33px, transparent 33px 70px),
+        linear-gradient(rgba(200, 155, 90, .3), rgba(180, 135, 70, .22));
+    background-size: 260px 140px, 100% 100%;
+    animation: fx-sand .8s linear infinite;
+}
+@keyframes fx-sand { to { background-position: 260px 20px, 0 0; } }
+
+/* Grêle et neige : grains / flocons qui tombent */
+#view-battle #field-weather.fw-hail, #view-battle #field-weather.fw-snow {
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, .95) 0 2.5px, transparent 3px) 0 0 / 46px 46px,
+        radial-gradient(circle, rgba(235, 245, 255, .85) 0 2px, transparent 2.5px) 23px 20px / 60px 60px,
+        linear-gradient(rgba(200, 225, 255, .18), rgba(200, 225, 255, .08));
+}
+#view-battle #field-weather.fw-hail { animation: fx-hail .6s linear infinite; }
+#view-battle #field-weather.fw-snow { animation: fx-snow 3s linear infinite; }
+@keyframes fx-hail { to { background-position: -10px 46px, 13px 80px, 0 0; } }
+@keyframes fx-snow { to { background-position: 20px 46px, 3px 80px, 0 0; } }
+
+/* Ciel Ombre : voile violet sombre */
+#view-battle #field-weather.fw-shadow {
+    background: radial-gradient(ellipse at 50% 40%, rgba(70, 30, 90, .1), rgba(40, 10, 60, .4));
+    animation: fx-sun 2.4s ease-in-out infinite;
+}
+
+/* --- Champs : le sol des deux camps prend la couleur du champ --- */
+#view-battle .scaler-view.terrain-grassy .team-grid::before { background: linear-gradient(180deg, rgba(110, 190, 90, .45), rgba(60, 140, 60, .55)) !important; }
+#view-battle .scaler-view.terrain-electric .team-grid::before { background: linear-gradient(180deg, rgba(255, 220, 70, .45), rgba(230, 180, 30, .5)) !important; animation: fx-volt 1.2s steps(2) infinite; }
+#view-battle .scaler-view.terrain-psychic .team-grid::before { background: linear-gradient(180deg, rgba(240, 120, 200, .42), rgba(170, 80, 190, .5)) !important; }
+#view-battle .scaler-view.terrain-misty .team-grid::before { background: linear-gradient(180deg, rgba(255, 200, 235, .55), rgba(235, 170, 220, .5)) !important; }
+@keyframes fx-volt { 50% { filter: brightness(1.25) saturate(1.2); } }
+#view-battle .scaler-view.terrain-grassy .team-grid .unit-slot::before { background: rgba(120, 200, 100, .45) !important; }
+#view-battle .scaler-view.terrain-electric .team-grid .unit-slot::before { background: rgba(255, 225, 90, .5) !important; }
+#view-battle .scaler-view.terrain-psychic .team-grid .unit-slot::before { background: rgba(240, 140, 210, .45) !important; }
+#view-battle .scaler-view.terrain-misty .team-grid .unit-slot::before { background: rgba(255, 215, 240, .55) !important; }
+
+/* --- Zones : teinte légère sur la scène --- */
+#view-battle .scaler-view.room-trick .team-grid::after,
+#view-battle .scaler-view.room-wonder .team-grid::after,
+#view-battle .scaler-view.room-magic .team-grid::after,
+#view-battle .scaler-view.room-gravity .team-grid::after {
+    content: ''; position: absolute; inset: -4%; border-radius: 26px; pointer-events: none; z-index: 0;
+    border: 4px dashed rgba(120, 70, 190, .55); background: rgba(120, 70, 190, .1);
+}
+#view-battle .scaler-view.room-gravity .team-grid::after { border-color: rgba(40, 40, 60, .55); background: rgba(30, 30, 50, .14); }
+
+/* --- Pièges : posés sur le sol du camp (la couche tourne avec la grille) --- */
+#view-battle .team-grid > .hazard-layer { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+#view-battle .hazard-layer .hz { position: absolute; width: 34px; height: 34px; transform: translate(-50%, -50%); animation: fx-hz-in .4s ease-out both; }
+#view-battle .hazard-layer .hz svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 2px 0 rgba(43, 33, 24, .35)); }
+#view-battle .hazard-layer .hz-web { width: 56px; height: 56px; opacity: .85; }
+@keyframes fx-hz-in { from { opacity: 0; transform: translate(-50%, -80%) scale(.6); } }
+@media (prefers-reduced-motion: reduce) { #view-battle #field-weather, #view-battle .hazard-layer .hz { animation: none !important; } }
+
+/* --- Ligne sous le bandeau : synergies ennemies, pastilles du terrain, crédits --- */
+#view-battle #battle-subbar {
+    position: absolute; top: 180px; left: 12px; right: 12px; height: 46px; z-index: 205;
+    display: flex; align-items: center; gap: 8px; pointer-events: none;
+}
+#view-battle #battle-subbar > * { pointer-events: auto; }
+#view-battle #battle-subbar .synergy-panel.synergy-enemy {
+    position: static !important; top: auto !important; left: auto !important; right: auto !important;
+    flex: 0 1 auto; min-width: 0; max-width: none !important; width: auto !important; margin: 0 !important;
+}
+#view-battle #field-chips { margin-left: auto; display: flex; gap: 4px; flex: 0 1 auto; min-width: 0; overflow: hidden; }
+#view-battle .field-chip {
+    display: inline-flex; align-items: center; height: 30px; padding: 0 9px; border-radius: 15px; box-sizing: border-box;
+    border: 2px solid #2b2118; background: #f7ecdc; color: #2b2118; font: 800 16px/1 'Nunito', var(--font-body), sans-serif;
+    white-space: nowrap; cursor: help;
+}
+#view-battle .field-chip.fc-weather { background: #d6e6f6; }
+#view-battle .field-chip.fc-terrain { background: #d8ecc8; }
+#view-battle .field-chip.fc-hazard-me { background: #f3d6d0; }
+#view-battle .field-chip.fc-hazard-foe { background: #f6e3c4; }
+#view-battle .field-chip.fc-room { background: #e3d6f0; }
+#view-battle #battle-subbar #pmd-credits-btn { position: static !important; flex: none; }
+#view-battle #infoDisplayPanel.terrain-mode { display: none !important; }
+
+/* --- Placement des Pokémon avant le combat (js/team-drag.js) --- */
+body:not(.combat-active) #view-battle #player-grid .unit { touch-action: none; cursor: grab; }
+body.team-dragging, body.team-dragging * { cursor: grabbing !important; user-select: none; }
+#view-battle #player-grid .unit.is-dragging { opacity: .35; }
+#view-battle #player-grid .unit-slot.drag-over::before { background: rgba(255, 216, 90, .65) !important; border-color: #c48a10 !important; }
+.team-drag-ghost {
+    position: fixed; left: 0; top: 0; z-index: 30010; pointer-events: none;
+    filter: drop-shadow(0 10px 6px rgba(43, 33, 24, .35)); transform-origin: 50% 80%;
+}
+.team-drag-ghost canvas, .team-drag-ghost img { display: block; image-rendering: pixelated; }

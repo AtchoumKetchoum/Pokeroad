@@ -6,7 +6,7 @@
  * Les Pokémon et leurs infos restent face à l'écran (rotation inverse, « billboard »).
  */
 const IsoView = (() => {
-    const MODES = { light: { label: 'Iso léger', tilt: 34, spin: 0, scale: 0.82 } };
+    const MODES = { light: { label: 'Iso léger', tilt: 32, spin: 0, scale: 0.98 } }; // grand plateau, perspective douce
     const mode = 'light';
     try { localStorage.removeItem('pokeroad_battle_view'); } catch { /* sans stockage */ }
 

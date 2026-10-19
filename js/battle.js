@@ -1022,6 +1022,7 @@ function aliveOnSide(side) {
 }
 
 function updateTurnOrderDisplay() {
+  if (typeof FieldFx !== 'undefined') FieldFx.update(); // le terrain suit la météo, les champs et les pièges
     if (!dom.turnOrderSidebar) return;
     dom.turnOrderSidebar.innerHTML = '';
 
@@ -1204,6 +1205,19 @@ function showTerrainInfo() {
     dom.infoDisplayPanel.classList.add('visible', 'terrain-mode');
     // Temps clair et terrain normal : rien à signaler, le bandeau se cache
     dom.infoDisplayPanel.classList.toggle('field-default', parts.every(p => /: (Clair|Normal)$/.test(p)));
+    if (typeof FieldFx !== 'undefined') FieldFx.update(); // météo, champ et pièges visibles sur le plateau
+    // Pastilles sous le bandeau : seulement ce qui sort de l'ordinaire (détail dans l'infobulle)
+    const chips = document.getElementById('field-chips');
+    if (chips) {
+        const esc = (t) => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        chips.innerHTML = parts.filter(p => !/: (Clair|Normal)$/.test(p)).map(p => {
+            const kind = /^Météo/.test(p) ? 'weather' : /^Terrain/.test(p) ? 'terrain' : /^Chez toi/.test(p) ? 'hazard-me' : /^Chez l/.test(p) ? 'hazard-foe' : 'room';
+            // Libellé court sur la pastille, le texte complet dans l'infobulle
+            const SHORT = { 'Tempête de sable': 'Sable', 'Ciel Ombre': 'Ombre', 'Champ Herbu': 'Herbu', 'Champ Électrifié': 'Électrifié', 'Champ Psychique': 'Psychique', 'Champ Brumeux': 'Brumeux', 'Pics Toxik': 'Toxik', 'Piège de Roc': 'Roc', 'Toile Gluante': 'Toile' };
+            const label = p.replace(/^[^:]+:\s*/, '').split(', ').map(x => x.replace(/^([^×]+?)(\s*×\d+)?$/, (m, n, l) => (SHORT[n.trim()] || n.trim()) + (l || ''))).join(' · ');
+            return `<span class="field-chip fc-${kind}" data-tip="${esc(p)}">${esc(label)}</span>`;
+        }).join('');
+    }
 }
 
 function showMoveDetails(move, unit, isZMove = false) {
