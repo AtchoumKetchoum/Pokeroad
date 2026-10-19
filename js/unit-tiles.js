@@ -9,7 +9,7 @@
  * Les vignettes se mettent à jour seules dès que l'état du Pokémon change.
  */
 const UnitTiles = (() => {
-    const MAX_TILES = 12; // 2 rangées de 6 ; au-delà : vignette « +N »
+    const MAX_TILES = 6; // 2 colonnes de 3 à côté du Pokémon ; au-delà : vignette « +N »
 
     // Pictogrammes 24×24 (trait blanc sur la vignette)
     const F = 'fill="currentColor" stroke="none"';

@@ -53,11 +53,12 @@ const FormationUI = (() => {
         if (!row.querySelector('.plate-head')) {
             const head = document.createElement('div');
             head.className = 'plate-head';
-            head.innerHTML = '<span class="grade-badge"></span><span class="plate-spacer"></span><span class="star-badge"></span>';
+            // Pastille : le niveau et, à côté, les étoiles en points ; couleur = grade
+            head.innerHTML = '<span class="lvl-cell"><span class="star-badge"></span></span>';
             const lvl = row.querySelector('.lvl-badge');
             if (lvl) {
                 lvl.textContent = lvl.textContent.replace(/\s*★.*$/, ''); // les étoiles ont leur propre badge
-                head.insertBefore(lvl, head.querySelector('.plate-spacer'));
+                head.querySelector('.lvl-cell').prepend(lvl);
             }
             const gauges = document.createElement('div');
             gauges.className = 'plate-gauges';
@@ -72,15 +73,14 @@ const FormationUI = (() => {
         const lvlEl = row.querySelector('.lvl-badge');
         if (lvlEl) {
             lvlEl.textContent = lvlEl.textContent.replace(/^Lv\.?\s*/, '');
-            lvlEl.className = `lvl-badge g${Math.min(6, grade)}`;
+            lvlEl.className = 'lvl-badge';
             lvlEl.dataset.grade = grade;
         }
-        const g = row.querySelector('.grade-badge');
-        g.textContent = ''; g.dataset.g = grade;
-        g.className = `grade-badge g${Math.min(6, grade)}`;
-        g.hidden = grade <= 1;
+        row.querySelector('.lvl-cell').className = `lvl-cell g${Math.min(6, grade)}`;
         const s = row.querySelector('.star-badge');
-        s.textContent = `★${stars}`;
+        // Étoiles : des points dorés dans la case du niveau (5 au plus, le nombre exact dans l'infobulle)
+        s.innerHTML = '<i></i>'.repeat(Math.min(3, stars));
+        s.dataset.stars = stars;
         s.hidden = !stars;
         return row.querySelector('.plate-head');
     }

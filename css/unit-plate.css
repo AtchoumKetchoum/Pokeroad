@@ -1,72 +1,85 @@
-/* Fiche au-dessus de chaque Pokémon en combat, version minimale (sans panneau)
-   ★n
-   (25) ████████ PV ████░░░  [rôle]
-        ▬▬ action ▬▬  ▬ Z ▬
-   Le rond porte le niveau, sa couleur le grade. Les vignettes d'effets restent au-dessus. */
+/* Fiche de chaque Pokémon en combat : une ligne fine posée aux pieds (les rangées sont trop serrées
+   pour une fiche au-dessus de la tête, qui recouvrirait le Pokémon de devant).
+     [25 ⁝] ████████ PV ███░░  [rôle]
+            ▬ action ▬  ▬ Z ▬
+   Pastille : le niveau, sa couleur = le grade, les points dorés = les étoiles.
+   Les effets se rangent en petite colonne sur le côté du Pokémon. */
 
 #view-battle .unit .hp-box {
-    width: 160px !important; padding: 0 !important; box-sizing: border-box;
-    display: block !important; background: none !important; border: 0 !important; box-shadow: none !important;
-    border-radius: 0 !important; overflow: visible !important;
+    top: calc(100% - 6px) !important; bottom: auto !important; left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 150px !important; min-width: 0 !important; max-width: none !important; box-sizing: border-box;
+    display: flex !important; flex-direction: row !important; align-items: center !important; gap: 4px;
+    padding: 2px 4px 2px 2px !important;
+    background: rgba(247, 236, 220, .9) !important; border: 2px solid #2b2118 !important; border-radius: 13px !important;
+    box-shadow: 0 2px 0 rgba(43, 33, 24, .3) !important; overflow: visible !important; z-index: 30 !important;
 }
 #view-battle .unit .hp-box::before, #view-battle .unit .hp-box::after { display: none !important; }
 #view-battle .unit .hp-box[style*="display: none"] { display: none !important; }
 #view-battle .unit .status-main-row {
-    display: grid !important; grid-template-columns: 42px minmax(0, 1fr) 28px; grid-template-rows: 22px 10px;
-    column-gap: 4px; row-gap: 3px; align-items: center; position: relative;
-    width: 100% !important; height: auto !important; margin: 0 !important; padding: 0 !important;
+    display: grid !important; flex: 1 1 auto; min-width: 0; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: 11px 6px;
+    column-gap: 4px; row-gap: 2px; align-items: center;
+    width: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important;
     background: none !important; border: 0 !important; box-shadow: none !important;
 }
-#view-battle .unit .plate-head { display: contents; }
-#view-battle .unit .plate-spacer, #view-battle .unit .grade-badge { display: none !important; }
+#view-battle .unit .plate-head { display: contents !important; }
+#view-battle .unit .plate-spacer, #view-battle .unit .grade-badge, #view-battle .unit .charge-text { display: none !important; }
 
-/* Rond de niveau, couleur du grade */
-#view-battle .unit .plate-head .lvl-badge {
-    grid-column: 1; grid-row: 1 / span 2; width: 42px; height: 42px; box-sizing: border-box; margin: 0 !important; padding: 0 !important;
-    display: grid !important; place-items: center; border-radius: 50% !important; border: 3px solid var(--ink) !important;
-    background: #8a7f6a !important; color: #f7ecdc !important; font-family: var(--font-title); line-height: 1 !important;
-    letter-spacing: -1px; text-shadow: 0 1px 0 rgba(0, 0, 0, .45); box-shadow: 0 2px 0 rgba(43, 33, 24, .45) !important;
+/* Pastille niveau (+ étoiles) */
+#view-battle .unit .lvl-cell {
+    grid-column: 1; grid-row: 1 / span 2; display: flex; align-items: center; gap: 2px; height: 22px; padding: 0 6px 0 7px;
+    border-radius: 11px; background: #8a7f6a; color: #f7ecdc; box-sizing: border-box;
 }
-#view-battle .unit .lvl-badge.g2 { background: #5f9a5a !important; }
-#view-battle .unit .lvl-badge.g3 { background: #4a78b8 !important; }
-#view-battle .unit .lvl-badge.g4 { background: #8a5ab0 !important; }
-#view-battle .unit .lvl-badge.g5 { background: #d0782a !important; }
-#view-battle .unit .lvl-badge.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a) !important; color: var(--ink) !important; text-shadow: none; }
-
-/* Étoiles : petite mention au-dessus du rond */
-#view-battle .unit .star-badge {
-    position: absolute; left: -2px; top: -24px; z-index: 2; line-height: 1 !important; white-space: nowrap;
-    color: #ffd25a; font-weight: 900; text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink);
+#view-battle .unit .lvl-cell.g2 { background: #5f9a5a; }
+#view-battle .unit .lvl-cell.g3 { background: #4a78b8; }
+#view-battle .unit .lvl-cell.g4 { background: #8a5ab0; }
+#view-battle .unit .lvl-cell.g5 { background: #d0782a; }
+#view-battle .unit .lvl-cell.g6 { background: linear-gradient(135deg, #f3d36b, #c9902a); color: #2b2118; }
+#view-battle .unit .lvl-cell .lvl-badge {
+    all: unset; font-family: var(--font-title); line-height: 1 !important; color: inherit !important;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .35); letter-spacing: -.5px;
 }
-#view-battle .unit .star-badge[hidden] { display: none; }
+#view-battle .unit .lvl-cell.g6 .lvl-badge { text-shadow: none; }
+#view-battle .unit .star-badge { display: flex; flex-direction: column; gap: 2px; }
+#view-battle .unit .star-badge[hidden] { display: none !important; }
+#view-battle .unit .star-badge i { width: 5px; height: 5px; border-radius: 50%; background: #ffd25a; box-shadow: 0 0 0 1px rgba(43, 33, 24, .7); }
 
 /* PV */
-#view-battle .unit .hp-container-minimal { grid-column: 2; grid-row: 1; display: block !important; width: 100% !important; height: 22px !important; margin: 0 !important; }
+#view-battle .unit .hp-container-minimal { grid-column: 2; grid-row: 1; display: block !important; width: auto !important; height: 11px !important; margin: 0 !important; }
 #view-battle .unit .hp-container-minimal .hp-bar-bg {
-    height: 22px !important; width: 100% !important; margin: 0 !important; box-sizing: border-box;
-    border: 3px solid var(--ink) !important; border-radius: 5px !important; background: #3a2f27 !important;
-    box-shadow: 0 2px 0 rgba(43, 33, 24, .45) !important;
+    height: 11px !important; width: 100% !important; margin: 0 !important; box-sizing: border-box;
+    border: 2px solid #2b2118 !important; border-radius: 6px !important; background: #4a3d33 !important; box-shadow: none !important;
 }
 
 /* Jauges d'action et Z */
-#view-battle .unit .plate-gauges { grid-column: 2; grid-row: 2; display: flex; gap: 4px; height: 10px; }
-#view-battle .unit .plate-gauges .ap-bar {
-    flex: 3 1 0; height: 10px !important; margin: 0 !important; position: static !important; width: auto !important;
-    border-radius: 3px; border: 2px solid var(--ink); box-sizing: border-box; background: #3a2f27 !important;
+#view-battle .unit .plate-gauges { grid-column: 2; grid-row: 2; display: flex; gap: 3px; height: 6px; }
+#view-battle .unit .plate-gauges .ap-bar, #view-battle .unit .plate-gauges .z-bar {
+    height: 6px !important; margin: 0 !important; position: static !important; width: auto !important; box-sizing: border-box;
+    border: 0 !important; border-radius: 3px; background: rgba(43, 33, 24, .35) !important; overflow: hidden;
 }
-#view-battle .unit .plate-gauges .z-bar { flex: 2 1 0; height: 10px; border-radius: 3px; border: 2px solid var(--ink); box-sizing: border-box; background: #3a2f27; overflow: hidden; }
-#view-battle .unit .z-fill { height: 100%; width: 0; background: linear-gradient(90deg, #f1c14a, #ffdf6e); transition: width .3s ease; }
-#view-battle .unit .z-bar.full { box-shadow: 0 0 0 2px #ffd88a, 0 0 8px #ffd88a; }
+#view-battle .unit .plate-gauges .ap-bar { flex: 3 1 0; }
+#view-battle .unit .plate-gauges .z-bar { flex: 2 1 0; }
+#view-battle .unit .z-fill { height: 100%; width: 0; background: linear-gradient(90deg, #e6a92a, #ffd25a); transition: width .3s ease; }
+#view-battle .unit .z-bar.full { box-shadow: 0 0 5px #ffc94f; }
 #view-battle .unit .z-bar.full .z-fill { animation: z-pulse 1s ease-in-out infinite; }
-@keyframes z-pulse { 50% { filter: brightness(1.35); } }
-#view-battle .unit .charge-text { display: none !important; }
+@keyframes z-pulse { 50% { filter: brightness(1.3); } }
 
-/* Rôle : petite icône au bout de la barre */
+/* Rôle : petite icône au bout */
 #view-battle .unit .plate-head > .role-badge {
-    grid-column: 3; grid-row: 1 / span 2; position: static !important; width: 28px !important; height: 28px !important; padding: 0 !important;
-    display: grid !important; place-items: center; border-radius: 6px !important; margin: 0 !important; border: 2px solid var(--ink) !important;
-    box-sizing: border-box; box-shadow: none !important;
+    grid-column: 3; grid-row: 1 / span 2; position: static !important; width: 20px !important; height: 20px !important; padding: 0 !important;
+    display: grid !important; place-items: center; border-radius: 50% !important; margin: 0 !important; border: 0 !important; box-shadow: none !important;
 }
 #view-battle .unit .plate-head > .role-badge span { display: none !important; }
-#view-battle .unit .plate-head > .role-badge .art-icon { width: 17px !important; height: 17px !important; }
-#view-battle .unit .plate-head > .role-badge.misplaced { opacity: .55; }
+#view-battle .unit .plate-head > .role-badge .art-icon { width: 12px !important; height: 12px !important; }
+#view-battle .unit .plate-head > .role-badge.misplaced { opacity: .45; }
+
+/* Effets : petite colonne à gauche du Pokémon, dans sa case */
+#view-battle .unit .hp-box .status-icons {
+    position: absolute !important; left: -6px; bottom: calc(100% + 4px); top: auto !important; transform: none !important;
+    width: auto !important; height: 84px; display: flex; flex-direction: column-reverse; flex-wrap: wrap; align-content: flex-start;
+    gap: 3px; padding: 0; background: none;
+}
+#view-battle .unit .hp-box .status-icons:empty { display: none !important; }
+#view-battle .unit .hp-box .ut-tile { width: 26px; height: 26px; border-width: 2px; border-radius: 6px; box-shadow: 0 1px 0 #2b2118; }
+#view-battle .unit .hp-box .ut-ico { width: 16px; height: 16px; }
+#view-battle .unit .hp-box .ut-stg { width: 7px; }
