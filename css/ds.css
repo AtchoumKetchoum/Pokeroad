@@ -160,3 +160,6 @@
 /* Combat en illustrations : les mêmes images que le Pokédex (teinte comprise), nos Pokémon en miroir */
 #view-battle .pmd-sprite[data-pmd-kind="art"] .pmd-fallback { filter: var(--sprite-tone, none) drop-shadow(0 3px 0 rgba(43, 33, 24, .3)) !important; }
 #view-battle .pmd-sprite[data-pmd-side="player"] .pmd-fallback { scale: -1 1; }
+
+/* Auto : inactif tant que le combat n'est pas lancé */
+body:not(.combat-active) #view-battle #auto-battle-btn { opacity: .4; filter: grayscale(.6); pointer-events: none; cursor: default; }

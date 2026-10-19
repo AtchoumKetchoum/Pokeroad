@@ -86,6 +86,8 @@ window.initBattle = async () => {
             autoBattleBtn.title = 'Combat Automatique';
             autoBattleBtn.innerHTML = `${Art.icon('auto', 20)}<span>Auto</span>`;
             autoBattleBtn.addEventListener('click', async () => {
+                // Pas de combat auto avant d'avoir lancé le combat
+                if (!document.body.classList.contains('combat-active')) return;
                 isAutoBattle = !isAutoBattle;
                 autoBattleBtn.classList.toggle('active', isAutoBattle);
 
