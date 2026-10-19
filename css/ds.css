@@ -111,3 +111,8 @@
 #view-battle .pmd-sprite[data-pmd-kind="anim"] .pmd-fallback { width: 86% !important; height: 86% !important; }
 #view-battle .pmd-sprite { --pmd-scale: 3.6; }
 #view-battle .unit.is-boss .pmd-sprite { --pmd-scale: 3.15; }
+/* Modèles 3D : léger pivot en perspective (les rendus HOME sont des images fixes, on simule une rotation) */
+#view-battle .pmd-sprite[data-pmd-kind="home"] .pmd-fallback { animation: art-breathe 2.6s ease-in-out infinite, home-sway 5s ease-in-out infinite; }
+@keyframes home-sway { 0%, 100% { rotate: y -14deg; } 50% { rotate: y 14deg; } }
+#view-battle .pmd-sprite[data-pmd-kind="home"] { perspective: 500px; }
+
