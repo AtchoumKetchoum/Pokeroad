@@ -87,6 +87,12 @@ function setBattleSpeed(speed) {
   }
 }
 
+// Vitesse : un seul bouton visible (la vitesse en cours) qui passe à la suivante à chaque toucher
+function cycleBattleSpeed() {
+  const order = [1, 2, 4];
+  setBattleSpeed(order[(order.indexOf(battleSpeed) + 1) % order.length] || 1);
+}
+
 function firstType(p) {
   if (!p) return 'normal';
   const t = p.type || p.types;
@@ -623,8 +629,8 @@ function updateBattleHud() {
   if (hud) {
     hud.innerHTML = `
       <span class="hud-zone">${zone.name}</span>
-      <span class="hud-step">Vague <b id="hudWave">${waveIndex}</b>/10</span>
-      <span class="hud-step ${isBoss ? 'boss' : ''}">${isBoss ? 'BOSS' : `Combat <b id="hudBattle">${battleIndex}</b>/10`}</span>
+      <span class="hud-step" title="Vague ${waveIndex} sur 10">V <b id="hudWave">${waveIndex}</b>/10</span>
+      <span class="hud-step ${isBoss ? 'boss' : ''}" title="Combat ${battleIndex} sur 10">${isBoss ? 'BOSS' : `C <b id="hudBattle">${battleIndex}</b>/10`}</span>
       ${Epic.rankChip(zoneIndex, { short: true })}`;
   }
   // Éclairage et particules de l'arène selon le rang de la zone
@@ -1572,6 +1578,7 @@ function promptTargetSelection(move, unit) {
             document.querySelectorAll('#enemy-grid .unit-slot.aoe-highlight, #enemy-grid .unit-slot.aoe-confirm').forEach(s => s.classList.remove('aoe-highlight', 'aoe-confirm'));
             slots.forEach(s => s.classList.remove('targetable', 'not-targetable'));
             dom.enemyGrid.classList.remove('is-targeting');
+            if (typeof InfoTip !== 'undefined') InfoTip.hide(); // le détail de l'attaque se range
             if (dom.targetPrompt) {
                 dom.targetPrompt.style.display = 'none';
                 dom.targetPrompt.textContent = '';
@@ -1627,11 +1634,7 @@ function promptTargetSelection(move, unit) {
         // Écouteurs du ciblage : coupés au lancement de l'attaque ou à l'annulation
         const ev = new AbortController();
         controller.signal.addEventListener('abort', () => ev.abort());
-        dom.enemyGrid.classList.add('is-targeting');
-        if (dom.targetPrompt) {
-            dom.targetPrompt.style.display = 'block';
-            dom.targetPrompt.textContent = 'Appuie sur une cible pour voir la zone, relâche pour attaquer.';
-        }
+        dom.enemyGrid.classList.add('is-targeting'); // (plus de message : les couleurs orange / rouge suffisent)
 
         // Survol à la souris : les Pokémon réellement touchés passent en rouge
         slots.forEach((slot, idx) => {
@@ -1896,6 +1899,8 @@ function showReworkMoveDetails(move, unit, isZMove) {
 
 // --- Résolution d'attaque ---
 async function attack(attacker, primaryTarget, move) {
+  // Attaque ennemie vue une fois : elle apparaît désormais dans la fiche de ce Pokémon (mémorisé)
+  if (attacker?._side === 'enemy' && typeof InfoTip !== 'undefined') InfoTip.rememberMove(attacker, move);
   if (!attacker || !primaryTarget || attacker.isKO) {
     console.warn(`[DEBUG] Attack cancelled: Invalid attacker or target state`);
     return;

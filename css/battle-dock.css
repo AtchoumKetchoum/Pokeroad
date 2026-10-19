@@ -121,12 +121,13 @@
 
 /* Attaque survolée : son détail par-dessus la fiche du Pokémon actif */
 #view-battle #turn-unit-display { position: relative; }
-#view-battle #battle-footer > .tud-peek {
-    position: absolute; top: 6px; left: 8px; right: 8px; z-index: 400; display: none; flex-direction: column; justify-content: center; gap: 4px;
+#view-battle .scaler-view > .tud-peek {
+    position: absolute; top: 178px; left: 12px; right: 12px; min-height: 96px; z-index: 400; display: none; flex-direction: column; justify-content: center; gap: 4px;
+    box-shadow: 0 4px 0 rgba(43, 33, 24, .3);
     padding: 6px 12px; box-sizing: border-box; border-radius: 12px; background: #fffaf0; border: 3px solid #2b2118;
     color: #2b2118; font: 700 16px/1.25 'Nunito', var(--font-body), sans-serif; overflow: hidden;
 }
-#view-battle #battle-footer > .tud-peek.on { display: flex; }
+#view-battle .scaler-view > .tud-peek.on { display: flex; }
 #view-battle .tud-peek .tp-line { display: flex; align-items: center; gap: 8px; }
 #view-battle .tud-peek .tp-line b { font-size: 22px; font-weight: 900; }
 #view-battle .tud-peek .tp-desc, #view-battle .tud-peek .tp-facts { font-size: 17px; }
@@ -161,3 +162,9 @@
     width: 40px !important; height: 40px !important; filter: drop-shadow(0 1px 0 rgba(43, 33, 24, .35));
 }
 #view-battle #turn-unit-display .tud-empty { width: 24px !important; height: 24px !important; }
+
+/* La fiche active ne dépasse jamais du bloc : le nom se raccourcit en dernier recours */
+#view-battle #battle-footer > #combat-panel { grid-template-columns: minmax(0, 1fr) !important; min-width: 0; }
+#view-battle #turn-unit-display, #view-battle #actionPanel { min-width: 0; max-width: 100%; }
+#view-battle .tud-line > :not(.turn-unit-name) { flex-shrink: 0; }
+#view-battle #turn-unit-display .tud-line .turn-unit-name { flex: 0 1 auto; min-width: 40px; }

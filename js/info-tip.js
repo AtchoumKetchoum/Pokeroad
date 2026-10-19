@@ -21,12 +21,10 @@ const InfoTip = (() => {
         document.body.appendChild(bubble);
         return bubble;
     }
-    // Attaque survolée : son détail couvre le haut du bloc du bas (synergies + fiche du Pokémon actif),
-    // juste au-dessus des boutons
+    // Attaque survolée : son détail s'affiche tout en haut, juste sous le bandeau du combat
     function peek(btn) {
-        const host = document.getElementById('battle-footer');
-        const moves = document.getElementById('actionPanel');
-        if (!host || !moves || !document.getElementById('turn-unit-display')?.firstElementChild) return false;
+        const host = document.querySelector('#view-battle .scaler-view');
+        if (!host || !document.getElementById('turn-unit-display')?.firstElementChild) return false;
         const mv = btn.__move, rw = mv.rw || {};
         const kind = rw.kind === 'passive' ? `Passif${rw.triggerLabel ? ` · ${rw.triggerLabel}` : ''}` : rw.kind === 'tactic' ? 'Tactique' : mv.damage_class === 'status' ? 'Statut' : 'Attaque';
         const power = rw.kind === 'attack' || (!rw.kind && mv.power) ? Math.round((rw.power || mv.power || 0) * (mv._refMult || 1)) : 0;
@@ -34,16 +32,13 @@ const InfoTip = (() => {
             typeof BattleRules !== 'undefined' && power ? (BattleRules.isContact(mv) ? 'Contact' : 'Distance') : '', (mv.zone_label || '').replace(/\s*\(.*\)$/, '')].filter(Boolean).join(' · ');
         let box = host.querySelector(':scope > .tud-peek');
         if (!box) { box = document.createElement('div'); box.className = 'tud-peek no-minfont'; host.appendChild(box); }
-        // Hauteur : du haut du bloc jusqu'aux boutons (la scène est mise à l'échelle)
-        const hr = host.getBoundingClientRect(), k = hr.height / (host.offsetHeight || 1);
-        box.style.height = `${Math.max(60, (moves.getBoundingClientRect().top - hr.top) / k - 9)}px`;
         box.innerHTML = `<div class="tp-line"><b>${esc(mv.name)}</b>${chip((mv.type || 'normal').toLowerCase())}<span class="tp-kind">${esc(kind)}</span></div>
             <div class="tp-facts">${esc(facts)}</div>
             <div class="tp-desc">${esc(mv.description_game || mv.description || '')}</div>`;
         box.classList.add('on');
         return true;
     }
-    const unpeek = () => document.querySelector('#battle-footer > .tud-peek')?.classList.remove('on');
+    const unpeek = () => document.querySelector('#view-battle .scaler-view > .tud-peek')?.classList.remove('on');
 
     function show(el, html, big = false) {
         if (!html) return;
@@ -59,13 +54,24 @@ const InfoTip = (() => {
     function place() {
         if (!bubble || !anchor) return;
         const r = anchor.getBoundingClientRect();
-        const bw = bubble.offsetWidth, bh = bubble.offsetHeight, m = 8;
+        // Zone permise : l'écran de jeu affiché (la scène), sinon la fenêtre
+        const sc = anchor.closest('.scaler-view')?.getBoundingClientRect();
+        const zone = sc && sc.width ? { l: Math.max(0, sc.left), t: Math.max(0, sc.top), r: Math.min(window.innerWidth, sc.right), b: Math.min(window.innerHeight, sc.bottom) }
+            : { l: 0, t: 0, r: window.innerWidth, b: window.innerHeight };
+        const m = 8;
+        bubble.style.maxWidth = bubble.classList.contains('big') ? `${zone.r - zone.l - 2 * m}px` : `${Math.min(300, zone.r - zone.l - 2 * m)}px`;
+        bubble.style.maxHeight = `${zone.b - zone.t - 2 * m}px`;
+        const bw = bubble.offsetWidth, bh = bubble.offsetHeight;
+        // Au-dessus si ça tient, sinon en dessous, sinon là où il y a le plus de place
         let top = r.top - bh - 10, below = false;
-        if (top < m) { top = r.bottom + 10; below = true; }
-        top = Math.min(top, window.innerHeight - bh - m);
-        const left = Math.max(m, Math.min(window.innerWidth - bw - m, r.left + r.width / 2 - bw / 2));
+        if (top < zone.t + m) {
+            const under = r.bottom + 10;
+            if (under + bh <= zone.b - m || zone.b - r.bottom > r.top - zone.t) { top = under; below = true; }
+        }
+        top = Math.max(zone.t + m, Math.min(top, zone.b - bh - m));
+        const left = Math.max(zone.l + m, Math.min(zone.r - bw - m, r.left + r.width / 2 - bw / 2));
         bubble.style.left = `${left}px`;
-        bubble.style.top = `${Math.max(m, top)}px`;
+        bubble.style.top = `${top}px`;
         bubble.classList.toggle('below', below);
         bubble.style.setProperty('--arrow-x', `${Math.max(12, Math.min(bw - 12, r.left + r.width / 2 - left))}px`);
     }
@@ -146,16 +152,30 @@ const InfoTip = (() => {
         const row = (label, list, cls) => list.length ? `<div class="ec-def ${cls}"><span class="tip-label">${label}</span>${list.map(chip).join('')}</div>` : '';
         return row('Très faible ×4', groups[4], 'x4') + row('Faible ×2', groups[2], 'x2') + row('Résiste ×½', groups[0.5], 'r') + row('Résiste ×¼', groups[0.25], 'r') + row('Immunisé', groups[0], 'i');
     }
+    // Attaques ennemies déjà subies, par espèce (gardées sur l'appareil, d'un combat à l'autre)
+    const SEEN_KEY = 'pokeroad_seen_moves';
+    let seenMoves = {};
+    try { seenMoves = JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch { seenMoves = {}; }
+    const moveKey = (mv) => String(mv?.id ?? mv?.name ?? '');
+    const speciesKey = (u) => String(u?._pokemonId ?? u?.id ?? u?.name ?? '');
+    function rememberMove(u, mv) {
+        const sp = speciesKey(u), k = moveKey(mv);
+        if (!sp || !k || mv?._isBoosted) return;
+        const list = seenMoves[sp] || (seenMoves[sp] = []);
+        if (list.includes(k)) return;
+        list.push(k);
+        try { localStorage.setItem(SEEN_KEY, JSON.stringify(seenMoves)); } catch { /* sans stockage */ }
+    }
+    const knowsMove = (u, mv) => (seenMoves[speciesKey(u)] || []).includes(moveKey(mv));
+
     function enemyCard(u) {
         if (!u) return '';
         const grade = u.tier?.grade || 1, stars = u.tier?.stars || 0;
         const role = typeof BattleRules !== 'undefined' ? BattleRules.ROLES[u.role] : null;
         const hpPct = Math.max(0, Math.min(100, u.hp / u.maxHp * 100));
-        const stats = STAT_ROWS.map(([k, key, label]) => {
-            const st = u.statMods?.[key] || 0, base = u[k] || 0, eff = Math.round(base * stageMult(st));
-            return `<div class="ec-stat"><span>${label}</span><b>${eff}</b>${st ? `<i class="${st > 0 ? 'up' : 'down'}">${st > 0 ? '▲' : '▼'}${Math.abs(st)}</i>` : ''}</div>`;
-        }).join('');
+        // Les stats restent secrètes ; une attaque n'est dévoilée qu'après l'avoir subie une fois
         const moves = (u.moves || []).slice(0, 4).map(mv => {
+            if (!knowsMove(u, mv)) return `<div class="ec-move unknown"><span class="tip-type">?</span><b>Attaque inconnue</b><span>à découvrir en combat</span></div>`;
             const rw = mv.rw || {};
             const power = Math.round((rw.power || mv.power || 0) * (mv._refMult || 1));
             const kind = rw.kind === 'passive' ? 'Passif' : rw.kind === 'tactic' ? 'Tactique' : mv.damage_class === 'status' ? 'Statut' : 'Attaque';
@@ -170,7 +190,6 @@ const InfoTip = (() => {
                 <span class="ec-types">${(u.types || []).map(chip).join('')}</span></div>
             <div class="ec-sub">Grade ${grade}${role ? ` · ${role.label} : ${esc(role.desc)}` : ''}</div>
             <div class="ec-hp"><div style="width:${hpPct}%"></div><span>${Math.max(0, u.hp)} / ${u.maxHp} PV${u.shield ? ` · bouclier ${u.shield}` : ''}</span></div>
-            <div class="ec-sec">Statistiques</div><div class="ec-stats">${stats}</div>
             ${defenseChart(u.types) ? `<div class="ec-sec">Types</div>${defenseChart(u.types)}` : ''}
             ${moves ? `<div class="ec-sec">Attaques</div><div class="ec-moves">${moves}</div>` : ''}
             ${items ? `<div class="ec-sec">Objets et baies</div><div class="ec-items">${items}</div>` : ''}
@@ -247,13 +266,17 @@ const InfoTip = (() => {
     function onOut(e) {
         if (e.pointerType && e.pointerType !== 'mouse') return;
         clearTimeout(hoverTimer);
+        if (isTargeting() && anchor?.matches?.('#view-battle .move-btn')) return; // l'attaque choisie reste affichée
         if (anchor && !anchor.contains(e.relatedTarget)) hide();
     }
     function onClick(e) {
         if (lpFired) { lpFired = false; e.stopPropagation(); e.preventDefault(); return; }
         if (e.target.closest('.info-tip')) return;
         // Les attaques et les cibles gardent leur action au toucher (la bulle de l'attaque : appui long)
-        if (e.target.closest('#view-battle .move-btn') || isTargeting()) { hide(); return; }
+        // Attaque choisie : son détail reste en haut pendant le choix de la cible
+        const chosen = e.target.closest('#view-battle .move-btn');
+        if (chosen) { bubble?.classList.remove('visible'); if (!(chosen.__move && peek(chosen))) hide(); else anchor = chosen; return; }
+        if (isTargeting()) { bubble?.classList.remove('visible'); return; }
         const hit = contentFor(e.target);
         if (!hit) { hide(); return; }
         // Toucher sur mobile : la bulle remplace l'action (les vignettes, la frise, les bandeaux n'en ont pas d'autre)
@@ -283,6 +306,6 @@ const InfoTip = (() => {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
 
-    return { show, hide };
+    return { show, hide, rememberMove };
 })();
 window.InfoTip = InfoTip;

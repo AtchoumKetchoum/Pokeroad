@@ -145,3 +145,16 @@
 /* Vignette BOSS : respiration discrète (3 % au lieu de 15 %, plus lente) */
 #view-battle #hudProgress .hud-step.boss { animation: boss-breathe 2.4s ease-in-out infinite !important; }
 @keyframes boss-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+
+/* Bandeau sur une seule ligne : zone (nom raccourci si besoin), vague, combat · vitesse, auto, sortie */
+#view-battle #hudProgress::after { display: none !important; }
+#view-battle #battle-top-bar #hudProgress { flex-wrap: nowrap !important; align-content: center; }
+#view-battle #hudProgress .hud-step { flex: none !important; }
+#view-battle #hudProgress .hud-zone { flex: 1 1 auto !important; }
+#view-battle #top-right-actions .speed-controls { padding: 0 !important; background: none !important; border: 0 !important; }
+#view-battle #top-right-actions .speed-btn:not(.active) { display: none !important; }
+#view-battle #top-right-actions .speed-btn.active {
+    height: 50px !important; min-width: 54px !important; border-radius: 14px !important; border: 3px solid #2b2118 !important;
+    background: #ffd25a !important; color: #2b2118 !important; font-weight: 900; box-shadow: 0 3px 0 #2b2118 !important;
+}
+#view-battle #top-right-actions .speed-btn.active:active { transform: translateY(2px); box-shadow: 0 1px 0 #2b2118 !important; }

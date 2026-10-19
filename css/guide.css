@@ -148,3 +148,6 @@
 .info-tip.big .ut-row .ut-tile { width: 22px; height: 22px; }
 .info-tip.big .ut-row .ut-ico { width: 14px; height: 14px; }
 .info-tip.big .ut-none { font-size: 12px; color: #6b5a45; }
+.info-tip .ec-move.unknown { opacity: .6; }
+.info-tip .ec-move.unknown .tip-type { background: #8a7f6a; }
+.info-tip .ec-move.unknown b { font-style: italic; font-weight: 700; }
