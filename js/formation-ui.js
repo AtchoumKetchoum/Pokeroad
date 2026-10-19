@@ -53,8 +53,8 @@ const FormationUI = (() => {
         if (!row.querySelector('.plate-head')) {
             const head = document.createElement('div');
             head.className = 'plate-head';
-            // Pastille : le niveau et, à côté, les étoiles en points ; couleur = grade
-            head.innerHTML = '<span class="lvl-cell"><span class="star-badge"></span></span>';
+            // Pastille du niveau (couleur = grade), puis vignette des étoiles à part
+            head.innerHTML = '<span class="lvl-cell"></span><span class="star-badge"></span>';
             const lvl = row.querySelector('.lvl-badge');
             if (lvl) {
                 lvl.textContent = lvl.textContent.replace(/\s*★.*$/, ''); // les étoiles ont leur propre badge
@@ -79,8 +79,8 @@ const FormationUI = (() => {
         }
         row.querySelector('.lvl-cell').className = `lvl-cell g${Math.min(6, grade)}`;
         const s = row.querySelector('.star-badge');
-        // Étoiles : des points dorés dans la case du niveau (5 au plus, le nombre exact dans l'infobulle)
-        s.innerHTML = '<i></i>'.repeat(Math.min(3, stars));
+        // Étoiles : vignette « ★n » à côté du niveau
+        s.textContent = `★${stars}`;
         s.dataset.stars = stars;
         s.hidden = !stars;
         return row.querySelector('.plate-head');

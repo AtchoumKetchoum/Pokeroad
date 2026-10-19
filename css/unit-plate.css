@@ -1,7 +1,7 @@
 /* Infos de chaque Pokémon en combat, posées sur sa case (js/floor-ring.js) :
    - anneau extérieur = PV (se vide de l'arrière vers l'avant), liseré clair = bouclier ;
    - anneau intérieur = jauge d'action à gauche, jauge Z à droite ;
-   - au-dessus du Pokémon : rôle et pastille de niveau (couleur = grade, points dorés = étoiles) ;
+   - au-dessus du Pokémon : pastille de niveau (couleur = grade), vignette des étoiles et rôle ;
    - bonus en colonne à gauche du Pokémon, malus à droite (2 colonnes de 5 chacun). */
 
 #view-battle .unit .hp-box {
@@ -58,9 +58,12 @@
     text-shadow: 0 1px 0 rgba(0, 0, 0, .3); letter-spacing: 0;
 }
 #view-battle .unit .lvl-cell.g6 .lvl-badge { text-shadow: none; }
-#view-battle .unit .star-badge { display: flex; flex-direction: column; gap: 2px; }
+#view-battle .unit .star-badge {
+    display: flex; align-items: center; height: 22px; padding: 0 6px; box-sizing: border-box; border-radius: 6px;
+    background: #2b2118; color: #ffd25a; border: 2px solid #2b2118;
+    font-family: 'Nunito', var(--font-body), sans-serif; font-weight: 900; line-height: 1 !important; white-space: nowrap;
+}
 #view-battle .unit .star-badge[hidden] { display: none !important; }
-#view-battle .unit .star-badge i { width: 5px; height: 5px; border-radius: 50%; background: #ffd25a; box-shadow: 0 0 0 1px rgba(43, 33, 24, .7); }
 #view-battle .unit .plate-head > .role-badge {
     position: static !important; width: 20px !important; height: 20px !important; padding: 0 !important; margin: 0 !important;
     display: grid !important; place-items: center; border-radius: 50% !important; border: 2px solid #2b2118 !important; box-shadow: none !important; box-sizing: border-box;

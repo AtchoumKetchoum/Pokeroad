@@ -116,9 +116,9 @@ const InfoTip = (() => {
         if (hud) return [hud, zone()];
         const lvlEl = el.closest('#view-battle .unit .lvl-cell')?.querySelector('.lvl-badge');
         if (lvlEl) {
-            const star = lvlEl.parentElement?.querySelector('.star-badge');
+            const star = lvlEl.closest('.plate-head')?.querySelector('.star-badge');
             const stars = star && !star.hidden ? +star.dataset.stars || 0 : 0;
-            return [lvlEl, `<b>Niveau ${esc(lvlEl.textContent)}</b><div>Grade ${esc(lvlEl.dataset.grade || 1)}${stars ? ` · ${stars} étoile${stars > 1 ? 's' : ''}` : ''}</div><small>Couleur de la pastille : le grade. Points dorés : les étoiles.</small>`];
+            return [lvlEl, `<b>Niveau ${esc(lvlEl.textContent)}</b><div>Grade ${esc(lvlEl.dataset.grade || 1)}${stars ? ` · ${stars} étoile${stars > 1 ? 's' : ''}` : ''}</div><small>Couleur de la pastille : le grade. Vignette dorée : les étoiles.</small>`];
         }
         const roleEl = el.closest('#view-battle .role-badge');
         if (roleEl) {
