@@ -156,3 +156,7 @@
     font-size: 20px !important; padding: 2px 10px !important; border-width: var(--ds-bw) !important; border-radius: var(--ds-r-sm) !important;
     transform: none !important;
 }
+
+/* Combat en illustrations : les mêmes images que le Pokédex (teinte comprise), nos Pokémon en miroir */
+#view-battle .pmd-sprite[data-pmd-kind="art"] .pmd-fallback { filter: var(--sprite-tone, none) drop-shadow(0 3px 0 rgba(43, 33, 24, .3)) !important; }
+#view-battle .pmd-sprite[data-pmd-side="player"] .pmd-fallback { scale: -1 1; }

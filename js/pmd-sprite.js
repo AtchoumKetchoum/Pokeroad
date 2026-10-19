@@ -259,8 +259,8 @@ const PmdSprite = (() => {
     }
 
     // Style des Pokémon en combat (Paramètres) :
-    //  - « art » (par défaut) : illustrations officielles pour les ennemis (de face) ;
-    //    nos Pokémon, vus de dos, en sprites animés (l'illustration n'existe que de face) ;
+    //  - « art » (par défaut) : les illustrations figées du Pokédex, des deux côtés
+    //    (nos Pokémon en miroir, tournés vers l'adversaire) ;
     //  - « pixel » : sprites PMD animés, face et dos.
     const STYLES = ['art', 'pixel'];
     const STYLE_KEY = 'pokeroad_battle_sprites';
@@ -270,7 +270,6 @@ const PmdSprite = (() => {
     const ART_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
     function artUrl(dex, shiny, back) {
         const sh = shiny ? 'shiny/' : '';
-        if (back) return `${ART_BASE}other/showdown/back/${sh}${dex}.gif`;
         return `${ART_BASE}other/official-artwork/${sh}${dex}.png`;
     }
     function setBattleStyle(style) {
@@ -296,7 +295,8 @@ const PmdSprite = (() => {
                     const original = img.getAttribute('src');
                     img.onerror = () => { img.onerror = null; img.src = original; host.dataset.pmdKind = 'art'; };
                     img.src = artUrl(dex, host.dataset.pmdShiny === '1', back);
-                    host.dataset.pmdKind = back ? 'anim' : 'art';
+                    host.dataset.pmdKind = 'art';
+                    host.dataset.pmdSide = back ? 'player' : 'enemy';
                 }
                 host.dataset.pmdState = 'art';
                 return;
