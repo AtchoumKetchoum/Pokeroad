@@ -8,7 +8,7 @@
 // qui n'a que des passifs ne joue pas. Chaque capacité a une version Z (jauge Z pleine).
 // Sortie : data/moves_db.json. Usage : node tools/propose-moves.mjs
 import fs from 'fs';
-import { PASSIVE_OPS, TACTIC_OPS, ATTACK_POSITION_OPS, DIVE_MOVES, SNIPE_MOVES, FACE_MOVES, Z_TYPE_OPS, Z_TYPE_SUPPORT_OPS, AILMENT_STATUS } from './rework-ops.mjs';
+import { PASSIVE_OPS, TACTIC_OPS, ATTACK_POSITION_OPS, DIVE_MOVES, SNIPE_MOVES, FACE_MOVES, DELAYED_MOVES, Z_TYPE_OPS, Z_TYPE_SUPPORT_OPS, AILMENT_STATUS } from './rework-ops.mjs';
 
 const FILES = { physical: 'data/physical_moves.json', special: 'data/special_moves.json', status: 'data/status_moves.json' };
 const game = {};
@@ -232,6 +232,7 @@ const SHAPE_OF = {};
 [SHAPE_LISTS, PHYSICAL_SHAPE_LISTS].forEach(lists => Object.entries(lists).forEach(([shape, keys]) => keys.split(' ').forEach(k => { SHAPE_OF[k] = shape; })));
 const FROM_GAME_AOE = { single: 'cible', splash_v: 'eclabous', row: 'percee', column: 'ligne', cross: 'croix', diagonal_x: 'diag', line_of_2: 'percee', frontline: 'front', random_single: 'hasard', all: 'onde', midline: 'ligne', backline: 'ligne' };
 function shapeFor(m, o) {
+    if (DELAYED_MOVES[m._key]) return 'cible'; // retardement : une seule cible, comme l'officiel
     if (POSITION[m._key]?.rule === 'R20') return 'cible'; // Plongée et tir de précision : une cible, n'importe où
     if (SHAPE_OF[m._key]) return SHAPE_OF[m._key];
     if (m._key.startsWith('max-')) return 'explosion';
@@ -312,6 +313,7 @@ const RULES = {
     R21: "En face : certaines ripostes font ×1,3 quand la cible est dans le même couloir que le lanceur.",
     R22: "Soutien : les soins et boucliers ont aussi une forme, sur ta grille (ligne avant en haut) : soin ciblé, éclaboussure de soin, onde de soin, mur de la ligne avant, garde de colonne.",
     R23: "Position : une attaque de contact fait +10 % depuis la ligne avant, une attaque à distance +10 % depuis la ligne arrière.",
+    R24: "Retardement (Prescience, Vœu Destructeur) : une seule cible, l'impact arrive au début du 2e tour suivant de la cible, même si le lanceur est K.O. entre-temps. Une seule à la fois sur une même cible. La version Z frappe tout de suite.",
     R18: "Vignettes de zone en jeu (écran vertical) : grille ennemie avec l'arrière en haut et la ligne avant en bas, face à ton équipe ; pour une capacité qui vise ton camp, ta ligne avant est en haut de ta grille, la vignette est donc retournée.",
     R15: 'Bonus de type de la version Z : Eau régénère, Plante draine pour l\'équipe, Fée soigne, Acier et Roche donnent des boucliers, Électrik / Vol / Normal accélèrent, Glace / Spectre ralentissent…',
 };
@@ -541,10 +543,12 @@ function attack(m, o) {
         if (!self && o.stat_changes.some(([s, v]) => s === 'SPE' && v < 0)) { rules.add('R4'); extra.push('−15 % de jauge'); }
         parts.push(`${c} : ${stages(o.stat_changes)}${extra.length ? ` et ${extra.join(', ')}` : ''} ${self ? 'pour le lanceur' : 'pour la cible'}.`);
     }
+    if (DELAYED_MOVES[m._key]) { rules.add('R24'); parts.push(`Frappe ${DELAYED_MOVES[m._key]} tours plus tard, au début du ${DELAYED_MOVES[m._key]}e tour suivant de la cible, même si le lanceur est K.O. entre-temps. Une seule à la fois sur une même cible.`); }
     if (note) parts.push(note.text);
     const pos = POSITION[m._key];
     if (pos) { parts.push(pos.text); rules.add(pos.rule); }
-    if (o.category === 'unique' && !note && m.description_game) parts.push(`Effet spécial : ${m.description_game.replace(/\s*\(Dans PokéRoad[^)]*\)/, '')}`);
+    // Description d'origine du jeu seulement (pas celle déjà écrite par la refonte : la relance resterait propre)
+    if (o.category === 'unique' && !note && !DELAYED_MOVES[m._key] && m.description_game && !/^(Puissance|Dégâts fixes|Exécution)/.test(m.description_game)) parts.push(`Effet spécial : ${m.description_game.replace(/\s*\(Dans PokéRoad[^)]*\)/, '')}`);
 
     // Version Z
     const zShapeId = SHAPE_UP[shapeId] || shapeId;
@@ -559,6 +563,7 @@ function attack(m, o) {
     if (o.drain < 0 || mech.selfKo) z.push('Sans contrecoup.');
     if (o.priority > 0 || mech.priority) z.push('Le lanceur rejoue aussitôt.');
     if (POSITION[m._key]) z.push(POSITION[m._key].z);
+    if (DELAYED_MOVES[m._key]) z.push('Frappe tout de suite.');
     z.push(Z_TYPE_BONUS[m.type] || '');
     rules.add('R15');
 
@@ -598,6 +603,7 @@ function attack(m, o) {
         snipe: SNIPE_MOVES.includes(m._key),
         face: FACE_MOVES[m._key] || null,
         firstTurnOnly: ['fake-out', 'first-impression'].includes(m._key),
+        ...(DELAYED_MOVES[m._key] ? { delay: DELAYED_MOVES[m._key] } : {}),
         drop: [...(note?.drop || []), ...(POSITION[m._key]?.rule === 'R20' ? ['recharge'] : []), ...(o.hits ? [] : ['multihit']), ...(o.ailment === 'trap' ? [] : ['trap']), ...(o.priority > 0 ? ['priority'] : [])],
         z: { power: zPower, shape: zShapeId, ops: Z_TYPE_OPS[m.type] || [], guaranteed: true, noRecharge: true, noRecoil: true, replay: o.priority > 0 || !!mech.priority },
     };

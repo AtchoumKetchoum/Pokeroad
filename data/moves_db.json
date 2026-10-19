@@ -23,7 +23,8 @@
   "R22": "Soutien : les soins et boucliers ont aussi une forme, sur ta grille (ligne avant en haut) : soin ciblé, éclaboussure de soin, onde de soin, mur de la ligne avant, garde de colonne.",
   "R23": "Position : une attaque de contact fait +10 % depuis la ligne avant, une attaque à distance +10 % depuis la ligne arrière.",
   "R18": "Vignettes de zone en jeu (écran vertical) : grille ennemie avec l'arrière en haut et la ligne avant en bas, face à ton équipe ; pour une capacité qui vise ton camp, ta ligne avant est en haut de ta grille, la vignette est donc retournée.",
-  "R15": "Bonus de type de la version Z : Eau régénère, Plante draine pour l'équipe, Fée soigne, Acier et Roche donnent des boucliers, Électrik / Vol / Normal accélèrent, Glace / Spectre ralentissent…"
+  "R15": "Bonus de type de la version Z : Eau régénère, Plante draine pour l'équipe, Fée soigne, Acier et Roche donnent des boucliers, Électrik / Vol / Normal accélèrent, Glace / Spectre ralentissent…",
+  "R24": "Retardement (Prescience, Vœu Destructeur) : une seule cible, l'impact arrive au début du 2e tour suivant de la cible, même si le lanceur est K.O. entre-temps. Une seule à la fois sur une même cible. La version Z frappe tout de suite."
  },
  "shapes": {
   "cible": {
@@ -669,10 +670,10 @@
    "count": 230,
    "officialIndex": 41.9,
    "proposalIndex": 44.1,
-   "zIndex": 155,
-   "impactPower": 23.6,
+   "zIndex": 154.9,
+   "impactPower": 23.9,
    "coverage": 2,
-   "zone": 91
+   "zone": 90
   }
  },
  "moves": [
@@ -4851,10 +4852,10 @@
     "kind": "Attaque",
     "rw": {
      "kind": "attack",
-     "power": 43,
-     "shape": "percee",
-     "zShape": "percee_large",
-     "zPower": 77,
+     "power": 70,
+     "shape": "cible",
+     "zShape": "duo",
+     "zPower": 112,
      "hits": null,
      "fx": [],
      "drainShield": false,
@@ -4867,13 +4868,14 @@
      "snipe": false,
      "face": null,
      "firstTurnOnly": false,
+     "delay": 2,
      "drop": [
       "multihit",
       "trap"
      ],
      "z": {
-      "power": 77,
-      "shape": "percee_large",
+      "power": 112,
+      "shape": "duo",
       "ops": [
        {
         "op": "shield",
@@ -4887,27 +4889,28 @@
       "replay": false
      }
     },
-    "zPower": 77,
+    "zPower": 112,
     "index": {
      "official": 70,
-     "proposal": 72.7,
-     "z": 231.8,
-     "coverage": 1.69,
+     "proposal": 70,
+     "z": 224,
+     "coverage": 1,
      "effect": 0
     },
-    "target": "Perçante (colonne)",
-    "shape": "percee",
-    "zShape": "percee_large",
-    "power": 43,
-    "standard": "Puissance 43 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-    "zTarget": "Perçante large",
-    "z": "Puissance 77 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
-    "change": "Fidèle",
+    "target": "Cible unique",
+    "shape": "cible",
+    "zShape": "duo",
+    "power": 70,
+    "standard": "Puissance 70 au point d'impact. 100 % sur la cible seule. Frappe 2 tours plus tard, au début du 2e tour suivant de la cible, même si le lanceur est K.O. entre-temps. Une seule à la fois sur une même cible.",
+    "zTarget": "Doublé (2 cibles)",
+    "z": "Puissance 112 par coup. Un coup sur la cible, puis un coup sur un deuxième ennemi voisin de sa ligne (100 % chacun) ; s'il est seul, les deux coups le touchent. Brise boucliers et Abri. Frappe tout de suite. Bouclier de 12 % des PV pour toute l'équipe.",
+    "change": "Adapté",
     "rules": [
      "R1",
      "R12",
      "R16",
      "R17",
+     "R24",
      "R15"
     ]
    }
@@ -84006,10 +84009,10 @@
     "kind": "Attaque",
     "rw": {
      "kind": "attack",
-     "power": 26,
-     "shape": "croix",
-     "zShape": "explosion",
-     "zPower": 67,
+     "power": 60,
+     "shape": "cible",
+     "zShape": "duo",
+     "zPower": 96,
      "hits": null,
      "fx": [],
      "drainShield": false,
@@ -84022,13 +84025,14 @@
      "snipe": false,
      "face": null,
      "firstTurnOnly": false,
+     "delay": 2,
      "drop": [
       "multihit",
       "trap"
      ],
      "z": {
-      "power": 67,
-      "shape": "explosion",
+      "power": 96,
+      "shape": "duo",
       "ops": [
        {
         "op": "clearPositiveStages",
@@ -84041,27 +84045,28 @@
       "replay": false
      }
     },
-    "zPower": 67,
+    "zPower": 96,
     "index": {
      "official": 60,
-     "proposal": 63.4,
-     "z": 203.7,
-     "coverage": 2.44,
+     "proposal": 60,
+     "z": 192,
+     "coverage": 1,
      "effect": 0
     },
-    "target": "Croix",
-    "shape": "croix",
-    "zShape": "explosion",
-    "power": 26,
-    "standard": "Puissance 26 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins.",
-    "zTarget": "Explosion",
-    "z": "Puissance 67 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Les cibles perdent leurs bonus de stats.",
-    "change": "Fidèle",
+    "target": "Cible unique",
+    "shape": "cible",
+    "zShape": "duo",
+    "power": 60,
+    "standard": "Puissance 60 au point d'impact. 100 % sur la cible seule. Frappe 2 tours plus tard, au début du 2e tour suivant de la cible, même si le lanceur est K.O. entre-temps. Une seule à la fois sur une même cible.",
+    "zTarget": "Doublé (2 cibles)",
+    "z": "Puissance 96 par coup. Un coup sur la cible, puis un coup sur un deuxième ennemi voisin de sa ligne (100 % chacun) ; s'il est seul, les deux coups le touchent. Brise boucliers et Abri. Frappe tout de suite. Les cibles perdent leurs bonus de stats.",
+    "change": "Adapté",
     "rules": [
      "R1",
      "R12",
      "R16",
      "R17",
+     "R24",
      "R15"
     ]
    }

@@ -3385,10 +3385,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 26,
-   "shape": "croix",
-   "zShape": "explosion",
-   "zPower": 67,
+   "power": 60,
+   "shape": "cible",
+   "zShape": "duo",
+   "zPower": 96,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -3401,13 +3401,14 @@
    "snipe": false,
    "face": null,
    "firstTurnOnly": false,
+   "delay": 2,
    "drop": [
     "multihit",
     "trap"
    ],
    "z": {
-    "power": 67,
-    "shape": "explosion",
+    "power": 96,
+    "shape": "duo",
     "ops": [
      {
       "op": "clearPositiveStages",
@@ -3422,9 +3423,9 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 26 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins.",
-  "description_z": "Puissance 67 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Les cibles perdent leurs bonus de stats.",
-  "zone_label": "Croix"
+  "description_game": "Puissance 60 au point d'impact. 100 % sur la cible seule. Frappe 2 tours plus tard, au début du 2e tour suivant de la cible, même si le lanceur est K.O. entre-temps. Une seule à la fois sur une même cible.",
+  "description_z": "Puissance 96 par coup. Un coup sur la cible, puis un coup sur un deuxième ennemi voisin de sa ligne (100 % chacun) ; s'il est seul, les deux coups le touchent. Brise boucliers et Abri. Frappe tout de suite. Les cibles perdent leurs bonus de stats.",
+  "zone_label": "Cible unique"
  },
  "spit-up": {
   "name_fr": "Relâche",
@@ -5128,10 +5129,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 43,
-   "shape": "percee",
-   "zShape": "percee_large",
-   "zPower": 77,
+   "power": 70,
+   "shape": "cible",
+   "zShape": "duo",
+   "zPower": 112,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -5144,13 +5145,14 @@
    "snipe": false,
    "face": null,
    "firstTurnOnly": false,
+   "delay": 2,
    "drop": [
     "multihit",
     "trap"
    ],
    "z": {
-    "power": 77,
-    "shape": "percee_large",
+    "power": 112,
+    "shape": "duo",
     "ops": [
      {
       "op": "shield",
@@ -5166,9 +5168,9 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 43 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-  "description_z": "Puissance 77 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
-  "zone_label": "Perçante (colonne)"
+  "description_game": "Puissance 70 au point d'impact. 100 % sur la cible seule. Frappe 2 tours plus tard, au début du 2e tour suivant de la cible, même si le lanceur est K.O. entre-temps. Une seule à la fois sur une même cible.",
+  "description_z": "Puissance 112 par coup. Un coup sur la cible, puis un coup sur un deuxième ennemi voisin de sa ligne (100 % chacun) ; s'il est seul, les deux coups le touchent. Brise boucliers et Abri. Frappe tout de suite. Bouclier de 12 % des PV pour toute l'équipe.",
+  "zone_label": "Cible unique"
  },
  "psycho-boost": {
   "name_fr": "Psycho-Boost",

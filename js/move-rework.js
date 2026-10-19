@@ -539,6 +539,33 @@ const MoveRework = (() => {
         BattleAnimation.say(`${attacker.name} disparaît !`);
         return true;
     }
+    // Retardement (Prescience, Vœu Destructeur) : l'impact arrive au début du 2e tour suivant de la cible,
+    // même si le lanceur est K.O. entre-temps (comme l'officiel). Une seule à la fois sur une même cible.
+    function pendingDelayOn(target) {
+        return !!(target?._incoming || []).length;
+    }
+    function startDelay(attacker, move, target) {
+        if (!move.rw?.delay || move._isBoosted || move._delayStrike) return false;
+        if (pendingDelayOn(target)) { say(attacker, 'Échec', 'info'); return true; }
+        (target._incoming = target._incoming || []).push({ attacker, move, turns: move.rw.delay });
+        say(target, move.name || move.name_fr, 'debuff');
+        BattleAnimation.say(`${attacker.name} prépare ${move.name || move.name_fr} sur ${target.name} !`);
+        return true;
+    }
+    async function fireDelayed(unit) {
+        const due = [];
+        unit._incoming = (unit._incoming || []).filter(d => (--d.turns > 0 ? true : (due.push(d), false)));
+        for (const d of due) {
+            if (unit.isKO) return;
+            const move = { ...d.move, _delayStrike: true };
+            BattleAnimation.say(`${move.name || move.name_fr} frappe ${unit.name} !`);
+            if (!d.attacker.isKO) { await attack(d.attacker, unit, move); continue; }
+            // Lanceur K.O. : le coup part quand même, avec ses stats
+            const { damage, typeMod } = computeDamage(d.attacker, unit, move);
+            if (typeMod > 0 && damage > 0) R().damage(unit, damage, move.name || move.name_fr);
+        }
+    }
+
     // Début de tour d'un plongeur : le coup part sur la cible (ou une autre si elle est tombée)
     function pendingDive(unit) {
         const d = unit.flags?.diving?.value;
@@ -622,7 +649,7 @@ const MoveRework = (() => {
         extra.fieldFlags = {};
         const units = [...alive('player'), ...alive('enemy')];
         units.forEach(u => {
-            u._turnsTaken = 0; u._regens = []; u._delayedHeals = []; u._trap = null; u._bide = 0; u._stock = 0;
+            u._turnsTaken = 0; u._regens = []; u._delayedHeals = []; u._incoming = []; u._trap = null; u._bide = 0; u._stock = 0;
             u._passives = (u.moves || []).filter(isPassive).map(move => ({ move, rw: move.rw, used: false, cd: 0, turns: 0 }));
         });
         for (const u of units) {
@@ -650,6 +677,9 @@ const MoveRework = (() => {
             R().heal(unit, h.amount, null); say(unit, 'Vœu exaucé', 'buff');
             return false;
         });
+        // Prescience et Vœu Destructeur lancés deux tours plus tôt
+        await fireDelayed(unit);
+        if (unit.isKO) return;
         // Piège : 6 % des PV par tour
         if (unit._trap) {
             R().damage(unit, unit.maxHp * (unit._trap.pct || 6) / 100, 'Piégé');
@@ -721,7 +751,7 @@ const MoveRework = (() => {
 
     return {
         load, normalize, isPassive, actionMoves, hasOnlyPassives, isContact, hitList, previewHits, displayPattern,
-        damageMult, runOps, afterAttack, drainOverflow, executeDamage, zVersion, runSupportZ, canUse, startDive, pendingDive,
+        damageMult, runOps, afterAttack, drainOverflow, executeDamage, zVersion, runSupportZ, canUse, startDive, pendingDive, startDelay, pendingDelayOn,
         onBattleStart, onTurnStart, onAction, onDamaged, pushUnit: (u, steps, collision) => pushBack(u, steps, collision), swapUnits: (a, b) => swap(a, b), beforeHpLoss, afterHpLoss, onStatus, blocksStatusMove, untargetable,
         get shapes() { return SHAPES; },
     };

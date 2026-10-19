@@ -168,6 +168,8 @@ export const ATTACK_POSITION_OPS = {
 export const DIVE_MOVES = ['fly', 'bounce', 'dig', 'dive', 'phantom-force', 'shadow-force', 'sky-drop'];
 export const SNIPE_MOVES = ['snipe-shot', 'aura-sphere', 'aerial-ace', 'magical-leaf', 'feint-attack', 'shadow-punch', 'magnet-bomb', 'swift', 'vital-throw'];
 export const FACE_MOVES = { revenge: 1.3, avalanche: 1.3, payback: 1.3, pursuit: 1.3, retaliate: 1.3 };
+// Attaques à retardement (officiel : « touche la cible deux tours plus tard ») : nombre de tours du lanceur avant l'impact
+export const DELAYED_MOVES = { 'future-sight': 2, 'doom-desire': 2 };
 
 // Bonus de type de la version Z (attaques, sur les cibles touchées) et des tactiques / passifs
 export const Z_TYPE_OPS = {
