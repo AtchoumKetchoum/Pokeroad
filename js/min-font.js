@@ -14,7 +14,7 @@ const MinFont = (() => {
     const hasOwnText = el => [...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim());
 
     function fixElement(el) {
-        if (!(el instanceof HTMLElement) || el.closest('svg')) return;
+        if (!(el instanceof HTMLElement) || el.closest('svg, .no-minfont')) return;
         if (!hasOwnText(el) && !FIELDS.has(el.tagName)) return;
         const size = parseFloat(getComputedStyle(el).fontSize);
         if (size > 0 && size < MIN_FONT) el.style.setProperty('font-size', `${MIN_FONT}px`, 'important');

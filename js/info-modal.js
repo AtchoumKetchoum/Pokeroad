@@ -1,15 +1,14 @@
 /**
  * info-modal.js - Fenêtres d'information et d'action partout dans le jeu.
  *
- * Une seule fenêtre plein écran (#info-modal, barre Retour en bas) que l'on remplit selon
- * ce qu'on touche :
+ * Une seule fenêtre plein écran (#info-modal, barre Retour en bas), ouverte à la demande.
+ * Contenus disponibles :
  *  - synergies (bandeaux) → toutes les synergies de types, bonus et paliers ;
  *  - rang de zone (écusson) → l'échelle des rangs ;
  *  - progression (zone, vague, combat) → la zone, ses boss et ses récompenses ;
  *  - frise des tours, vignettes d'effets → la fiche de combat du Pokémon ;
  *  - pastille de type → forces, faiblesses et immunités ;
  *  - objet porté en combat → son effet et sa valeur actuelle ;
- *  - appui long sur une attaque → sa fiche complète (zone, effets, version Z).
  */
 const InfoModal = (() => {
     const TYPE_FR = { normal: 'Normal', fire: 'Feu', water: 'Eau', grass: 'Plante', electric: 'Electrik', ice: 'Glace', fighting: 'Combat', poison: 'Poison', ground: 'Sol', flying: 'Vol', psychic: 'Psy', bug: 'Insecte', rock: 'Roche', ghost: 'Spectre', dragon: 'Dragon', dark: 'Ténèbres', steel: 'Acier', fairy: 'Fée' };
@@ -126,67 +125,9 @@ const InfoModal = (() => {
         });
     }
 
-    // --- Déclencheurs ---
-    let lpTimer = null, lpFired = false;
-    function onClick(e) {
-        if (lpFired) { lpFired = false; e.stopPropagation(); e.preventDefault(); return; }
-        const t = e.target;
-        const inBattle = !!t.closest('#view-battle');
-        const syn = t.closest('#view-battle .synergy-panel');
-        if (syn) { e.stopPropagation(); synergies(syn.classList.contains('synergy-enemy') ? 'enemy' : 'player'); return; }
-        if (inBattle && t.closest('.rank-chip')) { e.stopPropagation(); ranks(); return; }
-        if (t.closest('#view-battle #hudProgress')) { e.stopPropagation(); zone(); return; }
-        const held = t.closest('.held-chip[data-item]');
-        if (held) { e.stopPropagation(); const u = unitFromEl(held); item(u, held.dataset.item); return; }
-        const tile = t.closest('#view-battle .status-icons');
-        if (tile && !document.querySelector('#enemy-grid.is-targeting')) { e.stopPropagation(); const u = unitFromEl(tile); if (u) fromPanel(u.name, () => showPokemonDetails(u)); return; }
-        const tl = t.closest('#view-battle .timeline-unit-container');
-        if (tl?.__unit) {
-            e.stopPropagation();
-            // La frise travaille sur des copies : on retrouve le vrai combattant sur la grille
-            const c = tl.__unit;
-            const pool = [...(grid.player || []), ...(grid.enemy || [])].filter(Boolean);
-            const u = pool.find(x => x === c) || pool.find(x => c._instanceId && x._instanceId === c._instanceId)
-                || pool.find(x => x.name === c.name && (!c._side || x._side === c._side) && (c._index == null || x._index === c._index))
-                || pool.find(x => x.name === c.name) || c;
-            fromPanel(u.name, () => showPokemonDetails(u));
-            return;
-        }
-        const typeChip = t.closest('.chip[class*="type-"]');
-        if (typeChip && !t.closest('#info-modal .type-line')) {
-            const m = [...typeChip.classList].find(c => c.startsWith('type-'));
-            const key = m && m.slice(5);
-            if (key && TYPE_FR[key]) { e.stopPropagation(); type(key); }
-        }
-    }
-    // Retrouve le combattant à partir d'un élément de la grille ou de la fiche de combat
-    function unitFromEl(el) {
-        if (el.dataset.side) return grid[el.dataset.side]?.[+el.dataset.index] || null;
-        const slot = el.closest('.unit-slot');
-        if (!slot) return null;
-        const side = slot.closest('#player-grid') ? 'player' : 'enemy';
-        const idx = [...slot.parentElement.children].indexOf(slot);
-        return grid[side]?.[idx] || null;
-    }
-    // Appui long sur une attaque : sa fiche complète
-    function onDown(e) {
-        const btn = e.target.closest('#view-battle .move-btn');
-        if (!btn || !btn.__move) return;
-        clearTimeout(lpTimer);
-        lpTimer = setTimeout(() => { lpFired = true; fromPanel(btn.__move.name || 'Attaque', () => showMoveDetails(btn.__move, btn.__unit, false)); }, 450);
-    }
-    const cancelLp = () => clearTimeout(lpTimer);
+    // Les explications au toucher / survol sont maintenant des infobulles (info-tip.js) ;
+    // cette fenêtre reste pour les contenus longs et les actions (améliorations rapides…).
 
-    function init() {
-        document.addEventListener('click', onClick, true);
-        document.addEventListener('pointerdown', onDown, true);
-        document.addEventListener('pointerup', cancelLp, true);
-        document.addEventListener('pointercancel', cancelLp, true);
-        document.addEventListener('pointermove', (e) => { if (lpTimer && Math.abs(e.movementX) + Math.abs(e.movementY) > 6) cancelLp(); }, true);
-    }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
-
-    return { open, close, synergies, ranks, zone, type, item };
+    return { open, close, fromPanel, synergies, ranks, zone, type, item };
 })();
 window.InfoModal = InfoModal;

@@ -177,7 +177,7 @@ const UnitTiles = (() => {
         }
         return `<svg class="ut-stg" viewBox="0 0 8 24" aria-hidden="true"><path d="${d}"/></svg>`;
     }
-    const tileHtml = t => `<div class="ut-tile ${t.good ? 'ut-good' : 'ut-bad'}" title="${esc(t.title)}">`
+    const tileHtml = t => `<div class="ut-tile ${t.good ? 'ut-good' : 'ut-bad'}" data-tip="${esc(t.title)}">`
         + `<svg class="ut-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[t.icon] || ''}</svg>`
         + (t.stage ? stageSvg(t.stage) : '') + '</div>';
 
@@ -190,7 +190,7 @@ const UnitTiles = (() => {
         const tiles = tilesFor(unit);
         const shown = tiles.length > MAX_TILES ? tiles.slice(0, MAX_TILES - 1) : tiles;
         box.innerHTML = shown.map(tileHtml).join('') + (tiles.length > shown.length
-            ? `<div class="ut-tile ut-more" title="${esc(tiles.slice(shown.length).map(t => t.title).join(' · '))}">+${tiles.length - shown.length}</div>` : '');
+            ? `<div class="ut-tile ut-more" data-tip="${esc(tiles.slice(shown.length).map(t => t.title).join(' · '))}">+${tiles.length - shown.length}</div>` : '');
         // Bouclier visible sur la barre de PV
         const bar = slot.querySelector('.hp-bar-bg');
         if (bar) {
