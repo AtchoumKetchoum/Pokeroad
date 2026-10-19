@@ -121,18 +121,19 @@
 
 /* Attaque survolée : son détail par-dessus la fiche du Pokémon actif */
 #view-battle #turn-unit-display { position: relative; }
-#view-battle #turn-unit-display .tud-peek {
-    position: absolute; inset: -4px; z-index: 5; display: none; flex-direction: column; justify-content: center; gap: 1px;
+#view-battle #battle-footer > .tud-peek {
+    position: absolute; top: 6px; left: 8px; right: 8px; z-index: 400; display: none; flex-direction: column; justify-content: center; gap: 4px;
     padding: 6px 12px; box-sizing: border-box; border-radius: 12px; background: #fffaf0; border: 3px solid #2b2118;
     color: #2b2118; font: 700 16px/1.25 'Nunito', var(--font-body), sans-serif; overflow: hidden;
 }
-#view-battle #turn-unit-display .tud-peek.on { display: flex; }
+#view-battle #battle-footer > .tud-peek.on { display: flex; }
 #view-battle .tud-peek .tp-line { display: flex; align-items: center; gap: 8px; }
-#view-battle .tud-peek .tp-line b { font-size: 20px; font-weight: 900; }
+#view-battle .tud-peek .tp-line b { font-size: 22px; font-weight: 900; }
+#view-battle .tud-peek .tp-desc, #view-battle .tud-peek .tp-facts { font-size: 17px; }
 #view-battle .tud-peek .tp-kind { margin-left: auto; font-weight: 900; color: #6b5a45; }
 #view-battle .tud-peek .tip-type { padding: 1px 8px; border-radius: 7px; font-size: 13px; font-weight: 900; color: #fff; background: #8a7f6a; }
 #view-battle .tud-peek .tp-facts { font-weight: 900; color: #4a3d33; }
-#view-battle .tud-peek .tp-desc { color: #6b5a45; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+#view-battle .tud-peek .tp-desc { color: #6b5a45; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 #view-battle .tud-peek .tip-type.type-normal { background: var(--t-normal, var(--type-normal, #8a7f6a)); }
 #view-battle .tud-peek .tip-type.type-fire { background: var(--t-fire, var(--type-fire, #8a7f6a)); }
 #view-battle .tud-peek .tip-type.type-water { background: var(--t-water, var(--type-water, #8a7f6a)); }
