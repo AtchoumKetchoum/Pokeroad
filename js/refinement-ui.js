@@ -282,12 +282,18 @@ const RefinementUI = (() => {
         const isMaxLevelReached = selectedPokemon.level >= maxLevelForCurrentGrade;
         const hasEnoughCopies = copies >= gradeCost.copies;
         const hasEnoughFood = currentFoodXP >= gradeCost.foodXP;
-        const canGradeUp = isMaxLevelReached && hasEnoughCopies && hasEnoughFood;
+        const gradeMaxed = currentGrade >= Refinement.GRADE_CAP;
+        // Palier partagé : 4 autres Pokémon au niveau max actuel (la nourriture choisie ne compte pas)
+        const gate = GameData.pokemonTierGate(selectedPokemon, data, selectedFoodIds) || { ok: true, have: 0, need: 0, level: maxLevelForCurrentGrade };
+        const canGradeUp = !gradeMaxed && isMaxLevelReached && hasEnoughCopies && hasEnoughFood && gate.ok;
 
         const starCost = GameData.pokemonStarCost(selectedPokemon);
         const starHtml = `
                 <div class="refinement-action star-action">
-                    <h5>Étoile (${currentStars} → ${currentStars + 1}) : +20 % de stats et +20 niveaux max</h5>
+                    <h5>Étoile (${currentStars} → ${currentStars + 1}) : +20 % de stats et +10 niveaux max</h5>
+                    ${starCost.gradeOk ? '' : `<p class="small ko">Les étoiles se gagnent après le Grade ${Refinement.GRADE_CAP} (niveau 100) : ★10 = niveau 200.</p>`}
+                    ${starCost.gradeOk && !starCost.levelOk ? `<p class="small ko">Monte d'abord au niveau ${starCost.cap}.</p>` : ''}
+                    ${starCost.levelOk && starCost.gate ? `<p class="small ${starCost.gate.ok ? 'ok' : 'ko'}">Palier ${starCost.gate.level} : ${starCost.gate.have}/${starCost.gate.need} autres Pokémon au niveau ${starCost.gate.level}.</p>` : ''}
                     <p class="small">${starCost.copies} exemplaire(s) de la même famille (${starCost.have} disponibles, hors favoris), ${starCost.money.toLocaleString('fr-FR')} $${starCost.key ? ` et ${starCost.key.count} × ${GameData.getItem(starCost.key.item)?.name_fr || starCost.key.item}` : ''}.</p>
                     <button class="refine-btn star-btn ${starCost.ok ? '' : 'disabled'}" ${starCost.ok ? '' : 'disabled'} onclick="RefinementUI.refinePokemonStar()">Ajouter ★</button>
                 </div>`;
@@ -295,14 +301,14 @@ const RefinementUI = (() => {
             <div class="refinement-section">
                 ${starHtml}
                 <h4>Montée en Grade</h4>
-                <p class="small info">Le Grade débloque le niveau maximum. (1 Grade = +20 Lv. Max)</p>
+                <p class="small info">Le Grade débloque le niveau maximum : 1 Grade = +10 niveaux, jusqu'au Grade ${Refinement.GRADE_CAP} (niveau 100). Pour passer un palier, il faut ${GameData.TIER_PEERS.pokemon} autres Pokémon au même niveau.</p>
                 
                 <div class="current-stats">
                     <div>Grade actuel: ${currentGrade}</div>
                     <div style="flex-grow:1; text-align:right;">Niveau Max: ${maxLevelForCurrentGrade}</div>
                 </div>
 
-                <div class="refinement-action grade-action-card">
+                ${gradeMaxed ? '' : `<div class="refinement-action grade-action-card">
                     <h5>Prochain Grade (${currentGrade} → ${currentGrade + 1})</h5>
                     <div class="grade-req-grid">
                         <div class="grade-req ${hasEnoughCopies ? 'met' : ''}">
@@ -321,6 +327,11 @@ const RefinementUI = (() => {
                             <div class="req-value">${selectedPokemon.level} / ${maxLevelForCurrentGrade}</div>
                             <div class="req-note ${isMaxLevelReached ? 'ok' : 'ko'}">${isMaxLevelReached ? 'niveau max atteint' : 'monte au niveau max'}</div>
                         </div>
+                        <div class="grade-req ${gate.ok ? 'met' : ''}">
+                            <div class="req-label">Palier</div>
+                            <div class="req-value">${gate.have} / ${gate.need}</div>
+                            <div class="req-note ${gate.ok ? 'ok' : 'ko'}">autres Pokémon niv. ${gate.level}</div>
+                        </div>
                     </div>
 
                     <p class="small food-hint">${foodPool.length ? 'Touche les Pokémon à sacrifier comme nourriture (favoris et équipe en mission exclus) :' : 'Aucun Pokémon à sacrifier (les favoris et l’équipe en mission sont protégés).'}</p>
@@ -335,7 +346,7 @@ const RefinementUI = (() => {
                     <button class="refine-btn ${canGradeUp ? '' : 'disabled'}" onclick="RefinementUI.refinePokemonLevel()" ${!canGradeUp ? 'disabled' : ''}>
                         Monter au Grade ${currentGrade + 1}
                     </button>
-                </div>
+                </div>`}
             </div>
         `;
     }
@@ -351,7 +362,8 @@ const RefinementUI = (() => {
             const max = GameData.trainingMax(t.stars);
             const cost = GameData.trainingCost(kind, stat, t);
             const have = GameData.countTrainingItem(cost.item);
-            const ok = data.money >= cost.money && have >= cost.count;
+            const gate = GameData.statTierGate(selectedPokemon, kind, stat);
+            const ok = data.money >= cost.money && have >= cost.count && (!gate || gate.ok);
             const value = Math.floor(((base[stat] || 0) + t.level * (isIV ? 1 : 10)) * (1 + 0.2 * t.stars));
             const icon = cost.item === 'feather-sample' ? Art.item('wingull-feather', 28) : Art.item(cost.item, 28);
             const itemName = cost.item === 'feather-sample' ? 'Plume d’échantillon' : (GameData.getItem(cost.item)?.name_fr || cost.item);
@@ -361,6 +373,7 @@ const RefinementUI = (() => {
                     <div class="train-track">
                         <div class="train-level">Niv. ${t.level}/${max} ${Refinement.formatDisplay(1, t.stars).replace(/Niveau 1\s*/, '')}</div>
                         <div class="train-bar"><i style="width:${Math.min(100, (t.level - (max - 20)) / 20 * 100)}%"></i></div>
+                        ${gate && !gate.ok ? `<div class="small ko">Palier ${gate.level} : ${gate.have}/${gate.need} autres stats</div>` : ''}
                     </div>
                     <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.${isIV ? 'refineIV' : 'refineEV'}('${stat}')" title="${itemName}">
                         <span class="train-cost">${icon}×${cost.count}${cost.key ? ` ${Art.item(cost.key.item, 24)}×${cost.key.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $</span>
@@ -373,7 +386,7 @@ const RefinementUI = (() => {
                 <h4>${isIV ? 'Entraînement des IV' : 'Entraînement des EV'}</h4>
                 <p class="small info">${isIV
                     ? 'Chaque niveau : 1 plume de la stat (+1 IV). Tous les 20 niveaux, un palier : plumes d’échantillon (une étoile = +20 % sur l’IV de la stat).'
-                    : 'Chaque niveau : 1 vitamine de la stat (+10 EV). Tous les 20 niveaux, un palier : mochi de la stat (une étoile = +20 % sur l’EV de la stat).'}</p>
+                    : 'Chaque niveau : 1 vitamine de la stat (+10 EV). Tous les 20 niveaux, un palier : mochi de la stat (une étoile = +20 % sur l’EV de la stat).'} Tous les 10 niveaux, une stat attend que les 5 autres l’aient rattrapée.</p>
                 <div class="train-list">${rows}</div>
                 <div class="small train-money">${data.money.toLocaleString('fr-FR')} $ disponibles</div>
             </div>`;
@@ -429,7 +442,7 @@ const RefinementUI = (() => {
         return `
             <div class="refinement-section">
                 <h4>Entraînement des capacités</h4>
-                <p class="small info">Chaque niveau : des CT du même type que la capacité (n'importe laquelle ; un PP Plus remplace une CT manquante). Tous les 20 niveaux, un palier : PP Max. L'amélioration renforce les dégâts, mais aussi les boucliers, soins et régénérations de la capacité.</p>
+                <p class="small info">Chaque niveau : des CT du même type que la capacité (n'importe laquelle ; un PP Plus remplace une CT manquante). Tous les 20 niveaux, un palier : PP Max. Tous les 10 niveaux, une capacité attend que les 3 autres capacités équipées l'aient rattrapée. L'amélioration renforce les dégâts, mais aussi les boucliers, soins et régénérations de la capacité.</p>
                 <div class="moves-list">
                     ${keys.map(key => {
                         const mv = db[key] || {};
@@ -442,7 +455,8 @@ const RefinementUI = (() => {
                         const tierKey = mc.key || null;
                         const resOk = mc.star ? mc.haveJoker >= mc.count : (mc.haveCt + mc.haveJoker) >= mc.count;
                         const typeName = GameData.TYPE_LABEL[mc.type] || mc.type;
-                        const ok = data.money >= cost.money && resOk;
+                        const gate = GameData.moveTierGate(selectedPokemon, key);
+                        const ok = data.money >= cost.money && resOk && (!gate || gate.ok);
                         const power = mv.rw?.kind === 'attack' ? mv.rw.power : null;
                         const kind = mv.rw?.kind === 'passive' ? 'Passif' : mv.rw?.kind === 'tactic' ? 'Tactique' : 'Attaque';
                         return `
@@ -453,6 +467,7 @@ const RefinementUI = (() => {
                                 </div>
                                 <div class="move-stats">
                                     <div>${kind} · ×${mult.toFixed(2)}${power ? ` · Puissance ${Math.round(power * mult)}` : ''}</div>
+                                    ${gate && !gate.ok ? `<div class="small ko">Palier ${gate.level} : ${gate.have}/${gate.need} autres capacités équipées au niveau ${gate.level}</div>` : ''}
                                 </div>
                                 <button class="refine-btn small ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.refineMove('${key}')">
                                     ${mc.star ? `${Art.item('pp-max', 22)}×${mc.count}` : `${Art.item('tm-' + mc.type, 22)} CT ${typeName} ×${mc.count} <small>(${mc.haveCt} + ${mc.haveJoker} PP Plus)</small>`}${tierKey ? ` ${Art.item(tierKey.item, 20)}×${tierKey.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $ · ${atMax ? 'Palier ★' : 'Améliorer'}

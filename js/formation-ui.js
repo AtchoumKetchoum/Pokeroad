@@ -79,7 +79,8 @@ const FormationUI = (() => {
             lvlEl.className = 'lvl-badge';
             lvlEl.dataset.grade = grade;
         }
-        row.querySelector('.lvl-cell').className = `lvl-cell g${Math.min(6, grade)}`;
+        // Nos Grades vont jusqu'à 10 (paliers de 10 niveaux) : même teinte qu'avant, un cran tous les 2 Grades
+        row.querySelector('.lvl-cell').className = `lvl-cell g${Math.min(6, side === 'enemy' ? grade : Math.ceil(grade / 2))}`;
         const s = row.querySelector('.star-badge');
         // Étoiles : vignette « ★n » à côté du niveau
         s.textContent = `★${stars}`;

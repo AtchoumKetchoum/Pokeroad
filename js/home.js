@@ -87,7 +87,7 @@ function openMissionModal() {
     const mission = GameData.getMission();
 
     // Reset Views
-    document.getElementById('mission-board-view').style.display = 'block';
+    document.getElementById('mission-board-view').style.display = 'flex';
     document.getElementById('mission-team-view').style.display = 'none';
     document.getElementById('mission-report-view').style.display = 'none';
 
@@ -151,9 +151,15 @@ function renderMissionBoard() {
     container.innerHTML = '';
     
     const missions = GameData.getAvailableMissions();
-    
+    // Les gains suivent la note de développement des 5 meilleurs Pokémon
+    const dev = GameData.teamDevelopment();
+    const head = document.createElement('div');
+    head.className = 'mission-note';
+    head.innerHTML = `<b>Note de développement : ${dev.total}</b><small>Somme de tes 5 Pokémon les plus développés (${dev.scores.join(' · ') || '—'}). Les gains des missions en dépendent : développe ton équipe pour gagner plus.</small>`;
+    container.appendChild(head);
+
     if (missions.length === 0) {
-        container.innerHTML = "<p>Aucune mission disponible pour le moment. Revenez plus tard !</p>";
+        container.insertAdjacentHTML('beforeend', "<p>Aucune mission disponible pour le moment. Revenez plus tard !</p>");
         return;
     }
 
@@ -172,6 +178,7 @@ function renderMissionBoard() {
                 <span class="badge affinity">${mission.affinityName}</span>
             </div>
             <p>Climat : ${mission.affinityName}</p>
+            <p class="mission-estimate"><span class="coin"></span>≈ ${GameData.missionMoney(dev.total, mission).toLocaleString('fr-FR')} $</p>
         `;
         container.appendChild(card);
     });
@@ -182,7 +189,7 @@ function selectMission(mission) {
     missionTeamSelection = [];
 
     document.getElementById('mission-board-view').style.display = 'none';
-    document.getElementById('mission-team-view').style.display = 'block';
+    document.getElementById('mission-team-view').style.display = 'flex';
 
     document.getElementById('selected-mission-title').textContent = `Mission : ${mission.typeName} (${mission.duration}h)`;
     document.getElementById('mission-affinity-badge').textContent = `Biome : ${mission.affinityName}`;
@@ -195,7 +202,7 @@ function selectMission(mission) {
 
 function backToMissionBoard() {
     document.getElementById('mission-team-view').style.display = 'none';
-    document.getElementById('mission-board-view').style.display = 'block';
+    document.getElementById('mission-board-view').style.display = 'flex';
     selectedMissionId = null;
 }
 
@@ -315,7 +322,7 @@ function renderMissionReport() {
 
     document.getElementById('mission-board-view').style.display = 'none';
     document.getElementById('mission-team-view').style.display = 'none';
-    reportView.style.display = 'block';
+    reportView.style.display = 'flex';
 
     const mission = GameData.getMission();
     if (!mission || !mission.rewards) {
@@ -410,6 +417,7 @@ function createMissionPokemonCard(pokemon, onClick) {
         <img src="${pokemon.sprite}" alt="${pokemon.name}" style="width: 64px; height: 64px;">
         <p>${pokemon.name}</p>
         <p>Lv. ${pokemon.level}</p>
+        <p>Note ${GameData.developmentScore(pokemon)}</p>
     `;
     return card;
 }
@@ -703,10 +711,17 @@ function importSave(event) {
     });
 }
 
-async function eraseData() {
-    const ok = await UI.confirm("Toutes tes captures, ta progression et ton argent seront perdus pour toujours.", { title: 'Effacer la sauvegarde', okLabel: 'Tout effacer' });
+// Recommencer la partie (les réglages restent) ou tout effacer (réglages, astuces vues, vue des cartes…)
+async function eraseData(everything = false) {
+    const ok = await UI.confirm(everything
+        ? "Ta partie (captures, progression, argent) et tous tes réglages seront effacés pour toujours."
+        : "Toutes tes captures, ta progression et ton argent seront perdus pour toujours. Tes réglages sont gardés.",
+        { title: everything ? 'Tout effacer' : 'Recommencer la partie', okLabel: everything ? 'Tout effacer' : 'Recommencer' });
     if (!ok) return;
     GameData.clearSaveData();
+    if (everything) {
+        Object.keys(localStorage).filter(k => /^poke(road|rode)/i.test(k)).forEach(k => localStorage.removeItem(k));
+    }
     window.location.reload();
 }
 

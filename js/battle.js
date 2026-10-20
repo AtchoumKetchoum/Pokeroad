@@ -732,7 +732,7 @@ function updateTurnDisplay(unit) {
     const types = (unit.types || []).map(t => `<span class="chip type-${t}">${typeof formatTypeLabel === 'function' ? formatTypeLabel(t) : t}</span>`).join('');
     // Objets tenus et baies : icônes à droite (grisées une fois utilisées), effet dans l'infobulle ;
     // les emplacements débloqués mais vides restent visibles en pointillés
-    const slots = typeof GameData !== 'undefined' && GameData.getHoldSlots ? GameData.getHoldSlots({ refinementLevel: grade }) : { items: 1, berries: 1 };
+    const slots = typeof GameData !== 'undefined' && GameData.getHoldSlots ? GameData.getHoldSlots({ refinementLevel: pk ? grade : grade * 2 }) : { items: 1, berries: 1 };
     const itemChip = id => `<span class="held-chip tud-item ${unit._usedItems?.has(id) ? 'used' : ''} ${unit._itemsOff ? 'off' : ''}" data-item="${id}" data-side="${unit._side}" data-index="${unit._index}">${Art.item(id, 30)}</span>`;
     const group = (ids, n, kind) => {
         const list = (ids || []).slice(0, Math.max(n, (ids || []).length));
@@ -747,7 +747,7 @@ function updateTurnDisplay(unit) {
         <div class="tud-main">
             <div class="tud-line">
                 <span class="turn-unit-name" id="turn-unit-name">${unit.name}</span>
-                <span class="tud-lvl g${Math.min(6, grade)}" title="Niveau ${unit.level} · Grade ${grade}">${unit.level}</span>
+                <span class="tud-lvl g${Math.min(6, pk ? Math.ceil(grade / 2) : grade)}" title="Niveau ${unit.level} · Grade ${grade}">${unit.level}</span>
                 ${stars ? `<span class="tud-stars">★${stars}</span>` : ''}
                 <span class="tud-types">${types}</span>
             </div>
@@ -2707,18 +2707,15 @@ async function checkWinCondition() {
     playVictoryWalk();
   } else if (playerAlive === 0) {
     // Défaite : on reste sur ce combat (pas de retour au début de la vague) ; il faut se renforcer ou changer de stratégie
-    // Récompense de consolation : de 10 % à 60 % de la récompense selon les ennemis mis K.O., pour pouvoir s'entraîner
+    // Aucun gain en cas de défaite : perdre en boucle ne doit pas servir à farmer de l'argent
     const enemiesTotal = grid.enemy.filter(Boolean).length;
     const enemiesDown = grid.enemy.filter(u => u && u.isKO).length;
-    const consolation = Math.round((40 + getEnemyLevel() * 20) * bossRewardMult() * (0.1 + 0.5 * (enemiesTotal ? enemiesDown / enemiesTotal : 0)));
-    if (typeof GameData !== 'undefined' && GameData.addMoney) GameData.addMoney(consolation);
     
     if (dom.battleStatus) {
       dom.battleStatus.innerHTML = `
         <div class="status-title" style="color:#e74c3c;">DÉFAITE...</div>
         <p style="color:#666; margin-bottom:8px;">Votre équipe a été mise KO.</p>
-        <div class="rewards-summary"><div class="reward-main"><span class="reward-chip money"><span class="coin"></span>+${consolation.toLocaleString('fr-FR')} $</span></div>
-        <p style="margin:6px 0 16px; font-size:14px;">Récompense partielle (${enemiesDown}/${enemiesTotal} ennemis K.O.). Entraîne ton équipe ou change de stratégie !</p></div>
+        <div class="rewards-summary"><p style="margin:6px 0 16px; font-size:14px;">Aucune récompense (${enemiesDown}/${enemiesTotal} ennemis K.O.). Entraîne ton équipe ou change de stratégie !</p></div>
         <div id="end-battle-nav-lose" class="end-battle-actions" style="position:relative; bottom:auto; left:auto; transform:none;">
             <button class="pk-btn-action secondary-btn" title="Retour à la carte de la zone" onclick="leaveBattleToHome()">${Art.icon('map', 20)} Carte</button>
             <button class="pk-btn-action" title="Rejouer" onclick="fleeBattle()">

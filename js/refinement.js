@@ -64,9 +64,19 @@ const Refinement = (() => {
      * @param {number} stars - Étoiles (0-5)
      * @returns {number} Niveau maximum total
      */
+    // Pokémon : un palier tous les 10 niveaux. Grades 1 à 10 jusqu'au niveau 100, puis une étoile par palier (★10 = niveau 200)
+    const LEVELS_PER_TIER = 10;
+    const GRADE_CAP = 10;
     function getMaxLevel(grade, stars) {
-        // Pokémon : chaque grade et chaque étoile débloquent 20 niveaux, sans plafond
-        return Math.max(1, grade || 1) * 20 + Math.max(0, stars || 0) * 20;
+        const g = Math.min(GRADE_CAP, Math.max(1, grade || 1));
+        return g * LEVELS_PER_TIER + (g >= GRADE_CAP ? Math.max(0, stars || 0) * LEVELS_PER_TIER : 0);
+    }
+
+    // Palier partagé : au niveau 10, 20, 30…, on ne passe que si assez d'autres (Pokémon, capacités, stats) y sont aussi
+    function tierGate(level, peerLevels, need) {
+        if (!level || level % LEVELS_PER_TIER !== 0) return null;
+        const have = peerLevels.filter(l => l >= level).length;
+        return { level, need, have: Math.min(have, need), ok: have >= need };
     }
 
     // Objets, attaques, IV/EV : 20 niveaux par palier d'étoile (★0 : 20, ★1 : 40, ★2 : 60…)
@@ -175,8 +185,11 @@ const Refinement = (() => {
                 // Grade: Coût en argent remplacé par nourriture (Pokémon)
                 // On demande autant de nourriture que d'exemplaires ?
                 // Si Grade 1 -> 2, on demande 1 clone + 500 XP de food?
+                // Grades de 10 niveaux : des exemplaires un grade sur deux (au passage des niveaux 20, 40, 60, 80)
                 cost.money = 0;
-                cost.foodXP = (currentLevel || 1) * 1000; 
+                const g = currentLevel || 1;
+                cost.copies = g % 2 === 0 ? Math.floor((g / 2 - 1) / 2) + 1 : 0;
+                cost.foodXP = Math.ceil(g / 2) * 500;
                 break;
                 
             case 'iv':
@@ -456,6 +469,9 @@ const Refinement = (() => {
         levelOf,
         starsOf,
         getMaxLevel,
+        LEVELS_PER_TIER,
+        GRADE_CAP,
+        tierGate,
         getMaxRefineLevel,
         getMaxLevelByGrade,
         getFoodXP,

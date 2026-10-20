@@ -47,12 +47,14 @@ const QuickUpgrades = (() => {
             if (candy) add('candy', `Utiliser ${GameData.getItem(candy)?.name_fr || candy} (Nv ${pk.level}/${maxLevel})`, () => GameData.useCandy(pk.instanceId, candy, 1), Art.item(candy, 26));
         }
         // Grade possible (niveau maximum atteint) ou étoile
-        if (pk.level >= maxLevel) add('grade', `Monter en Grade (niveau max ${maxLevel} atteint)`, () => openTraining(pk, 'pokemon'), Art.stars ? Art.stars(1, 18) : '');
+        const gate = GameData.pokemonTierGate(pk, data);
+        if (pk.level >= maxLevel && (pk.refinementLevel || 1) < Refinement.GRADE_CAP && (!gate || gate.ok)) add('grade', `Monter en Grade (niveau max ${maxLevel} atteint)`, () => openTraining(pk, 'pokemon'), Art.stars ? Art.stars(1, 18) : '');
         const star = GameData.pokemonStarCost(pk, data);
         if (star.ok) add('grade', `Ajouter une étoile (+20 % de stats)`, () => GameData.refinePokemonStar(pk.instanceId), Art.stars ? Art.stars(1, 18) : '');
         // Entraînement IV / EV payable (le pas le moins cher)
         ['iv', 'ev'].forEach(kind => {
             const steps = GameData.STAT_KEYS.map(stat => ({ stat, cost: GameData.trainingCost(kind, stat, GameData.statTrack(pk, kind, stat)) }))
+                .filter(s => { const g = GameData.statTierGate(pk, kind, s.stat); return !g || g.ok; })
                 .filter(s => money >= s.cost.money && GameData.countTrainingItem(s.cost.item) >= s.cost.count && !(s.cost.key && (inv[s.cost.key.item] || 0) < s.cost.key.count))
                 .sort((a, b) => a.cost.money - b.cost.money);
             if (steps.length) add('train', `Entraîner les ${kind.toUpperCase()} (${steps.length} stat${steps.length > 1 ? 's' : ''} possible${steps.length > 1 ? 's' : ''})`, () => openTraining(pk, kind), Art.item(kind === 'iv' ? 'health-wing' : 'protein', 26));
@@ -69,8 +71,9 @@ const QuickUpgrades = (() => {
             const c = GameData.moveTrainingCost(key, ref);
             const cost = Refinement.getRefinementCost('move', Refinement.levelOf(ref), Refinement.starsOf(ref));
             const ok = money >= cost.money && (c.star ? c.haveJoker >= c.count : (c.haveCt + c.haveJoker) >= c.count) && !(c.key && (inv[c.key.item] || 0) < c.key.count);
+            const gate = GameData.moveTierGate(pk, key);
             const mv = (typeof MovesDB !== 'undefined' && MovesDB?.[key]) || {};
-            if (ok) add('move', `Améliorer ${mv.name_fr || key}`, () => openTraining(pk, 'moves'), Art.item(`tm-${c.type || 'normal'}`, 26));
+            if (ok && (!gate || gate.ok)) add('move', `Améliorer ${mv.name_fr || key}`, () => openTraining(pk, 'moves'), Art.item(`tm-${c.type || 'normal'}`, 26));
         });
         return out;
     }

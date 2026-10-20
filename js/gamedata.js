@@ -244,10 +244,36 @@ const GameData = (() => {
             if (!n) break;
         }
     }
+    // Paliers partagés (tous les 10 niveaux) : on ne dépasse un palier que si les autres l'ont aussi atteint
+    const TIER_PEERS = { pokemon: 4, move: 3, stat: 5 };
+    // Pokémon : 4 autres Pokémon au niveau max actuel (hors ceux qui vont être sacrifiés)
+    function pokemonTierGate(pokemon, data = loadData(), excludeIds = []) {
+        const cap = Refinement.getMaxLevel(pokemon.refinementLevel || 1, pokemon.refinementStars || 0);
+        const skip = new Set([pokemon.instanceId, ...excludeIds]);
+        const peers = (data?.pokemons || []).filter(p => p && !skip.has(p.instanceId)).map(p => p.level || 1);
+        return Refinement.tierGate(cap, peers, TIER_PEERS.pokemon);
+    }
+    // Capacité : les 3 autres capacités équipées du Pokémon au même niveau
+    function moveTierGate(pokemon, moveName) {
+        const lvl = Refinement.levelOf(pokemon?.moveRefinements?.[moveName] || {});
+        const peers = (pokemon?.selectedMoves || []).filter(m => m !== moveName).map(m => Refinement.levelOf(pokemon.moveRefinements?.[m] || {}));
+        return Refinement.tierGate(lvl, peers, TIER_PEERS.move);
+    }
+    // IV / EV : les 5 autres stats du même entraînement au même niveau
+    function statTierGate(pokemon, kind, stat) {
+        const peers = STAT_KEYS.filter(k => k !== stat).map(k => statTrack(pokemon, kind, k).level);
+        return Refinement.tierGate(statTrack(pokemon, kind, stat).level, peers, TIER_PEERS.stat);
+    }
+    function tierGateReason(gate, what) {
+        return gate && !gate.ok ? `Palier ${gate.level} : il faut ${gate.need} ${what} au niveau ${gate.level} (${gate.have}/${gate.need}).` : null;
+    }
+
     function trainStat(pokemonInstanceId, kind, stat) {
         const data = loadData();
         const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
         if (!pokemon || !STAT_KEYS.includes(stat) || !['iv', 'ev'].includes(kind)) return { success: false, reason: 'Entraînement impossible.' };
+        const gated = tierGateReason(statTierGate(pokemon, kind, stat), `autres stats ${kind.toUpperCase()}`);
+        if (gated) return { success: false, reason: gated };
         const track = statTrack(pokemon, kind, stat);
         const cost = trainingCost(kind, stat, track);
         const inv = data.inventory.items = data.inventory.items || {};
@@ -566,6 +592,7 @@ const GameData = (() => {
 
         const defaultSave = {
             pokemons: startingPokemons,
+            tierRule: 10, // Grades de 10 niveaux dès le départ (pas de migration)
             playerName: 'RED',
             playerGender: 'boy',
             money: 1500,
@@ -918,6 +945,18 @@ const GameData = (() => {
                 needsSave = true;
             }
 
+
+            // Migration : Grades de 10 niveaux (avant : 20 niveaux par Grade et par étoile), le niveau max ne baisse pas
+            if (data.tierRule !== 10) {
+                (data.pokemons || []).forEach(pk => {
+                    if (!pk) return;
+                    const g = pk.refinementLevel || 1, s = pk.refinementStars || 0;
+                    pk.refinementLevel = Math.min(Refinement.GRADE_CAP, Math.max(2 * (g + s), Math.ceil((pk.level || 1) / 10)));
+                    pk.stats = calculateStats(pk);
+                });
+                data.tierRule = 10;
+                needsSave = true;
+            }
 
             // Migration: ajout des raffinements d'objets global
             if (typeof data.itemRefinements === 'undefined') {
@@ -1789,6 +1828,30 @@ const GameData = (() => {
         return item;
     }
 
+    // Note de développement d'un Pokémon : tout ce qu'on a monté dessus, en équivalent niveaux
+    // (niveau, étoiles, puis la moyenne de chaque entraînement : IV, EV, capacités équipées, nature ; une étoile = un palier de 10)
+    function developmentScore(pk) {
+        if (!pk) return 0;
+        const tier = Refinement.LEVELS_PER_TIER;
+        const avg = (list) => list.length ? list.reduce((a, b) => a + b, 0) / list.length : 0;
+        const stat = (kind) => avg(STAT_KEYS.map(k => { const t = statTrack(pk, kind, k); return t.level + t.stars * tier; }));
+        const moves = [0, 1, 2, 3].map(i => {
+            const ref = pk.moveRefinements?.[(pk.selectedMoves || [])[i]];
+            return ref ? Refinement.levelOf(ref) - 1 + Refinement.starsOf(ref) * tier : 0;
+        });
+        const nature = natureTrack(pk);
+        return Math.round((pk.level || 1) + (pk.refinementStars || 0) * tier + stat('iv') + stat('ev') + avg(moves) + nature.level + nature.stars * tier);
+    }
+    // Note globale : les 5 Pokémon les plus développés. C'est elle qui fixe les gains des missions
+    function teamDevelopment(data = loadData(), count = 5) {
+        const scores = (data?.pokemons || []).filter(Boolean).map(developmentScore).sort((a, b) => b - a).slice(0, count);
+        return { total: scores.reduce((a, b) => a + b, 0), scores };
+    }
+    function missionMoney(note, mission, affinityBonus = 0) {
+        const base = note * 15 * (mission?.duration || 1) * (1 + (mission?.difficulty || 1) * 0.25);
+        return Math.floor(base * (1 + affinityBonus * 0.15)); // +15 % par Pokémon dans son biome
+    }
+
     function calculateAndSetMissionRewards() {
         const data = loadData();
         if (!data || !data.mission || !data.mission.active || data.mission.rewards) return;
@@ -1812,12 +1875,11 @@ const GameData = (() => {
         const difficulty = missionDetails.difficulty || 1;
         const affinityTypes = missionDetails.affinityTypes || [];
 
-        // 1. Calcul du Score de l'équipe
-        let totalLevel = 0;
+        // 1. Note globale (5 Pokémon les plus développés) et affinités de l'équipe envoyée
+        const note = teamDevelopment(data).total;
         let affinityBonus = 0;
 
         teamPokemons.forEach(p => {
-            totalLevel += p.level;
             // Vérification simple des types (primary et secondary)
             const pTypes = [p.type];
             if (p.types) pTypes.push(...p.types); // Support structure array
@@ -1833,14 +1895,13 @@ const GameData = (() => {
             logs.push(`${affinityBonus} Pokémon se sentent à l'aise dans cet environnement !`);
         }
 
-        // 3. Calcul des Récompenses
-        // Argent rééquilibré (Légère augmentation pour suivre la progression)
-        const baseMoney = totalLevel * 15 * durationHours * (1 + (difficulty * 0.25));
-        const moneyReward = Math.floor(baseMoney * (1 + (affinityBonus * 0.15))); // +15% par affinité
+        // 3. Calcul des Récompenses : elles suivent le développement de tes 5 meilleurs Pokémon
+        logs.push(`Note de développement de tes 5 meilleurs Pokémon : ${note}.`);
+        const moneyReward = missionMoney(note, { duration: durationHours, difficulty }, affinityBonus);
 
         // Oeufs
         let eggsFound = 0;
-        const baseEggChance = (totalLevel / 500) * durationHours;
+        const baseEggChance = (note / 500) * durationHours;
         const eggRolls = 1 + Math.floor(durationHours / 4); // 1 roll every 4 hours + 1 base
         
         for(let i=0; i<eggRolls; i++) {
@@ -2035,11 +2096,11 @@ const GameData = (() => {
     function isBerryId(id) {
         return itemsCatalog?.[id]?.pocket === 'berries' || /-berry$/.test(id || '');
     }
-    // 1 objet et 1 baie au départ ; un de plus au Grade 3, puis au Grade 5
+    // 1 objet et 1 baie au départ ; un de plus au Grade 6 (niveau 60), puis au Grade 10 (niveau 100)
     function getHoldSlots(pokemon) {
         const grade = pokemon?.refinementLevel || 1;
-        const n = Math.min(MAX_HELD, 1 + (grade >= 3 ? 1 : 0) + (grade >= 5 ? 1 : 0));
-        return { items: n, berries: n, max: MAX_HELD, nextAt: grade < 3 ? 3 : grade < 5 ? 5 : null };
+        const n = Math.min(MAX_HELD, 1 + (grade >= 6 ? 1 : 0) + (grade >= 10 ? 1 : 0));
+        return { items: n, berries: n, max: MAX_HELD, nextAt: grade < 6 ? 6 : grade < 10 ? 10 : null };
     }
     function equipItem(pokemonInstanceId, itemId, slot = null) {
         const data = loadData();
@@ -2170,6 +2231,8 @@ const GameData = (() => {
         }
 
         const currentRef = pokemon.moveRefinements[moveName];
+        const gated = tierGateReason(moveTierGate(pokemon, moveName), 'autres capacités équipées');
+        if (gated) return { success: false, reason: gated };
         // Les attaques s'améliorent avec de l'argent et des PP Plus ; une étoile tous les 20 niveaux avec des PP Max
         const atMax = Refinement.levelOf(currentRef) >= Refinement.getMaxRefineLevel(Refinement.starsOf(currentRef));
         const check = atMax
@@ -2279,6 +2342,9 @@ const GameData = (() => {
         // Exemplaires : même famille, hors favoris, équipe en mission et Pokémon déjà choisis comme nourriture
         const copyPool = sacrificePool(pokemon, data).filter(p => !foodInstanceIds.includes(p.instanceId));
         const check = Refinement.getRefinementCost('pokemon', currentGrade, currentStars);
+        if (currentGrade >= Refinement.GRADE_CAP) {
+            return { success: false, reason: `Grade maximum (${Refinement.GRADE_CAP}) : au-delà du niveau 100, ce sont les étoiles qui débloquent les paliers.` };
+        }
         if (pokemon.level < Refinement.getMaxLevel(currentGrade, currentStars)) {
             return { success: false, reason: `Monte d'abord au niveau ${Refinement.getMaxLevel(currentGrade, currentStars)}.` };
         }
@@ -2304,6 +2370,8 @@ const GameData = (() => {
         
         // Consommer les exemplaires (les plus faibles d'abord) et la nourriture
         const eaten = new Set([...copyPool.sort((a, b) => (a.level || 0) - (b.level || 0)).slice(0, check.copies).map(p => p.instanceId), ...foodInstanceIds]);
+        const gated = tierGateReason(pokemonTierGate(pokemon, data, [...eaten]), 'autres Pokémon (hors sacrifiés)');
+        if (gated) return { success: false, reason: gated };
         data.pokemons = data.pokemons.filter(p => !eaten.has(p.instanceId));
         
         // Appliquer le raffinement
@@ -2328,14 +2396,24 @@ const GameData = (() => {
         const money = starMoney(10000, stars);
         const key = Refinement.getStarKey(stars + 1);
         const keyOk = !keyMissing(data?.inventory?.items || {}, key);
-        return { copies, money, key, keyOk, have: pool.length, pool, ok: pool.length >= copies && (data?.money || 0) >= money && keyOk };
+        // Les étoiles viennent après le niveau 100 (Grade 10) : une étoile par palier de 10 niveaux
+        const cap = Refinement.getMaxLevel(pokemon.refinementLevel || 1, stars);
+        const gradeOk = (pokemon.refinementLevel || 1) >= Refinement.GRADE_CAP;
+        const levelOk = gradeOk && (pokemon.level || 1) >= cap;
+        const gate = pokemonTierGate(pokemon, data, pool.slice(0, copies).map(p => p.instanceId));
+        const gateOk = !gate || gate.ok;
+        return { copies, money, key, keyOk, have: pool.length, pool, cap, gradeOk, levelOk, gate,
+            ok: gradeOk && levelOk && gateOk && pool.length >= copies && (data?.money || 0) >= money && keyOk };
     }
     function refinePokemonStar(pokemonInstanceId) {
         const data = loadData();
         const pokemon = data?.pokemons?.find(p => p.instanceId === pokemonInstanceId);
         if (!pokemon) return { success: false, reason: "Pokémon introuvable." };
         const cost = pokemonStarCost(pokemon, data);
-        if (!cost.ok) return { success: false, reason: cost.have < cost.copies ? `Il faut ${cost.copies} exemplaire(s) de la même famille.` : !cost.keyOk ? keyMissing(data.inventory.items || {}, cost.key) : "Pas assez d'argent." };
+        if (!cost.ok) return { success: false, reason: !cost.gradeOk ? `Les étoiles se gagnent après le Grade ${Refinement.GRADE_CAP} (niveau 100).`
+            : !cost.levelOk ? `Monte d'abord au niveau ${cost.cap}.`
+            : tierGateReason(cost.gate, 'autres Pokémon (hors sacrifiés)')
+            || (cost.have < cost.copies ? `Il faut ${cost.copies} exemplaire(s) de la même famille.` : !cost.keyOk ? keyMissing(data.inventory.items || {}, cost.key) : "Pas assez d'argent.") };
         consumeKey(data.inventory.items, cost.key);
         const eaten = new Set(cost.pool.slice(0, cost.copies).map(p => p.instanceId));
         data.pokemons = data.pokemons.filter(p => !eaten.has(p.instanceId));
@@ -2447,6 +2525,14 @@ const GameData = (() => {
         refinePokemonLevel,
         refinePokemonStar,
         pokemonStarCost,
+        pokemonTierGate,
+        developmentScore,
+        teamDevelopment,
+        missionMoney,
+        moveTierGate,
+        statTierGate,
+        tierGateReason,
+        TIER_PEERS,
         sacrificePool,
         moveTrainingCost,
         TYPE_LABEL,

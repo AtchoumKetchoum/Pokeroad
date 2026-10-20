@@ -96,7 +96,8 @@
 /* Titres et textes de l'ancien thème sombre : lisibles sur le papier */
 #refinement-modal .refinement-action h5 { color: var(--ink) !important; font-family: var(--font-title); font-size: 17px; }
 #refinement-modal .refinement-section h4 { color: var(--ink) !important; }
-#refinement-modal .grade-req-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
+#refinement-modal .grade-req-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
+@media (min-width: 640px) { #refinement-modal .grade-req-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 #refinement-modal .grade-req { text-align: center; background: #f7ecdc; border: 2px solid var(--ink); border-radius: 14px; padding: 8px 4px; color: var(--ink); }
 #refinement-modal .grade-req.met { background: #dcebd2; }
 #refinement-modal .grade-req .req-label { font-size: 12px; font-weight: 800; color: var(--ink-soft); margin-bottom: 4px; }
@@ -105,6 +106,8 @@
 #refinement-modal .grade-req img { width: 44px; height: 44px; object-fit: contain; }
 #refinement-modal .grade-req .ok { color: var(--green-dark, #3f7a3a); }
 #refinement-modal .grade-req .ko { color: var(--red-dark, #a44e48); }
+#refinement-modal .small.ko { color: var(--red-dark, #a44e48); }
+#refinement-modal .small.ok { color: var(--green-dark, #3f7a3a); }
 #refinement-modal .food-hint { text-align: center; color: var(--ink-soft); font-weight: 700; margin: 4px 0 8px; }
 #refinement-modal .food-selection-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 6px; max-height: 240px; overflow-y: auto;

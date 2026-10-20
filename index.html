@@ -168,7 +168,9 @@
                                 Importer Sauvegarde
                                 <input type="file" id="import-save-btn" onchange="importSave(event)" style="display:none;" accept=".json">
                             </label>
-                            <button class="pk-btn-action small danger-btn" onclick="eraseData()">Effacer les données</button>
+                            <button class="pk-btn-action small danger-btn" onclick="eraseData()">Recommencer la partie</button>
+                            <button class="pk-btn-action small danger-btn" onclick="eraseData(true)">Tout effacer (partie et réglages)</button>
+                            <p class="small">Pense à exporter ta sauvegarde avant : c'est définitif.</p>
                         </div>
                     </div>
                 </div>
@@ -196,7 +198,7 @@
                         <div id="mission-report-view" style="display:none;">
                             <h3>Rapport de Mission</h3>
                             <h4>Équipe de Mission :</h4>
-                            <div id="mission-report-team" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;"></div>
+                            <div id="mission-report-team"></div>
                             <div id="mission-logs" class="mission-logs"></div>
                             <div class="mission-rewards"><h4>Récompenses</h4><div id="mission-rewards-list"></div></div>
                             <button class="pk-btn-action" onclick="claimRewardsAndClose()">Récupérer & Fermer</button>
