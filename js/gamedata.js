@@ -1847,8 +1847,9 @@ const GameData = (() => {
         const scores = (data?.pokemons || []).filter(Boolean).map(developmentScore).sort((a, b) => b - a).slice(0, count);
         return { total: scores.reduce((a, b) => a + b, 0), scores };
     }
+    // Une mission de 12 h rapporte environ deux patrouilles fil rouge pleines (patrol.js) : elle immobilise 5 Pokémon
     function missionMoney(note, mission, affinityBonus = 0) {
-        const base = note * 15 * (mission?.duration || 1) * (1 + (mission?.difficulty || 1) * 0.25);
+        const base = note * 4.5 * (mission?.duration || 1) * (1 + (mission?.difficulty || 1) * 0.25);
         return Math.floor(base * (1 + affinityBonus * 0.15)); // +15 % par Pokémon dans son biome
     }
 

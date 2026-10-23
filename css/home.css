@@ -974,6 +974,27 @@
   text-align: left;
 }
 .mission-note b { font-size: 16px; color: #484b4f; }
+/* Mission fil rouge : la patrouille permanente */
+.patrol-panel {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #efe3c8;
+  border-left: 4px solid #c9963a;
+  text-align: left;
+}
+.patrol-panel.full { border-left-color: var(--red, #c4483f); }
+.patrol-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.patrol-head b { font-size: 17px; color: #484b4f; }
+.patrol-head span { font-weight: 700; color: #6a5a3a; }
+.patrol-bar { height: 10px; border-radius: 6px; background: #d9ccb0; overflow: hidden; }
+.patrol-bar > div { height: 100%; background: #c9963a; }
+.patrol-panel.full .patrol-bar > div { background: var(--red, #c4483f); }
+.patrol-panel small { color: #5f6266; line-height: 1.35; }
+.patrol-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .mission-note small { color: #5f6266; line-height: 1.35; }
 .mission-estimate { display: flex; align-items: center; gap: 6px; margin: 0; font-weight: 700; color: #484b4f; }
 .mission-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }

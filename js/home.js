@@ -9,7 +9,9 @@ let missionUpdateInterval;
 window.initHome = async () => {
     // Initialisation des données de jeu (appelé une fois globalement, mais sécurisé ici)
     const gameState = await GameData.init();
-    updatePlayerHud(gameState.data);
+    // Retour après une absence : la patrouille fil rouge rend compte de ses gains
+    if (typeof Patrol !== 'undefined') Patrol.checkReturn();
+    updatePlayerHud(GameData._load() || gameState.data);
     updateHomeHUD();
 };
 
@@ -38,10 +40,16 @@ function setBuildingBadge(kind, text, { alert = false, timer = false } = {}) {
 function updateHomeHUD() {
     // Missions : temps restant de la mission en cours, puis « ! » quand elle est terminée
     const mission = GameData.getMission();
+    // puis la patrouille fil rouge : « $ » dès une heure de gains en réserve, « ! » quand elle est pleine
+    const patrol = typeof Patrol !== 'undefined' ? Patrol.pending() : null;
     if (mission && mission.active) {
         const remaining = mission.endTime - Date.now();
         if (remaining <= 0) setBuildingBadge('board', '!', { alert: true });
         else setBuildingBadge('board', formatTime(remaining), { timer: true });
+    } else if (patrol?.full) {
+        setBuildingBadge('board', '!', { alert: true });
+    } else if (patrol && patrol.hours >= 1) {
+        setBuildingBadge('board', '$');
     } else {
         setBuildingBadge('board', null);
     }
@@ -145,10 +153,35 @@ function renderActiveMissionStatus(mission) {
     missionUpdateInterval = setInterval(updateTimer, 1000);
 }
 
+// Mission fil rouge : la patrouille permanente, en tête du tableau des missions
+function renderPatrolPanel(container) {
+    if (typeof Patrol === 'undefined') return;
+    const p = Patrol.pending();
+    if (!p) return;
+    const zone = typeof getZoneInfo === 'function' ? getZoneInfo(GameData.getProgression().zone).name : 'la route';
+    const panel = document.createElement('div');
+    panel.className = 'patrol-panel' + (p.full ? ' full' : '');
+    panel.innerHTML = `
+        <div class="patrol-head"><b>Patrouille fil rouge</b><span>${zone} · +${p.perHour.toLocaleString('fr-FR')} $/h</span></div>
+        <div class="patrol-bar"><div style="width:${(p.hours / Patrol.CONFIG.capHours * 100).toFixed(1)}%"></div></div>
+        <small>${p.full ? 'Réserve pleine : récupère-la pour que la patrouille reparte.' : `Pleine dans ${formatTime(p.fullIn)}. Elle tourne même jeu fermé, sans immobiliser tes Pokémon.`}</small>
+        <div class="patrol-foot"><span class="mission-estimate"><span class="coin"></span>${p.money.toLocaleString('fr-FR')} $ · ${p.items} objet${p.items > 1 ? 's' : ''}</span>
+        <button class="pk-btn-action small" ${p.money || p.items ? '' : 'disabled'}>Récupérer</button></div>`;
+    panel.querySelector('button').onclick = () => {
+        const gain = Patrol.claim();
+        if (gain) UI.toast(`Patrouille : ${Patrol.describe(gain)}.`, 'success');
+        updatePlayerHud(GameData._load());
+        updateHomeHUD();
+        renderMissionBoard();
+    };
+    container.appendChild(panel);
+}
+
 function renderMissionBoard() {
     const container = document.getElementById('mission-cards-container');
     container.style.display = 'flex';
     container.innerHTML = '';
+    renderPatrolPanel(container);
     
     const missions = GameData.getAvailableMissions();
     // Les gains suivent la note de développement des 5 meilleurs Pokémon

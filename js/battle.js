@@ -1792,9 +1792,45 @@ async function chooseEnemyAction(unit) {
     await attack(unit, action.target, action.move);
 }
 
+// Combat automatique « réflexe » : il se défend, sans plus. Il frappe fort l'ennemi en face de lui
+// sans regarder les types, les zones, les effets ni qui est presque K.O., et place parfois une
+// capacité de soutien au hasard. Jouer soi-même (bon type, bonne cible, bonne zone) fait la différence.
+const AUTO_SUPPORT_CHANCE = 0.15;
+
+function chooseReflexAction(unit) {
+    let moves = (Array.isArray(unit.moves) && unit.moves.length ? unit.moves : defaultMovesFor(unit)).filter(Boolean);
+    if (typeof MoveRework !== 'undefined') moves = moves.filter(m => !MoveRework.isPassive(m));
+    if (!moves.length) return null;
+    const pick = (list) => list[Math.floor(Math.random() * list.length)];
+    const attacks = moves.filter(isDamagingMove);
+    const support = moves.filter(m => !isDamagingMove(m));
+
+    if (support.length && (!attacks.length || Math.random() < AUTO_SUPPORT_CHANCE)) {
+        const move = pick(support);
+        const targets = getCandidateTargets(unit, move);
+        if (targets.length) return { move, target: targets[0] };
+    }
+
+    // Ennemi le plus proche de son couloir, à l'avant : celui qu'il a sous les yeux
+    const lane = BattleRules.laneOf(unit._index);
+    const inFront = (targets) => targets.reduce((best, t) => {
+        const d = Math.abs(BattleRules.laneOf(t._index) - lane) * 3 + BattleRules.depthOf(t);
+        return !best || d < best.d ? { t, d } : best;
+    }, null)?.t;
+    // La plus puissante sur le papier (parfois la deuxième), tant qu'elle peut toucher quelqu'un
+    const byPower = [...attacks].sort((a, b) => (b.power || 0) - (a.power || 0));
+    if (byPower.length > 1 && Math.random() < 0.3) byPower.push(byPower.shift());
+    for (const move of byPower) {
+        const target = inFront(getCandidateTargets(unit, move).filter(t => t._side !== unit._side
+            && computeDamage(unit, t, move, { noRandom: true }).typeMod > 0));
+        if (target) return { move, target };
+    }
+    return chooseBestAction(unit); // rien d'évident : il fait au mieux
+}
+
 async function choosePlayerAutoAction(unit) {
     if (!unit || unit.isKO) return;
-    const action = chooseBestAction(unit);
+    const action = chooseReflexAction(unit);
     if (!action) return;
     debugLog(`[Auto-Battle] ${unit.name} utilise ${action.move.name} sur ${action.target.name}`);
     clearActionUI();
@@ -2588,14 +2624,14 @@ async function checkWinCondition() {
     const itemBonus = typeof HeldItems !== 'undefined' ? HeldItems.rewardBonus((grid.player || []).filter(Boolean)) : { moneyMult: 1, extraLootChance: 0 };
     // Récompense qui suit le niveau des ennemis ; un boss rapporte ×2 (×3 le boss final de la zone) :
     // battre un boss par la stratégie finance l'amélioration suivante, plutôt que rejouer des combats faciles
-    const reward = Math.round((40 + (getEnemyLevel() * 20)) * bossRewardMult() * (BattleRules.field.moneyMult || 1) * itemBonus.moneyMult);
+    const reward = Math.round(battleMoneyReward(getEnemyLevel()) * bossRewardMult() * (BattleRules.field.moneyMult || 1) * itemBonus.moneyMult);
     if (typeof GameData !== 'undefined' && GameData.addMoney) {
         GameData.addMoney(reward);
     }
 
     // Logique de drop d'oeuf
-    // Œufs : 20 % de chance sur un combat normal, garantis contre les boss (3 contre le boss de fin de zone)
-    let eggCount = Math.random() < 0.2 ? 1 : 0;
+    // Œufs : rares sur un combat normal, garantis contre les boss (3 contre le boss de fin de zone)
+    let eggCount = Math.random() < BATTLE_REWARDS.egg ? 1 : 0;
     if (waveIndex === 10 && battleIndex === 10) {
         eggCount = 3;
     } else if (battleIndex === 10) {
@@ -2632,15 +2668,17 @@ async function checkWinCondition() {
         return name;
     };
     
-    // 1 Objet garanti
-    const randomItem = dropableItems[Math.floor(Math.random() * dropableItems.length)];
-    GameData.addItem(randomItem, 1);
-    droppedItems.push({ id: randomItem, name: getCleanItemNameFr(randomItem), icon: Art.item(randomItem, 22) });
-    
-    // 1 Baie garantie
-    const randomBerry = dropableBerries[Math.floor(Math.random() * dropableBerries.length)];
-    GameData.addItem(randomBerry, 1);
-    droppedItems.push({ id: randomBerry, name: getCleanItemNameFr(randomBerry), icon: Art.item(randomBerry, 22) });
+    // Un objet et une baie, chacun avec une chance (toujours garantis contre un boss)
+    if (battleIndex === 10 || Math.random() < BATTLE_REWARDS.item) {
+        const randomItem = dropableItems[Math.floor(Math.random() * dropableItems.length)];
+        GameData.addItem(randomItem, 1);
+        droppedItems.push({ id: randomItem, name: getCleanItemNameFr(randomItem), icon: Art.item(randomItem, 22) });
+    }
+    if (battleIndex === 10 || Math.random() < BATTLE_REWARDS.berry) {
+        const randomBerry = dropableBerries[Math.floor(Math.random() * dropableBerries.length)];
+        GameData.addItem(randomBerry, 1);
+        droppedItems.push({ id: randomBerry, name: getCleanItemNameFr(randomBerry), icon: Art.item(randomBerry, 22) });
+    }
     // Œuf Chance : un butin de plus
     if (Math.random() < itemBonus.extraLootChance) {
         const pool = Math.random() < 0.5 ? dropableItems : dropableBerries;
@@ -2649,9 +2687,9 @@ async function checkWinCondition() {
         droppedItems.push({ id: bonus, name: getCleanItemNameFr(bonus), icon: Art.item(bonus, 22) });
     }
 
-    // CT drop chance (fixed 20%)
+    // CT : de temps en temps
     let droppedTM = null;
-    if (Math.random() < 0.2) {
+    if (Math.random() < BATTLE_REWARDS.tm) {
         const tmId = `tm${String(Math.floor(Math.random() * 50) + 1).padStart(2, "0")}`;
         GameData.addItem(tmId, 1);
         droppedTM = { id: tmId, name: getCleanItemNameFr(tmId), icon: Art.item('tm-normal', 22) };
@@ -2764,12 +2802,23 @@ function getStageIndex(battle = battleIndex) {
 // Le 10e combat de chaque vague est un « boss » un peu plus fort.
 // battle : numéro du combat dans la vague (par défaut le combat en cours).
 function getEnemyLevel(battle = battleIndex) {
-    const stage = getStageIndex(battle);
-    const progress = Math.min(1, stage / 4999);
-    // Au-delà de la zone 50, la progression continue sans fin (+1 niveau tous les 20 combats)
-    let level = Math.floor(1 + 199 * Math.pow(progress, 0.6)) + Math.max(0, Math.floor((stage - 4999) / 20));
+    let level = levelForStage(getStageIndex(battle));
     if (battle === 10) level = Math.ceil(level * 1.1) + 1;
     return level;
+}
+
+// Niveau des ennemis d'une étape de la route (0 = premier combat), hors boss
+function levelForStage(stage) {
+    const progress = Math.min(1, stage / 4999);
+    // Au-delà de la zone 50, la progression continue sans fin (+1 niveau tous les 20 combats)
+    return Math.floor(1 + 199 * Math.pow(progress, 0.6)) + Math.max(0, Math.floor((stage - 4999) / 20));
+}
+
+// Gains d'une victoire, volontairement modestes : on progresse surtout par la patrouille (patrol.js),
+// qui rapporte pendant l'absence, et les combats durs se gagnent par la technique.
+const BATTLE_REWARDS = { money: 0.4, item: 0.35, berry: 0.5, egg: 0.1, tm: 0.1 };
+function battleMoneyReward(level) {
+    return Math.round((40 + level * 20) * BATTLE_REWARDS.money);
 }
 
 // Les premiers combats opposent moins d'ennemis pour apprendre les bases
