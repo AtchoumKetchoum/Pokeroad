@@ -121,44 +121,12 @@ const PmdSprite = (() => {
     }
 
     // --- AGRANDISSEMENT xBR ---
-    // Les planches PMD (images de ~40 px) sont lissées par l'algorithme xBR (js/xbr-worker.js) puis affichées
+    // Les planches PMD (images de ~40 px) sont lissées par l'algorithme xBR (js/xbr.js) puis affichées
     // réduites et lissées : contours nets à toutes les tailles, sans pixels de largeurs inégales.
     // Seule la rangée de direction utilisée est traitée (8 fois moins de calcul et de mémoire).
     // En attendant, ou si le navigateur ne sait pas faire, la planche d'origine s'affiche en pixels nets.
     const hdCache = new Map(); // `${url}#${rangée}` -> Promise<{ url, scale } | null>
     const hdDone = new Map();  // mêmes clés, une fois le résultat connu
-    let worker = null, workerBroken = false, jobSeq = 0;
-    const jobs = new Map();
-
-    function getWorker() {
-        if (worker || workerBroken) return worker;
-        try {
-            worker = new Worker('js/xbr-worker.js', { type: 'module' });
-            worker.onmessage = ({ data }) => {
-                const job = jobs.get(data.id);
-                jobs.delete(data.id);
-                job?.(data.pixels ? new Uint32Array(data.pixels) : null);
-            };
-            worker.onerror = () => { // worker introuvable ou modules non pris en charge : on reste en pixels d'origine
-                workerBroken = true; worker = null;
-                jobs.forEach(job => job(null)); jobs.clear();
-            };
-        } catch {
-            workerBroken = true;
-        }
-        return worker;
-    }
-
-    function xbrScale(pixels, width, height, scale) {
-        const w = getWorker();
-        if (!w) return Promise.resolve(null);
-        return new Promise(resolve => {
-            const id = ++jobSeq;
-            jobs.set(id, resolve);
-            w.postMessage({ id, width, height, scale, pixels: pixels.buffer, outlineTint: CONFIG.outlineTint, outlineThin: CONFIG.outlineThin }, [pixels.buffer]);
-        });
-    }
-
     async function buildHdRow(url, row, frameHeight) {
         const scale = CONFIG.hd;
         try {
@@ -169,7 +137,8 @@ const PmdSprite = (() => {
             const src = new OffscreenCanvas(bitmap.width, frameHeight).getContext('2d');
             src.drawImage(bitmap, 0, y, bitmap.width, frameHeight, 0, 0, bitmap.width, frameHeight);
             const data = src.getImageData(0, 0, bitmap.width, frameHeight).data;
-            const out = await xbrScale(new Uint32Array(data.buffer), bitmap.width, frameHeight, scale);
+            const out = await Xbr.scale(new Uint32Array(data.buffer), bitmap.width, frameHeight,
+                { scale, outlineTint: CONFIG.outlineTint, outlineThin: CONFIG.outlineThin });
             if (!out) return null;
             const canvas = new OffscreenCanvas(bitmap.width * scale, frameHeight * scale);
             canvas.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(out.buffer), canvas.width, canvas.height), 0, 0);
@@ -182,7 +151,7 @@ const PmdSprite = (() => {
     // Version lissée d'une rangée de planche : lancée au premier appel, mise en cache
     function hdRow(url, row, frameHeight) {
         const key = `${url}#${row}`;
-        if (!CONFIG.hd || typeof OffscreenCanvas === 'undefined') return Promise.resolve(null);
+        if (!CONFIG.hd || typeof OffscreenCanvas === 'undefined' || typeof Xbr === 'undefined') return Promise.resolve(null);
         if (!hdCache.has(key)) {
             hdCache.set(key, buildHdRow(url, row, frameHeight).then(result => { hdDone.set(key, result); return result; }));
         }

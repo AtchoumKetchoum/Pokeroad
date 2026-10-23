@@ -585,6 +585,19 @@ const Art = (() => {
         }).catch(() => null); // en cas d'échec, le SVG net reste affiché
     }
 
+    // Bâtiments lissés en xBR comme les sprites PMD : le canvas pixelisé laisse place à sa version x4, affichée lissée.
+    // Contour teinté mais pas aminci : les traits sont déjà affinés (thin) et l'amincissement effacerait l'ombre au sol.
+    const BUILDING_XBR = { scale: 4, outlineTint: 0.5, outlineThin: 0 };
+    function smoothBuilding(canvas) {
+        if (!canvas || typeof Xbr === 'undefined') return;
+        Xbr.canvas(canvas, BUILDING_XBR).then(hd => {
+            if (!hd || !canvas.isConnected) return;
+            hd.setAttribute('class', canvas.getAttribute('class').replace('pixel-canvas', 'xbr-canvas'));
+            hd.setAttribute('aria-hidden', 'true');
+            canvas.replaceWith(hd);
+        });
+    }
+
     // Remplit les emplacements déclarés dans le HTML : data-scene, data-icon, data-egg, data-pokeball, data-building
     function hydrate(root = document) {
         root.querySelectorAll('[data-scene]').forEach(el => {
@@ -608,7 +621,7 @@ const Art = (() => {
         root.querySelectorAll('[data-building]').forEach(el => {
             if (el.querySelector('svg, canvas')) return;
             el.insertAdjacentHTML('afterbegin', building(el.dataset.building));
-            pixelate(el.querySelector('svg'), PIXEL_FACTOR.building);
+            pixelate(el.querySelector('svg'), PIXEL_FACTOR.building).then(smoothBuilding);
         });
     }
 
