@@ -149,11 +149,15 @@ function displayIncubator() {
     const grid = document.createElement('div');
     grid.id = 'incubator-grid-premium';
 
+    // Les œufs de départ (5) dépassent l'unique incubateur débloqué : ils restent tous visibles,
+    // et les emplacements à acheter viennent après eux
+    const firstLocked = Math.max(unlockedCount, incubatorEggs.length);
+
     for (let i = 0; i < 10; i++) {
         const slot = document.createElement('div');
         slot.className = 'incubator-slot-premium';
         
-        if (i < unlockedCount) {
+        if (i < firstLocked) {
             const egg = incubatorEggs[i];
             if (egg) {
                 const rarityKey = (egg.rarity || 'commun').toLowerCase().replace(/ /g, '').replace(/[éèê]/g, 'e');
@@ -202,7 +206,7 @@ function displayIncubator() {
         } else {
             slot.classList.add('locked');
             const COSTS = [0, 1500, 4000, 10000, 25000, 60000, 150000, 400000, 1000000, 2500000];
-            const cost = COSTS[i] || 0;
+            const cost = COSTS[unlockedCount + (i - firstLocked)] || 0; // prix dans l'ordre d'achat
             slot.innerHTML = `
                 <div class="incubator-base">
                     <span class="incubator-img locked">${Art.incubator('locked')}</span>
@@ -213,7 +217,7 @@ function displayIncubator() {
                     <span class="lock-price">${cost.toLocaleString('fr-FR')} $</span>
                 </div>
             `;
-            if (i === unlockedCount) {
+            if (i === firstLocked) {
                 slot.classList.add('next-unlock');
                 slot.onclick = () => buyIncubatorSlot();
             }

@@ -250,10 +250,12 @@ function drawFrameToCanvas(frameEl, scale) {
     img.src = url; // déjà en cache : la planche est affichée
     if (!img.complete || !img.naturalWidth) return null;
     const [bx, by] = cs.backgroundPosition.split(' ').map(v => parseFloat(v) || 0);
+    // Planche lissée en xBR : déjà agrandie (--pmd-hd), on la réduit d'autant en la lissant
+    const hd = frameEl.classList.contains('pmd-hd') ? (parseFloat(cs.getPropertyValue('--pmd-hd')) || 1) : 1;
     const canvas = document.createElement('canvas');
-    canvas.width = w * scale; canvas.height = h * scale;
+    canvas.width = Math.round(w * scale / hd); canvas.height = Math.round(h * scale / hd);
     const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = hd > 1;
     ctx.drawImage(img, -bx, -by, w, h, 0, 0, canvas.width, canvas.height);
     return canvas;
 }

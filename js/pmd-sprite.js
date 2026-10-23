@@ -24,6 +24,15 @@ const PmdSprite = (() => {
         // Hauteur de frame Idle (px natifs) au-delà de laquelle le sprite est réduit (gros Pokémon)
         fitHeight: 56,
         fitWidth: 60,
+        // Lissage xBR des planches au chargement (2, 3 ou 4 ; 0 = pixels d'origine). Voir « AGRANDISSEMENT xBR ».
+        hd: 4,
+        // Contour noir allégé (voir js/xbr-worker.js) : part de teinte vers la couleur voisine, et pixels agrandis retirés au bord
+        outlineTint: 0.5,
+        outlineThin: 1,
+        // Temps maximal d'attente de la version lissée avant d'afficher la planche d'origine (Idle au montage)
+        hdWaitMs: 2500,
+        // En combat, animations lissées à l'avance pour qu'elles ne s'affichent pas d'abord en pixels d'origine
+        hdPreload: ['Attack', 'Shoot', 'Charge', 'Pose', 'Hurt', 'Walk'],
     };
 
     const DIRECTIONS = ['down', 'downright', 'right', 'upright', 'up', 'upleft', 'left', 'downleft'];
@@ -111,6 +120,75 @@ const PmdSprite = (() => {
         return sheetCache.get(url);
     }
 
+    // --- AGRANDISSEMENT xBR ---
+    // Les planches PMD (images de ~40 px) sont lissées par l'algorithme xBR (js/xbr-worker.js) puis affichées
+    // réduites et lissées : contours nets à toutes les tailles, sans pixels de largeurs inégales.
+    // Seule la rangée de direction utilisée est traitée (8 fois moins de calcul et de mémoire).
+    // En attendant, ou si le navigateur ne sait pas faire, la planche d'origine s'affiche en pixels nets.
+    const hdCache = new Map(); // `${url}#${rangée}` -> Promise<{ url, scale } | null>
+    const hdDone = new Map();  // mêmes clés, une fois le résultat connu
+    let worker = null, workerBroken = false, jobSeq = 0;
+    const jobs = new Map();
+
+    function getWorker() {
+        if (worker || workerBroken) return worker;
+        try {
+            worker = new Worker('js/xbr-worker.js', { type: 'module' });
+            worker.onmessage = ({ data }) => {
+                const job = jobs.get(data.id);
+                jobs.delete(data.id);
+                job?.(data.pixels ? new Uint32Array(data.pixels) : null);
+            };
+            worker.onerror = () => { // worker introuvable ou modules non pris en charge : on reste en pixels d'origine
+                workerBroken = true; worker = null;
+                jobs.forEach(job => job(null)); jobs.clear();
+            };
+        } catch {
+            workerBroken = true;
+        }
+        return worker;
+    }
+
+    function xbrScale(pixels, width, height, scale) {
+        const w = getWorker();
+        if (!w) return Promise.resolve(null);
+        return new Promise(resolve => {
+            const id = ++jobSeq;
+            jobs.set(id, resolve);
+            w.postMessage({ id, width, height, scale, pixels: pixels.buffer, outlineTint: CONFIG.outlineTint, outlineThin: CONFIG.outlineThin }, [pixels.buffer]);
+        });
+    }
+
+    async function buildHdRow(url, row, frameHeight) {
+        const scale = CONFIG.hd;
+        try {
+            // fetch (CORS) plutôt que <img> : les pixels doivent pouvoir être lus
+            const bitmap = await createImageBitmap(await (await fetch(url, { mode: 'cors' })).blob());
+            const rows = Math.max(1, Math.round(bitmap.height / frameHeight));
+            const y = (rows >= 8 ? row : 0) * frameHeight;
+            const src = new OffscreenCanvas(bitmap.width, frameHeight).getContext('2d');
+            src.drawImage(bitmap, 0, y, bitmap.width, frameHeight, 0, 0, bitmap.width, frameHeight);
+            const data = src.getImageData(0, 0, bitmap.width, frameHeight).data;
+            const out = await xbrScale(new Uint32Array(data.buffer), bitmap.width, frameHeight, scale);
+            if (!out) return null;
+            const canvas = new OffscreenCanvas(bitmap.width * scale, frameHeight * scale);
+            canvas.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(out.buffer), canvas.width, canvas.height), 0, 0);
+            return { url: URL.createObjectURL(await canvas.convertToBlob({ type: 'image/png' })), scale };
+        } catch {
+            return null;
+        }
+    }
+
+    // Version lissée d'une rangée de planche : lancée au premier appel, mise en cache
+    function hdRow(url, row, frameHeight) {
+        const key = `${url}#${row}`;
+        if (!CONFIG.hd || typeof OffscreenCanvas === 'undefined') return Promise.resolve(null);
+        if (!hdCache.has(key)) {
+            hdCache.set(key, buildHdRow(url, row, frameHeight).then(result => { hdDone.set(key, result); return result; }));
+        }
+        return hdCache.get(key);
+    }
+
     // --- LECTEUR ---
 
     class Player {
@@ -131,25 +209,32 @@ const PmdSprite = (() => {
             return `${this.folder}${anim.sheet}-Anim.png`;
         }
 
+        // Version lissée de la planche : immédiate si déjà prête ; sinon attendue (au plus hdWaitMs)
+        // seulement si wait, et lancée en arrière-plan pour la fois suivante
+        hdSheet(anim, wait) {
+            const url = this.sheetUrl(anim);
+            const key = `${url}#${this.row}`;
+            if (hdDone.has(key)) return hdDone.get(key);
+            const pending = hdRow(url, this.row, anim.frameHeight);
+            return wait ? Promise.race([pending, new Promise(r => setTimeout(() => r(null), CONFIG.hdWaitMs))]) : null;
+        }
+
         // Démarre une animation (boucle si loop) ; résout à la fin pour une animation jouée une fois
         async start(name, { loop = false, hold = 0 } = {}) {
             const anim = this.anims.get(name);
             if (!anim) return;
             const token = ++this.token;
             const sheet = await loadSheet(this.sheetUrl(anim));
+            const hd = sheet && this.hdSheet(anim, false);
             if (!sheet || token !== this.token) return;
 
             this.current?.resolve(); // Une animation interrompue ne doit pas bloquer celui qui l'attend
             const rows = Math.max(1, Math.round(sheet.height / anim.frameHeight));
-            const style = this.frameEl.style;
-            style.width = `${anim.frameWidth}px`;
-            style.height = `${anim.frameHeight}px`;
-            style.backgroundImage = `url("${this.sheetUrl(anim)}")`;
 
             return new Promise(resolve => {
                 this.current = {
                     anim, loop, hold, resolve, token,
-                    row: rows >= 8 ? this.row : 0,
+                    ...this.useSheet(anim, rows, hd),
                     total: anim.durations.reduce((a, b) => a + b, 0),
                     elapsed: 0,
                     frame: -1,
@@ -157,14 +242,39 @@ const PmdSprite = (() => {
                 this.renderFrame(0);
                 active.add(this);
                 ensureLoop();
+                // Planche d'origine en attendant : on passe à la version lissée dès qu'elle est prête
+                // (utile aux boucles longues, comme le vol des Pokémon d'ambiance)
+                if (!hd) {
+                    hdRow(this.sheetUrl(anim), this.row, anim.frameHeight).then(result => {
+                        const c = this.current;
+                        if (!result || c?.token !== token) return;
+                        Object.assign(c, this.useSheet(anim, rows, result));
+                        const frame = Math.max(0, c.frame);
+                        c.frame = -1;
+                        this.renderFrame(frame);
+                    });
+                }
             });
+        }
+
+        // Affiche la planche (lissée ou d'origine) ; retourne la rangée et la taille d'une image dans cette planche
+        useSheet(anim, rows, hd) {
+            // Planche lissée : une seule rangée, n fois plus grande, réduite d'autant par le CSS (.pmd-hd)
+            const scale = hd ? hd.scale : 1;
+            const style = this.frameEl.style;
+            style.width = `${anim.frameWidth * scale}px`;
+            style.height = `${anim.frameHeight * scale}px`;
+            style.backgroundImage = `url("${hd ? hd.url : this.sheetUrl(anim)}")`;
+            style.setProperty('--pmd-hd', scale);
+            this.frameEl.classList.toggle('pmd-hd', !!hd);
+            return { row: hd || rows < 8 ? 0 : this.row, width: anim.frameWidth * scale, height: anim.frameHeight * scale };
         }
 
         renderFrame(frame) {
             const c = this.current;
             if (frame === c.frame) return;
             c.frame = frame;
-            this.frameEl.style.backgroundPosition = `-${frame * c.anim.frameWidth}px -${c.row * c.anim.frameHeight}px`;
+            this.frameEl.style.backgroundPosition = `-${frame * c.width}px -${c.row * c.height}px`;
         }
 
         // Retourne false quand le lecteur n'a plus besoin d'être mis à jour
@@ -235,6 +345,8 @@ const PmdSprite = (() => {
         const fit = sizeFactor * Math.min(CONFIG.fitHeight / idle.frameHeight, CONFIG.fitWidth / (idle.frameWidth || idle.frameHeight));
         host.style.setProperty('--pmd-fit', fit.toFixed(3));
         host.style.setProperty('--transform-base', 'scaleX(1)'); // La direction est portée par la planche
+        // L'illustration reste affichée le temps de lisser la planche de repos
+        await player.hdSheet(idle, true);
         player.start('Idle', { loop: true }); // Boucle : la promesse ne se résout jamais
         host.dataset.pmdState = 'ready';
 
@@ -242,6 +354,12 @@ const PmdSprite = (() => {
             const anim = anims.get(name);
             if (anim) loadSheet(player.sheetUrl(anim));
         });
+        if (host.closest('#view-battle')) {
+            CONFIG.hdPreload.forEach(name => {
+                const anim = anims.get(name);
+                if (anim) player.hdSheet(anim, false); // lissage préparé pour le premier coup
+            });
+        }
     }
 
     // --- API PUBLIQUE ---

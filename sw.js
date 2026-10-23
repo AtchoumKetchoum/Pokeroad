@@ -4,7 +4,7 @@
  *   avec repli sur le cache si l'appareil est hors ligne.
  * - Sprites distants (PMD, PokeAPI sur GitHub) : cache d'abord, ils ne changent pas.
  */
-const VERSION = 'pokeroad-v4'; // paliers d'équipe tous les 10 niveaux, missions selon la note de développement
+const VERSION = 'pokeroad-v5'; // sprites PMD lissés en xBR (planches lues en CORS)
 const SHELL = ['./', './index.html', './manifest.webmanifest', './assets/icons/icon-192.png', './assets/icons/icon-512.png'];
 const SPRITE_HOSTS = ['raw.githubusercontent.com'];
 
@@ -27,7 +27,8 @@ self.addEventListener('fetch', (event) => {
     if (SPRITE_HOSTS.includes(url.hostname)) {
         event.respondWith(caches.open(VERSION).then(async cache => {
             const hit = await cache.match(req);
-            if (hit) return hit;
+            // Une copie « opaque » (chargée par <img>) ne sert pas à une requête CORS qui doit lire les pixels
+            if (hit && !(hit.type === 'opaque' && req.mode === 'cors')) return hit;
             const res = await fetch(req);
             // Les images chargées par <img> arrivent en réponse « opaque » : on les garde aussi
             if (res.ok || res.type === 'opaque') cache.put(req, res.clone());
