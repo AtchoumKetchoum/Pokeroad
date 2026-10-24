@@ -1035,6 +1035,11 @@ function buildActorsFromDom() {
         actor.itemMults = Object.fromEntries([...actor.heldItems, ...actor.berries].map(id => [id, actor.itemMult]));
         actor.tier = tier;
     }
+    const power = enemyPowerMult();
+    if (power !== 1) {
+        ['attack', 'defense', 'spatk', 'spdef', 'maxHp'].forEach(k => { actor[k] = Math.round(actor[k] * power); });
+        actor.hp = actor.maxHp;
+    }
     if (srcPk) {
       // Attaques choisies par le générateur d'équipes (sinon les premières apprises), améliorées selon la progression
       const chosen = unit.dataset.moves ? unit.dataset.moves.split(',').filter(Boolean) : null;
@@ -1757,14 +1762,20 @@ function scoreAction(unit, move, primaryTarget) {
 }
 
 // Meilleure action pour une unité. Les ennemis choisissent parmi les bonnes options pour rester imprévisibles.
-function chooseBestAction(unit, { varied = false } = {}) {
+function chooseBestAction(unit, { varied = false, cunning = false } = {}) {
     let moves = (Array.isArray(unit.moves) && unit.moves.length ? unit.moves : defaultMovesFor(unit)).filter(Boolean);
     if (typeof MoveRework !== 'undefined') moves = moves.filter(m => !MoveRework.isPassive(m));
     if (!moves.length) return null; // seulement des passifs : ne joue pas
     const actions = [];
     for (const move of moves) {
         for (const target of getCandidateTargets(unit, move)) {
-            actions.push({ move, target, score: scoreAction(unit, move, target) });
+            let score = scoreAction(unit, move, target);
+            // IA vicieuse : finir les blessés, et une mise K.O. vaut encore plus
+            if (cunning && score > 0 && isDamagingMove(move) && target._side !== unit._side) {
+                score *= 1 + ENEMY_CUNNING.woundedFocus * (1 - target.hp / target.maxHp);
+                if (computeDamage(unit, target, move, { noRandom: true }).damage >= target.hp) score += ENEMY_CUNNING.koBonus;
+            }
+            actions.push({ move, target, score });
         }
     }
     actions.sort((a, b) => b.score - a.score);
@@ -1785,8 +1796,17 @@ function chooseBestAction(unit, { varied = false } = {}) {
     return good[Math.floor(Math.random() * good.length)];
 }
 
+// À partir de la zone 2, les ennemis jouent juste : ils s'acharnent sur les Pokémon blessés, cherchent la mise K.O.
+// et ne laissent plus de place au hasard. En zone 1 (apprentissage), ils varient parmi les bonnes options.
+const ENEMY_CUNNING = { from: 2, woundedFocus: 0.8, koBonus: 0.6 };
+
+function pickEnemyAction(unit) {
+    if (zoneIndex < ENEMY_CUNNING.from) return chooseBestAction(unit, { varied: true });
+    return chooseBestAction(unit, { cunning: true });
+}
+
 async function chooseEnemyAction(unit) {
-    const action = chooseBestAction(unit, { varied: true });
+    const action = pickEnemyAction(unit);
     if (!action) return;
     debugLog(`[AI] ${unit.name} utilise ${action.move.name} sur ${action.target.name}`);
     await attack(unit, action.target, action.move);
@@ -2821,13 +2841,17 @@ function battleMoneyReward(level) {
     return Math.round((40 + level * 20) * BATTLE_REWARDS.money);
 }
 
-// Les premiers combats opposent moins d'ennemis pour apprendre les bases
+// Toujours une équipe complète en face, dès le premier combat : 5 contre 5
 function getEnemyCount(maxCount) {
-    const stage = getStageIndex();
-    if (stage < 3) return Math.min(maxCount, stage + 2);
-    // Première moitié de la zone 1 : un ennemi de moins, le temps d'apprendre placement et objets
-    if (zoneIndex === 1 && waveIndex <= 5) return maxCount - 1;
     return maxCount;
+}
+
+// Bonus de stats des ennemis (hors vitesse), en plus de leurs paliers (enemy-gen.js) :
+// léger en zone 1 (apprentissage), net dès la zone 2, puis un peu plus à chaque zone
+const ENEMY_POWER = { zone1: 0.08, zone2: 0.28, perZone: 0.02, max: 0.5 };
+function enemyPowerMult(zone = zoneIndex) {
+    if (zone <= 1) return 1 + ENEMY_POWER.zone1;
+    return 1 + Math.min(ENEMY_POWER.max, ENEMY_POWER.zone2 + ENEMY_POWER.perZone * (zone - 2));
 }
 
 function calculateStats(baseStats, level, pokemonId = null) {

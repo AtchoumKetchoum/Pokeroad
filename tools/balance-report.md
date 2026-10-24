@@ -79,3 +79,35 @@ en zone 8, mauvais choix 0 % contre 88 % pour l'équipe type, alors que l'améli
 - **Grades** : 6 exemplaires de la même famille par Pokémon pour atteindre le Grade 5 ; c'est probablement le vrai goulot
   de progression, plus que l'argent.
 - Le boss final de chaque zone n'est mesuré que sur 2 tirages : à lire comme une tendance.
+
+# Passe « trop dur : tu attends ou tu te creuses la tête » — 24 octobre 2026
+
+Objectif : à niveau égal, un joueur appliqué gagne de justesse, le combat automatique perd, et attendre
+(patrouille fil rouge) ou réfléchir sont les deux façons de passer.
+
+**Banc mis à jour** : style de jeu « appliqué » (meilleure action à chaque tour, ce que faisait l'ancien auto)
+ou « réflexe » (le nouveau combat automatique), scénario `auto` ; l'équipe type prend le Grade qu'il faut pour suivre
+sa vague (10 niveaux par Grade) ; revenus calculés avec les nouveaux gains de combat.
+
+**Changements** : 5 contre 5 dès le premier combat (boss + 4 escortes) ; IA ennemie vicieuse dès la zone 2
+(finit les blessés, cherche la mise K.O., plus de hasard) ; stats ennemies (hors vitesse) +8 % en zone 1,
++28 % en zone 2, puis +2 % par zone (plafond +50 %) ; escortes de boss un niveau sous la vague ; PV des boss
+×1,2 en zone 1 puis +0,1 par zone (plafond ×1,8).
+
+| Zone | Appliqué : ordinaires / boss | Auto réflexe : ordinaires / boss | Améliorée : ordinaires / boss |
+|---|---|---|---|
+| 1 | 78 % / 50 % | 75 % / 25 % | 100 % / 100 % |
+| 2 | 86 % / 0 % | 31 % / 0 % | 97 % / 67 % |
+| 4 | 69 % / 42 % | 22 % / 0 % | 92 % / 42 % |
+| 6 | 64 % / 33 % | 8 % / 0 % | 78 % / 42 % |
+
+Avant ces changements (même banc) : appliqué 92-100 % des combats ordinaires et 50-75 % des boss, auto 54-79 %.
+Échantillon : 12 combats ordinaires × 3 tirages, 4 boss × 3 tirages par zone et par scénario (±15 points sur les boss).
+
+**Progression** (modèle `.claude/progression-model.mjs` : deux passages par jour, patrouille pleine à chaque fois) :
+avec le coût de niveau actuel (20 × niveau + 10), la zone 1 demande ~4 jours puis tout s'accélère (zones 5 à 10 en
+2 jours) : la courbe ennemie s'aplatit (+6 niveaux par zone en milieu de partie) alors que les gains suivent le niveau.
+**Appliqué** (`GameData.levelUpCost`) : 20 × niveau + 10 + 0,6 × niveau² (niv. 10 : 270 $ au lieu de 210, niv. 50 : 2 510 $
+au lieu de 1 010, niv. 100 : 8 010 $ au lieu de 2 010). Rythme régulier dans le modèle : ~3,5-4 jours par zone en jeu
+appliqué, ~4,5-5 en auto, sans emballement en fin de parcours. Le modèle ignore le verrou des Grades et l'entraînement.
+

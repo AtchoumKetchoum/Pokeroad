@@ -1333,8 +1333,10 @@ const GameData = (() => {
     }
 
     // Coût en argent pour passer du niveau `level` au suivant : abordable au début, croissant ensuite
+    // Coût d'un niveau : le terme en niveau² empêche de distancer les ennemis à mesure qu'on avance
+    // (leur courbe s'aplatit alors que les gains suivent leur niveau) ; voir tools/balance-report.md
     function levelUpCost(level) {
-        return level * 20 + 10;
+        return level * 20 + 10 + Math.round(level * level * 0.6);
     }
 
     function levelUpPokemon(pokemonInstanceId, levelsToAdd) {

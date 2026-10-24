@@ -101,8 +101,8 @@ const EnemyGen = (() => {
         const isBoss = battleIndex === 10;
         const seed = zoneIndex * 100000 + waveIndex * 1000 + battleIndex * 7 + 13;
         const rand = rng(seed);
-        // Combat de boss : le boss et 3 escortes (le boss compte pour plusieurs ennemis)
-        const count = getEnemyCount(isBoss ? 3 : 5);
+        // Toujours 5 contre 5 : un combat de boss aligne le boss et 4 escortes
+        const count = getEnemyCount(isBoss ? 4 : 5);
         const pool = zonePool(zoneIndex, level, false);
         const top = pool.slice(0, Math.max(12, Math.ceil(pool.length * 0.35)));
 
@@ -122,8 +122,8 @@ const EnemyGen = (() => {
         }
 
         const tierBase = enemyTier(level);
-        // Combat de boss : le boss prend tout le bonus de niveau, son escorte reste au niveau de la vague (+1)
-        const escortLevel = isBoss ? Math.min(level, getEnemyLevel(9) + 1) : level;
+        // Combat de boss : le boss prend tout le bonus de niveau ; ses 4 escortes restent un peu sous le niveau de la vague
+        const escortLevel = isBoss ? Math.max(1, Math.min(level, getEnemyLevel(9) - 1)) : level;
         picks.forEach(p => {
             p.level = p.boss ? level + Math.ceil(level * 0.08) : escortLevel;
             p.tier = { ...tierBase };

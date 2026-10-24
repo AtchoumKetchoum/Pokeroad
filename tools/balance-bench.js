@@ -7,6 +7,8 @@
  *    · Math.random est à graine pour chaque combat : avant/après se comparent sur les mêmes tirages.
  *  - Une équipe joueur « type » est construite pour chaque zone (niveau, Grade, entraînement, objets),
  *    contre les équipes de js/enemy-gen.js, avec ou sans objets de chaque côté.
+ *  - Style de jeu : « appliqué » (la meilleure action à chaque tour, comme un bon joueur en manuel)
+ *    ou « réflexe » (le combat automatique du jeu, volontairement simple).
  *
  * Console : await Bench.run({ zones: [1, 2], seeds: 3 }) ; Bench.lastResults ; Bench.budget(zone).
  */
@@ -103,6 +105,13 @@
 
         await GameData.init();
         await Promise.all([loadMovesDB(), loadTypesDB(), loadPokedexDB(), loadRulesDB()]);
+        // Le combat automatique du jeu (réflexe), et un joueur appliqué qui choisit la meilleure action
+        reflexPlay = window.choosePlayerAutoAction;
+        skilledPlay = async (unit) => {
+            if (!unit || unit.isKO) return;
+            const action = chooseBestAction(unit);
+            if (action) { clearActionUI(); await attack(unit, action.target, action.move); }
+        };
         initGlobals();
         createGrids();
         window.isAutoBattle = true;
@@ -210,7 +219,9 @@
     }
 
     function buildTeam(zone, level, { withItems = true, profile = 'standard', choices = 'good' } = {}) {
-        const prof = profileFor(zone, profile);
+        const prof = { ...profileFor(zone, profile) };
+        // Le Grade fixe le niveau maximal (10 niveaux par Grade) : l'équipe type a celui qu'il faut pour suivre sa vague
+        while (Refinement.getMaxLevel(prof.grade, 0) < level + prof.levels && prof.grade < 10) prof.grade++;
         const cap = Refinement.getMaxLevel(prof.grade, 0);
         // L'équipe de départ éclot au niveau 5 ; ensuite le joueur suit le niveau des ennemis (plus en équipe améliorée)
         const lvl = Math.max(5, Math.min(cap, level + prof.levels));
@@ -289,6 +300,7 @@
     // 5. Un combat
     // ------------------------------------------------------------------
     const MAX_TURNS = 600; // sécurité : l'épuisement (battle.js) termine les combats après 100 tours
+    let reflexPlay = null, skilledPlay = null;
     let turnCount = { player: 0, enemy: 0 };
     let finish = null;
     function installHooks() {
@@ -302,8 +314,9 @@
         window.checkWinCondition = async () => { await origWin(); if (finish) { const f = finish; finish = null; f(); } };
     }
 
-    async function fight({ zone, wave, battle, seed, playerItems = true, enemyItems = true, profile = 'standard', choices = 'good' }) {
+    async function fight({ zone, wave, battle, seed, playerItems = true, enemyItems = true, profile = 'standard', choices = 'good', play = 'skilled' }) {
         window.zoneIndex = zone; window.waveIndex = wave; window.battleIndex = battle;
+        window.choosePlayerAutoAction = play === 'reflex' ? reflexPlay : skilledPlay;
         const enemyLevel = getEnemyLevel();
         // Le joueur suit le niveau des combats ordinaires de la vague (pas celui du boss)
         const saved = window.battleIndex; window.battleIndex = Math.min(9, battle);
@@ -348,7 +361,8 @@
     const NORMAL = [1, 4, 7, 10].flatMap(w => [2, 5, 8].map(b => [w, b]));
     const BOSSES = [[3, 10], [5, 10], [8, 10], [10, 10]];
     const SCENARIOS = [
-        { key: 'std', label: 'Équipe type (bons choix, objets des deux côtés)' },
+        { key: 'std', label: 'Équipe type (bons choix, objets des deux côtés), jeu appliqué' },
+        { key: 'auto', label: 'Équipe type en combat automatique (réflexe)', play: 'reflex' },
         { key: 'upg', label: 'Équipe améliorée', profile: 'upgraded' },
         { key: 'bad', label: 'Mauvais choix (même investissement)', choices: 'bad' },
         { key: 'noPlayer', label: 'Joueur sans objets', playerItems: false },
@@ -370,7 +384,7 @@
         };
     }
 
-    async function run({ zones = [1, 2, 4, 6, 8, 10], seeds = 2, scenarios = ['std', 'upg', 'bad', 'noPlayer', 'noEnemy'], battles = null } = {}) {
+    async function run({ zones = [1, 2, 4, 6, 8, 10], seeds = 2, scenarios = ['std', 'auto', 'upg', 'bad', 'noPlayer', 'noEnemy'], battles = null } = {}) {
         const rows = [];
         const t0 = performance.now();
         for (const zone of zones) {
@@ -379,7 +393,7 @@
                     for (let s = 0; s < seeds; s++) {
                         const seed = zone * 1000003 + wave * 1009 + battle * 101 + s * 7;
                         try {
-                            rows.push({ scenario: sc.key, ...(await fight({ zone, wave, battle, seed, playerItems: sc.playerItems ?? true, enemyItems: sc.enemyItems ?? true, profile: sc.profile, choices: sc.choices })) });
+                            rows.push({ scenario: sc.key, ...(await fight({ zone, wave, battle, seed, playerItems: sc.playerItems ?? true, enemyItems: sc.enemyItems ?? true, profile: sc.profile, choices: sc.choices, play: sc.play })) });
                         } catch (e) { console.error(e); log(`Erreur z${zone} v${wave} c${battle} : ${e.message}`); }
                     }
                 }
@@ -432,7 +446,7 @@
         const saved = [window.zoneIndex, window.waveIndex, window.battleIndex];
         for (let z = 1; z <= upToZone; z++) for (let w = 1; w <= 10; w++) for (let b = 1; b <= 10; b++) {
             window.zoneIndex = z; window.waveIndex = w; window.battleIndex = b;
-            total += (40 + getEnemyLevel() * 20) * (typeof bossRewardMult === 'function' ? bossRewardMult() : 1);
+            total += battleMoneyReward(getEnemyLevel()) * (typeof bossRewardMult === 'function' ? bossRewardMult() : 1);
         }
         [window.zoneIndex, window.waveIndex, window.battleIndex] = saved;
         return total;
