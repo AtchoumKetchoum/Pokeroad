@@ -64,7 +64,7 @@ const MoveRework = (() => {
     // ------------------------------------------------------------------
     const shapeOf = (move) => move?._isBoosted && move.rw?.z?.shape ? move.rw.z.shape : move?.rw?.shape;
 
-    // Contact : seulement la ligne de front (pas pour les tirs, la Plongée et les grandes zones)
+    // Contact : seulement le premier ennemi de sa colonne (pas pour les tirs, la Plongée et les grandes zones)
     const RANGED_SHAPES = ['onde', 'tempete', 'front', 'salve', 'hasard', 'explosion', 'onde_forte', 'tempete_forte', 'salve_z', 'explosion_z'];
     function isContact(move) {
         if (!isRw(move)) return null; // laisse la règle d'origine décider

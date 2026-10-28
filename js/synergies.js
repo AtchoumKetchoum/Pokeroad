@@ -32,7 +32,7 @@ const Synergies = (() => {
         psychic:  { name: 'Prescience',  icon: 'eye',    scope: 'team', values: [25, 50, 75], text: v => `Jauge Z +${pct(v)} plus vite` },
         bug:      { name: 'Essaim',      icon: 'swarm',  scope: 'type', values: [20, 35, 50], text: v => `Quand l'équipe met un ennemi K.O. : +${pct(v)} de jauge d'action` },
         rock:     { name: 'Rempart',     icon: 'shield', scope: 'type', values: [10, 18, 26], text: v => `Bouclier de ${pct(v)} des PV au départ` },
-        ghost:    { name: 'Hantise',     icon: 'ghost',  scope: 'type', values: [0, 15, 25],  text: v => `Ignore la ligne de front${v ? ` · ${pct(v)} de chance d'apeurer` : ''}` },
+        ghost:    { name: 'Hantise',     icon: 'ghost',  scope: 'type', values: [0, 15, 25],  text: v => `Ignore le placement (frappe n'importe quelle case)${v ? ` · ${pct(v)} de chance d'apeurer` : ''}` },
         dragon:   { name: 'Fureur',      icon: 'claw',   scope: 'type', values: [1, 1, 2],    text: (v, t) => `Attaque et Att. Spé. +${v}${t === 3 ? ' · Vitesse +1' : ''}` },
         dark:     { name: 'Sournois',    icon: 'moon',   scope: 'type', values: [1, 2, 3],    text: v => `Critique +${v} palier${v > 1 ? 's' : ''}` },
         steel:    { name: 'Blindage',    icon: 'bolt2',  scope: 'type', values: [20, 35, 50], text: v => `Dégâts super efficaces reçus −${pct(v)}` },

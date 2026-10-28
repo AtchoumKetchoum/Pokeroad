@@ -118,12 +118,15 @@ function createGrids() {
     enemyGrid.innerHTML = '';
 
     for (let i = 0; i < 9; i++) {
+        // Numéro de case (1 à 9, le 1 en face du 1) : il décide qui l'on peut frapper
         const playerSlot = document.createElement('div');
         playerSlot.className = 'unit-slot';
+        playerSlot.dataset.slot = BattleRules.slotNumber('player', i);
         playerGrid.appendChild(playerSlot);
 
         const enemySlot = document.createElement('div');
         enemySlot.className = 'unit-slot';
+        enemySlot.dataset.slot = BattleRules.slotNumber('enemy', i);
         enemyGrid.appendChild(enemySlot);
     }
     addSlotEventListeners();

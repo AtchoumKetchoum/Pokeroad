@@ -26,7 +26,7 @@ const Tips = (() => {
             [null, 'Deux gestes utiles', '<b>Appui long sur un Pokémon</b>, où qu\'il soit : sa fiche s\'ouvre.<br><b>Survole ou touche une icône</b> en combat : une bulle l\'explique.'],
         ],
         'battle-prep': [
-            ['#player-grid', 'Ton équipe', 'Une grille de 3 × 3 : avant, centre, arrière. Les attaques au contact ne visent que la ligne avant.'],
+            ['#player-grid', 'Ton équipe', 'Une grille de 3 × 3, cases 1 à 9 (1-2-3 devant). Ta colonne fait face à la colonne ennemie : au contact, tu frappes le premier ennemi de ta colonne ; à distance, ta colonne et les voisines.'],
             ['#enemy-grid', 'Les adversaires', 'Leur placement compte aussi : protège tes Pokémon fragiles derrière.'],
             ['#selection-banner', 'Composer l\'équipe', 'Touche un Pokémon pour le placer ou le retirer.'],
             ['#start-battle-btn', 'C\'est parti', 'Lance le combat quand ton équipe est prête.'],

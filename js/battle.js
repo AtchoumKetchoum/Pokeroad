@@ -1076,6 +1076,7 @@ function updateTurnOrderDisplay() {
         name: u.name,
         spriteSrc: u.spriteSrc,
         _side: u._side,
+        _slot: BattleRules.slotOf(u),
         actionPoints: u.actionPoints,
         effectiveSpeed: u.effectiveSpeed,
         boostGauge: u.boostGauge || 0
@@ -1085,7 +1086,7 @@ function updateTurnOrderDisplay() {
     const maxTurnsToShow = 8;
     while (turnPrediction.length < maxTurnsToShow && simUnits.length > 0) {
         // Trier par AP pour voir qui est le plus proche de jouer
-        simUnits.sort((a, b) => b.actionPoints - a.actionPoints);
+        simUnits.sort((a, b) => b.actionPoints - a.actionPoints || a._slot - b._slot);
 
         // Si personne ne peut jouer, on "charge" les AP de tout le monde jusqu'à ce que le plus rapide puisse jouer.
         if (simUnits[0].actionPoints < 100 && simUnits[0].effectiveSpeed > 0) {
@@ -1269,7 +1270,7 @@ function showMoveDetails(move, unit, isZMove = false) {
     const accuracy = move.accuracy ?? '—';
     const typeName = typeToFrench(move.type);
     const damageClass = (move.damage_class === 'physical' ? 'Physique' : (move.damage_class === 'special' ? 'Spéciale' : 'Statut'))
-        + ((move.power || 0) > 0 && move.damage_class !== 'status' ? (BattleRules.isContact(move) ? ' · Contact (ligne de front)' : ' · Distance') : '');
+        + ((move.power || 0) > 0 && move.damage_class !== 'status' ? (BattleRules.isContact(move) ? ' · Contact (1er ennemi de sa colonne)' : ' · Distance (sa colonne et les voisines)') : '');
     const description = move.description || 'Pas de description.';
 
     let zPowerHtml = '';
@@ -1557,7 +1558,7 @@ function promptTargetSelection(move, unit) {
 
         if (valid) hasTarget = true;
         slot.classList.toggle('targetable', valid);
-        // Pokémon présent mais hors de portée (ligne de front pour le contact, Plongée…) : grisé
+        // Pokémon présent mais hors de portée (colonne pour le contact et la distance, Plongée…) : grisé
         slot.classList.toggle('not-targetable', !valid && !!(grid.enemy[idx] && !grid.enemy[idx].isKO));
     });
 
@@ -1695,7 +1696,7 @@ function isDamagingMove(move) {
 function getCandidateTargets(unit, move) {
     if (move.zone === 'self') return [unit];
     if (move.zone === 'ally') return aliveOnSide(unit._side);
-    // Les attaques de contact ne peuvent viser que la ligne de front
+    // Placement : le contact vise le premier ennemi de sa colonne, la distance sa colonne et les voisines
     return aliveOnSide(unit._side === 'player' ? 'enemy' : 'player').filter(t => !t.flags?.diving && BattleRules.canTarget(unit, move, t));
 }
 
@@ -1937,7 +1938,7 @@ function showReworkMoveDetails(move, unit, isZMove) {
     const head = rw.kind === 'passive'
         ? `<span class="info-item"><strong>Passif</strong> · ${rw.triggerLabel || ''}</span>`
         : rw.kind === 'attack'
-            ? `<span class="info-item"><strong>Puiss. :</strong> ${shown.power ?? '—'}</span><span class="info-item"><strong>Préc. :</strong> ${shown.accuracy ?? '—'}</span><span class="info-item"><strong>Catégorie :</strong> ${move.damage_class === 'physical' ? 'Physique' : 'Spéciale'}${BattleRules.isContact(move) ? ' · Contact (ligne de front)' : ' · Distance'}</span>`
+            ? `<span class="info-item"><strong>Puiss. :</strong> ${shown.power ?? '—'}</span><span class="info-item"><strong>Préc. :</strong> ${shown.accuracy ?? '—'}</span><span class="info-item"><strong>Catégorie :</strong> ${move.damage_class === 'physical' ? 'Physique' : 'Spéciale'}${BattleRules.isContact(move) ? ' · Contact (1er ennemi de sa colonne)' : ' · Distance (sa colonne et les voisines)'}</span>`
             : `<span class="info-item"><strong>Tactique</strong></span>`;
     const zLine = (isZMove || isBase) && move.description_z ? `<div class="move-description z"><strong>${isZMove ? 'Version Z :' : 'Z (jauge pleine) :'}</strong> ${move.description_z}</div>` : '';
     dom.infoDisplayPanel.innerHTML = `
@@ -1983,13 +1984,10 @@ async function attack(attacker, primaryTarget, move) {
 
     // --- LOGIQUE D'ATTAQUE REFACTORISÉE ---
     const moveForThisHit = { ...moveToDo };
-    // Une attaque de contact ne peut viser que la ligne de front ennemie
+    // Placement : le contact frappe le premier ennemi de sa colonne, la distance sa colonne et les voisines
     if (!BattleRules.canTarget(attacker, moveForThisHit, primaryTarget)) {
-        const front = BattleRules.frontLineUnits(primaryTarget._side);
-        if (!front.length) return;
-        // Le défenseur de la ligne avant le plus proche du couloir visé
-        const lane = BattleRules.laneOf(primaryTarget._index);
-        primaryTarget = front.reduce((a, b) => (Math.abs(BattleRules.laneOf(a._index) - lane) <= Math.abs(BattleRules.laneOf(b._index) - lane) ? a : b));
+        primaryTarget = BattleRules.retarget(attacker, moveForThisHit, primaryTarget);
+        if (!primaryTarget) return;
     }
     // Cases touchées : formes pondérées (refonte) ou zones d'origine, à 100 %
     const isRwAttack = RW && moveForThisHit.rw?.kind === 'attack';
@@ -2242,6 +2240,7 @@ function prepareEnemyGridForNewBattle() {
       for (let i = 0; i < 9; i++) { // Recréer les slots vides
         const slot = document.createElement('div');
         slot.className = 'unit-slot';
+        slot.dataset.slot = BattleRules.slotNumber('enemy', i);
         enemyGrid.appendChild(slot);
       }
     }
@@ -2388,8 +2387,8 @@ async function runCombatLoop() {
         allUnits.forEach(u => { u.effectiveSpeed = getEffectiveSpeed(u); });
         
         let unitToPlay = null;
-        // Chercher la première unité avec assez d'AP
-        allUnits.sort((a, b) => b.actionPoints - a.actionPoints);
+        // Chercher la première unité avec assez d'AP (à égalité, le plus petit numéro de case joue d'abord)
+        allUnits.sort((a, b) => b.actionPoints - a.actionPoints || BattleRules.slotOf(a) - BattleRules.slotOf(b));
         if (allUnits[0] && allUnits[0].actionPoints >= 100) {
             unitToPlay = allUnits[0];
         }

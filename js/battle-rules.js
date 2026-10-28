@@ -4,7 +4,9 @@
  *  - Lignes : écran en portrait, ennemis en haut et joueur en bas. Dans chaque grille 3×3
  *    (index = rangée × 3 + couloir, rangée 0 en haut de l'écran), la rangée la plus proche du
  *    centre de l'arène est l'AVANT, la plus éloignée l'ARRIÈRE.
- *    Les attaques physiques (contact) ne visent que la première ligne ennemie occupée.
+ *    Cases numérotées de 1 à 9 (1-2-3 à l'avant, de gauche à droite) : les colonnes se font face.
+ *    Le contact ne frappe que le premier ennemi de sa colonne (ou de la colonne occupée la plus proche) ;
+ *    la distance passe par-dessus, dans sa colonne et les colonnes voisines.
  *  - Rôles : Tank, Attaquant, Lanceur, Rapide, Soutien (stats de base + attaques équipées),
  *    avec un bonus quand le Pokémon est sur une ligne qui lui convient.
  *  - Synergies : 2 / 3 / 4 Pokémon d'un même type dans l'équipe déployée donnent des bonus.
@@ -50,13 +52,48 @@ const BattleRules = (() => {
             && !['all', 'random_single'].includes(move.aoe || 'single');
     }
 
+    // Numéro de case (1 à 9) : 1-2-3 à l'avant, 4-5-6 au centre, 7-8-9 à l'arrière, de gauche à droite.
+    // Les colonnes se font face : le 1 est en face du 1.
+    const slotNumber = (side, index) => depthOfIndex(side, index) * 3 + laneOf(index) + 1;
+    const slotOf = (unit) => slotNumber(unit._side, unit._index);
+    const targetableFoes = (side) => (grid[side] || []).filter(u => u && !u.isKO && !u.flags?.diving);
+    // Colonnes occupées, de la plus proche de `lane` à la plus lointaine (à égalité, le plus petit numéro)
+    function lanesByDistance(side, lane) {
+        const occupied = [...new Set(targetableFoes(side).map(u => laneOf(u._index)))];
+        return occupied.sort((a, b) => Math.abs(a - lane) - Math.abs(b - lane) || a - b);
+    }
+    // Contact : seulement le premier ennemi de sa colonne ; colonne vide → la colonne occupée la plus proche
+    function contactTarget(attacker, side) {
+        const lane = lanesByDistance(side, laneOf(attacker._index))[0];
+        if (lane === undefined) return null;
+        return targetableFoes(side).filter(u => laneOf(u._index) === lane).sort((a, b) => depthOf(a) - depthOf(b))[0];
+    }
+    // Distance : par-dessus le premier, dans sa colonne et les colonnes voisines ; si elles sont vides, les plus proches
+    function rangedLanes(attacker, side) {
+        const lane = laneOf(attacker._index);
+        const ordered = lanesByDistance(side, lane);
+        const near = ordered.filter(l => Math.abs(l - lane) <= 1);
+        if (near.length) return near;
+        return ordered.filter(l => Math.abs(l - lane) === Math.abs(ordered[0] - lane));
+    }
+    // Ignore le placement : synergie Spectre, Gant de Boxe…
+    const ignoresPlacement = (attacker) => !!attacker.ignoresFrontline || (typeof HeldItems !== 'undefined' && HeldItems.ignoresContact(attacker));
+
     function canTarget(attacker, move, target) {
         if (!target || target.isKO) return false;
         if (target.flags?.diving && target._side !== attacker._side) return false; // Plongée : intouchable
         if (move?.rw?.anyCell) return true; // Plongée, tir de précision, attraction : n'importe quelle case
         if (target._side === attacker._side) return true;
-        if (!isContact(move) || attacker.ignoresFrontline || (typeof HeldItems !== 'undefined' && HeldItems.ignoresContact(attacker))) return true;
-        return frontLineUnits(target._side).includes(target);
+        if (attacker._index == null || ignoresPlacement(attacker)) return true;
+        if (isContact(move)) return contactTarget(attacker, target._side) === target;
+        return rangedLanes(attacker, target._side).includes(laneOf(target._index));
+    }
+    // Cible permise la plus proche de celle visée (même colonne d'abord, puis la plus à l'avant)
+    function retarget(attacker, move, preferred) {
+        if (!preferred) return null;
+        const lane = laneOf(preferred._index);
+        return targetableFoes(preferred._side).filter(u => canTarget(attacker, move, u))
+            .sort((a, b) => Math.abs(laneOf(a._index) - lane) - Math.abs(laneOf(b._index) - lane) || depthOf(a) - depthOf(b))[0] || null;
     }
 
     // ------------------------------------------------------------------
@@ -834,7 +871,8 @@ const BattleRules = (() => {
 
     return {
         ROLES, ROW_LABEL, SYNERGY_PERKS,
-        rowOf, rowOfIndex, depthOf, depthOfIndex, laneOf, indexAt, lineIndexes, frontLineUnits, isContact, canTarget, computeRole, isWellPlaced, roleActive,
+        rowOf, rowOfIndex, depthOf, depthOfIndex, laneOf, indexAt, lineIndexes, frontLineUnits, isContact, canTarget, computeRole,
+        slotNumber, slotOf, contactTarget, rangedLanes, retarget, isWellPlaced, roleActive,
         synergyCounts, synergyTier, describeSynergies, describeField,
         setupBattle, resetField, moveTypeFor, damageMultiplier, defenseStat, itemsDisabled, speedInverted,
         beforeAttack, recordMove, checkProtect, afterDamage, powerMultiplier, dynamicPower, fixedDamage, onTurnStart, executeOps, scoreOps,

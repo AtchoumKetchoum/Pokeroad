@@ -215,3 +215,13 @@
 #view-battle .reward-chip.egg { background: #ccd7dd; }
 #view-battle .reward-chip .coin { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e1d39d, var(--yellow) 55%, var(--yellow-dark)); border: 2px solid var(--ink); }
 #view-battle .reward-chip .art-egg { width: 26px; height: auto; }
+
+/* Numéro de case (1 à 9) : le 1 fait face au 1 ; le contact frappe le premier ennemi de sa colonne */
+#view-battle .team-grid .unit-slot[data-slot]::after {
+  content: attr(data-slot); position: absolute; left: 8%; bottom: 6%; z-index: 0;
+  min-width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+  font: 700 18px/1 var(--font-title, sans-serif); color: #fff; background: rgba(27, 31, 59, .55);
+  pointer-events: none;
+}
+#view-battle #player-grid .unit-slot[data-slot]::after { background: rgba(59, 76, 202, .7); }
+#view-battle #enemy-grid .unit-slot[data-slot]::after { background: rgba(190, 40, 40, .7); }

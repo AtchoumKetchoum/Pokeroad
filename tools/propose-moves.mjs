@@ -247,11 +247,43 @@ function shapeFor(m, o) {
 // Sert à garder l'équilibre entre l'officiel et la proposition, et entre physique et spéciale :
 // une forme large touche plus de monde, donc sa puissance au point d'impact baisse.
 // ---------------------------------------------------------------------------
-const OCCUPANCY = 0.6;          // part des cases ennemies occupées en moyenne
-const NEIGHBOR_HIT = 0.8;       // chance qu'un voisin existe pour un rebond / un 2e coup
+const NEIGHBOR_HIT = 0.8;       // chance qu'un voisin existe pour un 2e coup (Triplé)
 const AOE_BONUS = 0.05;         // léger bonus d'une zone large (+5 % par cible supplémentaire attendue) : focaliser une cible reste aussi utile que d'arroser
 const Z_MULT = 3.2;             // une version Z vaut 3,2 fois la version normale, quelle que soit sa forme
-function coverageOf(id) {
+// Couverture réelle d'une forme : 5 Pokémon sur les 9 cases ennemies. Moyenne de deux placements :
+// tous les placements possibles (126) et la formation type (3 devant + 2 au centre). Les cases hors
+// de la grille ne comptent pas (une zone centrée sur la ligne avant perd sa rangée de devant).
+// Point d'impact selon le ciblage par colonne : contact = premier ennemi d'une colonne, distance = n'importe quel Pokémon.
+const ABSOLUTE_SHAPES = ['onde', 'tempete', 'front', 'onde_forte', 'tempete_forte'];
+const RANGED_SHAPES = ['onde', 'tempete', 'front', 'salve', 'hasard', 'explosion', 'onde_forte', 'tempete_forte', 'salve_z', 'explosion_z'];
+const combos = (list, k) => (k === 0 ? [[]] : list.flatMap((x, i) => combos(list.slice(i + 1), k - 1).map(c => [x, ...c])));
+const CELLS = [0, 1, 2].flatMap(d => [0, 1, 2].map(l => [d, l]));
+const PLACEMENTS = [
+    combos(CELLS, 5),
+    combos([[1, 0], [1, 1], [1, 2]], 2).map(c => [[0, 0], [0, 1], [0, 2], ...c]),
+];
+function placedCoverage(id, contact) {
+    const grid = SHAPES[id].grid;
+    const absolute = ABSOLUTE_SHAPES.includes(id);
+    let r0 = -1, c0 = -1;
+    grid.forEach((row, r) => row.forEach((v, c) => { if (v === 100 && r0 < 0) { r0 = r; c0 = c; } }));
+    const mean = (list) => list.reduce((a, b) => a + b, 0) / list.length;
+    const perPlacement = (cells) => {
+        const occ = new Set(cells.map(([d, l]) => d * 3 + l));
+        const at = (d, l) => d >= 0 && d <= 2 && l >= 0 && l <= 2 && occ.has(d * 3 + l);
+        if (absolute) return grid.reduce((a, row, r) => a + row.reduce((b, v, c) => b + (v && at(2 - r, c) ? v : 0), 0), 0) / 100;
+        const sumFrom = ([d0, l0]) => grid.reduce((a, row, r) => a + row.reduce((b, v, c) => b + (v && at(d0 + (r0 - r), l0 + (c - c0)) ? v : 0), 0), 0) / 100;
+        if (!contact) return mean(cells.map(sumFrom));
+        // Contact : chaque colonne de l'attaquant frappe le premier ennemi de sa colonne (ou de la plus proche)
+        const lanes = [...new Set(cells.map(([, l]) => l))];
+        return mean([0, 1, 2].map(lane => {
+            const l = lanes.sort((a, b) => Math.abs(a - lane) - Math.abs(b - lane) || a - b)[0];
+            return sumFrom([Math.min(...cells.filter(([, ll]) => ll === l).map(([d]) => d)), l]);
+        }));
+    };
+    return mean(PLACEMENTS.map(list => mean(list.map(perPlacement))));
+}
+function coverageOf(id, contact = false) {
     const sh = SHAPES[id];
     if (id === 'salve') return 3 * 0.45;
     if (id === 'salve_z') return 6 * 0.5;
@@ -259,12 +291,9 @@ function coverageOf(id) {
     if (sh.side === 'ally') return 1;
     if (id === 'duo') return 2;
     if (id === 'trio') return 1 + 2 * NEIGHBOR_HIT;
-    if (id.startsWith('ricochet')) return 1 + NEIGHBOR_HIT * (sh.grid.flat().reduce((a, b) => a + b, 0) - 100) / 100;
-    const sum = sh.grid.flat().reduce((a, b) => a + b, 0);
-    if (!sh.grid.flat().includes(100) || ['onde', 'tempete', 'front', 'onde_forte', 'tempete_forte'].includes(id)) {
-        return Math.max(1, (id === 'front' ? 0.8 : OCCUPANCY) * sum / 100);
-    }
-    return 1 + OCCUPANCY * (sum - 100) / 100;
+    // Ricochet : avec 5 Pokémon, chaque rebond trouve toujours une cible
+    if (id.startsWith('ricochet')) return sh.grid.flat().reduce((a, b) => a + b, 0) / 100;
+    return Math.max(1, placedCoverage(id, contact && !RANGED_SHAPES.includes(id)));
 }
 const AILMENT_VALUE = { paralysis: 0.35, sleep: 0.5, freeze: 0.4, burn: 0.3, poison: 0.25, confusion: 0.2, infatuation: 0.15, trap: 0.2 };
 function effectValue(o, mech = {}) {
@@ -306,7 +335,7 @@ const RULES = {
     R12: "Version Z des attaques : vaut 3,2 fois la version normale (indice), forme élargie d'un cran (Cible unique → Doublé sur 2 ennemis, Doublé → Triplé, Éclaboussure → Explosion, Perçante → Perçante large, Onde → Raz-de-marée…), brise boucliers et Abri, effet secondaire garanti, sans recharge ni contrecoup, + bonus de son type.",
     R13: "Version Z des tactiques : effet renforcé d'un cran et étendu (lanceur → équipe, cible → tous les ennemis), + bonus de son type.",
     R14: "Version Z des passifs : « Éveil » — quand la jauge Z est pleine, le passif déclenche un effet actif immédiat.",
-    R17: "Équilibre : indice = puissance × coups × précision × (1 + valeur des effets) × couverture de la forme. La puissance au point d'impact est recalculée pour garder la valeur officielle (×0,5, échelle du jeu), avec seulement +5 % par cible supplémentaire attendue : une attaque de zone frappe moins fort au centre qu'une attaque à cible unique.",
+    R17: "Équilibre : indice = puissance × coups × précision × (1 + valeur des effets) × couverture de la forme. La puissance au point d'impact est recalculée pour garder la valeur officielle (×0,5, échelle du jeu), avec seulement +5 % par cible supplémentaire attendue : une attaque de zone frappe moins fort au centre qu'une attaque à cible unique. Couverture d'une forme : 5 Pokémon sur 9 cases (tous les placements et la formation type 3 devant + 2 au centre), cases hors de la grille exclues, impact selon le ciblage par colonne.",
     R16: "Zones : chaque attaque reçoit une forme sur la grille 3×3 selon sa nature (rayon perçant, bombe qui éclabousse, éclair qui ricoche, séisme en onde, souffle en cône, rochers en salve, corps à corps sur une seule cible), avec des dégâts qui diminuent autour du point d'impact. ",
     R19: "Placement : seules certaines capacités déplacent les Pokémon. Projection (repousse au fond de la colonne, choc de 15 % si la case est occupée), Bourrasque (recule d'une case), Attraction (ramène d'une ligne vers l'avant), Relais et Téléport (le lanceur change de case), Barrage (la cible ne peut plus être déplacée).",
     R20: "Portée : Plongée (intouchable jusqu'à son prochain tour, puis frappe n'importe quelle case, même l'arrière au contact) ; Tir de précision (vise n'importe quelle case, ignore la Provocation, ne rate jamais).",
@@ -512,7 +541,9 @@ function attack(m, o) {
     const shape = SHAPES[shapeId];
     const hitsAvg = avgHits(o.hits);
     const hitsNew = shapeId === 'duo' ? 1 : hitsAvg;      // le Doublé répartit les 2 coups sur 2 cibles
-    const cov = coverageOf(shapeId);
+    // Contact : physique et forme de mêlée (les tirs et la Plongée frappent à distance)
+    const contact = m._file === 'physical' && POSITION[m._key]?.rule !== 'R20';
+    const cov = coverageOf(shapeId, contact);
     const aoeEff = 1 + AOE_BONUS * (cov - 1);
     // Même valeur totale que l'officiel (×0,5 = échelle du jeu), à un petit bonus de zone près
     const power = o.power ? Math.max(1, Math.round(0.5 * o.power * hitsAvg * aoeEff / (hitsNew * cov))) : (o.category === 'ohko' || (m.mech || {}).ohko) ? 40 : m.power;
@@ -554,7 +585,7 @@ function attack(m, o) {
     const zShapeId = SHAPE_UP[shapeId] || shapeId;
     const zShape = SHAPES[zShapeId];
     const zHits = zShapeId === 'duo' || zShapeId === 'trio' ? 1 : hitsNew;
-    const zPower = power > 0 ? Math.max(1, Math.round(Z_MULT * power * hitsNew * cov / (zHits * coverageOf(zShapeId)))) : 0;
+    const zPower = power > 0 ? Math.max(1, Math.round(Z_MULT * power * hitsNew * cov / (zHits * coverageOf(zShapeId, contact)))) : 0;
     const z = [];
     z.push(o.category === 'ohko' || mech.ohko ? 'Exécute toutes les cibles sous 35 % de PV (boss : 20 %).' : power > 0 ? `Puissance ${zPower} ${['duo', 'trio'].includes(zShapeId) ? 'par coup' : zShape.hits ? 'par projectile' : "au point d'impact"}. ${zShape.text}` : `Dégâts fixes ×2. ${zShape.text}`);
     z.push('Brise boucliers et Abri.');
@@ -607,7 +638,7 @@ function attack(m, o) {
         drop: [...(note?.drop || []), ...(POSITION[m._key]?.rule === 'R20' ? ['recharge'] : []), ...(o.hits ? [] : ['multihit']), ...(o.ailment === 'trap' ? [] : ['trap']), ...(o.priority > 0 ? ['priority'] : [])],
         z: { power: zPower, shape: zShapeId, ops: Z_TYPE_OPS[m.type] || [], guaranteed: true, noRecharge: true, noRecoil: true, replay: o.priority > 0 || !!mech.priority },
     };
-    const zCov = coverageOf(zShapeId);
+    const zCov = coverageOf(zShapeId, contact);
     const index = o.power ? {
         official: +(0.5 * o.power * hitsAvg * acc * (1 + eff)).toFixed(1),
         proposal: +(power * hitsNew * cov * acc * (1 + eff)).toFixed(1),
@@ -619,7 +650,7 @@ function attack(m, o) {
         rw,
         zPower,
         index,
-        target: shape.name + (POSITION[m._key]?.rule === 'R20' ? " (n'importe quelle case)" : shapeId === 'cible' && m._file === 'physical' ? ' (contact : ligne de front)' : ''),
+        target: shape.name + (POSITION[m._key]?.rule === 'R20' ? " (n'importe quelle case)" : shapeId === 'cible' && m._file === 'physical' ? ' (contact : 1er ennemi de sa colonne)' : ''),
         shape: shapeId,
         zShape: zShapeId,
         power,
