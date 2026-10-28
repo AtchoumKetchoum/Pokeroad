@@ -1750,8 +1750,9 @@ function scoreAction(unit, move, primaryTarget) {
             if (rule.category === 'V-Stat') {
                 const delta = getStatDelta(move);
                 const stages = getEffectTargetStats(move, effectId).map(s => t.statMods[String(s).toUpperCase()] || 0);
-                if (delta > 0 && Math.max(...stages) < 2) score += 0.12;
-                if (delta < 0 && Math.min(...stages) > -2) score += 0.1;
+                // Modeste : une vraie attaque (même 8 % des PV) passe avant Rugissement ou Mimi-Queue
+                if (delta > 0 && Math.max(...stages) < 2) score += 0.06;
+                if (delta < 0 && Math.min(...stages) > -2) score += 0.05;
                 continue;
             }
             if (t.activeEffects.some(e => e.id === effectId)) continue;

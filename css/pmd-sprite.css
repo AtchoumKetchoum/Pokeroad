@@ -19,11 +19,12 @@
   image-rendering: pixelated;
   pointer-events: none;
 }
-/* Planche lissée en xBR (pmd-sprite.js) : n fois plus grande (--pmd-hd), réduite d'autant, affichée lissée */
+/* Planche lissée en xBR x2 (pmd-sprite.js) : 2 fois plus grande (--pmd-hd), réduite d'autant, affichée en pixels nets :
+   courbes adoucies, mais on garde un grain de pixel art (le x4 affiché lissé faisait trop « peint ») */
 .pmd-sprite .pmd-frame.pmd-hd,
 #view-battle .sprite.pmd-sprite .pmd-frame.pmd-hd {
   transform: translate(-50%, -50%) scale(calc(var(--pmd-scale) * var(--pmd-fit) / var(--pmd-hd, 1)));
-  image-rendering: auto;
+  image-rendering: pixelated;
 }
 /* Leur contour est déjà allégé : pas de halo ni d'ombre décalée en plus (battle-theme.css),
    sauf la lueur du Pokémon qui joue et celle des boss */

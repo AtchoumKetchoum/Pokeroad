@@ -68,6 +68,14 @@ const BattleRules = (() => {
         if (lane === undefined) return null;
         return targetableFoes(side).filter(u => laneOf(u._index) === lane).sort((a, b) => depthOf(a) - depthOf(b))[0];
     }
+    // Contact d'un Rapide : il se faufile, et atteint aussi le premier ennemi des colonnes voisines
+    function contactTargets(attacker, side) {
+        const main = contactTarget(attacker, side);
+        if (!main || !roleActive(attacker, 'speedster')) return main ? [main] : [];
+        const lane = laneOf(attacker._index);
+        const firsts = [lane - 1, lane + 1].map(l => targetableFoes(side).filter(u => laneOf(u._index) === l).sort((a, b) => depthOf(a) - depthOf(b))[0]);
+        return [main, ...firsts.filter(u => u && u !== main)];
+    }
     // Distance : par-dessus le premier, dans sa colonne et les colonnes voisines ; si elles sont vides, les plus proches
     function rangedLanes(attacker, side) {
         const lane = laneOf(attacker._index);
@@ -85,7 +93,7 @@ const BattleRules = (() => {
         if (move?.rw?.anyCell) return true; // Plongée, tir de précision, attraction : n'importe quelle case
         if (target._side === attacker._side) return true;
         if (attacker._index == null || ignoresPlacement(attacker)) return true;
-        if (isContact(move)) return contactTarget(attacker, target._side) === target;
+        if (isContact(move)) return contactTargets(attacker, target._side).includes(target);
         return rangedLanes(attacker, target._side).includes(laneOf(target._index));
     }
     // Cible permise la plus proche de celle visée (même colonne d'abord, puis la plus à l'avant)
@@ -103,7 +111,7 @@ const BattleRules = (() => {
         tank:      { label: 'Tank',      short: 'TNK', rows: ['front'],                  desc: "À l'avant : −25 % de dégâts reçus, et les ennemis le visent en priorité." },
         attacker:  { label: 'Attaquant', short: 'ATQ', rows: ['front', 'middle'],        desc: "À l'avant ou au centre : +20 % de dégâts physiques." },
         caster:    { label: 'Lanceur',   short: 'LAN', rows: ['middle', 'back'],         desc: "Au centre ou à l'arrière : +20 % de dégâts spéciaux." },
-        speedster: { label: 'Rapide',    short: 'RAP', rows: ['front', 'middle', 'back'], desc: 'Partout : démarre avec 50 % de jauge d\'action et +1 palier de critique.' },
+        speedster: { label: 'Rapide',    short: 'RAP', rows: ['front', 'middle', 'back'], desc: 'Partout : démarre avec 50 % de jauge d\'action et +1 palier de critique ; au contact, atteint aussi le premier ennemi des colonnes voisines.' },
         support:   { label: 'Soutien',   short: 'SOU', rows: ['middle', 'back'],         desc: "Au centre ou à l'arrière : soins et boucliers ×1,5." },
     };
 
@@ -860,7 +868,7 @@ const BattleRules = (() => {
                 case 'terrain': score += field.terrain?.type === op.type ? 0 : 0.2; break;
                 case 'room': score += field.room ? 0 : 0.12; break;
                 case 'hazard': { const side = unit._side === 'player' ? 'enemy' : 'player'; const h = field.hazards[side].find(x => x.type === op.type); score += !h ? 0.25 : (op.type === 'spikes' && h.layers < 3 ? 0.1 : 0); break; }
-                case 'stat': { const pos = Object.values(op.stats).some(v => v > 0); score += pos ? 0.12 : 0.1; break; }
+                case 'stat': { const pos = Object.values(op.stats).some(v => v > 0); score += pos ? 0.06 : 0.05; break; }
                 case 'status': score += target && !target.activeEffects.some(e => e.id === op.id) ? 0.2 : 0; break;
                 case 'callMove': score += 0.3; break;
                 case 'flag': score += 0.12; break;
@@ -876,7 +884,7 @@ const BattleRules = (() => {
     return {
         ROLES, ROW_LABEL, SYNERGY_PERKS,
         rowOf, rowOfIndex, depthOf, depthOfIndex, laneOf, indexAt, lineIndexes, frontLineUnits, isContact, canTarget, computeRole,
-        slotNumber, slotOf, contactTarget, rangedLanes, retarget, isWellPlaced, roleActive,
+        slotNumber, slotOf, contactTarget, contactTargets, rangedLanes, retarget, isWellPlaced, roleActive,
         synergyCounts, synergyTier, describeSynergies, describeField,
         setupBattle, resetField, moveTypeFor, damageMultiplier, defenseStat, itemsDisabled, speedInverted,
         beforeAttack, recordMove, checkProtect, afterDamage, powerMultiplier, dynamicPower, fixedDamage, onTurnStart, executeOps, scoreOps,
