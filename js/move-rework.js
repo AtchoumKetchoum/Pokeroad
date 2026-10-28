@@ -229,8 +229,10 @@ const MoveRework = (() => {
     }
     function collide(a, b, pct) {
         say(a, 'Choc !', 'debuff');
-        R().damage(a, a.maxHp * pct / 100, null);
-        if (b) R().damage(b, b.maxHp * pct / 100, null);
+        // Grosses Bottes : pas de dégâts de collision
+        const boots = (u) => typeof HeldItems !== 'undefined' && HeldItems.ignoresHazards(u);
+        if (!boots(a)) R().damage(a, a.maxHp * pct / 100, null);
+        if (b && !boots(b)) R().damage(b, b.maxHp * pct / 100, null);
     }
     // Recule de `steps` cases dans sa colonne ; choc si une case occupée l'arrête
     function pushBack(unit, steps, collision) {

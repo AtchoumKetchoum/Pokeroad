@@ -3,6 +3,8 @@ const GameData = (() => {
     let pokedexSubset = [];
     let itemsCatalog = {};
     let itemsByPocket = {};
+    // Évolutions officielles par objet (data/item_evolutions.json, tools/fetch-item-evolutions.mjs)
+    let itemEvolutions = {};
 
     const NATURES = [
         { name: "Hardi", plus: null, minus: null }, { name: "Solo", plus: "atk", minus: "def" },
@@ -806,6 +808,7 @@ const GameData = (() => {
     // --- Fonctions Publiques ---
     
     async function init() {
+        try { itemEvolutions = (await loadJSON('data/item_evolutions.json')).evolutions || {}; } catch { itemEvolutions = {}; }
         let data = loadData();
         let isNew = false;
         if (!data) {
@@ -1820,14 +1823,14 @@ const GameData = (() => {
     }
 
     // Items pool enrichie pour les missions
-    function pickRandomItem(pockets = ['misc', 'vitamins', 'feathers', 'battle', 'berries', 'ct']) {
+    function pickRandomItem(pockets = ['misc', 'medicine', 'battle', 'berries', 'ct']) {
         const availablePockets = pockets.filter(p => itemsByPocket[p] && itemsByPocket[p].length > 0);
         if (availablePockets.length === 0) return null;
         
         const pocket = availablePockets[Math.floor(Math.random() * availablePockets.length)];
-        const pool = itemsByPocket[pocket];
-        const item = pool[Math.floor(Math.random() * pool.length)];
-        return item;
+        // Hors objets introuvables en boutique et objets de déblocage (donnés à part, sur les missions difficiles et les boss)
+        const pool = itemsByPocket[pocket].filter(it => !it.not_sold && it.category !== 'Déblocage');
+        return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
     }
 
     // Note de développement d'un Pokémon : tout ce qu'on a monté dessus, en équivalent niveaux
@@ -1929,8 +1932,9 @@ const GameData = (() => {
         const itemChance = 0.4 + (affinityBonus * 0.05); // 40% base + bonus affinité
         
         if (Math.random() < itemChance) {
-            let pockets = ['vitamins', 'feathers', 'berries', 'exp'];
-            if (difficulty >= 2) pockets.push('misc', 'battle', 'loot');
+            // Poches du catalogue : entraînement (vitamines, plumes, bonbons, mochi) et baies, puis objets tenus et d'évolution
+            let pockets = ['medicine', 'berries'];
+            if (difficulty >= 2) pockets.push('misc', 'battle');
             
             const foundItem = pickRandomItem(pockets);
             if (foundItem) {
@@ -2004,14 +2008,10 @@ const GameData = (() => {
         const basePk = pokedexSubset.find(p => p.id === pokemon.id);
         if (!basePk) return null;
 
-        // Check Override first, then Pokedex data
-        let evolutionData = EVOLUTION_OVERRIDES[pokemon.id] || basePk.evolution;
-        
-        if (!evolutionData) return null;
+        // Évolution du Pokédex (ou de l'override) et évolutions officielles par objet
+        const options = evolutionOptions(pokemon.id);
+        if (!options.length) return null;
 
-        // Handle Array of evolutions (e.g. Eevee)
-        const options = Array.isArray(evolutionData) ? evolutionData : [evolutionData];
-        
         const possibleEvolutions = options.map(evo => {
             const targetPk = pokedexSubset.find(p => p.id === evo.targetId);
             if (!targetPk) return null;
@@ -2049,7 +2049,26 @@ const GameData = (() => {
             };
         }).filter(Boolean);
 
-        return possibleEvolutions.length > 0 ? possibleEvolutions : null;
+        // Plusieurs chemins vers la même forme (niveau ou objet) : une seule ligne, possible si l'un des chemins l'est
+        const byTarget = new Map();
+        possibleEvolutions.forEach(e => {
+            const prev = byTarget.get(e.targetId);
+            if (!prev) { byTarget.set(e.targetId, { ...e }); return; }
+            if (!prev.canEvolve && e.canEvolve) Object.assign(prev, { method: e.method, level: e.level, item: e.item, canEvolve: true, reason: '' });
+            else if (!prev.canEvolve) prev.reason = `${prev.reason} ou ${e.reason.replace(/^Objet requis : /, '')}`;
+        });
+        const merged = [...byTarget.values()];
+        return merged.length > 0 ? merged : null;
+    }
+
+    // Toutes les évolutions d'une espèce : celle du Pokédex (ou de l'override) et les évolutions officielles par objet
+    function evolutionOptions(speciesId) {
+        const base = EVOLUTION_OVERRIDES[speciesId] || pokedexSubset.find(p => p.id === speciesId)?.evolution;
+        const options = (Array.isArray(base) ? base : base ? [base] : []).slice();
+        (itemEvolutions[speciesId] || []).forEach(e => {
+            if (!options.some(o => o.targetId === e.targetId && o.item === e.item)) options.push({ targetId: e.targetId, method: 'use-item', item: e.item });
+        });
+        return options;
     }
 
     function evolvePokemon(pokemonInstanceId, targetId) {
@@ -2060,11 +2079,15 @@ const GameData = (() => {
         const pokemon = data.pokemons[pokemonIndex];
         const currentId = pokemon.id;
         
-        let evolutionData = EVOLUTION_OVERRIDES[currentId] || pokedexSubset.find(p => p.id === currentId)?.evolution;
-        if (!evolutionData) return { success: false, reason: "Ce Pokémon n'évolue pas." };
-        
-        const options = Array.isArray(evolutionData) ? evolutionData : [evolutionData];
-        const evoOption = options.find(e => e.targetId === targetId);
+        const options = evolutionOptions(currentId);
+        if (!options.length) return { success: false, reason: "Ce Pokémon n'évolue pas." };
+
+        // Chemin possible vers la forme demandée : le niveau d'abord (gratuit), sinon un objet possédé
+        const owned = (id) => (data.inventory.items?.[id] || 0) > 0;
+        const paths = options.filter(e => e.targetId === targetId);
+        const evoOption = paths.find(e => e.method === 'level-up' && pokemon.level >= e.level)
+            || paths.find(e => (e.method === 'use-item' || e.method === 'trade') && owned(e.item))
+            || paths[0];
 
         if (!evoOption) return { success: false, reason: "Évolution invalide." };
 

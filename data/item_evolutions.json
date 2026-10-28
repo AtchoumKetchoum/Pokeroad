@@ -1,0 +1,556 @@
+{
+ "evolutions": {
+  "25": [
+   {
+    "targetId": 26,
+    "item": "thunder-stone"
+   }
+  ],
+  "27": [
+   {
+    "targetId": 28,
+    "item": "ice-stone"
+   }
+  ],
+  "30": [
+   {
+    "targetId": 31,
+    "item": "moon-stone"
+   }
+  ],
+  "33": [
+   {
+    "targetId": 34,
+    "item": "moon-stone"
+   }
+  ],
+  "35": [
+   {
+    "targetId": 36,
+    "item": "moon-stone"
+   }
+  ],
+  "37": [
+   {
+    "targetId": 38,
+    "item": "fire-stone"
+   },
+   {
+    "targetId": 38,
+    "item": "ice-stone"
+   }
+  ],
+  "39": [
+   {
+    "targetId": 40,
+    "item": "moon-stone"
+   }
+  ],
+  "44": [
+   {
+    "targetId": 45,
+    "item": "leaf-stone"
+   },
+   {
+    "targetId": 182,
+    "item": "sun-stone"
+   }
+  ],
+  "58": [
+   {
+    "targetId": 59,
+    "item": "fire-stone"
+   }
+  ],
+  "61": [
+   {
+    "targetId": 62,
+    "item": "water-stone"
+   },
+   {
+    "targetId": 186,
+    "item": "kings-rock"
+   }
+  ],
+  "70": [
+   {
+    "targetId": 71,
+    "item": "leaf-stone"
+   }
+  ],
+  "79": [
+   {
+    "targetId": 199,
+    "item": "kings-rock"
+   }
+  ],
+  "82": [
+   {
+    "targetId": 462,
+    "item": "thunder-stone"
+   }
+  ],
+  "90": [
+   {
+    "targetId": 91,
+    "item": "water-stone"
+   }
+  ],
+  "95": [
+   {
+    "targetId": 208,
+    "item": "metal-coat"
+   }
+  ],
+  "100": [
+   {
+    "targetId": 101,
+    "item": "leaf-stone"
+   }
+  ],
+  "102": [
+   {
+    "targetId": 103,
+    "item": "leaf-stone"
+   }
+  ],
+  "112": [
+   {
+    "targetId": 464,
+    "item": "protector"
+   }
+  ],
+  "117": [
+   {
+    "targetId": 230,
+    "item": "dragon-scale"
+   }
+  ],
+  "120": [
+   {
+    "targetId": 121,
+    "item": "water-stone"
+   }
+  ],
+  "123": [
+   {
+    "targetId": 212,
+    "item": "metal-coat"
+   },
+   {
+    "targetId": 900,
+    "item": "black-augurite"
+   }
+  ],
+  "125": [
+   {
+    "targetId": 466,
+    "item": "electirizer"
+   }
+  ],
+  "126": [
+   {
+    "targetId": 467,
+    "item": "magmarizer"
+   }
+  ],
+  "133": [
+   {
+    "targetId": 134,
+    "item": "water-stone"
+   },
+   {
+    "targetId": 135,
+    "item": "thunder-stone"
+   },
+   {
+    "targetId": 136,
+    "item": "fire-stone"
+   },
+   {
+    "targetId": 470,
+    "item": "leaf-stone"
+   },
+   {
+    "targetId": 471,
+    "item": "ice-stone"
+   }
+  ],
+  "137": [
+   {
+    "targetId": 233,
+    "item": "up-grade"
+   }
+  ],
+  "176": [
+   {
+    "targetId": 468,
+    "item": "shiny-stone"
+   }
+  ],
+  "191": [
+   {
+    "targetId": 192,
+    "item": "sun-stone"
+   }
+  ],
+  "198": [
+   {
+    "targetId": 430,
+    "item": "dusk-stone"
+   }
+  ],
+  "200": [
+   {
+    "targetId": 429,
+    "item": "dusk-stone"
+   }
+  ],
+  "207": [
+   {
+    "targetId": 472,
+    "item": "razor-fang"
+   }
+  ],
+  "215": [
+   {
+    "targetId": 461,
+    "item": "razor-claw"
+   },
+   {
+    "targetId": 903,
+    "item": "razor-claw"
+   }
+  ],
+  "217": [
+   {
+    "targetId": 901,
+    "item": "peat-block"
+   }
+  ],
+  "233": [
+   {
+    "targetId": 474,
+    "item": "dubious-disc"
+   }
+  ],
+  "271": [
+   {
+    "targetId": 272,
+    "item": "water-stone"
+   }
+  ],
+  "274": [
+   {
+    "targetId": 275,
+    "item": "leaf-stone"
+   }
+  ],
+  "281": [
+   {
+    "targetId": 475,
+    "item": "dawn-stone"
+   }
+  ],
+  "299": [
+   {
+    "targetId": 476,
+    "item": "thunder-stone"
+   }
+  ],
+  "300": [
+   {
+    "targetId": 301,
+    "item": "moon-stone"
+   }
+  ],
+  "315": [
+   {
+    "targetId": 407,
+    "item": "shiny-stone"
+   }
+  ],
+  "349": [
+   {
+    "targetId": 350,
+    "item": "prism-scale"
+   }
+  ],
+  "356": [
+   {
+    "targetId": 477,
+    "item": "reaper-cloth"
+   }
+  ],
+  "361": [
+   {
+    "targetId": 478,
+    "item": "dawn-stone"
+   }
+  ],
+  "366": [
+   {
+    "targetId": 367,
+    "item": "deep-sea-tooth"
+   },
+   {
+    "targetId": 368,
+    "item": "deep-sea-scale"
+   }
+  ],
+  "440": [
+   {
+    "targetId": 113,
+    "item": "oval-stone"
+   }
+  ],
+  "511": [
+   {
+    "targetId": 512,
+    "item": "leaf-stone"
+   }
+  ],
+  "513": [
+   {
+    "targetId": 514,
+    "item": "fire-stone"
+   }
+  ],
+  "515": [
+   {
+    "targetId": 516,
+    "item": "water-stone"
+   }
+  ],
+  "517": [
+   {
+    "targetId": 518,
+    "item": "moon-stone"
+   }
+  ],
+  "546": [
+   {
+    "targetId": 547,
+    "item": "sun-stone"
+   }
+  ],
+  "548": [
+   {
+    "targetId": 549,
+    "item": "sun-stone"
+   }
+  ],
+  "554": [
+   {
+    "targetId": 555,
+    "item": "ice-stone"
+   }
+  ],
+  "572": [
+   {
+    "targetId": 573,
+    "item": "shiny-stone"
+   }
+  ],
+  "603": [
+   {
+    "targetId": 604,
+    "item": "thunder-stone"
+   }
+  ],
+  "608": [
+   {
+    "targetId": 609,
+    "item": "dusk-stone"
+   }
+  ],
+  "670": [
+   {
+    "targetId": 671,
+    "item": "shiny-stone"
+   }
+  ],
+  "680": [
+   {
+    "targetId": 681,
+    "item": "dusk-stone"
+   }
+  ],
+  "682": [
+   {
+    "targetId": 683,
+    "item": "sachet"
+   }
+  ],
+  "684": [
+   {
+    "targetId": 685,
+    "item": "whipped-dream"
+   }
+  ],
+  "694": [
+   {
+    "targetId": 695,
+    "item": "sun-stone"
+   }
+  ],
+  "737": [
+   {
+    "targetId": 738,
+    "item": "thunder-stone"
+   }
+  ],
+  "739": [
+   {
+    "targetId": 740,
+    "item": "ice-stone"
+   }
+  ],
+  "840": [
+   {
+    "targetId": 841,
+    "item": "tart-apple"
+   },
+   {
+    "targetId": 842,
+    "item": "sweet-apple"
+   },
+   {
+    "targetId": 1011,
+    "item": "syrupy-apple"
+   }
+  ],
+  "854": [
+   {
+    "targetId": 855,
+    "item": "cracked-pot"
+   },
+   {
+    "targetId": 855,
+    "item": "chipped-pot"
+   }
+  ],
+  "868": [
+   {
+    "targetId": 869,
+    "item": "strawberry-sweet"
+   },
+   {
+    "targetId": 869,
+    "item": "berry-sweet"
+   },
+   {
+    "targetId": 869,
+    "item": "love-sweet"
+   },
+   {
+    "targetId": 869,
+    "item": "star-sweet"
+   },
+   {
+    "targetId": 869,
+    "item": "clover-sweet"
+   },
+   {
+    "targetId": 869,
+    "item": "flower-sweet"
+   },
+   {
+    "targetId": 869,
+    "item": "ribbon-sweet"
+   }
+  ],
+  "884": [
+   {
+    "targetId": 1018,
+    "item": "metal-alloy"
+   }
+  ],
+  "891": [
+   {
+    "targetId": 892,
+    "item": "scroll-of-darkness"
+   },
+   {
+    "targetId": 892,
+    "item": "scroll-of-waters"
+   }
+  ],
+  "935": [
+   {
+    "targetId": 936,
+    "item": "auspicious-armor"
+   },
+   {
+    "targetId": 937,
+    "item": "malicious-armor"
+   }
+  ],
+  "938": [
+   {
+    "targetId": 939,
+    "item": "thunder-stone"
+   }
+  ],
+  "951": [
+   {
+    "targetId": 952,
+    "item": "fire-stone"
+   }
+  ],
+  "974": [
+   {
+    "targetId": 975,
+    "item": "ice-stone"
+   }
+  ],
+  "1012": [
+   {
+    "targetId": 1013,
+    "item": "unremarkable-teacup"
+   },
+   {
+    "targetId": 1013,
+    "item": "masterpiece-teacup"
+   }
+  ]
+ },
+ "items": {
+  "auspicious-armor": {
+   "name_fr": "Armure de la Fortune",
+   "cost": 1000
+  },
+  "metal-alloy": {
+   "name_fr": "Métal Composite",
+   "cost": 1000
+  },
+  "peat-block": {
+   "name_fr": "Bloc de Tourbe",
+   "cost": 1000
+  },
+  "sachet": {
+   "name_fr": "Sachet Senteur",
+   "cost": 1000
+  },
+  "scroll-of-darkness": {
+   "name_fr": "Rouleau des Ténèbres",
+   "cost": 1000
+  },
+  "scroll-of-waters": {
+   "name_fr": "Rouleau de l'Eau",
+   "cost": 1000
+  },
+  "sweet-apple": {
+   "name_fr": "Pomme Sucrée",
+   "cost": 1000
+  },
+  "tart-apple": {
+   "name_fr": "Pomme Acidulée",
+   "cost": 1000
+  },
+  "whipped-dream": {
+   "name_fr": "Chantibonbon",
+   "cost": 1000
+  }
+ }
+}

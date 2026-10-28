@@ -762,7 +762,45 @@ const HeldItems = (() => {
     const spec = (id) => S[id] || null;
     const valueAt = (id, mult) => (S[id] ? Math.min(S[id].cap ?? Infinity, S[id].base * mult) : null);
 
+    // ------------------------------------------------------------------
+    // GROSSES BOTTES, PARAPLUIE SOLIDE, ENCENS DOUX, HERBE MIROIR
+    // ------------------------------------------------------------------
+    // Grosses Bottes : ni pièges au sol ni dégâts de collision
+    const ignoresHazards = (u) => has(u, 'boots').length > 0;
+    // Parapluie Solide : la pluie et le soleil ne changent ni ses attaques ni celles qu'il reçoit…
+    const ignoresWeather = (u) => has(u, 'umbrella').length > 0;
+    // … et chaque nouvelle météo lui donne un bouclier ({v} % des PV max)
+    function onWeatherChange() {
+        [...(grid.player || []), ...(grid.enemy || [])].filter(u => u && !u.isKO).forEach(u => {
+            const id = has(u, 'umbrella')[0];
+            if (!id) return;
+            u.shield = (u.shield || 0) + Math.round(u.maxHp * valueOf(u, id) / 100);
+            say(u, nameOf(id), 'buff');
+        });
+    }
+    // Encens Doux : chaque attaque esquivée rend de la jauge d'action
+    function onDodge(u) {
+        if (!u || u.isKO) return;
+        const gauge = stacked(itemsOf(u).filter(id => S[id].dodgeGauge).map(id => S[id].dodgeGauge));
+        if (gauge > 0) addGauge(u, gauge);
+    }
+    // Herbe Miroir : copie les bonus de stats d'un ennemi ({v} fois par combat, 1 à 3)
+    function onStagesGained(u, gains) {
+        if (!u || u._mirroring || !Object.keys(gains).length) return;
+        for (const foe of foes(u)) {
+            const id = has(foe, 'mirrorHerb')[0];
+            if (!id) continue;
+            const uses = Math.max(1, Math.floor(valueOf(foe, id)));
+            foe._mirrorUsed = (foe._mirrorUsed || 0) + 1;
+            if (foe._mirrorUsed >= uses) consume(foe, id); else say(foe, nameOf(id), 'buff');
+            foe._mirroring = true; // pas de copie en retour
+            B().addStages(foe, gains, true);
+            foe._mirroring = false;
+        }
+    }
+
     return {
+        ignoresHazards, ignoresWeather, onWeatherChange, onDodge, onStagesGained,
         SPECS: S, spec, valueAt, valueOf, itemsOf, statBonusFor, canEvolve,
         prepare, forcedRole, onBattleStart, extraTypes, primeFirstCrit,
         offenseMult, defenseMult, critStages, critPierce, accuracyMult, zGainMult,

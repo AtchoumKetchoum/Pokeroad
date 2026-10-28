@@ -2045,6 +2045,7 @@ async function attack(attacker, primaryTarget, move) {
         if (attacker.flags?.sureHit) finalAccuracy = null;
         if (finalAccuracy !== null && Math.random() * 100 >= finalAccuracy) {
             spawnEffectText(target, "Raté !", 'info');
+            if (typeof HeldItems !== 'undefined') HeldItems.onDodge(target); // Encens Doux
             missedAny = true;
             continue; // La cible a esquivé
         }
@@ -2659,14 +2660,13 @@ async function checkWinCondition() {
 
     // --- NOUVELLES RÉCOMPENSES (Objets & Baies) ---
     // Objets tenus du catalogue (hors objets d'espèce), plus des objets d'évolution
-    const heldPool = (GameData.getItemsByPocket().battle || []).filter(it => !it.species_only && !it.not_sold).map(it => it.id);
-    const dropableItems = [
-        ...heldPool,
-        // Objets d'évolution
-        'sun-stone', 'moon-stone', 'fire-stone', 'water-stone', 'thunder-stone', 'leaf-stone',
-        'shiny-stone', 'dawn-stone', 'dusk-stone', 'ice-stone', 'dragon-scale', 'up-grade',
-        'electirizer', 'protector', 'magmarizer', 'dubious-disc', 'reaper-cloth', 'prism-scale'
-    ];
+    const catalog = GameData.getItemsByPocket();
+    const heldPool = (catalog.battle || []).filter(it => !it.species_only && !it.not_sold).map(it => it.id);
+    // Tous les objets d'évolution et d'entraînement (vitamines, plumes, bonbons, mochi, sucreries…) peuvent aussi tomber
+    const evolutionPool = (catalog.misc || []).filter(it => !it.not_sold && ['Évolution', 'Échantillons'].includes(it.category)).map(it => it.id);
+    const trainingPool = (catalog.medicine || []).filter(it => !it.not_sold).map(it => it.id);
+    const dropableItems = [...heldPool, ...evolutionPool, ...trainingPool];
+    const ctPool = (catalog.ct || []).filter(it => !it.not_sold).map(it => it.id);
     const dropableBerries = (GameData.getItemsByPocket().berries || []).map(it => it.id);
     
     const droppedItems = [];
@@ -2678,7 +2678,7 @@ async function checkWinCondition() {
         let name = item.name_fr || item.name || id;
         
         // Si c'est une CT, on essaie d'extraire le nom de la capacité pour plus de clarté
-        if (id.startsWith('tm') && item.effect_fr) {
+        if (item.pocket === 'ct' && item.effect_fr) {
             const match = item.effect_fr.match(/Apprend (.*?) à un Pokémon/);
             if (match && match[1]) {
                 name = `${name} - ${match[1]}`;
@@ -2708,10 +2708,12 @@ async function checkWinCondition() {
 
     // CT : de temps en temps
     let droppedTM = null;
-    if (Math.random() < BATTLE_REWARDS.tm) {
-        const tmId = `tm${String(Math.floor(Math.random() * 50) + 1).padStart(2, "0")}`;
+    // (toutes les CT du catalogue, pas seulement CT01 à CT50)
+    if (ctPool.length && Math.random() < BATTLE_REWARDS.tm) {
+        const tmId = ctPool[Math.floor(Math.random() * ctPool.length)];
+        const tmIcon = (GameData.getItem(tmId)?.sprite || '').split('/').pop().replace('.png', '') || 'tm-normal';
         GameData.addItem(tmId, 1);
-        droppedTM = { id: tmId, name: getCleanItemNameFr(tmId), icon: Art.item('tm-normal', 22) };
+        droppedTM = { id: tmId, name: getCleanItemNameFr(tmId), icon: Art.item(tmIcon, 22) };
     }
 
     // Objets de déblocage des paliers : sur les boss, de plus en plus rares

@@ -85,7 +85,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": ["underground"],
-    "effect_fr": "Fait évoluer un Doudouvet en Farfaduvet, un Ortide en Joliflor, un Chlorobule en Farfaduvet ou un Tournegrin en Héliatronc.",
+    "effect_fr": "Évolution : Ortide → Joliflor, Tournegrin → Héliatronc, Doudouvet → Farfaduvet, Chlorobule → Fragilady, Galvaran → Iguolta.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est rouge comme le soleil couchant."
   },
   "fire-stone": {
@@ -96,7 +96,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": ["underground"],
-    "effect_fr": "Fait évoluer un Évoli en Pyroli, un Caninos en Arcanin, un Flamajou en Flamoutan, ou un Goupix en Feunard.",
+    "effect_fr": "Évolution : Goupix → Feunard, Caninos → Arcanin, Évoli → Pyroli, Flamajou → Flamoutan, Pimito → Scovilain.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est jaune et orange."
   },
   "moon-stone": {
@@ -107,7 +107,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": ["underground"],
-    "effect_fr": "Fait évoluer un Mélofée en Mélodelfe, un Rondoudou en Grodoudou, un Munna en Mushana, un Nidorina en Nidoqueen, un Nidorino en Nidoking, ou un Skitty en Delcatty.",
+    "effect_fr": "Évolution : Nidorina → Nidoqueen, Nidorino → Nidoking, Mélofée → Mélodelfe, Rondoudou → Grodoudou, Skitty → Delcatty, Munna → Mushana.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est sombre comme la nuit."
   },
   "water-stone": {
@@ -118,7 +118,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": ["underground"],
-    "effect_fr": "Fait évoluer un Évoli en Aquali, un Lombre en Ludicolo, un Flotajou en Flotoutan, un Têtarte en Tartard, un Kokiyas en Crustabri, ou un Stari en Staross.",
+    "effect_fr": "Évolution : Têtarte → Tartard, Kokiyas → Crustabri, Stari → Staross, Évoli → Aquali, Lombre → Ludicolo, Flotajou → Flotoutan.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est de couleur bleue."
   },
   "thunder-stone": {
@@ -129,7 +129,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": ["underground"],
-    "effect_fr": "Fait évoluer un Lampéroie en Ohmassacre, un Évoli en Voltali, ou un Pikachu en Raichu.",
+    "effect_fr": "Évolution : Pikachu → Raichu, Magnéton → Magnézone, Évoli → Voltali, Tarinor → Tarinorme, Lampéroie → Ohmassacre, Chrysapile → Lucanon, Têtampoule → Ampibidou.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Un éclair est dessiné dessus."
   },
   "shiny-stone": {
@@ -140,7 +140,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Fait évoluer un Chinchidou en Pashmilla, un Rosélia en Roserade, ou un Togetic en Togekiss.",
+    "effect_fr": "Évolution : Togetic → Togekiss, Rosélia → Roserade, Chinchidou → Pashmilla, Floette → Florges.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle brille d’une lumière aveuglante."
   },
   "leaf-stone": {
@@ -151,7 +151,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": ["underground"],
-    "effect_fr": "Fait évoluer un Noeunoeuf en Noadkoko, un Ortide en Rafflesia, un Pifeuil en Tengalice, un Feuillajou en Feuiloutan, ou un Boustiflor en Empiflor.",
+    "effect_fr": "Évolution : Ortide → Rafflesia, Boustiflor → Empiflor, Voltorbe → Électrode, Noeunoeuf → Noadkoko, Évoli → Phyllali, Pifeuil → Tengalice, Feuillajou → Feuiloutan.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Une feuille est dessinée dessus."
   },
   "dawn-stone": {
@@ -162,7 +162,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Fait évoluer un Kirlia mâle en Gallame ou un Stalgamin femelle en Momartik.",
+    "effect_fr": "Évolution : Kirlia → Gallame, Stalgamin → Momartik.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle brille comme un œil."
   },
   "dragon-scale": {
@@ -173,7 +173,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur Hypocéan: Le porteur évolue en Hyporoi.",
+    "effect_fr": "Évolution : Hypocéan → Hyporoi.",
     "description_fr": "Une écaille épaisse et dure, parfois tenue par les Pokémon de type Dragon quand ils sont attrapés."
   },
   "dusk-stone": {
@@ -184,7 +184,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Fait évoluer un Mélancolux en Lugulabre, un Feuforêve en Magirêve, ou un Cornèbre en Corboss.",
+    "effect_fr": "Évolution : Cornèbre → Corboss, Feuforêve → Magirêve, Mélancolux → Lugulabre, Dimoclès → Exagide.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle est sombre comme une nuit sans lune."
   },
   "oval-stone": {
@@ -195,7 +195,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": ["underground"],
-    "effect_fr": "Montée de niveau pendant le Jour sur un Ptiravi : Le porteur évolue en Leveinard.",
+    "effect_fr": "Évolution : Ptiravi → Leveinard.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Elle a la forme d’un œuf."
   },
   "up-grade": {
@@ -206,7 +206,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur Porygon: Le porteur évolue en Porygon2.",
+    "effect_fr": "Évolution : Porygon → Porygon2.",
     "description_fr": "Un dispositif transparent rempli de données diverses et variées. Fabriqué par la Sylphe SARL."
   },
   "electirizer": {
@@ -217,7 +217,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur un Élektek: Le porteur évolue en Élekable.",
+    "effect_fr": "Évolution : Élektek → Élekable.",
     "description_fr": "Une boîte remplie d’une énorme quantité d’énergie électrique. Appréciée d’un certain Pokémon."
   },
   "protector": {
@@ -228,7 +228,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur un Rhinoféros: Le porteur évolue en Rhinastoc.",
+    "effect_fr": "Évolution : Rhinoféros → Rhinastoc.",
     "description_fr": "Un objet protecteur très dur et très lourd, apprécié d’un certain Pokémon."
   },
   "prism-scale": {
@@ -239,7 +239,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur un Barpau: Le porteur évolue en Milobellus.",
+    "effect_fr": "Évolution : Barpau → Milobellus.",
     "description_fr": "Une écaille étrange qui fait évoluer une certaine espèce de Pokémon. Elle a une couleur arc-en-ciel."
   },
   "magmarizer": {
@@ -250,7 +250,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur un Magmar: Le porteur évolue en Maganon.",
+    "effect_fr": "Évolution : Magmar → Maganon.",
     "description_fr": "Une boîte remplie d’une énorme quantité d’énergie magmatique. Appréciée d’un certain Pokémon."
   },
   "dubious-disc": {
@@ -261,7 +261,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur un Porygon2: Le porteur évolue en Proygon-Z.",
+    "effect_fr": "Évolution : Porygon2 → Porygon-Z.",
     "description_fr": "Un appareil transparent rempli de données douteuses. Son fabricant n’est pas connu."
   },
   "reaper-cloth": {
@@ -272,7 +272,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Échangé sur un Téraclope: Le porteur évolue en Noctunoir.",
+    "effect_fr": "Évolution : Téraclope → Noctunoir.",
     "description_fr": "Un tissu imprégné d’une énergie spirituelle horriblement puissante. Apprécié d’un certain Pokémon."
   },
   "poke-toy": {
@@ -294,7 +294,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Fait évoluer un Sabelette d'Alola en Sablaireau d'Alola ou un Goupix d'Alola en Feunard d'Alola.",
+    "effect_fr": "Évolution : Sabelette → Sablaireau, Goupix → Feunard, Évoli → Givrali, Darumarond → Darumacho, Crabagarre → Crabominable, Piétacé → Balbalèze.",
     "description_fr": "Une pierre étrange qui fait évoluer certaines espèces de Pokémon. Un flocon de neige semble dessiné dessus."
   },
   "clover-sweet": {
@@ -305,7 +305,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Évolution : Crèmy → Charmilly.",
     "description_fr": "Un bonbon en forme de trèfle. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "love-sweet": {
@@ -316,7 +316,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Évolution : Crèmy → Charmilly.",
     "description_fr": "Un bonbon en forme de cœur. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "berry-sweet": {
@@ -327,7 +327,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Évolution : Crèmy → Charmilly.",
     "description_fr": "Un bonbon en forme de Baie. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "strawberry-sweet": {
@@ -338,7 +338,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Évolution : Crèmy → Charmilly.",
     "description_fr": "Un bonbon en forme de fraise. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "flower-sweet": {
@@ -349,7 +349,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Évolution : Crèmy → Charmilly.",
     "description_fr": "Un bonbon en forme de fleur. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "chipped-pot": {
@@ -360,7 +360,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Évolution : Théffroi → Polthégeist.",
     "description_fr": "Un récipient mystérieux pouvant faire évoluer un certain Pokémon. Il est ébréché, mais on y fait du bon thé."
   },
   "cracked-pot": {
@@ -371,7 +371,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Évolution : Théffroi → Polthégeist.",
     "description_fr": "Un récipient mystérieux pouvant faire évoluer un certain Pokémon. Il est abîmé, mais on y fait du bon thé."
   },
   "syrupy-apple": {
@@ -382,7 +382,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Évolution : Verpom → Pomdramour.",
     "description_fr": ""
   },
   "malicious-armor": {
@@ -393,7 +393,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Évolution : Charbambin → Malvalame.",
     "description_fr": ""
   },
   "unremarkable-teacup": {
@@ -404,7 +404,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Évolution : Poltchageist → Théffroyable.",
     "description_fr": ""
   },
   "black-augurite": {
@@ -415,7 +415,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Évolution : Insécateur → Hachécateur.",
     "description_fr": ""
   },
   "ribbon-sweet": {
@@ -426,7 +426,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Sert aussi à faire évoluer Crèmy.",
+    "effect_fr": "Matériau d'entraînement : fait monter d'un niveau la nature d'un Pokémon (bonus +0,5 %, malus −0,25 %). Évolution : Crèmy → Charmilly.",
     "description_fr": "Un bonbon en forme de ruban. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "star-sweet": {
@@ -437,7 +437,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à la nature d'un Pokémon. Sert aussi à faire évoluer Crèmy.",
+    "effect_fr": "Matériau d'entraînement : fait passer un palier (étoile) à la nature d'un Pokémon. Évolution : Crèmy → Charmilly.",
     "description_fr": "Un bonbon en forme d’étoile. Quand on le donne à un Crèmy, il danse de bonheur."
   },
   "masterpiece-teacup": {
@@ -448,7 +448,7 @@
     "category": "Évolution",
     "pocket": "misc",
     "attributes": [],
-    "effect_fr": "",
+    "effect_fr": "Évolution : Poltchageist → Théffroyable.",
     "description_fr": ""
   },
   "fairy-feather": {
@@ -5586,7 +5586,7 @@
     "category": "Objets tenus",
     "pocket": "battle",
     "attributes": ["holdable"],
-    "effect_fr": "Les attaques de type Acier du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60.",
+    "effect_fr": "Les attaques de type Acier du porteur infligent +20 % de dégâts. Amélioration à l'Atelier : jusqu'à 60. Évolution : Onix → Steelix, Insécateur → Cizayox.",
     "description_fr": "Augmente de 20 % la puissance des capacités de type Acier.",
     "family": "degats"
   },
@@ -6227,7 +6227,7 @@
     "category": "Objets tenus",
     "pocket": "battle",
     "attributes": ["holdable"],
-    "effect_fr": "Critique +1 palier ; ses coups critiques ignorent 50 % du bouclier de la cible. Amélioration à l'Atelier : jusqu'à 100.",
+    "effect_fr": "Critique +1 palier ; ses coups critiques ignorent 50 % du bouclier de la cible. Amélioration à l'Atelier : jusqu'à 100. Évolution : Farfuret → Dimoret, Farfuret → Farfurex.",
     "description_fr": "Augmente le taux de critique du porteur d'un niveau.",
     "exclusive_group": "critique_palier",
     "family": "degats"
@@ -6240,7 +6240,7 @@
     "category": "Objets tenus",
     "pocket": "battle",
     "attributes": ["holdable"],
-    "effect_fr": "Ses attaques ont 10 % de chance d'apeurer la cible principale (elle perd sa prochaine action). Amélioration à l'Atelier : jusqu'à 30.",
+    "effect_fr": "Ses attaques ont 10 % de chance d'apeurer la cible principale (elle perd sa prochaine action). Amélioration à l'Atelier : jusqu'à 30. Évolution : Têtarte → Tarpaud, Ramoloss → Roigada.",
     "description_fr": "Les capacités offensives ont 10 % de chance d'apeurer la cible.",
     "family": "degats"
   },
@@ -6252,7 +6252,7 @@
     "category": "Objets tenus",
     "pocket": "battle",
     "attributes": ["holdable"],
-    "effect_fr": "Chaque cible touchée (zone comprise) a 8 % de chance de perdre 25 % de sa jauge d'action. Amélioration à l'Atelier : jusqu'à 25.",
+    "effect_fr": "Chaque cible touchée (zone comprise) a 8 % de chance de perdre 25 % de sa jauge d'action. Amélioration à l'Atelier : jusqu'à 25. Évolution : Scorplane → Scorvol.",
     "description_fr": "Les capacités offensives ont 10 % de chance d'apeurer la cible.",
     "family": "degats"
   },
@@ -7848,7 +7848,7 @@
     "category": "Objets tenus",
     "pocket": "battle",
     "attributes": ["holdable"],
-    "effect_fr": "Coquiperl : Att. Spé. +100 %. Amélioration à l'Atelier : jusqu'à 150.",
+    "effect_fr": "Coquiperl : Att. Spé. +100 %. Amélioration à l'Atelier : jusqu'à 150. Évolution : Coquiperl → Serpang.",
     "description_fr": "Double l'Att. Spé. de Coquiperl.",
     "species_only": [366],
     "unique": true,
@@ -7862,7 +7862,7 @@
     "category": "Objets tenus",
     "pocket": "battle",
     "attributes": ["holdable"],
-    "effect_fr": "Coquiperl : Déf. Spé. +100 %. Amélioration à l'Atelier : jusqu'à 150.",
+    "effect_fr": "Coquiperl : Déf. Spé. +100 %. Amélioration à l'Atelier : jusqu'à 150. Évolution : Coquiperl → Rosabyss.",
     "description_fr": "Double la Déf. Spé. de Coquiperl.",
     "species_only": [366],
     "unique": true,
@@ -8995,5 +8995,104 @@
     "description_fr": "Baisse les EV de Vitesse du Pokémon et augmente son amitié.",
     "unique": true,
     "family": "baie"
+  },
+  "auspicious-armor": {
+    "id": null,
+    "name_fr": "Armure de la Fortune",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/auspicious-armor.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Charbambin → Carmadura.",
+    "description_fr": ""
+  },
+  "metal-alloy": {
+    "id": null,
+    "name_fr": "Métal Composite",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/metal-alloy.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Duralugon → Pondralugon.",
+    "description_fr": ""
+  },
+  "peat-block": {
+    "id": null,
+    "name_fr": "Bloc de Tourbe",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/peat-block.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Ursaring → Ursaking.",
+    "description_fr": ""
+  },
+  "sachet": {
+    "id": null,
+    "name_fr": "Sachet Senteur",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sachet.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Fluvetin → Cocotine.",
+    "description_fr": ""
+  },
+  "scroll-of-darkness": {
+    "id": null,
+    "name_fr": "Rouleau des Ténèbres",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scroll-of-darkness.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Wushours → Shifours.",
+    "description_fr": ""
+  },
+  "scroll-of-waters": {
+    "id": null,
+    "name_fr": "Rouleau de l'Eau",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scroll-of-waters.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Wushours → Shifours.",
+    "description_fr": ""
+  },
+  "sweet-apple": {
+    "id": null,
+    "name_fr": "Pomme Sucrée",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/sweet-apple.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Verpom → Dratatin.",
+    "description_fr": ""
+  },
+  "tart-apple": {
+    "id": null,
+    "name_fr": "Pomme Acidulée",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tart-apple.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Verpom → Pomdrapi.",
+    "description_fr": ""
+  },
+  "whipped-dream": {
+    "id": null,
+    "name_fr": "Chantibonbon",
+    "cost": 2000,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/whipped-dream.png",
+    "category": "Évolution",
+    "pocket": "misc",
+    "attributes": [],
+    "effect_fr": "Évolution : Sucroquin → Cupcanaille.",
+    "description_fr": ""
   }
 }

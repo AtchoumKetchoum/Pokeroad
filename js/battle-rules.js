@@ -199,16 +199,20 @@ const BattleRules = (() => {
 
     function addStages(unit, stats, announce = false) {
         if (typeof HeldItems !== 'undefined' && HeldItems.freezesStages(unit)) { if (announce) spawnEffectText(unit, 'Pierre Stase', 'info'); return; }
+        const gains = {};
         Object.entries(stats).forEach(([stat, delta]) => {
             const key = stat.toUpperCase();
             const mult = unit.flags?.simple ? 2 : 1;
             const before = unit.statMods[key] || 0;
             const after = clamp(before + delta * mult, -6, 6);
             unit.statMods[key] = after;
+            if (delta > 0 && after > before) gains[key] = delta;
             if (announce && after !== before && typeof spawnEffectText === 'function') {
                 spawnEffectText(unit, `${delta > 0 ? '+' : '-'}${key}`, delta > 0 ? 'buff' : 'debuff');
             }
         });
+        // Herbe Miroir des ennemis : ils copient ces bonus
+        if (typeof HeldItems !== 'undefined') HeldItems.onStagesGained(unit, gains);
     }
 
     function heal(unit, amount, source) {
@@ -352,8 +356,9 @@ const BattleRules = (() => {
         if (roleActive(defender, 'tank')) m *= 0.75;
         // Météo et champs
         const w = field.weather && WEATHER[field.weather.type];
-        if (w?.boost === moveType) m *= 1.5;
-        if (w?.weaken === moveType) m *= 0.5;
+        const umbrella = typeof HeldItems !== 'undefined' && (HeldItems.ignoresWeather(attacker) || HeldItems.ignoresWeather(defender));
+        if (!umbrella && w?.boost === moveType) m *= 1.5;
+        if (!umbrella && w?.weaken === moveType) m *= 0.5;
         if (w?.iceDefense && physical && (defender.types || []).includes('ice')) m *= 0.67;
         if (field.weather?.type === 'sand' && !physical && (defender.types || []).includes('rock')) m *= 0.67;
         const t = field.terrain && TERRAIN[field.terrain.type];
@@ -529,7 +534,7 @@ const BattleRules = (() => {
 
         // Pièges posés dans son camp
         field.hazards[unit._side].forEach(h => {
-            if (unit.isKO) return;
+            if (unit.isKO || (typeof HeldItems !== 'undefined' && HeldItems.ignoresHazards(unit))) return; // Grosses Bottes
             h.applied = h.applied || new Set();
             if (h.type === 'spikes') damage(unit, unit.maxHp * 0.03 * h.layers, 'Picots');
             if (h.applied.has(unit.id)) return;
@@ -622,7 +627,7 @@ const BattleRules = (() => {
                 }); break;
                 case 'status': list.forEach(u => addStatus(u, op.id, attacker, op.chance ?? 100)); break;
                 case 'cleanse': list.forEach(u => { u.activeEffects = u.activeEffects.filter(e => !['Majeur', 'Mineur'].includes(RulesDB?.[e.id]?.category)); updateStatusIcons(u); spawnEffectText(u, 'Soigné', 'buff'); }); break;
-                case 'weather': field.weather = { type: op.type, left: roundsToActions((op.rounds || 5) + (typeof HeldItems !== 'undefined' ? HeldItems.weatherBonus(attacker, op.type) : 0)) }; BattleAnimation.say(`${WEATHER[op.type].label} !`); showTerrainInfo(); break;
+                case 'weather': field.weather = { type: op.type, left: roundsToActions((op.rounds || 5) + (typeof HeldItems !== 'undefined' ? HeldItems.weatherBonus(attacker, op.type) : 0)) }; BattleAnimation.say(`${WEATHER[op.type].label} !`); if (typeof HeldItems !== 'undefined') HeldItems.onWeatherChange(); showTerrainInfo(); break;
                 case 'terrain': field.terrain = { type: op.type, left: roundsToActions((op.rounds || 5) + (typeof HeldItems !== 'undefined' ? HeldItems.terrainBonus(attacker) : 0)) }; BattleAnimation.say(`${TERRAIN[op.type].label} !`); showTerrainInfo(); break;
                 case 'room': {
                     if (field.room?.type === op.type) { if (op.type === 'magic') restoreItems(); field.room = null; }
