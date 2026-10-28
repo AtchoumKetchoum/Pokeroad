@@ -452,10 +452,12 @@
         return total;
     }
     function budget(zone, kind = 'standard') {
-        const prof = profileFor(zone, kind);
+        const prof = { ...profileFor(zone, kind) };
         const items = GameData.getItems();
         const price = (id) => items[id]?.cost || 1000;
         window.zoneIndex = zone; window.waveIndex = 10; window.battleIndex = 9;
+        // Même Grade que buildTeam : celui qu'il faut pour suivre la vague (avant, le niveau restait plafonné au Grade du profil)
+        while (Refinement.getMaxLevel(prof.grade, 0) < getEnemyLevel() + prof.levels && prof.grade < 10) prof.grade++;
         const lvl = Math.min(Refinement.getMaxLevel(prof.grade, 0), getEnemyLevel() + prof.levels);
         let levels = 0; for (let l = 1; l < lvl; l++) levels += GameData.levelUpCost(l);
         const trackCost = (kind, n, itemPrice) => {
@@ -523,7 +525,7 @@
         return $('status').textContent;
     }
 
-    window.Bench = { kitOverride: null, run, fight, buildTeam, budget, income, report, render, text, detail, bossSummary, ALL_BOSSES, wait, SCENARIOS, PROFILES, UPGRADE, lastResults: null, lastRows: null };
+    window.Bench = { kitOverride: null, ROSTER, run, fight, buildTeam, budget, income, report, render, text, detail, bossSummary, ALL_BOSSES, wait, SCENARIOS, PROFILES, UPGRADE, lastResults: null, lastRows: null };
 
     boot().then(() => {
         installHooks();
