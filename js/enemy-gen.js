@@ -3,7 +3,9 @@
  *
  *  - Les Pokémon suivent les types de la zone (Glace au Pic Enneigé, Eau au Lac Azur…).
  *  - Même combat = même équipe, même formation, mêmes attaques : on peut préparer une contre-stratégie.
- *  - Formation logique : Tanks devant, Lanceurs et Soutiens derrière.
+ *  - Formations qui jouent avec le ciblage par colonne : fragile abrité derrière un tank, colonne vide qui renvoie
+ *    le contact sur un tank, lanceur au centre qui voit les trois colonnes… Le style dépend de la zone et du boss,
+ *    avec une part de hasard (formation, côté) : il faut lire la formation adverse avant de placer son équipe.
  *  - Le 10e combat de chaque vague est un boss entouré de 3 escortes (PV ×1,5 à ×2,5, fureur sous 50 % de PV) ;
  *    les Légendaires ne sont boss qu'à la 10e vague (boss final de la zone).
  *  - Réglages vérifiés avec le banc tools/balance-bench.html.
@@ -93,8 +95,104 @@ const EnemyGen = (() => {
         fighting: 'black-belt', dragon: 'dragon-fang', ghost: 'spell-tag', steel: 'metal-coat', psychic: 'twisted-spoon', bug: 'silver-powder',
     };
 
-    // Placement selon le rôle : profondeur 0 = avant ennemi (rangée du bas, face au joueur), 2 = arrière
-    const DEPTH_PREF = { tank: [0, 1, 2], attacker: [0, 1, 2], speedster: [1, 0, 2], caster: [2, 1, 0], support: [2, 1, 0] };
+    // ------------------------------------------------------------------
+    // FORMATIONS
+    // ------------------------------------------------------------------
+    // Cases 1 à 9 (1-2-3 devant, de gauche à droite, face aux cases 1-2-3 du joueur). Le contact ne frappe que le premier
+    // ennemi de sa colonne (colonne vide : la plus proche), la distance voit sa colonne et les voisines (battle-rules.js).
+    // Chaque case liste les rôles qu'elle attend, du plus voulu au moins voulu.
+    // Au plus un Pokémon à l'arrière : les zones des attaques sont réglées pour 3 devant + 2 au centre, et chaque ennemi
+    // de plus tout au fond les esquive (banc : environ −5 points de victoires par Pokémon à l'arrière).
+    const GUARD = ['tank', 'attacker', 'speedster'];                 // devant, encaisse
+    const STRIKER = ['attacker', 'speedster', 'tank'];               // devant, frappe
+    const GUNNER = ['caster', 'speedster', 'attacker', 'support'];   // à distance
+    const SHELTERED = ['caster', 'support', 'speedster'];            // fragile, abrité derrière un autre
+    const FORMATIONS = {
+        // Ligne de front complète, un lanceur au centre qui voit les trois colonnes, un fragile caché derrière un flanc
+        rempart: { name: 'Rempart', slots: { 1: STRIKER, 2: GUARD, 3: STRIKER, 5: GUNNER, 6: SHELTERED } },
+        // Deux colonnes gardées : un fragile derrière chaque tank, un attaquant seul au centre
+        abri: { name: 'Abri', slots: { 1: GUARD, 4: SHELTERED, 2: STRIKER, 3: GUARD, 6: SHELTERED } },
+        // Une colonne vide : le contact qui la vise retombe sur le tank de la colonne voisine
+        entonnoir: { name: 'Entonnoir', slots: { 2: GUARD, 5: GUNNER, 8: SHELTERED, 3: STRIKER, 6: GUNNER } },
+        // Centre vide, flancs garnis : chaque flanc du joueur n'atteint que le flanc d'en face, son centre est visé des deux côtés
+        tenaille: { name: 'Tenaille', slots: { 1: GUARD, 4: GUNNER, 7: SHELTERED, 3: STRIKER, 6: GUNNER } },
+    };
+    // Style de chaque zone (poids des formations). La Route de l'Éveil apprend à lire une ligne ;
+    // au-delà de la zone 10, toutes les formations s'ajoutent au style de la zone.
+    const ZONE_STYLE = {
+        "Route de l'Éveil": { rempart: 4, abri: 1 },
+        'Plaines Sereines': { rempart: 2, abri: 2, entonnoir: 1 },
+        "Bois de l'Oubli": { tenaille: 3, abri: 2, entonnoir: 1 },        // embuscades sur les flancs
+        'Rivages du Lac Azur': { entonnoir: 3, rempart: 1, abri: 1 },     // le courant rabat vers le tank
+        'Cité des Anciens': { abri: 3, rempart: 2, tenaille: 1 },          // gardiens devant les mystiques
+        'Flanc du Mont Sélénite': { rempart: 3, abri: 2, entonnoir: 1 },  // murs de roche
+        'Col des Brumes': { tenaille: 3, entonnoir: 2, rempart: 1 },      // vols sur les flancs
+        'Pic Enneigé': { abri: 2, rempart: 2, entonnoir: 2 },
+        'Archipel des Songes': { tenaille: 2, entonnoir: 2, abri: 2 },
+        'Sanctuaire du Ciel': { rempart: 1, abri: 1, entonnoir: 1, tenaille: 1 },
+    };
+    function zoneStyle(zoneNumber) {
+        const style = { ...(ZONE_STYLE[getZoneInfo(zoneNumber).name] || ZONE_STYLE['Sanctuaire du Ciel']) };
+        if (zoneNumber > 10) Object.keys(FORMATIONS).forEach(key => { style[key] = (style[key] || 0) + 1; });
+        return style;
+    }
+    const ROW_OF_DEPTH = ['front', 'middle', 'back'];
+    const laneOfSlot = (slot) => (slot - 1) % 3;
+    const depthOfSlot = (slot) => Math.floor((slot - 1) / 3);
+    const mirrorSlot = (slot) => slot + 2 - 2 * laneOfSlot(slot);
+
+    // Poste du boss : un Tank tient l'avant, un fragile reste gardé au centre derrière une escorte de sa colonne,
+    // un Attaquant fait l'un ou l'autre (gardé deux fois sur trois). Jamais tout au fond : il y esquiverait les zones.
+    function bossPost(role, rand) {
+        if (role === 'tank') return 'front';
+        if (role === 'attacker') return rand() < 2 / 3 ? 'guarded' : 'front';
+        return 'guarded';
+    }
+
+    // Intérêt d'une case pour un Pokémon : le rôle que la case attend, et une ligne où son rôle garde son bonus.
+    // Le boss compte double, préfère la colonne du centre et tient son poste (dans chaque formation,
+    // une case de la rangée du centre a toujours quelqu'un devant elle dans sa colonne).
+    function slotFit(p, wants, slot) {
+        const rank = wants.indexOf(p.role);
+        const wellPlaced = BattleRules.ROLES[p.role]?.rows.includes(ROW_OF_DEPTH[depthOfSlot(slot)]);
+        const fit = ([3, 2, 1, 0.5][rank] ?? 0) + (wellPlaced ? 1.5 : -2);
+        if (!p.boss) return fit;
+        return fit * 2 + (laneOfSlot(slot) === 1 ? 3 : 0) + (depthOfSlot(slot) === (p.post === 'front' ? 0 : 1) ? 8 : 0);
+    }
+
+    // Meilleure répartition de l'équipe sur les cases d'une formation (5 Pokémon : 120 essais au plus).
+    // Un léger bruit départage les égalités : deux équipes proches ne se rangent pas toujours pareil.
+    function placeIn(formation, picks, rand) {
+        const slots = Object.keys(formation.slots).map(Number);
+        const noise = picks.map(() => slots.map(() => rand() * 0.3));
+        const at = [], used = new Set();
+        let best = { score: -Infinity, at: null };
+        (function walk(i, score) {
+            if (i === picks.length) { if (score > best.score) best = { score, at: [...at] }; return; }
+            slots.forEach((slot, s) => {
+                if (used.has(slot)) return;
+                used.add(slot); at[i] = slot;
+                walk(i + 1, score + slotFit(picks[i], formation.slots[slot], slot) + noise[i][s]);
+                used.delete(slot);
+            });
+        })(0, 0);
+        return best;
+    }
+
+    // Formation tirée parmi celles qui vont à l'équipe (à 15 % de la meilleure), selon le style de la zone, et un côté au hasard
+    function chooseFormation(picks, rand) {
+        const style = zoneStyle(zoneIndex);
+        const options = Object.entries(style).filter(([key, w]) => w > 0 && Object.keys(FORMATIONS[key].slots).length >= picks.length)
+            .map(([key, weight]) => ({ key, weight, ...placeIn(FORMATIONS[key], picks, rand) }));
+        // Plus de Pokémon que de cases dans les formations : on remplit l'avant, puis le centre et l'arrière
+        if (!options.length) return { key: null, slots: [2, 1, 3, 5, 4, 6, 8, 7, 9].slice(0, picks.length) };
+        const top = Math.max(...options.map(o => o.score));
+        const fitting = options.filter(o => o.score >= top - Math.abs(top) * 0.15);
+        let r = rand() * fitting.reduce((a, o) => a + o.weight, 0);
+        const chosen = fitting.find(o => (r -= o.weight) < 0) || fitting[0];
+        const mirror = rand() < 0.5;
+        return { key: chosen.key, slots: chosen.at.map(slot => mirror ? mirrorSlot(slot) : slot) };
+    }
 
     function generate() {
         const level = getEnemyLevel();
@@ -131,17 +229,11 @@ const EnemyGen = (() => {
             p.role = BattleRules.computeRole(p.pk.stats, p.moves.map(id => ({ ...MovesDB[id], id })));
         });
 
-        // Formation : le boss au centre, puis chacun sur sa ligne préférée
-        const taken = new Set();
-        const slotFor = (p) => {
-            if (p.boss && !taken.has(4)) return 4;
-            for (const depth of DEPTH_PREF[p.role] || [0, 1, 2]) {
-                const lanes = [1, 0, 2].sort(() => rand() - 0.5);
-                for (const lane of lanes) { const idx = BattleRules.indexAt('enemy', depth, lane); if (!taken.has(idx)) return idx; }
-            }
-            return [...Array(9).keys()].find(i => !taken.has(i));
-        };
-        picks.forEach(p => { p.slot = slotFor(p); taken.add(p.slot); });
+        // Formation : chaque Pokémon sur la case de la formation qui lui va le mieux (index de la grille ennemie)
+        picks.filter(p => p.boss).forEach(p => { p.post = bossPost(p.role, rand); });
+        const formation = chooseFormation(picks, rand);
+        picks.formation = formation.key;
+        picks.forEach((p, i) => { p.slot = BattleRules.indexAt('enemy', depthOfSlot(formation.slots[i]), laneOfSlot(formation.slots[i])); });
         // Objets tenus et baies adaptés au rôle, de plus en plus nombreux avec la zone (comme le joueur)
         picks.forEach(p => {
             p.tier.items = []; p.tier.berries = [];
@@ -170,7 +262,9 @@ const EnemyGen = (() => {
         const enemyGrid = document.getElementById('enemy-grid');
         if (!enemyGrid || !PokedexDB) return;
         const slots = Array.from(enemyGrid.querySelectorAll('.unit-slot'));
-        generate().forEach(p => {
+        const picks = generate();
+        enemyGrid.dataset.formation = picks.formation || '';
+        picks.forEach(p => {
             const slot = slots[p.slot];
             if (!slot) return;
             const unit = document.createElement('div');

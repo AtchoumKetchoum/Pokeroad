@@ -111,3 +111,38 @@ avec le coût de niveau actuel (20 × niveau + 10), la zone 1 demande ~4 jours p
 au lieu de 1 010, niv. 100 : 8 010 $ au lieu de 2 010). Rythme régulier dans le modèle : ~3,5-4 jours par zone en jeu
 appliqué, ~4,5-5 en auto, sans emballement en fin de parcours. Le modèle ignore le verrou des Grades et l'entraînement.
 
+
+## Formations ennemies (28 octobre 2026)
+
+Les ennemis se placent en formations qui jouent avec le ciblage par colonne (`js/enemy-gen.js`, `FORMATIONS`) :
+**Rempart** (front complet, lanceur au centre qui voit les trois colonnes, fragile derrière un flanc), **Abri** (un fragile
+derrière chacun des deux flancs, un attaquant seul au centre), **Entonnoir** (une colonne vide : le contact qui la vise
+retombe sur le tank voisin), **Tenaille** (centre vide : chaque flanc du joueur n'atteint que le flanc d'en face).
+Chaque zone a son style (Rempart sur la Route de l'Éveil, Tenaille au Bois de l'Oubli et au Col des Brumes, Entonnoir
+au Lac Azur…), formation et côté tirés au hasard (même combat = même formation). Le boss tient l'avant s'il est Tank,
+reste gardé au centre s'il est fragile, l'un ou l'autre s'il est Attaquant.
+
+**Contrainte trouvée au banc** : chaque ennemi placé tout à l'arrière coûte environ 5 points de victoires à l'équipe type,
+car les zones des attaques sont réglées pour 3 devant + 2 au centre. Un premier jet (2 Pokémon au fond) faisait perdre
+16 points en zone 8 ; les formations gardent donc au plus un Pokémon à l'arrière, et le boss n'y va jamais.
+
+Combats ordinaires, 90 équipes par zone (vagues 1 à 10, combats 1 à 9), même graine avant et après.
+« Lit la formation » : même équipe que l'équipe type, placée une fois la formation adverse connue
+(nouveau scénario `read` du banc : rôles sur leur ligne, frappeurs au contact face à une colonne sans tank,
+tank sous le contact ennemi, fragiles à l'abri).
+
+| Zone | Équipe type | Lit la formation | Mauvais choix | Écart (meilleur placement − mauvais choix) |
+|---|---|---|---|---|
+| 2 | 86 → 90 % | 91 → 93 % | 41 → 39 % | 50 → 54 points |
+| 3 | 84 → 82 % | 86 → 91 % | 4 → 6 % | 82 → 85 points |
+| 4 | 81 → 86 % | 82 → 89 % | 6 → 2 % | 76 → 87 points |
+| 6 | 71 → 71 % | 58 → 59 % | 9 → 10 % | 62 → 61 points |
+| 7 | 12 → 12 % | 7 → 7 % | 0 → 0 % | 12 → 12 points |
+| 8 | 69 → 64 % | 62 → 74 % | 0 → 0 % | 69 → 74 points |
+
+Boss (10 boss × 2 graines, zones 2-4-6-8) : équipe type 23 → 20 victoires sur 80, mauvais choix 2 → 2.
+
+Lecture : l'équipe type, qui se place toujours pareil, ne bouge qu'à quelques points près. Lire la formation rapporte
+davantage qu'avant (zones 3, 4 et 8 : +5 à +12 points), et l'écart avec un mauvais placement grandit ou tient partout.
+Dès la zone 3, les mauvais choix sont déjà presque à 0 % : l'écart ne peut plus grandir que par le haut.
+La lecture du banc reste simple : en zones 6 et 7, elle fait moins bien que le placement fixe, avant comme après.

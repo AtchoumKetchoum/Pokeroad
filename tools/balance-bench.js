@@ -9,6 +9,8 @@
  *    contre les équipes de js/enemy-gen.js, avec ou sans objets de chaque côté.
  *  - Style de jeu : « appliqué » (la meilleure action à chaque tour, comme un bon joueur en manuel)
  *    ou « réflexe » (le combat automatique du jeu, volontairement simple).
+ *  - Placement : fixe selon le rôle (équipe type), inversé (mauvais choix), ou après lecture de la formation adverse
+ *    (scénario « read », qui n'est pas lancé par défaut).
  *
  * Console : await Bench.run({ zones: [1, 2], seeds: 3 }) ; Bench.lastResults ; Bench.budget(zone).
  */
@@ -272,18 +274,66 @@
         return team;
     }
 
-    function placeTeam(team) {
+    // Part des attaques offensives qui sont au contact (1 = ne frappe qu'au contact)
+    function contactShare(moveIds) {
+        const hits = moveIds.map(id => ({ ...MovesDB[id], id })).filter(m => (m.power || 0) > 1);
+        return hits.length ? hits.filter(m => BattleRules.isContact(m)).length / hits.length : 0;
+    }
+    // Colonne occupée la plus proche (à égalité, le plus petit numéro), comme le ciblage du contact
+    const nearestLane = (lanes, lane) => [...lanes].sort((a, b) => Math.abs(a - lane) - Math.abs(b - lane) || a - b)[0];
+
+    // Lecture de la formation adverse (scénario « read ») : parmi tous les placements (9 × 8 × 7 × 6 × 5), celui qui garde
+    // chaque rôle sur sa ligne, met les frappeurs au contact face à une colonne sans tank, met le tank sous le contact ennemi
+    // et abrite les fragiles des colonnes que ce contact atteint.
+    function readPlacement(team) {
+        const foes = [...$('enemy-grid').querySelectorAll('.unit-slot')].map((slot, i) => ({ i, el: slot.querySelector('.unit') })).filter(f => f.el)
+            .map(({ i, el }) => {
+                const moves = (el.dataset.moves || '').split(',').filter(Boolean);
+                const role = BattleRules.computeRole(PokedexDB[el.dataset.pokemonId]?.stats, moves.map(id => ({ ...MovesDB[id], id })));
+                return { lane: i % 3, depth: BattleRules.depthOfIndex('enemy', i), role, contact: contactShare(moves) };
+            });
+        const foeLanes = new Set(foes.map(f => f.lane));
+        const firstFoe = (lane) => foes.filter(f => f.lane === lane).sort((a, b) => a.depth - b.depth)[0];
+        const units = team.map(pk => ({ role: pk._role, contact: contactShare(pk.selectedMoves) }));
+        const score = (at) => {
+            const lanes = new Set(at.map(i => i % 3));
+            const first = {};
+            at.forEach((i, u) => { const l = i % 3, d = BattleRules.depthOfIndex('player', i); if (!first[l] || d < first[l].d) first[l] = { u, d }; });
+            let s = 0;
+            at.forEach((i, u) => {
+                const unit = units[u];
+                s += BattleRules.ROLES[unit.role]?.rows.includes(BattleRules.rowOfIndex('player', i)) ? 2 : -2;
+                if (unit.contact) s += unit.contact * (firstFoe(nearestLane(foeLanes, i % 3))?.role === 'tank' ? -1 : 1);
+            });
+            for (const f of foes) {
+                if (!f.contact) continue;
+                const victim = units[first[nearestLane(lanes, f.lane)].u];
+                s += f.contact * (victim.role === 'tank' ? 1 : ['caster', 'support'].includes(victim.role) ? -1.5 : 0);
+            }
+            return s;
+        };
+        let best = { s: -Infinity, at: null };
+        const at = [];
+        (function walk(u) {
+            if (u === units.length) { const s = score(at); if (s > best.s) best = { s, at: [...at] }; return; }
+            for (let i = 0; i < 9; i++) if (!at.slice(0, u).includes(i)) { at[u] = i; walk(u + 1); }
+        })(0);
+        return best.at;
+    }
+
+    function placeTeam(team, read = false) {
         const grid = $('player-grid');
         const slots = [...grid.querySelectorAll('.unit-slot')];
         slots.forEach(s => { s.innerHTML = ''; });
         const taken = new Set();
+        const readAt = read ? readPlacement(team) : null;
         // Tanks et attaquants devant, lanceurs derrière ; les lignes du milieu en priorité pour les couloirs
-        team.forEach(pk => {
-            let idx = null;
+        team.forEach((pk, n) => {
+            let idx = readAt ? readAt[n] : null;
             const pref = DEPTH_PREF[pk._role] || [0, 1, 2];
             for (const depth of (pk._badPlacement ? [...pref].reverse() : pref)) {
-                for (const lane of [1, 0, 2]) { const i = BattleRules.indexAt('player', depth, lane); if (!taken.has(i)) { idx = i; break; } }
                 if (idx !== null) break;
+                for (const lane of [1, 0, 2]) { const i = BattleRules.indexAt('player', depth, lane); if (!taken.has(i)) { idx = i; break; } }
             }
             taken.add(idx);
             const unit = document.createElement('div');
@@ -314,7 +364,7 @@
         window.checkWinCondition = async () => { await origWin(); if (finish) { const f = finish; finish = null; f(); } };
     }
 
-    async function fight({ zone, wave, battle, seed, playerItems = true, enemyItems = true, profile = 'standard', choices = 'good', play = 'skilled' }) {
+    async function fight({ zone, wave, battle, seed, playerItems = true, enemyItems = true, profile = 'standard', choices = 'good', play = 'skilled', read = false }) {
         window.zoneIndex = zone; window.waveIndex = wave; window.battleIndex = battle;
         window.choosePlayerAutoAction = play === 'reflex' ? reflexPlay : skilledPlay;
         const enemyLevel = getEnemyLevel();
@@ -323,8 +373,9 @@
         const playerLevel = getEnemyLevel();
         window.battleIndex = saved;
         const team = buildTeam(zone, playerLevel, { withItems: playerItems, profile, choices });
-        placeTeam(team);
-        prepareEnemyGridForNewBattle();
+        // Lire la formation : l'équipe se place une fois l'adversaire connu
+        if (read) { prepareEnemyGridForNewBattle(); placeTeam(team, true); }
+        else { placeTeam(team); prepareEnemyGridForNewBattle(); }
         if (!enemyItems) {
             document.querySelectorAll('#enemy-grid .unit').forEach(u => {
                 const t = JSON.parse(u.dataset.tier || '{}');
@@ -365,6 +416,7 @@
         { key: 'auto', label: 'Équipe type en combat automatique (réflexe)', play: 'reflex' },
         { key: 'upg', label: 'Équipe améliorée', profile: 'upgraded' },
         { key: 'bad', label: 'Mauvais choix (même investissement)', choices: 'bad' },
+        { key: 'read', label: 'Équipe type qui lit la formation adverse (même équipe, placée selon elle)', read: true },
         { key: 'noPlayer', label: 'Joueur sans objets', playerItems: false },
         { key: 'noEnemy', label: 'Ennemis sans objets', enemyItems: false },
         { key: 'none', label: 'Aucun objet', playerItems: false, enemyItems: false },
@@ -393,7 +445,7 @@
                     for (let s = 0; s < seeds; s++) {
                         const seed = zone * 1000003 + wave * 1009 + battle * 101 + s * 7;
                         try {
-                            rows.push({ scenario: sc.key, ...(await fight({ zone, wave, battle, seed, playerItems: sc.playerItems ?? true, enemyItems: sc.enemyItems ?? true, profile: sc.profile, choices: sc.choices, play: sc.play })) });
+                            rows.push({ scenario: sc.key, ...(await fight({ zone, wave, battle, seed, playerItems: sc.playerItems ?? true, enemyItems: sc.enemyItems ?? true, profile: sc.profile, choices: sc.choices, play: sc.play, read: sc.read })) });
                         } catch (e) { console.error(e); log(`Erreur z${zone} v${wave} c${battle} : ${e.message}`); }
                     }
                 }
