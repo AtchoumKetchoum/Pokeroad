@@ -4,7 +4,7 @@
  *   avec repli sur le cache si l'appareil est hors ligne.
  * - Sprites distants (PMD, PokeAPI sur GitHub) : cache d'abord, ils ne changent pas.
  */
-const VERSION = 'pokeroad-v9'; // lissage xBR x2, rôle Rapide, paliers nature et Atelier, bouclier de drain plafonné
+const VERSION = 'pokeroad-v10'; // combats spectaculaires : effets par type dessinés sur canvas, impacts, K.O.
 const SHELL = ['./', './index.html', './manifest.webmanifest', './assets/icons/icon-192.png', './assets/icons/icon-512.png'];
 const SPRITE_HOSTS = ['raw.githubusercontent.com'];
 

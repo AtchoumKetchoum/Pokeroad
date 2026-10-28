@@ -101,6 +101,7 @@
         PmdSprite.setSpeed = () => {};
         Epic.bossIntro = async () => {};
         if (Epic.zMoveCutin) Epic.zMoveCutin = async () => {};
+        if (typeof BattleVfx !== 'undefined') BattleVfx.disabled = true; // aucun dessin d'effets
         if (typeof ViewManager !== 'undefined') ViewManager.show = () => {};
 
         await GameData.init();

@@ -848,7 +848,9 @@ function applyDamageGrid(target) {
   if (newHp <= 0 && !target.isKO) {
     target.isKO = true;
     const slot = getSlotEl(target._side, target._index);
-    if (slot) { 
+    if (slot) {
+      // Éclatement du sprite, « K.O. ! » (avant que le sprite disparaisse)
+      if (typeof BattleAnimation !== 'undefined' && BattleAnimation.knockOut) BattleAnimation.knockOut(slot, target);
       const unitEl = slot.querySelector('.unit');
       if (unitEl) unitEl.classList.add('is-ko');
 
@@ -2077,10 +2079,10 @@ async function attack(attacker, primaryTarget, move) {
         // Part de la puissance reçue par cette case de la forme
         const dmg = damageResult.executed ? damageResult.damage : Math.max(damageResult.damage > 0 ? 1 : 0, Math.floor(damageResult.damage * cellMult));
         if (damageResult.executed) spawnEffectText(target, 'Exécution !', 'debuff', -60);
+        // Pour l'animation : part de la forme (mult), critique (le chiffre l'affiche), coups visibles (salves, multi-coups)
         const prev = damageByTarget.get(target);
-        if (prev) prev.dmg += dmg;
-        else { const entry = { target, dmg, typeMod: damageResult.typeMod }; damageByTarget.set(target, entry); damages.push(entry); }
-        if (damageResult.isCrit) spawnEffectText(target, "Coup critique !", 'debuff', -60);
+        if (prev) { prev.dmg += dmg; prev.strikes += hits; prev.crit = prev.crit || damageResult.isCrit; prev.mult = Math.max(prev.mult, mult ?? 1); }
+        else { const entry = { target, dmg, typeMod: damageResult.typeMod, mult: mult ?? 1, crit: !!damageResult.isCrit, strikes: hits }; damageByTarget.set(target, entry); damages.push(entry); }
     }
     if (attacker.flags?.nextCrit) delete attacker.flags.nextCrit;
 
@@ -2109,15 +2111,9 @@ async function attack(attacker, primaryTarget, move) {
             // Pour les capacités de statut, l'animation principale (lueur de l'attaquant) ne joue qu'une fois.
             // Les effets sur les cibles sont gérés plus bas par applyEffect.
             await BattleAnimation.playActionAnimation(attacker, primaryTarget, moveForThisHit, 0, 1.0);
-        } else if (damages.length > 1) {
-            // Attaque de zone : toutes les cibles sont touchées en même temps
-            await BattleAnimation.playAoeAnimation(attacker, damages, moveForThisHit);
-        } else { // Cible unique (physique/spécial) ou AOE spéciale
-            // Pour les AOE spéciales, les animations joueront séquentiellement pour éviter les problèmes d'affichage.
-            // Pour les cibles uniques, cette boucle ne s'exécute qu'une fois.
-            for (const { target, dmg, typeMod } of damages) {
-                await BattleAnimation.playActionAnimation(attacker, target, moveForThisHit, dmg, typeMod);
-            }
+        } else {
+            // Une seule mise en scène pour toutes les cibles : élan ou projectiles, cases touchées, impacts
+            await BattleAnimation.playAttack(attacker, damages, moveForThisHit);
         }
     }
 
