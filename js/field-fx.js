@@ -42,6 +42,8 @@ const FieldFx = (() => {
         const sc = scene();
         if (typeof BattleRules === 'undefined' || !sc) return;
         const f = BattleRules.field || {};
+        // Météo et champ vivants (particules, éclairs, onde à l'arrivée) : js/battle-vfx.js
+        if (typeof BattleVfx !== 'undefined') BattleVfx.setField({ weather: f.weather?.type || null, terrain: f.terrain?.type || null });
         const key = JSON.stringify([f.weather?.type, f.terrain?.type, f.room?.type, f.hazards]);
         if (key === last) return;
         last = key;

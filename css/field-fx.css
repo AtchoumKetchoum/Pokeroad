@@ -8,17 +8,9 @@
 #view-battle #field-weather[class] { opacity: 1; }
 #view-battle #field-weather:not([class]), #view-battle #field-weather[class=""] { opacity: 0; }
 
-/* Pluie : traits obliques qui tombent, ciel assombri */
-#view-battle #field-weather.fw-rain {
-    background:
-        repeating-linear-gradient(105deg, transparent 0 22px, rgba(190, 215, 255, .55) 22px 24px, transparent 24px 46px),
-        linear-gradient(rgba(40, 60, 110, .22), rgba(40, 60, 110, .1));
-    background-size: 120px 220px, 100% 100%;
-    animation: fx-rain .45s linear infinite;
-}
-@keyframes fx-rain { to { background-position: -40px 220px, 0 0; } }
-
-/* Soleil : halo chaud en haut à droite, lumière dorée qui pulse */
+/* Teinte du ciel selon la météo ; gouttes, grêlons, flocons, sable et rayons sont dessinés
+   sur la couche d'ambiance (js/battle-vfx.js, #vfx-ambient) */
+#view-battle #field-weather.fw-rain { background: linear-gradient(rgba(40, 60, 110, .28), rgba(40, 60, 110, .12)); }
 #view-battle #field-weather.fw-sun {
     background:
         radial-gradient(circle at 92% 0%, rgba(255, 236, 150, .85), rgba(255, 200, 80, .35) 22%, transparent 55%),
@@ -26,28 +18,8 @@
     animation: fx-sun 3s ease-in-out infinite;
 }
 @keyframes fx-sun { 50% { filter: brightness(1.15); } }
-
-/* Tempête de sable : voile ocre et rafales horizontales */
-#view-battle #field-weather.fw-sand {
-    background:
-        repeating-linear-gradient(8deg, transparent 0 30px, rgba(214, 170, 100, .45) 30px 33px, transparent 33px 70px),
-        linear-gradient(rgba(200, 155, 90, .3), rgba(180, 135, 70, .22));
-    background-size: 260px 140px, 100% 100%;
-    animation: fx-sand .8s linear infinite;
-}
-@keyframes fx-sand { to { background-position: 260px 20px, 0 0; } }
-
-/* Grêle et neige : grains / flocons qui tombent */
-#view-battle #field-weather.fw-hail, #view-battle #field-weather.fw-snow {
-    background:
-        radial-gradient(circle, rgba(255, 255, 255, .95) 0 2.5px, transparent 3px) 0 0 / 46px 46px,
-        radial-gradient(circle, rgba(235, 245, 255, .85) 0 2px, transparent 2.5px) 23px 20px / 60px 60px,
-        linear-gradient(rgba(200, 225, 255, .18), rgba(200, 225, 255, .08));
-}
-#view-battle #field-weather.fw-hail { animation: fx-hail .6s linear infinite; }
-#view-battle #field-weather.fw-snow { animation: fx-snow 3s linear infinite; }
-@keyframes fx-hail { to { background-position: -10px 46px, 13px 80px, 0 0; } }
-@keyframes fx-snow { to { background-position: 20px 46px, 3px 80px, 0 0; } }
+#view-battle #field-weather.fw-sand { background: linear-gradient(rgba(200, 155, 90, .32), rgba(180, 135, 70, .22)); }
+#view-battle #field-weather.fw-hail, #view-battle #field-weather.fw-snow { background: linear-gradient(rgba(200, 225, 255, .22), rgba(200, 225, 255, .1)); }
 
 /* Ciel Ombre : voile violet sombre */
 #view-battle #field-weather.fw-shadow {

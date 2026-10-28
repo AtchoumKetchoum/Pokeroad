@@ -4,7 +4,7 @@
  *   avec repli sur le cache si l'appareil est hors ligne.
  * - Sprites distants (PMD, PokeAPI sur GitHub) : cache d'abord, ils ne changent pas.
  */
-const VERSION = 'pokeroad-v8'; // butin pondéré (bonbons), poches du jeu rétablies pour le butin et les missions
+const VERSION = 'pokeroad-v11'; // météo et champs vivants (pluie et éclairs, soleil, sable, grêle, neige, champs)
 const SHELL = ['./', './index.html', './manifest.webmanifest', './assets/icons/icon-192.png', './assets/icons/icon-512.png'];
 const SPRITE_HOSTS = ['raw.githubusercontent.com'];
 

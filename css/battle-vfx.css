@@ -1,0 +1,112 @@
+/* battle-vfx.css - Effets des combats (js/battle-vfx.js) : calque canvas, chiffres qui claquent, K.O., états des sprites */
+#vfx-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 190; /* au-dessus des plateaux, sous la barre du haut et le pied de page */
+}
+
+/* Météo et champs vivants : sous les effets d'attaque, au-dessus des plateaux */
+#vfx-ambient {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 7;
+}
+
+/* Concentration : le Pokémon s'illumine de la couleur du type */
+#view-battle .unit .sprite.vfx-charge {
+    filter: drop-shadow(0 0 6px var(--vfx-color, #fff)) drop-shadow(0 0 16px var(--vfx-color, #fff)) brightness(1.18) saturate(1.2) !important;
+    transition: filter .12s;
+}
+/* Attaque Acier : le Pokémon devient métallique, un reflet passe sur lui */
+#view-battle .unit .sprite.vfx-metal {
+    filter: grayscale(1) sepia(.35) hue-rotate(175deg) saturate(1.3) contrast(1.8) brightness(1.15) drop-shadow(0 0 6px #eef3fb) !important;
+    animation: vfx-metal-sheen .38s ease-in-out infinite alternate !important;
+}
+@keyframes vfx-metal-sheen {
+    from { filter: grayscale(1) sepia(.35) hue-rotate(175deg) saturate(1.3) contrast(1.8) brightness(1) drop-shadow(0 0 3px #eef3fb); }
+    to   { filter: grayscale(1) sepia(.25) hue-rotate(175deg) saturate(1.1) contrast(2) brightness(1.6) drop-shadow(0 0 12px #ffffff); }
+}
+
+/* Boss : grondement à l'entrée */
+#view-battle .unit.boss-roar .sprite { animation: boss-roar .7s cubic-bezier(.2, .9, .3, 1) both !important; }
+@keyframes boss-roar {
+    0% { transform: var(--transform-base, scaleX(1)) scale(1); }
+    25% { transform: var(--transform-base, scaleX(1)) scale(1.28, 1.18); filter: brightness(1.6) drop-shadow(0 0 14px var(--rank-color, #ff5a5a)); }
+    100% { transform: var(--transform-base, scaleX(1)) scale(1); }
+}
+
+/* Chiffres de dégâts : ils claquent (gros puis rebond), puis montent */
+#view-battle .damage-float-number {
+    z-index: 196;
+    animation: dmg-slam var(--dmg-duration, 1.15s) cubic-bezier(.2, .8, .3, 1) forwards !important;
+    letter-spacing: .02em;
+}
+@keyframes dmg-slam {
+    0% { transform: translate(-50%, -50%) scale(2.6) rotate(-8deg); opacity: 0; }
+    10% { transform: translate(-50%, -50%) scale(.82) rotate(3deg); opacity: 1; }
+    20% { transform: translate(-50%, -50%) scale(1.12) rotate(-2deg); }
+    30% { transform: translate(-50%, -55%) scale(1) rotate(0); }
+    72% { transform: translate(-50%, -130%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -190%) scale(.9); opacity: 0; }
+}
+#view-battle .damage-float-number.weak { color: #c9bfae !important; font-size: 34px !important; }
+#view-battle .damage-float-number.super { color: #ff9a3c !important; font-size: 54px !important; }
+#view-battle .damage-float-number.crit { color: #ffd34a !important; font-size: 58px !important; }
+#view-battle .damage-float-number.dmg-big.crit, #view-battle .damage-float-number.dmg-big.super { font-size: 66px !important; }
+#view-battle .damage-float-number.dmg-massive.crit, #view-battle .damage-float-number.dmg-massive.super { font-size: 84px !important; }
+#view-battle .damage-float-number.lethal { color: #ff6a50 !important; }
+#view-battle .damage-float-number[data-tag]::before {
+    content: attr(data-tag);
+    position: absolute;
+    left: 50%; bottom: 92%;
+    transform: translateX(-50%) rotate(-6deg);
+    font-size: 22px;
+    white-space: nowrap;
+    color: #fff6dc;
+    background: #c4402e;
+    padding: 1px 8px 2px;
+    border-radius: 4px;
+    border: 2px solid var(--gba-frame, #2b2118);
+    text-shadow: none;
+}
+#view-battle .damage-float-number.heal { color: #8fd27c !important; }
+
+/* K.O. : tampon qui s'écrase sur la case */
+.ko-stamp {
+    position: absolute;
+    z-index: 197;
+    pointer-events: none;
+    font-family: var(--font-title);
+    font-size: 64px;
+    font-weight: 700;
+    color: #fff6dc;
+    white-space: nowrap;
+    text-shadow: 4px 4px 0 var(--gba-frame, #2b2118), -3px 0 0 var(--gba-frame, #2b2118), 0 -3px 0 var(--gba-frame, #2b2118), 3px 0 0 var(--gba-frame, #2b2118), 0 3px 0 var(--gba-frame, #2b2118), 0 0 18px rgba(240, 80, 56, .9);
+    animation: ko-stamp var(--ko-duration, 1.1s) cubic-bezier(.2, .9, .3, 1) forwards;
+}
+.ko-stamp.boss { font-size: 92px; color: #ffd34a; }
+@keyframes ko-stamp {
+    0% { transform: translate(-50%, -50%) scale(3) rotate(-14deg); opacity: 0; }
+    14% { transform: translate(-50%, -50%) scale(.9) rotate(-6deg); opacity: 1; }
+    24% { transform: translate(-50%, -50%) scale(1.06) rotate(-8deg); }
+    70% { transform: translate(-50%, -60%) scale(1) rotate(-8deg); opacity: 1; }
+    100% { transform: translate(-50%, -90%) scale(.95) rotate(-8deg); opacity: 0; }
+}
+
+/* Effets réduits (Paramètres ou réglage de l'appareil) : textes sans rebond, pas de reflet animé */
+body.fx-reduced #view-battle .damage-float-number { animation-name: floatUpFadeCenter !important; }
+body.fx-reduced .ko-stamp { animation-name: floatUpFadeCenter; }
+body.fx-reduced #view-battle .unit .sprite.vfx-metal { animation: none !important; }
+@keyframes floatUpFadeCenter {
+    0% { transform: translate(-50%, -50%); opacity: 1; }
+    100% { transform: translate(-50%, -150%); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #view-battle .unit .sprite.vfx-metal { animation: none !important; }
+}

@@ -42,8 +42,10 @@ const Art = (() => {
     // --- SPRITES D'OBJETS POKÉMON (PokeAPI, © Nintendo / Game Freak, usage non commercial) ---
     // Remplacent les emojis de l'interface : item('rare-candy') -> icône du Super Bonbon
     const ITEM_SPRITES = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/';
+    // Objets sans image chez PokeAPI : on prend la plus proche
+    const ITEM_SPRITE_ALIAS = { 'silver-bottle-cap': 'bottle-cap' };
     function item(name, size = 24, extraClass = '') {
-        return `<img class="item-ico ${extraClass}" src="${ITEM_SPRITES}${name}.png" width="${size}" height="${size}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.visibility='hidden'">`;
+        return `<img class="item-ico ${extraClass}" src="${ITEM_SPRITES}${ITEM_SPRITE_ALIAS[name] || name}.png" width="${size}" height="${size}" alt="" aria-hidden="true" loading="lazy" onerror="this.style.visibility='hidden'">`;
     }
 
     // Étoiles pleines (difficulté, rareté) à la place de l'emoji ⭐
@@ -585,9 +587,9 @@ const Art = (() => {
         }).catch(() => null); // en cas d'échec, le SVG net reste affiché
     }
 
-    // Bâtiments lissés en xBR comme les sprites PMD : le canvas pixelisé laisse place à sa version x4, affichée lissée.
+    // Bâtiments lissés en xBR comme les sprites PMD : le canvas pixelisé laisse place à sa version x2, affichée en pixels nets.
     // Contour teinté mais pas aminci : les traits sont déjà affinés (thin) et l'amincissement effacerait l'ombre au sol.
-    const BUILDING_XBR = { scale: 4, outlineTint: 0.5, outlineThin: 0 };
+    const BUILDING_XBR = { scale: 2, outlineTint: 0.5, outlineThin: 0 };
     function smoothBuilding(canvas) {
         if (!canvas || typeof Xbr === 'undefined') return;
         Xbr.canvas(canvas, BUILDING_XBR).then(hd => {

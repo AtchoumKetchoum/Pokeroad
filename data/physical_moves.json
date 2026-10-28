@@ -23,7 +23,7 @@
    "power": 4,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 7,
+   "zPower": 8,
    "hits": [
     2,
     5
@@ -43,7 +43,7 @@
     "trap"
    ],
    "z": {
-    "power": 7,
+    "power": 8,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -61,7 +61,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 4 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 7 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 8 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "fire-punch": {
@@ -156,7 +156,7 @@
    "power": 4,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 7,
+   "zPower": 8,
    "hits": [
     2,
     5
@@ -176,7 +176,7 @@
     "trap"
    ],
    "z": {
-    "power": 7,
+    "power": 8,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -194,7 +194,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 4 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 7 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 8 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "slam": {
@@ -280,7 +280,7 @@
    "power": 5,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 9,
+   "zPower": 10,
    "hits": [
     2,
     5
@@ -300,7 +300,7 @@
     "trap"
    ],
    "z": {
-    "power": 9,
+    "power": 10,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -318,7 +318,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 5 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 9 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 10 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "pay-day": {
@@ -459,7 +459,7 @@
    "power": 15,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 31,
+   "zPower": 30,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -477,7 +477,7 @@
     "trap"
    ],
    "z": {
-    "power": 31,
+    "power": 30,
     "shape": "onde",
     "ops": [
      {
@@ -495,7 +495,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 15 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 31 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 30 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Balayage (ligne)"
  },
  "thunder-punch": {
@@ -641,10 +641,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 32,
+   "power": 31,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 65,
+   "zPower": 64,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -662,7 +662,7 @@
     "trap"
    ],
    "z": {
-    "power": 65,
+    "power": 64,
     "shape": "percee_large",
     "ops": [
      {
@@ -679,8 +679,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 32 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 25 % des dégâts infligés.",
-  "description_z": "Puissance 65 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans contrecoup. +20 % de jauge pour le lanceur.",
+  "description_game": "Puissance 31 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 25 % des dégâts infligés.",
+  "description_z": "Puissance 64 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans contrecoup. +20 % de jauge pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "bind": {
@@ -707,7 +707,7 @@
    "power": 5,
    "shape": "encercle",
    "zShape": "explosion",
-   "zPower": 11,
+   "zPower": 12,
    "hits": null,
    "fx": [
     {
@@ -730,7 +730,7 @@
     "multihit"
    ],
    "z": {
-    "power": 11,
+    "power": 12,
     "shape": "explosion",
     "ops": [
      {
@@ -747,7 +747,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 11 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
   "zone_label": "Encerclement"
  },
  "bite": {
@@ -1087,7 +1087,7 @@
    "power": 5,
    "shape": "encercle",
    "zShape": "explosion",
-   "zPower": 11,
+   "zPower": 12,
    "hits": null,
    "fx": [
     {
@@ -1110,7 +1110,7 @@
     "multihit"
    ],
    "z": {
-    "power": 11,
+    "power": 12,
     "shape": "explosion",
     "ops": [
      {
@@ -1127,7 +1127,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 11 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
   "zone_label": "Encerclement"
  },
  "headbutt": {
@@ -1462,10 +1462,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     2,
     5
@@ -1485,7 +1485,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -1505,8 +1505,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Attaque et Atq. Spé. −1 pour chaque cible.",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Attaque et Atq. Spé. −1 pour chaque cible.",
   "zone_label": "Ricochet"
  },
  "twineedle": {
@@ -1926,7 +1926,7 @@
    "power": 28,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 63,
+   "zPower": 64,
    "hits": null,
    "fx": [
     {
@@ -1951,7 +1951,7 @@
     "trap"
    ],
    "z": {
-    "power": 63,
+    "power": 64,
     "shape": "explosion",
     "ops": [
      {
@@ -1969,7 +1969,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 28 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : paralysie.",
-  "description_z": "Puissance 63 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 64 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
   "zone_label": "Éclaboussure"
  },
  "guillotine": {
@@ -2793,10 +2793,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 27,
+   "power": 28,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 56,
+   "zPower": 57,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -2814,7 +2814,7 @@
     "trap"
    ],
    "z": {
-    "power": 56,
+    "power": 57,
     "shape": "percee_large",
     "ops": [
      {
@@ -2831,8 +2831,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 27 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-  "description_z": "Puissance 56 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. +30 % de jauge pour le lanceur.",
+  "description_game": "Puissance 28 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
+  "description_z": "Puissance 57 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. +30 % de jauge pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "razor-leaf": {
@@ -2855,7 +2855,7 @@
    "power": 16,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 33,
+   "zPower": 32,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -2873,7 +2873,7 @@
     "trap"
    ],
    "z": {
-    "power": 33,
+    "power": 32,
     "shape": "onde",
     "ops": [
      {
@@ -2890,7 +2890,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 16 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
-  "description_z": "Puissance 33 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_z": "Puissance 32 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "fissure": {
@@ -3163,7 +3163,7 @@
    "power": 19,
    "shape": "onde",
    "zShape": "onde_forte",
-   "zPower": 42,
+   "zPower": 41,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -3181,7 +3181,7 @@
     "trap"
    ],
    "z": {
-    "power": 42,
+    "power": 41,
     "shape": "onde_forte",
     "ops": [
      {
@@ -3201,7 +3201,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 19 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-  "description_z": "Puissance 42 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_z": "Puissance 41 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Onde"
  },
  "self-destruct": {
@@ -3219,16 +3219,16 @@
   "exception": null,
   "v_stat_count": 0,
   "duration": 1,
-  "description_game": "Puissance 48 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Le lanceur est mis K.O.",
+  "description_game": "Puissance 49 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Le lanceur est mis K.O.",
   "mech": {
    "selfKo": true
   },
   "rw": {
    "kind": "attack",
-   "power": 48,
+   "power": 49,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 117,
+   "zPower": 119,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -3246,7 +3246,7 @@
     "trap"
    ],
    "z": {
-    "power": 117,
+    "power": 119,
     "shape": "explosion_z",
     "ops": [
      {
@@ -3263,7 +3263,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 117 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Sans contrecoup. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 119 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Sans contrecoup. +20 % de jauge pour le lanceur.",
   "zone_label": "Explosion"
  },
  "bide": {
@@ -3550,7 +3550,7 @@
    "power": 33,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 75,
+   "zPower": 76,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -3568,7 +3568,7 @@
     "trap"
    ],
    "z": {
-    "power": 75,
+    "power": 76,
     "shape": "explosion",
     "ops": [
      {
@@ -3586,7 +3586,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 33 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-  "description_z": "Puissance 75 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 76 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Éclaboussure"
  },
  "waterfall": {
@@ -3871,13 +3871,13 @@
   "mech": {
    "recharge": true
   },
-  "description_game": "Puissance 46 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Recharge : le lanceur perd son prochain tour.",
+  "description_game": "Puissance 45 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Recharge : le lanceur perd son prochain tour.",
   "rw": {
    "kind": "attack",
-   "power": 46,
+   "power": 45,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 94,
+   "zPower": 92,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -3895,7 +3895,7 @@
     "trap"
    ],
    "z": {
-    "power": 94,
+    "power": 92,
     "shape": "percee_large",
     "ops": [
      {
@@ -3912,7 +3912,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 94 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans recharge. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 92 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans recharge. +20 % de jauge pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "clamp": {
@@ -3939,7 +3939,7 @@
    "power": 11,
    "shape": "encercle",
    "zShape": "explosion",
-   "zPower": 26,
+   "zPower": 27,
    "hits": null,
    "fx": [
     {
@@ -3962,7 +3962,7 @@
     "multihit"
    ],
    "z": {
-    "power": 26,
+    "power": 27,
     "shape": "explosion",
     "ops": [
      {
@@ -3980,7 +3980,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 26 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
+  "description_z": "Puissance 27 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
   "zone_label": "Encerclement"
  },
  "constrict": {
@@ -4077,7 +4077,7 @@
   "mech": {
    "drain": 0.5
   },
-  "description_game": "Puissance 40 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier.",
+  "description_game": "Puissance 40 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier (25 % des PV max au plus).",
   "rw": {
    "kind": "attack",
    "power": 40,
@@ -4277,7 +4277,7 @@
    "power": 5,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 9,
+   "zPower": 10,
    "hits": [
     2,
     5
@@ -4297,7 +4297,7 @@
     "trap"
    ],
    "z": {
-    "power": 9,
+    "power": 10,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -4315,7 +4315,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 5 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 9 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 10 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "flame-wheel": {
@@ -4401,16 +4401,16 @@
   "exception": null,
   "v_stat_count": 0,
   "duration": 1,
-  "description_game": "Puissance 60 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Le lanceur est mis K.O.",
+  "description_game": "Puissance 61 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Le lanceur est mis K.O.",
   "mech": {
    "selfKo": true
   },
   "rw": {
    "kind": "attack",
-   "power": 60,
+   "power": 61,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 146,
+   "zPower": 148,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -4428,7 +4428,7 @@
     "trap"
    ],
    "z": {
-    "power": 146,
+    "power": 148,
     "shape": "explosion_z",
     "ops": [
      {
@@ -4445,7 +4445,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 146 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Sans contrecoup. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 148 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Sans contrecoup. +20 % de jauge pour le lanceur.",
   "zone_label": "Explosion"
  },
  "hyper-fang": {
@@ -4654,7 +4654,7 @@
    "power": 33,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 75,
+   "zPower": 76,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -4672,7 +4672,7 @@
     "trap"
    ],
    "z": {
-    "power": 75,
+    "power": 76,
     "shape": "explosion",
     "ops": [
      {
@@ -4691,7 +4691,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 33 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Taux de critique +1.",
-  "description_z": "Puissance 75 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
+  "description_z": "Puissance 76 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
   "zone_label": "Éclaboussure"
  },
  "slash": {
@@ -4712,10 +4712,10 @@
   "crit_rate_stage": 1,
   "rw": {
    "kind": "attack",
-   "power": 20,
+   "power": 21,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 41,
+   "zPower": 42,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -4733,7 +4733,7 @@
     "trap"
    ],
    "z": {
-    "power": 41,
+    "power": 42,
     "shape": "onde",
     "ops": [
      {
@@ -4750,8 +4750,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 20 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
-  "description_z": "Puissance 41 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_game": "Puissance 21 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
+  "description_z": "Puissance 42 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Balayage (ligne)"
  },
  "bonemerang": {
@@ -4907,10 +4907,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     2,
     5
@@ -4930,7 +4930,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -4949,8 +4949,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Ricochet"
  },
  "triple-kick": {
@@ -4977,7 +4977,7 @@
    "power": 3,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 5,
+   "zPower": 6,
    "hits": [
     3,
     3
@@ -4997,7 +4997,7 @@
     "trap"
    ],
    "z": {
-    "power": 5,
+    "power": 6,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -5017,7 +5017,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 3 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Attaque +1 pour le lanceur.",
+  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Attaque +1 pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "mach-punch": {
@@ -5407,7 +5407,7 @@
    "power": 33,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 75,
+   "zPower": 76,
    "hits": null,
    "fx": [
     {
@@ -5432,7 +5432,7 @@
     "trap"
    ],
    "z": {
-    "power": 75,
+    "power": 76,
     "shape": "explosion",
     "ops": [
      {
@@ -5452,7 +5452,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 33 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Toujours : confusion.",
-  "description_z": "Puissance 75 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Attaque +1 pour le lanceur.",
+  "description_z": "Puissance 76 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Attaque +1 pour le lanceur.",
   "zone_label": "Éclaboussure"
  },
  "steel-wing": {
@@ -5813,7 +5813,7 @@
    "power": 15,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 31,
+   "zPower": 30,
    "hits": null,
    "fx": [
     {
@@ -5847,7 +5847,7 @@
     "trap"
    ],
    "z": {
-    "power": 31,
+    "power": 30,
     "shape": "onde",
     "ops": [
      {
@@ -5864,7 +5864,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 31 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 30 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
   "zone_label": "Balayage (ligne)"
  },
  "frustration": {
@@ -5945,10 +5945,10 @@
   "effect_chance": 10,
   "rw": {
    "kind": "attack",
-   "power": 30,
+   "power": 29,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 60,
+   "zPower": 59,
    "hits": null,
    "fx": [
     {
@@ -5975,7 +5975,7 @@
     "trap"
    ],
    "z": {
-    "power": 60,
+    "power": 59,
     "shape": "onde",
     "ops": [
      {
@@ -5992,8 +5992,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 30 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. 30 % de chance : Défense −1 pour la cible.",
-  "description_z": "Puissance 60 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_game": "Puissance 29 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. 30 % de chance : Défense −1 pour la cible.",
+  "description_z": "Puissance 59 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "vital-throw": {
@@ -6403,7 +6403,7 @@
    "power": 18,
    "shape": "diag",
    "zShape": "explosion",
-   "zPower": 38,
+   "zPower": 39,
    "hits": null,
    "fx": [
     {
@@ -6430,7 +6430,7 @@
     "trap"
    ],
    "z": {
-    "power": 38,
+    "power": 39,
     "shape": "explosion",
     "ops": [
      {
@@ -6448,7 +6448,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 18 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. 10 % de chance : Attaque +1 pour le lanceur.",
-  "description_z": "Puissance 38 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_z": "Puissance 39 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Diagonales (X)"
  },
  "magnitude": {
@@ -6478,7 +6478,7 @@
    "power": 70,
    "shape": "onde",
    "zShape": "onde_forte",
-   "zPower": 149,
+   "zPower": 152,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -6496,7 +6496,7 @@
     "trap"
    ],
    "z": {
-    "power": 149,
+    "power": 152,
     "shape": "onde_forte",
     "ops": [
      {
@@ -6515,7 +6515,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 149 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_z": "Puissance 152 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Onde"
  },
  "rollout": {
@@ -6538,7 +6538,7 @@
    "power": 9,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 17,
+   "zPower": 18,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -6556,7 +6556,7 @@
     "trap"
    ],
    "z": {
-    "power": 17,
+    "power": 18,
     "shape": "onde",
     "ops": [
      {
@@ -6574,7 +6574,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 9 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 17 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Bouclier de 20 % des PV pour le lanceur.",
+  "description_z": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Bouclier de 20 % des PV pour le lanceur.",
   "zone_label": "Balayage (ligne)"
  },
  "present": {
@@ -7172,7 +7172,7 @@
    "power": 4,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 7,
+   "zPower": 8,
    "hits": [
     2,
     5
@@ -7192,7 +7192,7 @@
     "trap"
    ],
    "z": {
-    "power": 7,
+    "power": 8,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -7212,7 +7212,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 4 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 7 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Attaque +1 pour le lanceur.",
+  "description_z": "Puissance 8 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Attaque +1 pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "blaze-kick": {
@@ -7686,7 +7686,7 @@
    "power": 16,
    "shape": "croix",
    "zShape": "explosion",
-   "zPower": 45,
+   "zPower": 46,
    "hits": null,
    "fx": [
     {
@@ -7719,7 +7719,7 @@
     "trap"
    ],
    "z": {
-    "power": 45,
+    "power": 46,
     "shape": "explosion",
     "ops": [
      {
@@ -7737,7 +7737,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 16 au point d'impact. 100 % sur la cible, 60 % sur ses 4 voisins. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-  "description_z": "Puissance 45 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 20 % des PV pour le lanceur.",
+  "description_z": "Puissance 46 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 20 % des PV pour le lanceur.",
   "zone_label": "Croix"
  },
  "icicle-spear": {
@@ -7761,10 +7761,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     2,
     5
@@ -7784,7 +7784,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -7801,8 +7801,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
   "zone_label": "Ricochet"
  },
  "volt-tackle": {
@@ -7955,7 +7955,7 @@
    "power": 15,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 31,
+   "zPower": 30,
    "hits": null,
    "fx": [
     {
@@ -7980,7 +7980,7 @@
     "trap"
    ],
    "z": {
-    "power": 31,
+    "power": 30,
     "shape": "onde",
     "ops": [
      {
@@ -7999,7 +7999,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 15 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1. 10 % de chance : empoisonnement.",
-  "description_z": "Puissance 31 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance d'empoisonner chaque cible.",
+  "description_z": "Puissance 30 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance d'empoisonner chaque cible.",
   "zone_label": "Balayage (ligne)"
  },
  "aerial-ace": {
@@ -8084,7 +8084,7 @@
    "power": 26,
    "shape": "diag",
    "zShape": "explosion",
-   "zPower": 57,
+   "zPower": 56,
    "hits": null,
    "fx": [
     {
@@ -8111,7 +8111,7 @@
     "trap"
    ],
    "z": {
-    "power": 57,
+    "power": 56,
     "shape": "explosion",
     "ops": [
      {
@@ -8129,7 +8129,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 26 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. 50 % de chance : Défense −1 pour la cible.",
-  "description_z": "Puissance 57 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 56 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. +20 % de jauge pour le lanceur.",
   "zone_label": "Diagonales (X)"
  },
  "astonish": {
@@ -8295,7 +8295,7 @@
    "power": 11,
    "shape": "encercle",
    "zShape": "explosion",
-   "zPower": 26,
+   "zPower": 27,
    "hits": null,
    "fx": [
     {
@@ -8318,7 +8318,7 @@
     "multihit"
    ],
    "z": {
-    "power": 26,
+    "power": 27,
     "shape": "explosion",
     "ops": [
      {
@@ -8337,7 +8337,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 26 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Précision −1 pour chaque cible.",
+  "description_z": "Puissance 27 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Précision −1 pour chaque cible.",
   "zone_label": "Encerclement"
  },
  "leaf-blade": {
@@ -8358,10 +8358,10 @@
   "crit_rate_stage": 1,
   "rw": {
    "kind": "attack",
-   "power": 27,
+   "power": 26,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 54,
+   "zPower": 53,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -8379,7 +8379,7 @@
     "trap"
    ],
    "z": {
-    "power": 54,
+    "power": 53,
     "shape": "onde",
     "ops": [
      {
@@ -8395,8 +8395,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 27 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
-  "description_z": "Puissance 54 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_game": "Puissance 26 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
+  "description_z": "Puissance 53 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "sky-uppercut": {
@@ -8480,7 +8480,7 @@
    "power": 28,
    "shape": "diag",
    "zShape": "explosion",
-   "zPower": 59,
+   "zPower": 60,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -8498,7 +8498,7 @@
     "trap"
    ],
    "z": {
-    "power": 59,
+    "power": 60,
     "shape": "explosion",
     "ops": [
      {
@@ -8518,7 +8518,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 28 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-  "description_z": "Puissance 59 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
+  "description_z": "Puissance 60 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
   "zone_label": "Diagonales (X)"
  },
  "shadow-punch": {
@@ -8807,13 +8807,13 @@
     5
    ]
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     2,
     5
@@ -8833,7 +8833,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -8850,7 +8850,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Bouclier de 20 % des PV pour le lanceur.",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Bouclier de 20 % des PV pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "bullet-seed": {
@@ -8874,13 +8874,13 @@
     5
    ]
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     2,
     5
@@ -8900,7 +8900,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -8916,7 +8916,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Ricochet"
  },
  "gyro-ball": {
@@ -9057,10 +9057,10 @@
   "crit_rate_stage": 1,
   "rw": {
    "kind": "attack",
-   "power": 20,
+   "power": 21,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 41,
+   "zPower": 42,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -9078,7 +9078,7 @@
     "trap"
    ],
    "z": {
-    "power": 41,
+    "power": 42,
     "shape": "onde",
     "ops": [
      {
@@ -9094,8 +9094,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 20 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
-  "description_z": "Puissance 41 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Vole les bonus de stats des cibles.",
+  "description_game": "Puissance 21 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
+  "description_z": "Puissance 42 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Vole les bonus de stats des cibles.",
   "zone_label": "Balayage (ligne)"
  },
  "natural-gift": {
@@ -9948,7 +9948,7 @@
    "power": 33,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 75,
+   "zPower": 76,
    "hits": null,
    "fx": [
     {
@@ -9975,7 +9975,7 @@
     "trap"
    ],
    "z": {
-    "power": 75,
+    "power": 76,
     "shape": "explosion",
     "ops": [
      {
@@ -9995,7 +9995,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 33 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Toujours : Vitesse −1 pour le lanceur.",
-  "description_z": "Puissance 75 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Attaque +1 pour le lanceur.",
+  "description_z": "Puissance 76 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Attaque +1 pour le lanceur.",
   "zone_label": "Éclaboussure"
  },
  "sucker-punch": {
@@ -10213,7 +10213,7 @@
    "power": 35,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 73,
+   "zPower": 72,
    "hits": null,
    "fx": [
     {
@@ -10238,7 +10238,7 @@
     "trap"
    ],
    "z": {
-    "power": 73,
+    "power": 72,
     "shape": "percee_large",
     "ops": [
      {
@@ -10258,7 +10258,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 35 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. 20 % de chance : la cible perd 30 % de jauge (peur).",
-  "description_z": "Puissance 73 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Effet secondaire garanti. Taux de critique +1 pour toute l'équipe.",
+  "description_z": "Puissance 72 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Effet secondaire garanti. Taux de critique +1 pour toute l'équipe.",
   "zone_label": "Perçante (colonne)"
  },
  "aqua-tail": {
@@ -10278,10 +10278,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 27,
+   "power": 26,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 54,
+   "zPower": 53,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -10299,7 +10299,7 @@
     "trap"
    ],
    "z": {
-    "power": 54,
+    "power": 53,
     "shape": "onde",
     "ops": [
      {
@@ -10317,8 +10317,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 27 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 54 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
+  "description_game": "Puissance 26 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
+  "description_z": "Puissance 53 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "seed-bomb": {
@@ -10338,10 +10338,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 27,
+   "power": 26,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 62,
+   "zPower": 60,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -10359,7 +10359,7 @@
     "trap"
    ],
    "z": {
-    "power": 62,
+    "power": 60,
     "shape": "explosion",
     "ops": [
      {
@@ -10375,8 +10375,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 27 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-  "description_z": "Puissance 62 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_game": "Puissance 26 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
+  "description_z": "Puissance 60 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Éclaboussure"
  },
  "rock-wrecker": {
@@ -10397,13 +10397,13 @@
   "mech": {
    "recharge": true
   },
-  "description_game": "Puissance 36 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Recharge : le lanceur perd son prochain tour.",
+  "description_game": "Puissance 37 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Recharge : le lanceur perd son prochain tour.",
   "rw": {
    "kind": "attack",
-   "power": 36,
+   "power": 37,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 88,
+   "zPower": 90,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -10421,7 +10421,7 @@
     "trap"
    ],
    "z": {
-    "power": 88,
+    "power": 90,
     "shape": "explosion_z",
     "ops": [
      {
@@ -10438,7 +10438,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 88 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Sans recharge. Bouclier de 20 % des PV pour le lanceur.",
+  "description_z": "Puissance 90 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Sans recharge. Bouclier de 20 % des PV pour le lanceur.",
   "zone_label": "Explosion"
  },
  "power-whip": {
@@ -10735,7 +10735,7 @@
    "power": 25,
    "shape": "diag",
    "zShape": "explosion",
-   "zPower": 53,
+   "zPower": 54,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -10753,7 +10753,7 @@
     "trap"
    ],
    "z": {
-    "power": 53,
+    "power": 54,
     "shape": "explosion",
     "ops": [
      {
@@ -10771,7 +10771,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 25 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. Taux de critique +1.",
-  "description_z": "Puissance 53 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Chaque cible perd 25 % de jauge.",
+  "description_z": "Puissance 54 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Chaque cible perd 25 % de jauge.",
   "zone_label": "Diagonales (X)"
  },
  "giga-impact": {
@@ -10798,7 +10798,7 @@
    "power": 52,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 108,
+   "zPower": 107,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -10816,7 +10816,7 @@
     "trap"
    ],
    "z": {
-    "power": 108,
+    "power": 107,
     "shape": "percee_large",
     "ops": [
      {
@@ -10833,7 +10833,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 108 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans recharge. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 107 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans recharge. +20 % de jauge pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "drain-punch": {
@@ -10854,7 +10854,7 @@
   "mech": {
    "drain": 0.5
   },
-  "description_game": "Puissance 38 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier.",
+  "description_game": "Puissance 38 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier (25 % des PV max au plus).",
   "rw": {
    "kind": "attack",
    "power": 38,
@@ -10927,7 +10927,7 @@
    "power": 15,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 37,
+   "zPower": 36,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -10945,7 +10945,7 @@
     "trap"
    ],
    "z": {
-    "power": 37,
+    "power": 36,
     "shape": "explosion_z",
     "ops": [
      {
@@ -10962,7 +10962,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 37 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Bonus « en face » sur toute la colonne. Chaque cible perd 30 % de jauge.",
+  "description_z": "Puissance 36 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Bonus « en face » sur toute la colonne. Chaque cible perd 30 % de jauge.",
   "zone_label": "Explosion"
  },
  "bug-bite": {
@@ -11179,10 +11179,10 @@
   "crit_rate_stage": 1,
   "rw": {
    "kind": "attack",
-   "power": 20,
+   "power": 21,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 41,
+   "zPower": 42,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -11200,7 +11200,7 @@
     "trap"
    ],
    "z": {
-    "power": 41,
+    "power": 42,
     "shape": "onde",
     "ops": [
      {
@@ -11216,8 +11216,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 20 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
-  "description_z": "Puissance 41 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Les cibles perdent leurs bonus de stats.",
+  "description_game": "Puissance 21 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Taux de critique +1.",
+  "description_z": "Puissance 42 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Les cibles perdent leurs bonus de stats.",
   "zone_label": "Balayage (ligne)"
  },
  "cross-poison": {
@@ -11242,7 +11242,7 @@
    "power": 25,
    "shape": "diag",
    "zShape": "explosion",
-   "zPower": 53,
+   "zPower": 54,
    "hits": null,
    "fx": [
     {
@@ -11267,7 +11267,7 @@
     "trap"
    ],
    "z": {
-    "power": 53,
+    "power": 54,
     "shape": "explosion",
     "ops": [
      {
@@ -11286,7 +11286,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 25 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales. Taux de critique +1. 10 % de chance : empoisonnement.",
-  "description_z": "Puissance 53 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance d'empoisonner chaque cible.",
+  "description_z": "Puissance 54 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance d'empoisonner chaque cible.",
   "zone_label": "Diagonales (X)"
  },
  "brave-bird": {
@@ -11368,7 +11368,7 @@
    "power": 28,
    "shape": "diag",
    "zShape": "explosion",
-   "zPower": 59,
+   "zPower": 60,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -11386,7 +11386,7 @@
     "trap"
    ],
    "z": {
-    "power": 59,
+    "power": 60,
     "shape": "explosion",
     "ops": [
      {
@@ -11407,7 +11407,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 28 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-  "description_z": "Puissance 59 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Attaque et Atq. Spé. −1 pour chaque cible.",
+  "description_z": "Puissance 60 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Attaque et Atq. Spé. −1 pour chaque cible.",
   "zone_label": "Diagonales (X)"
  },
  "rock-climb": {
@@ -11743,7 +11743,7 @@
    "power": 40,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 91,
+   "zPower": 92,
    "hits": null,
    "fx": [
     {
@@ -11768,7 +11768,7 @@
     "trap"
    ],
    "z": {
-    "power": 91,
+    "power": 92,
     "shape": "explosion",
     "ops": [
      {
@@ -11787,7 +11787,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 40 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : empoisonnement.",
-  "description_z": "Puissance 91 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance d'empoisonner chaque cible.",
+  "description_z": "Puissance 92 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance d'empoisonner chaque cible.",
   "zone_label": "Éclaboussure"
  },
  "attack-order": {
@@ -12132,7 +12132,7 @@
    "power": 52,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 108,
+   "zPower": 107,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -12150,7 +12150,7 @@
     "trap"
    ],
    "z": {
-    "power": 108,
+    "power": 107,
     "shape": "percee_large",
     "ops": [
      {
@@ -12167,7 +12167,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 108 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans contrecoup. Bouclier de 20 % des PV pour le lanceur.",
+  "description_z": "Puissance 107 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans contrecoup. Bouclier de 20 % des PV pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "low-sweep": {
@@ -12190,7 +12190,7 @@
    "power": 19,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 39,
+   "zPower": 38,
    "hits": null,
    "fx": [
     {
@@ -12223,7 +12223,7 @@
     "trap"
    ],
    "z": {
-    "power": 39,
+    "power": 38,
     "shape": "onde",
     "ops": [
      {
@@ -12243,7 +12243,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 19 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Vitesse −1 et −15 % de jauge pour la cible.",
-  "description_z": "Puissance 39 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Attaque +1 pour le lanceur.",
+  "description_z": "Puissance 38 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Attaque +1 pour le lanceur.",
   "zone_label": "Balayage (ligne)"
  },
  "foul-play": {
@@ -12449,7 +12449,7 @@
    "power": 40,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 91,
+   "zPower": 92,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -12467,7 +12467,7 @@
     "trap"
    ],
    "z": {
-    "power": 91,
+    "power": 92,
     "shape": "explosion",
     "ops": [
      {
@@ -12483,7 +12483,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 91 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Sans contrecoup. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_z": "Puissance 92 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Sans contrecoup. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Éclaboussure"
  },
  "flame-charge": {
@@ -12585,7 +12585,7 @@
    "power": 60,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 116,
+   "zPower": 138,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -12603,7 +12603,7 @@
     "trap"
    ],
    "z": {
-    "power": 116,
+    "power": 138,
     "shape": "explosion",
     "ops": [
      {
@@ -12620,7 +12620,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 116 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_z": "Puissance 138 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Éclaboussure"
  },
  "storm-throw": {
@@ -12773,10 +12773,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 27,
+   "power": 26,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 54,
+   "zPower": 53,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -12794,7 +12794,7 @@
     "trap"
    ],
    "z": {
-    "power": 54,
+    "power": 53,
     "shape": "onde",
     "ops": [
      {
@@ -12813,8 +12813,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 27 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 54 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
+  "description_game": "Puissance 26 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
+  "description_z": "Puissance 53 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
   "zone_label": "Balayage (ligne)"
  },
  "tail-slap": {
@@ -12838,13 +12838,13 @@
     5
    ]
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     2,
     5
@@ -12864,7 +12864,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -12881,7 +12881,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Ricochet"
  },
  "head-charge": {
@@ -13020,7 +13020,7 @@
   "mech": {
    "drain": 0.5
   },
-  "description_game": "Puissance 38 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier.",
+  "description_game": "Puissance 38 au point d'impact. 100 % sur la cible seule. Draine 50 % des dégâts ; l'excédent devient un bouclier (25 % des PV max au plus).",
   "rw": {
    "kind": "attack",
    "power": 38,
@@ -13162,7 +13162,7 @@
    "power": 22,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 45,
+   "zPower": 44,
    "hits": null,
    "fx": [
     {
@@ -13189,7 +13189,7 @@
     "trap"
    ],
    "z": {
-    "power": 45,
+    "power": 44,
     "shape": "onde",
     "ops": [
      {
@@ -13208,7 +13208,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 22 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. 50 % de chance : Défense −1 pour la cible.",
-  "description_z": "Puissance 45 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
+  "description_z": "Puissance 44 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "steamroller": {
@@ -13231,7 +13231,7 @@
    "power": 19,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 39,
+   "zPower": 38,
    "hits": null,
    "fx": [
     {
@@ -13256,7 +13256,7 @@
     "trap"
    ],
    "z": {
-    "power": 39,
+    "power": 38,
     "shape": "onde",
     "ops": [
      {
@@ -13277,7 +13277,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 19 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. 30 % de chance : la cible perd 30 % de jauge (peur).",
-  "description_z": "Puissance 39 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Attaque et Atq. Spé. −1 pour chaque cible.",
+  "description_z": "Puissance 38 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Attaque et Atq. Spé. −1 pour chaque cible.",
   "zone_label": "Balayage (ligne)"
  },
  "circle-throw": {
@@ -13364,10 +13364,10 @@
   "crit_rate_stage": 1,
   "rw": {
    "kind": "attack",
-   "power": 27,
+   "power": 28,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 56,
+   "zPower": 57,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -13385,7 +13385,7 @@
     "trap"
    ],
    "z": {
-    "power": 56,
+    "power": 57,
     "shape": "percee_large",
     "ops": [
      {
@@ -13404,8 +13404,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 27 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Taux de critique +1.",
-  "description_z": "Puissance 56 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_game": "Puissance 28 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Taux de critique +1.",
+  "description_z": "Puissance 57 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Perçante (colonne)"
  },
  "heart-stamp": {
@@ -13556,10 +13556,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 32,
+   "power": 31,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 65,
+   "zPower": 64,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -13577,7 +13577,7 @@
     "trap"
    ],
    "z": {
-    "power": 65,
+    "power": 64,
     "shape": "percee_large",
     "ops": [
      {
@@ -13594,8 +13594,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 32 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 25 % des dégâts infligés.",
-  "description_z": "Puissance 65 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans contrecoup. +25 % de jauge pour toute l'équipe.",
+  "description_game": "Puissance 31 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière. Contrecoup : 25 % des dégâts infligés.",
+  "description_z": "Puissance 64 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Sans contrecoup. +25 % de jauge pour toute l'équipe.",
   "zone_label": "Perçante (colonne)"
  },
  "acrobatics": {
@@ -13681,7 +13681,7 @@
    "power": 60,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 116,
+   "zPower": 138,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -13699,7 +13699,7 @@
     "trap"
    ],
    "z": {
-    "power": 116,
+    "power": 138,
     "shape": "explosion",
     "ops": [
      {
@@ -13717,7 +13717,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 116 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. 50 % de chance de brûler chaque cible.",
+  "description_z": "Puissance 138 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. 50 % de chance de brûler chaque cible.",
   "zone_label": "Éclaboussure"
  },
  "sky-drop": {
@@ -14065,7 +14065,7 @@
    "power": 28,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 63,
+   "zPower": 64,
    "hits": null,
    "fx": [
     {
@@ -14090,7 +14090,7 @@
     "trap"
    ],
    "z": {
-    "power": 63,
+    "power": 64,
     "shape": "explosion",
     "ops": [
      {
@@ -14108,7 +14108,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 28 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 30 % de chance : la cible perd 30 % de jauge (peur).",
-  "description_z": "Puissance 63 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Chaque cible perd 30 % de jauge.",
+  "description_z": "Puissance 64 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Chaque cible perd 30 % de jauge.",
   "zone_label": "Éclaboussure"
  },
  "play-rough": {
@@ -14394,10 +14394,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 17,
+   "power": 18,
    "shape": "onde",
    "zShape": "onde_forte",
-   "zPower": 37,
+   "zPower": 39,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -14415,7 +14415,7 @@
     "trap"
    ],
    "z": {
-    "power": 37,
+    "power": 39,
     "shape": "onde_forte",
     "ops": [
      {
@@ -14431,8 +14431,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 17 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-  "description_z": "Puissance 37 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_game": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
+  "description_z": "Puissance 39 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Onde"
  },
  "v-create": {
@@ -14644,10 +14644,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 17,
+   "power": 18,
    "shape": "onde",
    "zShape": "onde_forte",
-   "zPower": 37,
+   "zPower": 39,
    "hits": null,
    "fx": [
     {
@@ -14670,7 +14670,7 @@
     "trap"
    ],
    "z": {
-    "power": 37,
+    "power": 39,
     "shape": "onde_forte",
     "ops": [
      {
@@ -14689,8 +14689,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 17 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Fait retomber les ennemis en Plongée ou en lévitation (ils peuvent de nouveau être touchés).",
-  "description_z": "Puissance 37 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Ramène aussi les ennemis touchés sur la ligne avant. Précision −1 pour chaque cible.",
+  "description_game": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Fait retomber les ennemis en Plongée ou en lévitation (ils peuvent de nouveau être touchés).",
+  "description_z": "Puissance 39 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Ramène aussi les ennemis touchés sur la ligne avant. Précision −1 pour chaque cible.",
   "zone_label": "Onde"
  },
  "acid-downpour--physical": {
@@ -15256,10 +15256,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 17,
+   "power": 18,
    "shape": "onde",
    "zShape": "onde_forte",
-   "zPower": 37,
+   "zPower": 39,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -15277,7 +15277,7 @@
     "trap"
    ],
    "z": {
-    "power": 37,
+    "power": 39,
     "shape": "onde_forte",
     "ops": [
      {
@@ -15296,8 +15296,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 17 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-  "description_z": "Puissance 37 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_game": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
+  "description_z": "Puissance 39 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Onde"
  },
  "supersonic-skystrike--physical": {
@@ -15820,10 +15820,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 17,
+   "power": 18,
    "shape": "onde",
    "zShape": "onde_forte",
-   "zPower": 37,
+   "zPower": 39,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -15841,7 +15841,7 @@
     "trap"
    ],
    "z": {
-    "power": 37,
+    "power": 39,
     "shape": "onde_forte",
     "ops": [
      {
@@ -15860,8 +15860,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 17 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
-  "description_z": "Puissance 37 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_game": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière.",
+  "description_z": "Puissance 39 au point d'impact. Tous les ennemis : 100 % sur la ligne avant, 75 % au milieu, 50 % à l'arrière. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Onde"
  },
  "all-out-pummeling--physical": {
@@ -16739,10 +16739,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 29,
+   "power": 30,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 66,
+   "zPower": 69,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -16760,7 +16760,7 @@
     "trap"
    ],
    "z": {
-    "power": 66,
+    "power": 69,
     "shape": "explosion",
     "ops": [
      {
@@ -16779,8 +16779,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 29 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-  "description_z": "Puissance 66 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
+  "description_game": "Puissance 30 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
+  "description_z": "Puissance 69 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
   "zone_label": "Éclaboussure"
  },
  "leafage": {
@@ -16861,7 +16861,7 @@
    "power": 31,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 72,
+   "zPower": 71,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -16879,7 +16879,7 @@
     "trap"
    ],
    "z": {
-    "power": 72,
+    "power": 71,
     "shape": "explosion",
     "ops": [
      {
@@ -16899,7 +16899,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 31 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-  "description_z": "Puissance 72 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_z": "Puissance 71 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Éclaboussure"
  },
  "sinister-arrow-raid": {
@@ -17235,7 +17235,7 @@
    "power": 33,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 75,
+   "zPower": 76,
    "hits": null,
    "fx": [
     {
@@ -17262,7 +17262,7 @@
     "trap"
    ],
    "z": {
-    "power": 75,
+    "power": 76,
     "shape": "explosion",
     "ops": [
      {
@@ -17280,7 +17280,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 33 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. Toujours : Vitesse −1 pour le lanceur.",
-  "description_z": "Puissance 75 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Chaque cible perd 30 % de jauge.",
+  "description_z": "Puissance 76 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Chaque cible perd 30 % de jauge.",
   "zone_label": "Éclaboussure"
  },
  "spirit-shackle": {
@@ -17661,7 +17661,7 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 24,
+   "power": 25,
    "shape": "eclabous",
    "zShape": "explosion",
    "zPower": 57,
@@ -17701,7 +17701,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 24 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
+  "description_game": "Puissance 25 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
   "description_z": "Puissance 57 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Éclaboussure"
  },
@@ -18928,10 +18928,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -18949,7 +18949,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -18966,8 +18966,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. +25 % de jauge pour toute l'équipe.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. +25 % de jauge pour toute l'équipe.",
   "zone_label": "Explosion"
  },
  "max-airstream": {
@@ -18987,10 +18987,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19008,7 +19008,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19025,8 +19025,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. +30 % de jauge pour le lanceur.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. +30 % de jauge pour le lanceur.",
   "zone_label": "Explosion"
  },
  "max-phantasm": {
@@ -19046,10 +19046,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19067,7 +19067,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19084,8 +19084,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Chaque cible perd 25 % de jauge.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Chaque cible perd 25 % de jauge.",
   "zone_label": "Explosion"
  },
  "max-overgrowth": {
@@ -19105,10 +19105,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19126,7 +19126,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19142,8 +19142,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Explosion"
  },
  "max-wyrmwind": {
@@ -19163,10 +19163,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19184,7 +19184,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19203,8 +19203,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
   "zone_label": "Explosion"
  },
  "max-strike": {
@@ -19224,10 +19224,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19245,7 +19245,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19262,8 +19262,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Explosion"
  },
  "max-starfall": {
@@ -19283,10 +19283,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19304,7 +19304,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19321,8 +19321,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Soigne 20 % des PV de toute l'équipe.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Soigne 20 % des PV de toute l'équipe.",
   "zone_label": "Explosion"
  },
  "max-rockfall": {
@@ -19343,10 +19343,10 @@
   "_allFixed": true,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19364,7 +19364,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19381,8 +19381,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Bouclier de 20 % des PV pour le lanceur.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Bouclier de 20 % des PV pour le lanceur.",
   "zone_label": "Explosion"
  },
  "behemoth-blade": {
@@ -19402,10 +19402,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 30,
+   "power": 29,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 60,
+   "zPower": 59,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19423,7 +19423,7 @@
     "trap"
    ],
    "z": {
-    "power": 60,
+    "power": 59,
     "shape": "onde",
     "ops": [
      {
@@ -19440,8 +19440,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 30 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 60 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_game": "Puissance 29 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
+  "description_z": "Puissance 59 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "breaking-swipe": {
@@ -19531,10 +19531,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19552,7 +19552,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19570,8 +19570,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. 50 % de chance d'empoisonner chaque cible.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. 50 % de chance d'empoisonner chaque cible.",
   "zone_label": "Explosion"
  },
  "grav-apple": {
@@ -19662,13 +19662,13 @@
     5
    ]
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 2 à 5 fois (chaque coup entame les boucliers).",
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     2,
     5
@@ -19688,7 +19688,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -19707,7 +19707,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Taux de critique +1 pour toute l'équipe.",
   "zone_label": "Ricochet"
  },
  "max-steelspike": {
@@ -19727,10 +19727,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19748,7 +19748,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19765,8 +19765,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Explosion"
  },
  "max-geyser": {
@@ -19786,10 +19786,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19807,7 +19807,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19825,8 +19825,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
   "zone_label": "Explosion"
  },
  "body-press": {
@@ -19846,10 +19846,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 27,
+   "power": 26,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 62,
+   "zPower": 60,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19867,7 +19867,7 @@
     "trap"
    ],
    "z": {
-    "power": 62,
+    "power": 60,
     "shape": "explosion",
     "ops": [
      {
@@ -19886,8 +19886,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 27 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-  "description_z": "Puissance 62 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
+  "description_game": "Puissance 26 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
+  "description_z": "Puissance 60 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
   "zone_label": "Éclaboussure"
  },
  "max-darkness": {
@@ -19907,10 +19907,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -19928,7 +19928,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -19944,8 +19944,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Vole les bonus de stats des cibles.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Vole les bonus de stats des cibles.",
   "zone_label": "Explosion"
  },
  "meteor-assault": {
@@ -20087,10 +20087,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -20108,7 +20108,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -20128,8 +20128,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Attaque et Atq. Spé. −1 pour chaque cible.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Attaque et Atq. Spé. −1 pour chaque cible.",
   "zone_label": "Explosion"
  },
  "max-quake": {
@@ -20149,10 +20149,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -20170,7 +20170,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -20189,8 +20189,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Précision −1 pour chaque cible.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Précision −1 pour chaque cible.",
   "zone_label": "Explosion"
  },
  "behemoth-bash": {
@@ -20270,10 +20270,10 @@
   "_allFixed": true,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -20291,7 +20291,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -20308,8 +20308,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
   "zone_label": "Explosion"
  },
  "steel-roller": {
@@ -20332,7 +20332,7 @@
    "power": 38,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 78,
+   "zPower": 77,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -20350,7 +20350,7 @@
     "trap"
    ],
    "z": {
-    "power": 78,
+    "power": 77,
     "shape": "onde",
     "ops": [
      {
@@ -20368,7 +20368,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 38 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 78 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_z": "Puissance 77 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "bolt-beak": {
@@ -20460,7 +20460,7 @@
    "power": 11,
    "shape": "encercle",
    "zShape": "explosion",
-   "zPower": 26,
+   "zPower": 27,
    "hits": null,
    "fx": [
     {
@@ -20483,7 +20483,7 @@
     "multihit"
    ],
    "z": {
-    "power": 26,
+    "power": 27,
     "shape": "explosion",
     "ops": [
      {
@@ -20499,7 +20499,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 26 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Draine 25 % des dégâts, répartis sur toute l'équipe.",
+  "description_z": "Puissance 27 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. Draine 25 % des dégâts, répartis sur toute l'équipe.",
   "zone_label": "Encerclement"
  },
  "max-knuckle": {
@@ -20519,10 +20519,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -20540,7 +20540,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -20559,8 +20559,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
   "zone_label": "Explosion"
  },
  "fishious-rend": {
@@ -20650,7 +20650,7 @@
    "power": 40,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 91,
+   "zPower": 92,
    "hits": null,
    "fx": [
     {
@@ -20675,7 +20675,7 @@
     "trap"
    ],
    "z": {
-    "power": 91,
+    "power": 92,
     "shape": "explosion",
     "ops": [
      {
@@ -20694,7 +20694,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 40 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins. 10 % de chance : brûlure.",
-  "description_z": "Puissance 91 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance de brûler chaque cible.",
+  "description_z": "Puissance 92 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Effet secondaire garanti. 50 % de chance de brûler chaque cible.",
   "zone_label": "Éclaboussure"
  },
  "spirit-break": {
@@ -20782,10 +20782,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 3,
+   "power": 2,
    "shape": "explosion",
    "zShape": "explosion_z",
-   "zPower": 6,
+   "zPower": 5,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -20803,7 +20803,7 @@
     "trap"
    ],
    "z": {
-    "power": 6,
+    "power": 5,
     "shape": "explosion_z",
     "ops": [
      {
@@ -20819,8 +20819,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 3 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
-  "description_z": "Puissance 6 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Les cibles perdent leurs bonus de stats.",
+  "description_game": "Puissance 2 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins.",
+  "description_z": "Puissance 5 au point d'impact. 100 % sur la cible, 80 % sur ses voisins, 60 % dans les coins. Brise boucliers et Abri. Les cibles perdent leurs bonus de stats.",
   "zone_label": "Explosion"
  },
  "branch-poke": {
@@ -21169,7 +21169,7 @@
    "power": 28,
    "shape": "diag",
    "zShape": "explosion",
-   "zPower": 59,
+   "zPower": 60,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -21187,7 +21187,7 @@
     "trap"
    ],
    "z": {
-    "power": 59,
+    "power": 60,
     "shape": "explosion",
     "ops": [
      {
@@ -21206,7 +21206,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 28 au point d'impact. 100 % sur la cible, 50 % sur ses 4 diagonales.",
-  "description_z": "Puissance 59 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. 50 % de chance d'empoisonner chaque cible.",
+  "description_z": "Puissance 60 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. 50 % de chance d'empoisonner chaque cible.",
   "zone_label": "Diagonales (X)"
  },
  "dual-wingbeat": {
@@ -22280,7 +22280,7 @@
    "power": 33,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 75,
+   "zPower": 76,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -22298,7 +22298,7 @@
     "trap"
    ],
    "z": {
-    "power": 75,
+    "power": 76,
     "shape": "explosion",
     "ops": [
      {
@@ -22316,7 +22316,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 33 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-  "description_z": "Puissance 75 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
+  "description_z": "Puissance 76 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
   "zone_label": "Éclaboussure"
  },
  "surging-strikes": {
@@ -22341,13 +22341,13 @@
     3
    ]
   },
-  "description_game": "Puissance 6 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 3 fois (chaque coup entame les boucliers). Taux de critique +6.",
+  "description_game": "Puissance 7 au point d'impact. 100 % sur la cible, puis rebondit sur l'ennemi le plus proche pas encore touché (60 %), puis sur un autre (35 %). Frappe 3 fois (chaque coup entame les boucliers). Taux de critique +6.",
   "rw": {
    "kind": "attack",
-   "power": 6,
+   "power": 7,
    "shape": "ricochet",
    "zShape": "ricochet_z",
-   "zPower": 12,
+   "zPower": 14,
    "hits": [
     3,
     3
@@ -22367,7 +22367,7 @@
     "trap"
    ],
    "z": {
-    "power": 12,
+    "power": 14,
     "shape": "ricochet_z",
     "ops": [
      {
@@ -22385,7 +22385,7 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_z": "Puissance 12 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
+  "description_z": "Puissance 14 au point d'impact. 100 % sur la cible, puis 4 rebonds (80, 65, 45, 25 %). Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
   "zone_label": "Ricochet"
  },
  "salt-cure": {
@@ -22526,7 +22526,7 @@
    "power": 35,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 73,
+   "zPower": 72,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -22544,7 +22544,7 @@
     "trap"
    ],
    "z": {
-    "power": 73,
+    "power": 72,
     "shape": "percee_large",
     "ops": [
      {
@@ -22564,7 +22564,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 35 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-  "description_z": "Puissance 73 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
+  "description_z": "Puissance 72 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. Attaque +1 pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "flower-trick": {
@@ -22643,10 +22643,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 30,
+   "power": 29,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 60,
+   "zPower": 59,
    "hits": null,
    "fx": [
     {
@@ -22679,7 +22679,7 @@
     "trap"
    ],
    "z": {
-    "power": 60,
+    "power": 59,
     "shape": "onde",
     "ops": [
      {
@@ -22696,8 +22696,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 30 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Vitesse −2 et −15 % de jauge pour la cible.",
-  "description_z": "Puissance 60 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_game": "Puissance 29 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Toujours : Vitesse −2 et −15 % de jauge pour la cible.",
+  "description_z": "Puissance 59 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Effet secondaire garanti. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "mortal-spin": {
@@ -22720,7 +22720,7 @@
    "power": 9,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 17,
+   "zPower": 18,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -22739,7 +22739,7 @@
     "trap"
    ],
    "z": {
-    "power": 17,
+    "power": 18,
     "shape": "onde",
     "ops": [
      {
@@ -22758,7 +22758,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 9 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne. Retire les pièges posés dans son camp et libère le lanceur des pièges.",
-  "description_z": "Puissance 17 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. 50 % de chance d'empoisonner chaque cible.",
+  "description_z": "Puissance 18 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. 50 % de chance d'empoisonner chaque cible.",
   "zone_label": "Balayage (ligne)"
  },
  "wicked-torque": {
@@ -22836,10 +22836,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 32,
+   "power": 31,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 65,
+   "zPower": 64,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -22857,7 +22857,7 @@
     "trap"
    ],
    "z": {
-    "power": 65,
+    "power": 64,
     "shape": "percee_large",
     "ops": [
      {
@@ -22874,8 +22874,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 32 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-  "description_z": "Puissance 65 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_game": "Puissance 31 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
+  "description_z": "Puissance 64 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "kowtow-cleave": {
@@ -22898,7 +22898,7 @@
    "power": 25,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 50,
+   "zPower": 51,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -22916,7 +22916,7 @@
     "trap"
    ],
    "z": {
-    "power": 50,
+    "power": 51,
     "shape": "onde",
     "ops": [
      {
@@ -22933,7 +22933,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 25 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 50 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Vole les bonus de stats des cibles.",
+  "description_z": "Puissance 51 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Vole les bonus de stats des cibles.",
   "zone_label": "Balayage (ligne)"
  },
  "psyblade": {
@@ -23337,7 +23337,7 @@
    "power": 35,
    "shape": "percee",
    "zShape": "percee_large",
-   "zPower": 73,
+   "zPower": 72,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -23355,7 +23355,7 @@
     "trap"
    ],
    "z": {
-    "power": 73,
+    "power": 72,
     "shape": "percee_large",
     "ops": [
      {
@@ -23373,7 +23373,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 35 au point d'impact. Traverse en profondeur : 100 % sur la cible, 70 % sur la case derrière, 45 % encore derrière.",
-  "description_z": "Puissance 73 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
+  "description_z": "Puissance 72 au point d'impact. Traverse 3 colonnes : 100 / 70 / 45 % au centre, la moitié sur les colonnes voisines. Brise boucliers et Abri. +20 % de jauge pour le lanceur.",
   "zone_label": "Perçante (colonne)"
  },
  "comeuppance": {
@@ -23438,10 +23438,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 20,
+   "power": 21,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 41,
+   "zPower": 42,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -23459,7 +23459,7 @@
     "trap"
    ],
    "z": {
-    "power": 41,
+    "power": 42,
     "shape": "onde",
     "ops": [
      {
@@ -23477,8 +23477,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 20 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 41 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
+  "description_game": "Puissance 21 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
+  "description_z": "Puissance 42 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Régénération de 5 % des PV par tour pendant 3 tours pour toute l'équipe.",
   "zone_label": "Balayage (ligne)"
  },
  "order-up": {
@@ -23620,10 +23620,10 @@
   "duration": 1,
   "rw": {
    "kind": "attack",
-   "power": 52,
+   "power": 53,
    "shape": "eclabous",
    "zShape": "explosion",
-   "zPower": 120,
+   "zPower": 122,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -23641,7 +23641,7 @@
     "trap"
    ],
    "z": {
-    "power": 120,
+    "power": 122,
     "shape": "explosion",
     "ops": [
      {
@@ -23658,8 +23658,8 @@
    "label": "Attaque",
    "triggerLabel": null
   },
-  "description_game": "Puissance 52 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
-  "description_z": "Puissance 120 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
+  "description_game": "Puissance 53 au point d'impact. 100 % sur la cible, 35 % sur ses 4 voisins.",
+  "description_z": "Puissance 122 au point d'impact. 100 % sur la cible, 55 % sur ses voisins, 30 % dans les coins. Brise boucliers et Abri. Bouclier de 12 % des PV pour toute l'équipe.",
   "zone_label": "Éclaboussure"
  },
  "jet-punch": {
@@ -23743,7 +23743,7 @@
    "power": 23,
    "shape": "ligne",
    "zShape": "onde",
-   "zPower": 48,
+   "zPower": 46,
    "hits": null,
    "fx": [],
    "drainShield": false,
@@ -23761,7 +23761,7 @@
     "trap"
    ],
    "z": {
-    "power": 48,
+    "power": 46,
     "shape": "onde",
     "ops": [
      {
@@ -23779,7 +23779,7 @@
    "triggerLabel": null
   },
   "description_game": "Puissance 23 au point d'impact. 100 % sur la cible, 75 % sur les deux autres cases de sa ligne.",
-  "description_z": "Puissance 48 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
+  "description_z": "Puissance 46 au point d'impact. Tous les ennemis : 70 % sur la ligne avant, 50 % au milieu, 30 % à l'arrière. Brise boucliers et Abri. Chaque cible perd 30 % de jauge.",
   "zone_label": "Balayage (ligne)"
  },
  "glaive-rush": {

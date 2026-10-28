@@ -1,0 +1,12 @@
+# Fins de ligne : LF partout (dépôt et copie de travail), quel que soit core.autocrlf.
+# Sans ce fichier, Windows (autocrlf=true) affiche des fichiers « modifiés » sans aucune différence.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.gz binary
+*.woff binary
+*.woff2 binary

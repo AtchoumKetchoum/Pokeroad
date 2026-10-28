@@ -25,6 +25,7 @@ body, button, input, select, textarea { font-family: var(--font-body); }
 
 /* Décors et bâtiments pixelisés */
 .pixel-canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+.xbr-canvas { image-rendering: pixelated; } /* bâtiments lissés en xBR x2 (js/art.js), grain de pixel gardé */
 canvas.art-scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 .hub .hub-building canvas { width: 100%; height: auto; display: block; }
 img.sprite, .pokemon-item img, .pokedex-entry > img, .banner-pokemon img, .timeline-unit { image-rendering: auto; }

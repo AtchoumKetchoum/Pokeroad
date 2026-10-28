@@ -54,6 +54,7 @@
     <link rel="stylesheet" href="css/battle-hud.css">
     <link rel="stylesheet" href="css/unit-plate.css">
     <link rel="stylesheet" href="css/field-fx.css">
+    <link rel="stylesheet" href="css/battle-vfx.css">
     <link rel="stylesheet" href="css/battle-dock.css">
     <link rel="stylesheet" href="css/ds.css">
 
@@ -156,6 +157,14 @@
                                 <button class="pk-btn-action small" data-battle-sprites="pixel" onclick="PmdSprite.setBattleStyle('pixel')">Pixel (PMD)</button>
                             </div>
                             <p class="small">Prend effet au prochain combat.</p>
+                        </div>
+                        <div class="settings-group">
+                            <h3>Effets des combats</h3>
+                            <div class="view-choice">
+                                <button class="pk-btn-action small" data-fx-level="full" onclick="BattleVfx.setLevel('full')">Complets</button>
+                                <button class="pk-btn-action small" data-fx-level="reduced" onclick="BattleVfx.setLevel('reduced')">Réduits</button>
+                            </div>
+                            <p class="small">Réduits : moins de particules, sans secousse, flash ni ralenti.</p>
                         </div>
                         <div class="settings-group">
                             <h3>Aide</h3>
@@ -477,6 +486,7 @@
     <script src="js/pmd-sprite.js"></script>
     <script src="js/battle.js"></script>
     <script src="js/patrol.js"></script>
+    <script src="js/battle-vfx.js"></script>
     <script src="js/battle_animation.js"></script>
     <script src="js/synergies.js"></script>
     <script src="js/battle-rules.js"></script>

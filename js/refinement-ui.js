@@ -402,13 +402,14 @@ const RefinementUI = (() => {
         const cost = GameData.natureCost(t);
         const have = GameData.countTrainingItem(cost.item);
         const neutral = !nature?.plus;
+        // Palier partagé : la moyenne des IV et celle des EV doivent l'avoir atteint
         const gate = GameData.natureTierGate(selectedPokemon);
         const ok = !neutral && data.money >= cost.money && have >= cost.count && (!gate || gate.ok);
         const inv = data.inventory.items || {};
         return `
             <div class="refinement-section train-section">
                 <h4>Nature : ${nature?.name || '—'}</h4>
-                <p class="small info">Chaque niveau : 1 sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre) : bonus +0,5 %, malus −0,25 %. Tous les 20 niveaux : bonus +5 %, malus −2,5 %. Après 100, une étoile tous les 10 niveaux : Étoiles en Sucre (★10 = niveau 200). Tous les 10 niveaux, le Pokémon doit avoir 10 niveaux d’avance. La progression reste si la nature change.</p>
+                <p class="small info">Chaque niveau : 1 sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre) : bonus +0,5 %, malus −0,25 %. Tous les 20 niveaux : bonus +5 %, malus −2,5 %. Après 100, une étoile tous les 10 niveaux : Étoiles en Sucre (★10 = niveau 200). Tous les 10 niveaux, un palier : le Pokémon doit avoir 10 niveaux d’avance, et la moyenne des IV et celle des EV doivent l’avoir rattrapée. La progression reste si la nature change.</p>
                 <div class="train-list">
                     <div class="train-row ${cost.star ? 'is-cap' : ''}">
                         <div class="train-stat"><b>${neutral ? 'Neutre' : `+${b.plus} %`}</b><span>${neutral ? 'aucun effet' : `${STAT_LABEL[nature.plus]} · −${b.minus} % ${STAT_LABEL[nature.minus]}`}</span></div>
@@ -817,7 +818,7 @@ const RefinementUI = (() => {
         const levelCost = Refinement.getRefinementCost('item', ref.level, ref.stars);
         const starCost = Refinement.getStarCost('item', ref.level, ref.stars);
         
-        // Palier figé : le meilleur Pokémon qui porte l'objet doit avoir 10 niveaux d'avance
+        // Palier : le meilleur Pokémon qui porte l'objet doit avoir 10 niveaux d'avance, et 2 autres objets améliorés l'avoir atteint
         const gate = GameData.itemTierGate(itemId, data);
         const gateOk = !gate || gate.ok;
         const maxed = ref.level >= Refinement.MAX_LEVEL;
@@ -842,7 +843,7 @@ const RefinementUI = (() => {
                 <div class="refinement-panel">
                     <div class="refinement-section">
                         <h4>Amélioration Global de l'Objet</h4>
-                        <p class="info">Améliorer cet objet augmentera son efficacité pour TOUS les exemplaires, actuels et futurs.</p>
+                        <p class="info">Améliorer cet objet augmentera son efficacité pour TOUS les exemplaires, actuels et futurs. Tous les 10 niveaux, il attend que 2 autres objets améliorés l'aient rattrapé.</p>
                         
                         <div class="current-stats">
                             <div>Niveau: ${ref.level}/${maxLevel}</div>

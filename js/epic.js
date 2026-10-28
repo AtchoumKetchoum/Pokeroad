@@ -90,10 +90,19 @@ const Epic = (() => {
                 </div>
             </div>`);
         if (!el) return;
+        if (typeof BattleVfx !== 'undefined') { BattleVfx.flash('#ffffff', 0.5, 260); BattleVfx.shake(12); }
         await wait(1900);
         el.classList.add('leaving');
         await wait(350);
         el.remove();
+        // Le boss gronde sur le plateau : ondes de choc, sol fendu
+        const slot = typeof getSlotEl === 'function' ? getSlotEl(boss._side, boss._index) : null;
+        if (slot && typeof BattleVfx !== 'undefined') {
+            BattleVfx.bossRoar(slot, r.color);
+            slot.querySelector('.unit')?.classList.add('boss-roar');
+            setTimeout(() => slot.querySelector('.unit')?.classList.remove('boss-roar'), 700);
+            await wait(500);
+        }
     }
 
     // Cut-in d'attaque Z : lignes de vitesse, portrait et nom, façon anime
@@ -106,6 +115,7 @@ const Epic = (() => {
                 <div class="z-text"><small>${unit.name} déchaîne sa puissance</small><span>${moveName}</span></div>
             </div>`);
         if (!el) return;
+        if (typeof BattleVfx !== 'undefined') { BattleVfx.flash(BattleVfx.colorOf((typeof MovesDB !== 'undefined' && MovesDB?.[unit._boostedMoveId]?.type) || 'normal'), 0.4, 300); BattleVfx.shake(10); }
         await wait(1100);
         el.classList.add('leaving');
         await wait(250);
