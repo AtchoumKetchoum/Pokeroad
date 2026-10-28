@@ -605,7 +605,7 @@ const BattleVfx = (() => {
 
     const shakeTargets = () => {
         const sc = scene();
-        return sc ? sc.querySelectorAll(':scope > #battle-scene, :scope > .team-grid, :scope > #vfx-canvas, :scope > .arena-fx, :scope > #field-weather') : [];
+        return sc ? sc.querySelectorAll(':scope > #battle-scene, :scope > .team-grid, :scope > #vfx-canvas, :scope > #vfx-ambient, :scope > .arena-fx, :scope > #field-weather') : [];
     };
     function applyShake(on) {
         const x = on ? rnd(-shakeAmp, shakeAmp) : 0, y = on ? rnd(-shakeAmp, shakeAmp) * 0.7 : 0;
@@ -1086,10 +1086,286 @@ const BattleVfx = (() => {
         burst(b.x, b.y, 8, { img: color, add: true, speed: [40, 120], ay: -100, life: [400, 600], size: [14, 22] });
     }
 
+    // ------------------------------------------------------------------
+    // AMBIANCE : météo et champs vivants, sur une couche à part (sous les effets d'attaque)
+    // ------------------------------------------------------------------
+    const amb = { weather: null, terrain: null, canvas: null, ctx: null, parts: [], raf: 0, last: 0, acc: {}, slots: [], slotsAt: 0, nextBolt: 0, rays: 0, W: 0, H: 0, res: 1 };
+    const SKY_TOP = 150, SKY_BOTTOM = 280; // la météo tombe entre le bandeau du haut et le pied de page
+    const TERRAIN_COLOR = { grassy: '#7ccc4c', electric: '#f8d030', psychic: '#f86898', misty: '#f8b8dc' };
+
+    function ensureAmbient() {
+        const sc = scene();
+        if (!sc || !sc.offsetParent) return false; // vue de combat masquée
+        if (!amb.canvas || amb.canvas.parentNode !== sc) {
+            amb.canvas = sc.querySelector(':scope > #vfx-ambient') || document.createElement('canvas');
+            amb.canvas.id = 'vfx-ambient';
+            amb.canvas.setAttribute('aria-hidden', 'true');
+            if (amb.canvas.parentNode !== sc) sc.appendChild(amb.canvas);
+            amb.ctx = amb.canvas.getContext('2d');
+            amb.W = 0;
+        }
+        const w = sc.offsetWidth, h = sc.offsetHeight;
+        const k = sc.getBoundingClientRect().width / (w || 1);
+        const r = Math.max(0.5, Math.min(1.25, k * (window.devicePixelRatio || 1))); // plus léger que la couche d'attaques
+        if (w !== amb.W || h !== amb.H || Math.abs(r - amb.res) > 0.05) {
+            amb.W = w; amb.H = h; amb.res = r;
+            amb.canvas.width = Math.round(w * r);
+            amb.canvas.height = Math.round(h * r);
+        }
+        return true;
+    }
+
+    // Centre des 18 cases (sol des plateaux), relu de temps en temps
+    function floorSlots() {
+        const t = now();
+        if (t - amb.slotsAt > 1500 || !amb.slots.length) {
+            const sc = scene();
+            amb.slots = sc ? [...sc.querySelectorAll('.team-grid .unit-slot')].map(center).filter(Boolean) : [];
+            amb.slotsAt = t;
+        }
+        return amb.slots;
+    }
+
+    function ambAdd(p) {
+        if (amb.parts.length > 260) return;
+        amb.parts.push({ age: 0, rot: 0, vr: 0, vx: 0, vy: 0, alpha: 1, ...p });
+    }
+    // Nombre d'apparitions de ce genre pendant dt (taux par seconde, réduit si « effets réduits »)
+    function due(key, perSec, dt) {
+        amb.acc[key] = (amb.acc[key] || 0) + perSec * (reduced() ? 0.35 : 1) * dt / 1000;
+        const n = Math.floor(amb.acc[key]);
+        amb.acc[key] -= n;
+        return n;
+    }
+
+    function spawnWeather(dt) {
+        const { W, H } = amb;
+        const sky = () => rnd(SKY_TOP, H - SKY_BOTTOM);
+        switch (amb.weather) {
+            case 'rain':
+                for (let i = due('rain', 160, dt); i > 0; i--) ambAdd({ kind: 'drop', x: rnd(-60, W + 20), y: SKY_TOP - rnd(0, 80), vx: 260, vy: 1500, land: sky(), life: 2000 });
+                // Un éclair de temps en temps
+                if (now() > amb.nextBolt && !reduced()) {
+                    amb.nextBolt = now() + rnd(4000, 9000);
+                    const x = rnd(W * 0.1, W * 0.9);
+                    ambAdd({ kind: 'bolt', x, y: SKY_TOP, x1: x + rnd(-120, 120), y1: rnd(SKY_TOP + 220, H * 0.5), life: 260 });
+                    flashScreen('#e4ecff', 0.3, 260);
+                }
+                break;
+            case 'hail':
+                for (let i = due('hail', 45, dt); i > 0; i--) ambAdd({ kind: 'hail', x: rnd(-40, W), y: SKY_TOP - 20, vx: 120, vy: rnd(700, 950), land: sky(), size: rnd(4, 7), life: 2200 });
+                break;
+            case 'snow':
+                for (let i = due('snow', 30, dt); i > 0; i--) ambAdd({ kind: 'flake', x: rnd(0, W), y: SKY_TOP - 10, vy: rnd(60, 120), size: rnd(10, 18), sway: rnd(20, 50), life: rnd(6000, 9000), floor: H - SKY_BOTTOM });
+                break;
+            case 'sand':
+                for (let i = due('sand', 80, dt); i > 0; i--) ambAdd({ kind: 'streak', x: -80, y: sky(), vx: rnd(900, 1300), vy: rnd(40, 120), size: rnd(30, 70), life: 1200 });
+                for (let i = due('sandDust', 9, dt); i > 0; i--) ambAdd({ kind: 'img', img: 'dust', x: -60, y: sky(), vx: rnd(300, 450), vy: rnd(-10, 20), size: rnd(110, 180), alpha: 0.7, life: 3000 });
+                break;
+            case 'sun':
+                for (let i = due('sun', 7, dt); i > 0; i--) ambAdd({ kind: 'img', img: '#ffe08a', add: true, x: rnd(0, W), y: rnd(SKY_TOP + 200, H - SKY_BOTTOM), vx: rnd(-8, 8), vy: -rnd(20, 45), size: rnd(10, 20), alpha: 0.7, life: rnd(2500, 4000), fadeIn: true });
+                break;
+            case 'shadow':
+                for (let i = due('shadow', 10, dt); i > 0; i--) ambAdd({ kind: 'img', img: 'bflame', x: rnd(0, W), y: rnd(SKY_TOP + 100, H - SKY_BOTTOM), vx: rnd(-10, 10), vy: -rnd(20, 50), size: rnd(18, 30), alpha: 0.6, life: rnd(2000, 3500), fadeIn: true });
+                break;
+        }
+    }
+
+    function spawnTerrain(dt) {
+        const slots = floorSlots();
+        if (!slots.length) return;
+        const at = () => { const s = pick(slots); return { x: s.x + rnd(-s.w * 0.35, s.w * 0.35), y: s.y + rnd(-s.h * 0.2, s.h * 0.25) }; };
+        switch (amb.terrain) {
+            case 'grassy':
+                for (let i = due('grassy', 16, dt); i > 0; i--) {
+                    const p = at();
+                    ambAdd({ kind: 'img', img: Math.random() < 0.6 ? 'leaf' : '#a8e070', x: p.x, y: p.y, vx: rnd(-15, 15), vy: -rnd(25, 50), size: rnd(18, 28), rot: rnd(0, 6), vr: rnd(-2, 2), alpha: 0.9, life: rnd(1500, 2500), fadeIn: true });
+                }
+                break;
+            case 'electric':
+                for (let i = due('electric', 10, dt); i > 0; i--) {
+                    const p = at(), a = rnd(0, Math.PI * 2), r = rnd(40, 75);
+                    ambAdd({ kind: 'bolt', x: p.x, y: p.y, x1: p.x + Math.cos(a) * r, y1: p.y + Math.sin(a) * r * 0.45, life: 160, thin: true });
+                }
+                for (let i = due('electricDot', 8, dt); i > 0; i--) { const p = at(); ambAdd({ kind: 'img', img: '#fff38a', add: true, x: p.x, y: p.y, vy: -rnd(30, 60), size: rnd(8, 14), life: 700 }); }
+                break;
+            case 'psychic':
+                for (let i = due('psychic', 3, dt); i > 0; i--) { const s = pick(slots); ambAdd({ kind: 'ring', x: s.x, y: s.y, size: 10, size1: s.w * 0.5, color: '#f86898', life: 1200 }); }
+                for (let i = due('psychicDot', 10, dt); i > 0; i--) { const p = at(); ambAdd({ kind: 'img', img: '#ff9cc4', add: true, x: p.x, y: p.y, vx: rnd(-10, 10), vy: -rnd(15, 35), size: rnd(14, 24), life: rnd(1500, 2200), fadeIn: true }); }
+                break;
+            case 'misty':
+                for (let i = due('misty', 5, dt); i > 0; i--) { const p = at(); ambAdd({ kind: 'img', img: '#ffe6f2', x: p.x, y: p.y, vx: rnd(-25, 25), vy: rnd(-5, 5), size: rnd(90, 150), sq: 0.45, alpha: 0.5, life: rnd(2500, 4000), fadeIn: true }); }
+                break;
+        }
+    }
+
+    function ambDraw(g, p, t) {
+        const r = amb.res;
+        const fade = (p.fadeIn ? Math.min(1, t / 0.25) : 1) * (t > 0.7 ? (1 - t) / 0.3 : 1);
+        g.globalAlpha = Math.max(0, p.alpha * fade);
+        g.globalCompositeOperation = p.add ? 'lighter' : 'source-over';
+        switch (p.kind) {
+            case 'img': {
+                g.setTransform(r, 0, 0, r, p.x * r, p.y * r);
+                if (p.rot) g.rotate(p.rot);
+                const sq = p.sq || 1;
+                g.drawImage(img(p.img), -p.size / 2, -p.size * sq / 2, p.size, p.size * sq);
+                break;
+            }
+            case 'flake':
+                g.setTransform(r, 0, 0, r, p.x * r, p.y * r);
+                g.drawImage(img('sparkle'), -p.size / 2, -p.size / 2, p.size, p.size);
+                break;
+            case 'hail':
+                g.setTransform(r, 0, 0, r, p.x * r, p.y * r);
+                g.fillStyle = '#f4fbff'; g.strokeStyle = '#7fa8c8'; g.lineWidth = 1.5;
+                g.beginPath(); g.arc(0, 0, p.size, 0, Math.PI * 2); g.fill(); g.stroke();
+                break;
+            case 'splash': {
+                g.setTransform(r, 0, 0, r, p.x * r, p.y * r);
+                g.strokeStyle = p.color || 'rgba(215,232,255,.8)'; g.lineWidth = 2;
+                const s = 3 + t * p.size;
+                g.beginPath(); g.ellipse(0, 0, s, s * 0.4, 0, 0, Math.PI * 2); g.stroke();
+                break;
+            }
+            case 'ring': {
+                g.setTransform(r, 0, 0, r, p.x * r, p.y * r);
+                g.strokeStyle = p.color; g.lineWidth = 4 * (1 - t) + 1;
+                const s = p.size + (p.size1 - p.size) * t;
+                g.beginPath(); g.ellipse(0, 0, s, s * 0.42, 0, 0, Math.PI * 2); g.stroke();
+                break;
+            }
+            case 'bolt': {
+                g.setTransform(r, 0, 0, r, 0, 0);
+                g.globalCompositeOperation = 'lighter';
+                const pts = boltPoints(p.x, p.y, p.x1, p.y1, p.thin ? 8 : 26);
+                const line = (w, c) => { g.strokeStyle = c; g.lineWidth = w; g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.stroke(); };
+                if (p.thin) { line(6, 'rgba(248,208,48,.9)'); line(2, '#fff'); }
+                else { line(14, 'rgba(200,215,255,.35)'); line(5, '#dfe8ff'); line(2, '#fff'); }
+                break;
+            }
+        }
+    }
+
+    function ambFrame(t) {
+        amb.raf = 0;
+        if (disabled || !ensureAmbient()) { amb.parts.length = 0; return; }
+        const dt = Math.min(100, Math.max(0, t - amb.last));
+        amb.last = t;
+        const s = dt / 1000;
+        if (amb.weather) spawnWeather(dt);
+        if (amb.terrain) spawnTerrain(dt);
+        const g = amb.ctx, r = amb.res;
+        g.setTransform(1, 0, 0, 1, 0, 0);
+        g.globalAlpha = 1;
+        g.globalCompositeOperation = 'source-over';
+        g.clearRect(0, 0, amb.canvas.width, amb.canvas.height);
+
+        // Soleil : rayons qui tournent doucement depuis le coin
+        if (amb.weather === 'sun') {
+            amb.rays += s * 0.08;
+            g.setTransform(r, 0, 0, r, amb.W * 0.92 * r, SKY_TOP * r);
+            g.rotate(amb.rays);
+            g.globalCompositeOperation = 'lighter';
+            g.fillStyle = 'rgba(255,226,140,.11)';
+            for (let i = 0; i < 9; i++) {
+                g.rotate(Math.PI * 2 / 9);
+                g.beginPath(); g.moveTo(0, 0); g.lineTo(amb.H, -70); g.lineTo(amb.H, 70); g.closePath(); g.fill();
+            }
+        }
+
+        // Pluie et sable : tous les traits en un seul tracé (léger)
+        g.setTransform(r, 0, 0, r, 0, 0);
+        g.globalAlpha = 1;
+        g.globalCompositeOperation = 'source-over';
+        const drops = new Path2D(), streaks = new Path2D();
+        for (let i = amb.parts.length - 1; i >= 0; i--) {
+            const p = amb.parts[i];
+            p.age += dt;
+            if (p.sway) p.vx = Math.sin(p.age / 600 + p.size) * p.sway;
+            p.x += p.vx * s; p.y += p.vy * s; p.rot += p.vr * s;
+            // Gouttes et grêlons s'écrasent sur le plateau : petite éclaboussure
+            if (p.land !== undefined && p.y >= p.land) {
+                if (p.kind === 'drop' && Math.random() < 0.5) ambAdd({ kind: 'splash', x: p.x, y: p.land, size: 12, life: 260 });
+                if (p.kind === 'hail') ambAdd({ kind: 'splash', x: p.x, y: p.land, size: 10, life: 220, color: 'rgba(244,251,255,.9)' });
+                amb.parts.splice(i, 1);
+                continue;
+            }
+            if (p.floor !== undefined && p.y >= p.floor) p.vy = 0;
+            if (p.age >= p.life || p.x > amb.W + 200) { amb.parts.splice(i, 1); continue; }
+            if (p.kind === 'drop') { drops.moveTo(p.x, p.y); drops.lineTo(p.x - p.vx * 0.03, p.y - p.vy * 0.03); }
+            else if (p.kind === 'streak') { streaks.moveTo(p.x, p.y); streaks.lineTo(p.x - p.size, p.y - p.size * p.vy / p.vx); }
+        }
+        g.strokeStyle = 'rgba(215,232,255,.72)'; g.lineWidth = 2.6; g.stroke(drops);
+        g.strokeStyle = 'rgba(240,206,146,.85)'; g.lineWidth = 3.5; g.stroke(streaks);
+        for (const p of amb.parts) if (p.kind !== 'drop' && p.kind !== 'streak') ambDraw(g, p, Math.min(1, p.age / p.life));
+
+        if (amb.weather || amb.terrain || amb.parts.length) amb.raf = requestAnimationFrame(ambFrame);
+        else g.clearRect(0, 0, amb.canvas.width, amb.canvas.height);
+    }
+    function ambRun() {
+        if (amb.raf || disabled) return;
+        amb.last = now();
+        amb.raf = requestAnimationFrame(ambFrame);
+    }
+
+    // Arrivée d'une météo ou d'un champ : un coup d'éclat, puis l'ambiance s'installe
+    function castWeather(type) {
+        const { W, H } = amb;
+        if (type === 'rain') {
+            amb.nextBolt = now() + 3000;
+            ambAdd({ kind: 'bolt', x: W * 0.3, y: SKY_TOP, x1: W * 0.42, y1: H * 0.45, life: 320 });
+            flashScreen('#e4ecff', 0.45, 320);
+            shake(5);
+        } else if (type === 'sun') {
+            flashScreen('#ffe7a8', 0.45, 420);
+            for (let i = 0; i < count(24); i++) ambAdd({ kind: 'img', img: '#ffe08a', add: true, x: W * 0.92, y: SKY_TOP, vx: rnd(-500, -100), vy: rnd(50, 450), size: rnd(16, 30), life: 900 });
+        } else if (type === 'sand') {
+            for (let i = 0; i < count(40); i++) ambAdd({ kind: 'streak', x: rnd(-300, 0), y: rnd(SKY_TOP, H - SKY_BOTTOM), vx: rnd(1100, 1500), vy: rnd(40, 120), size: rnd(50, 90), life: 1200 });
+            shake(4);
+        } else if (type === 'hail' || type === 'snow') {
+            flashScreen('#f0f8ff', 0.35, 300);
+        } else if (type === 'shadow') {
+            flashScreen('#3a1a50', 0.4, 400);
+        }
+    }
+    function castTerrain(type) {
+        const slots = floorSlots();
+        const color = TERRAIN_COLOR[type];
+        if (!slots.length || !color) return;
+        // Une onde part du centre et gagne chaque case des deux plateaux
+        const cx = amb.W / 2, cy = slots.reduce((a, s) => a + s.y, 0) / slots.length;
+        slots.forEach(s => {
+            const d = Math.hypot(s.x - cx, (s.y - cy) * 0.6);
+            setTimeout(() => {
+                ambAdd({ kind: 'ring', x: s.x, y: s.y, size: 8, size1: s.w * 0.6, color, life: 600 });
+                ambAdd({ kind: 'img', img: color, add: true, x: s.x, y: s.y, size: s.w * 0.6, sq: 0.45, alpha: 0.7, life: 600 });
+                ambRun();
+            }, d * 1.2);
+        });
+        flashScreen(color, 0.25, 300);
+    }
+
+    /** Appelé à chaque mise à jour du terrain (js/field-fx.js) : météo et champ en cours. */
+    function setField({ weather = null, terrain = null } = {}) {
+        if (disabled) return;
+        const newWeather = weather && weather !== amb.weather, newTerrain = terrain && terrain !== amb.terrain;
+        amb.weather = weather; amb.terrain = terrain;
+        if (!weather && !terrain) return; // la boucle s'arrête d'elle-même une fois les particules finies
+        amb.slotsAt = 0;
+        if (!ensureAmbient()) return;
+        if (newWeather) castWeather(weather);
+        if (newTerrain) castTerrain(terrain);
+        ambRun();
+    }
+
     function setSpeed(v) { speed = v > 0 ? v : 1; }
     function clear() {
         if (raf > 0) cancelAnimationFrame(raf);
         raf = 0;
+        if (amb.raf) cancelAnimationFrame(amb.raf);
+        amb.raf = 0; amb.parts.length = 0;
+        if (amb.ctx) { amb.ctx.setTransform(1, 0, 0, 1, 0, 0); amb.ctx.clearRect(0, 0, amb.canvas.width, amb.canvas.height); }
         parts.length = 0; tasks.length = 0; flash = null; dim = null; shakeAmp = 0; freezeUntil = 0; slowUntil = 0;
         applyShake(false);
         if (ctx) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height); }
@@ -1100,6 +1376,7 @@ const BattleVfx = (() => {
         get disabled() { return disabled; }, set disabled(v) { disabled = !!v; if (disabled) clear(); },
         setSpeed, clear, colorOf, markFor, spot,
         charge, release, zone, launch, bounce, dash, impact, knockOut, bossRoar, puff,
+        setField,
         shake, flash: flashScreen, freeze, slowmo, darken,
     };
 })();

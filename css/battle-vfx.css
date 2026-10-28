@@ -8,6 +8,16 @@
     z-index: 190; /* au-dessus des plateaux, sous la barre du haut et le pied de page */
 }
 
+/* Météo et champs vivants : sous les effets d'attaque, au-dessus des plateaux */
+#vfx-ambient {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 7;
+}
+
 /* Concentration : le Pokémon s'illumine de la couleur du type */
 #view-battle .unit .sprite.vfx-charge {
     filter: drop-shadow(0 0 6px var(--vfx-color, #fff)) drop-shadow(0 0 16px var(--vfx-color, #fff)) brightness(1.18) saturate(1.2) !important;
