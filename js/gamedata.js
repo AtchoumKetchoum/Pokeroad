@@ -266,6 +266,17 @@ const GameData = (() => {
         const peers = STAT_KEYS.filter(k => k !== stat).map(k => statTrack(pokemon, kind, k).level);
         return Refinement.tierGate(statTrack(pokemon, kind, stat).level, peers, TIER_PEERS.stat);
     }
+    // Nature : la moyenne des IV et celle des EV du Pokémon doivent avoir atteint le palier
+    function natureTierGate(pokemon) {
+        const avg = (kind) => STAT_KEYS.reduce((a, k) => a + statTrack(pokemon, kind, k).level, 0) / STAT_KEYS.length;
+        return Refinement.tierGate(natureTrack(pokemon).level, [avg('iv'), avg('ev')], 2);
+    }
+    // Atelier : 2 autres objets améliorés au même niveau
+    function itemTierGate(itemId, data = loadData()) {
+        const refs = data?.itemRefinements || {};
+        const peers = Object.entries(refs).filter(([id]) => id !== itemId).map(([, r]) => Refinement.levelOf(r));
+        return Refinement.tierGate(Refinement.levelOf(refs[itemId] || {}), peers, 2);
+    }
     function tierGateReason(gate, what) {
         return gate && !gate.ok ? `Palier ${gate.level} : il faut ${gate.need} ${what} au niveau ${gate.level} (${gate.have}/${gate.need}).` : null;
     }
@@ -366,6 +377,8 @@ const GameData = (() => {
         if (!pokemon) return { success: false, reason: 'Pokémon introuvable.' };
         const nature = typeof pokemon.nature === 'string' ? NATURES.find(n => n.name === pokemon.nature) : pokemon.nature;
         if (!nature?.plus) return { success: false, reason: 'Nature neutre : change-la d’abord (Pilule ou Patch Talent).' };
+        const gated = tierGateReason(natureTierGate(pokemon), 'moyennes d’entraînement (IV et EV)');
+        if (gated) return { success: false, reason: gated };
         const track = natureTrack(pokemon);
         const cost = natureCost(track);
         const inv = data.inventory.items = data.inventory.items || {};
@@ -2055,7 +2068,14 @@ const GameData = (() => {
             const prev = byTarget.get(e.targetId);
             if (!prev) { byTarget.set(e.targetId, { ...e }); return; }
             if (!prev.canEvolve && e.canEvolve) Object.assign(prev, { method: e.method, level: e.level, item: e.item, canEvolve: true, reason: '' });
-            else if (!prev.canEvolve) prev.reason = `${prev.reason} ou ${e.reason.replace(/^Objet requis : /, '')}`;
+            else if (!prev.canEvolve) (prev._alts = prev._alts || []).push(e.reason.replace(/^Objet requis : /, ''));
+        });
+        // Message court : « Niveau requis : 30 ou Fraise en Sucre, Baie en Sucre… (7 objets) »
+        byTarget.forEach(e => {
+            if (!e._alts) return;
+            const alts = e._alts.length > 2 ? `${e._alts.slice(0, 2).join(', ')}… (${e._alts.length} objets)` : e._alts.join(' ou ');
+            e.reason = `${e.reason} ou ${alts}`;
+            delete e._alts;
         });
         const merged = [...byTarget.values()];
         return merged.length > 0 ? merged : null;
@@ -2312,7 +2332,9 @@ const GameData = (() => {
         const currentRef = data.itemRefinements[itemId];
         const inventory = data.inventory.items || {};
         const availableCopies = inventory[itemId] || 0;
-        
+        const gated = tierGateReason(itemTierGate(itemId, data), 'autres objets améliorés à l’Atelier');
+        if (gated) return { success: false, reason: gated };
+
         // Check Level Up first
         const maxLevel = Refinement.getMaxRefineLevel(Refinement.starsOf(currentRef));
         if (Refinement.levelOf(currentRef) < maxLevel) {
@@ -2557,6 +2579,8 @@ const GameData = (() => {
         missionMoney,
         moveTierGate,
         statTierGate,
+        natureTierGate,
+        itemTierGate,
         tierGateReason,
         TIER_PEERS,
         sacrificePool,

@@ -25,7 +25,7 @@ const PmdSprite = (() => {
         fitHeight: 56,
         fitWidth: 60,
         // Lissage xBR des planches au chargement (2, 3 ou 4 ; 0 = pixels d'origine). Voir « AGRANDISSEMENT xBR ».
-        hd: 4,
+        hd: 2,
         // Contour noir allégé (voir js/xbr-worker.js) : part de teinte vers la couleur voisine, et pixels agrandis retirés au bord
         outlineTint: 0.5,
         outlineThin: 1,

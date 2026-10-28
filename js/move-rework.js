@@ -599,10 +599,12 @@ const MoveRework = (() => {
         }
     }
 
-    // Surplus d'un drain : devient un bouclier
+    // Surplus d'un drain : devient un bouclier, plafonné à 25 % des PV max (sinon il s'accumulait sans fin)
+    const DRAIN_SHIELD_CAP = 0.25;
     function drainOverflow(attacker, move, expected, gained) {
         if (!move.rw?.drainShield) return;
-        const over = Math.floor(expected - gained);
+        const room = Math.max(0, Math.round(attacker.maxHp * DRAIN_SHIELD_CAP) - (attacker.shield || 0));
+        const over = Math.min(room, Math.floor(expected - gained));
         if (over > 0) { attacker.shield = (attacker.shield || 0) + over; say(attacker, 'Bouclier', 'buff'); }
     }
 

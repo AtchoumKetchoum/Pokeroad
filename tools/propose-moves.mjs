@@ -327,7 +327,7 @@ const RULES = {
     R4: 'Baisse de Vitesse de la cible → aussi −15 % de jauge (−20 % pour une capacité de statut).',
     R5: 'Bonus de Défense / Déf. Spé. du lanceur → aussi un bouclier (10 % des PV par palier, 15 % pour +2 et plus).',
     R6: "Priorité positive → passe devant et rend 25 % de jauge après l'attaque. Priorité négative → le lanceur perd 20 % de jauge après coup.",
-    R7: "Drain → le soin qui dépasse les PV max devient un bouclier.",
+    R7: "Drain → le soin qui dépasse les PV max devient un bouclier, plafonné à 25 % des PV max.",
     R8: 'Soins de statut → soin officiel + régénération de 5 % par tour pendant 2 tours.',
     R9: "K.O. en un coup → Exécution : achève une cible sous 25 % de PV (boss : 15 %), sinon dégâts normaux.",
     R10: "Expulsion (Hurlement, Cyclone…) → repousse la cible au fond de sa colonne et lui retire 30 % de jauge.",
@@ -555,7 +555,7 @@ function attack(m, o) {
     if (o.priority > 0 || mech.priority) { rules.add('R6'); parts.push("Prioritaire : passe devant et rend 25 % de jauge après l'attaque."); }
     if (o.priority < 0) { rules.add('R6'); parts.push('Lente : le lanceur perd 20 % de jauge après coup.'); }
     if (o.crit_rate) parts.push(`Taux de critique +${o.crit_rate}.`);
-    if (o.drain > 0) { rules.add('R7'); parts.push(`Draine ${o.drain} % des dégâts ; l'excédent devient un bouclier.`); }
+    if (o.drain > 0) { rules.add('R7'); parts.push(`Draine ${o.drain} % des dégâts ; l'excédent devient un bouclier (25 % des PV max au plus).`); }
     if (o.drain < 0) parts.push(`Contrecoup : ${-o.drain} % des dégâts infligés.`);
     if (o.healing > 0) parts.push(`Soigne ${o.healing} % des PV du lanceur.`);
     if (mech.recharge) parts.push('Recharge : le lanceur perd son prochain tour.');

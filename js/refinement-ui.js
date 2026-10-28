@@ -400,12 +400,14 @@ const RefinementUI = (() => {
         const cost = GameData.natureCost(t);
         const have = GameData.countTrainingItem(cost.item);
         const neutral = !nature?.plus;
-        const ok = !neutral && data.money >= cost.money && have >= cost.count;
+        // Palier partagé : la moyenne des IV et celle des EV doivent l'avoir atteint
+        const gate = GameData.natureTierGate(selectedPokemon);
+        const ok = !neutral && data.money >= cost.money && have >= cost.count && (!gate || gate.ok);
         const inv = data.inventory.items || {};
         return `
             <div class="refinement-section train-section">
                 <h4>Nature : ${nature?.name || '—'}</h4>
-                <p class="small info">Chaque niveau : 1 sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre) : bonus +0,5 %, malus −0,25 %. Tous les 20 niveaux, un palier : Étoiles en Sucre (bonus +5 %, malus −2,5 %). La progression reste si la nature change.</p>
+                <p class="small info">Chaque niveau : 1 sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre) : bonus +0,5 %, malus −0,25 %. Tous les 20 niveaux, un palier : Étoiles en Sucre (bonus +5 %, malus −2,5 %). Tous les 10 niveaux, elle attend que la moyenne des IV et celle des EV l'aient rattrapée. La progression reste si la nature change.</p>
                 <div class="train-list">
                     <div class="train-row ${cost.star ? 'is-cap' : ''}">
                         <div class="train-stat"><b>${neutral ? 'Neutre' : `+${b.plus} %`}</b><span>${neutral ? 'aucun effet' : `${STAT_LABEL[nature.plus]} · −${b.minus} % ${STAT_LABEL[nature.minus]}`}</span></div>
@@ -420,6 +422,7 @@ const RefinementUI = (() => {
                     </div>
                 </div>
                 ${neutral ? '<p class="small">Une nature neutre ne donne ni bonus ni malus : change-la avec une Pilule ou un Patch Talent (fiche du Pokémon).</p>' : ''}
+                ${gate && !gate.ok ? `<p class="small ko">Palier ${gate.level} : la moyenne des IV et celle des EV doivent atteindre le niveau ${gate.level} (${gate.have}/${gate.need}).</p>` : ''}
                 <div class="small train-money">${data.money.toLocaleString('fr-FR')} $ · Pilules Talent ${inv['ability-capsule'] || 0} · Patchs Talent ${inv['ability-patch'] || 0}</div>
             </div>`;
     }
@@ -813,8 +816,11 @@ const RefinementUI = (() => {
         const levelCost = Refinement.getRefinementCost('item', ref.level, ref.stars);
         const starCost = Refinement.getStarCost('item', ref.level, ref.stars);
         
-        const canLevelUp = ref.level < maxLevel && data.money >= levelCost.money && quantity >= levelCost.copies;
-        const canAddStar = ref.level >= maxLevel && data.money >= starCost.money && quantity >= starCost.copies;
+        // Palier partagé : tous les 10 niveaux, 2 autres objets améliorés doivent l'avoir atteint
+        const gate = GameData.itemTierGate(itemId, data);
+        const gateOk = !gate || gate.ok;
+        const canLevelUp = gateOk && ref.level < maxLevel && data.money >= levelCost.money && quantity >= levelCost.copies;
+        const canAddStar = gateOk && ref.level >= maxLevel && data.money >= starCost.money && quantity >= starCost.copies;
 
         return `
             <div class="refinement-options">
@@ -834,7 +840,8 @@ const RefinementUI = (() => {
                 <div class="refinement-panel">
                     <div class="refinement-section">
                         <h4>Amélioration Global de l'Objet</h4>
-                        <p class="info">Améliorer cet objet augmentera son efficacité pour TOUS les exemplaires, actuels et futurs.</p>
+                        <p class="info">Améliorer cet objet augmentera son efficacité pour TOUS les exemplaires, actuels et futurs. Tous les 10 niveaux, il attend que 2 autres objets améliorés l'aient rattrapé.</p>
+                        ${gate && !gate.ok ? `<p class="small ko">Palier ${gate.level} : ${gate.have}/${gate.need} autres objets améliorés au niveau ${gate.level}.</p>` : ''}
                         
                         <div class="current-stats">
                             <div>Niveau: ${ref.level}/${maxLevel}</div>
