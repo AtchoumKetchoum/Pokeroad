@@ -351,7 +351,9 @@ const RefinementUI = (() => {
         `;
     }
 
-    // Entraînement d'une stat (IV ou EV) : niveaux avec l'objet de la stat, palier tous les 20 niveaux (étoile)
+    // Entraînement d'une stat (IV ou EV) : niveaux 1 à 100 avec l'objet de la stat, puis une étoile tous les 10 niveaux (200 max)
+    // Barre de progression : les 100 premiers niveaux, puis les 10 niveaux de l'étoile en cours
+    const barPct = (level, max) => Math.min(100, max <= Refinement.FREE_LEVELS ? level / max * 100 : (level - (max - Refinement.LEVELS_PER_STAR)) / Refinement.LEVELS_PER_STAR * 100);
     const STAT_LABEL = { hp: 'PV', atk: 'Attaque', def: 'Défense', spatk: 'Atq. Spé.', spdef: 'Déf. Spé.', speed: 'Vitesse' };
     function renderStatTraining(kind) {
         const data = GameData._load();
@@ -364,7 +366,7 @@ const RefinementUI = (() => {
             const have = GameData.countTrainingItem(cost.item);
             const gate = GameData.statTierGate(selectedPokemon, kind, stat);
             const ok = data.money >= cost.money && have >= cost.count && (!gate || gate.ok);
-            const value = Math.floor(((base[stat] || 0) + t.level * (isIV ? 1 : 10)) * (1 + 0.2 * t.stars));
+            const value = Math.floor(((base[stat] || 0) + t.level * (isIV ? 1 : 10)) * (1 + 0.2 * Refinement.tierSteps(t.level)));
             const icon = cost.item === 'feather-sample' ? Art.item('wingull-feather', 28) : Art.item(cost.item, 28);
             const itemName = cost.item === 'feather-sample' ? 'Plume d’échantillon' : (GameData.getItem(cost.item)?.name_fr || cost.item);
             return `
@@ -372,8 +374,8 @@ const RefinementUI = (() => {
                     <div class="train-stat"><b>${STAT_LABEL[stat]}</b><span>${isIV ? 'IV' : 'EV'} ${value}</span></div>
                     <div class="train-track">
                         <div class="train-level">Niv. ${t.level}/${max} ${Refinement.formatDisplay(1, t.stars).replace(/Niveau 1\s*/, '')}</div>
-                        <div class="train-bar"><i style="width:${Math.min(100, (t.level - (max - 20)) / 20 * 100)}%"></i></div>
-                        ${gate && !gate.ok ? `<div class="small ko">Palier ${gate.level} : ${gate.have}/${gate.need} autres stats</div>` : ''}
+                        <div class="train-bar"><i style="width:${barPct(t.level, max)}%"></i></div>
+                        ${gate && !gate.ok ? `<div class="small ko">${gate.text || `Palier ${gate.level} : ${gate.have}/${gate.need} autres stats`}</div>` : ''}
                     </div>
                     <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.${isIV ? 'refineIV' : 'refineEV'}('${stat}')" title="${itemName}">
                         <span class="train-cost">${icon}×${cost.count}${cost.key ? ` ${Art.item(cost.key.item, 24)}×${cost.key.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $</span>
@@ -385,8 +387,8 @@ const RefinementUI = (() => {
             <div class="refinement-section train-section">
                 <h4>${isIV ? 'Entraînement des IV' : 'Entraînement des EV'}</h4>
                 <p class="small info">${isIV
-                    ? 'Chaque niveau : 1 plume de la stat (+1 IV). Tous les 20 niveaux, un palier : plumes d’échantillon (une étoile = +20 % sur l’IV de la stat).'
-                    : 'Chaque niveau : 1 vitamine de la stat (+10 EV). Tous les 20 niveaux, un palier : mochi de la stat (une étoile = +20 % sur l’EV de la stat).'} Tous les 10 niveaux, une stat attend que les 5 autres l’aient rattrapée.</p>
+                    ? 'Chaque niveau : 1 plume de la stat (+1 IV) ; +20 % sur l’IV de la stat tous les 20 niveaux. Après 100, une étoile tous les 10 niveaux : plumes d’échantillon (★10 = niveau 200).'
+                    : 'Chaque niveau : 1 vitamine de la stat (+10 EV) ; +20 % sur l’EV de la stat tous les 20 niveaux. Après 100, une étoile tous les 10 niveaux : mochi de la stat (★10 = niveau 200).'} Tous les 10 niveaux, un palier : le Pokémon doit avoir 10 niveaux d’avance, et la stat attend que les 5 autres l’aient rattrapée.</p>
                 <div class="train-list">${rows}</div>
                 <div class="small train-money">${data.money.toLocaleString('fr-FR')} $ disponibles</div>
             </div>`;
@@ -400,18 +402,20 @@ const RefinementUI = (() => {
         const cost = GameData.natureCost(t);
         const have = GameData.countTrainingItem(cost.item);
         const neutral = !nature?.plus;
-        const ok = !neutral && data.money >= cost.money && have >= cost.count;
+        const gate = GameData.natureTierGate(selectedPokemon);
+        const ok = !neutral && data.money >= cost.money && have >= cost.count && (!gate || gate.ok);
         const inv = data.inventory.items || {};
         return `
             <div class="refinement-section train-section">
                 <h4>Nature : ${nature?.name || '—'}</h4>
-                <p class="small info">Chaque niveau : 1 sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre) : bonus +0,5 %, malus −0,25 %. Tous les 20 niveaux, un palier : Étoiles en Sucre (bonus +5 %, malus −2,5 %). La progression reste si la nature change.</p>
+                <p class="small info">Chaque niveau : 1 sucrerie (Fraise, Cœur, Baie, Trèfle, Fleur ou Ruban en Sucre) : bonus +0,5 %, malus −0,25 %. Tous les 20 niveaux : bonus +5 %, malus −2,5 %. Après 100, une étoile tous les 10 niveaux : Étoiles en Sucre (★10 = niveau 200). Tous les 10 niveaux, le Pokémon doit avoir 10 niveaux d’avance. La progression reste si la nature change.</p>
                 <div class="train-list">
                     <div class="train-row ${cost.star ? 'is-cap' : ''}">
                         <div class="train-stat"><b>${neutral ? 'Neutre' : `+${b.plus} %`}</b><span>${neutral ? 'aucun effet' : `${STAT_LABEL[nature.plus]} · −${b.minus} % ${STAT_LABEL[nature.minus]}`}</span></div>
                         <div class="train-track">
                             <div class="train-level">Niv. ${t.level}/${GameData.trainingMax(t.stars)}${t.stars ? ` <span class="ds-stars">★${t.stars}</span>` : ''}</div>
-                            <div class="train-bar"><i style="width:${Math.min(100, (t.level - (GameData.trainingMax(t.stars) - 20)) / 20 * 100)}%"></i></div>
+                            <div class="train-bar"><i style="width:${barPct(t.level, GameData.trainingMax(t.stars))}%"></i></div>
+                            ${gate && !gate.ok ? `<div class="small ko">${gate.text}</div>` : ''}
                         </div>
                         <button class="refine-btn train-btn ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.trainNature()">
                             <span class="train-cost">${Art.item(cost.star ? 'star-sweet' : 'strawberry-sweet', 28)}×${cost.count}${cost.key ? ` ${Art.item(cost.key.item, 24)}×${cost.key.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $</span>
@@ -442,14 +446,14 @@ const RefinementUI = (() => {
         return `
             <div class="refinement-section">
                 <h4>Entraînement des capacités</h4>
-                <p class="small info">Chaque niveau : des CT du même type que la capacité (n'importe laquelle ; un PP Plus remplace une CT manquante). Tous les 20 niveaux, un palier : PP Max. Tous les 10 niveaux, une capacité attend que les 3 autres capacités équipées l'aient rattrapée. L'amélioration renforce les dégâts, mais aussi les boucliers, soins et régénérations de la capacité.</p>
+                <p class="small info">Chaque niveau : des CT du même type que la capacité (n'importe laquelle ; un PP Plus remplace une CT manquante). Après 100, une étoile tous les 10 niveaux : PP Max (★10 = niveau 200). Tous les 10 niveaux, un palier : le Pokémon doit avoir 10 niveaux d'avance, et la capacité attend que les 3 autres capacités équipées l'aient rattrapée. L'amélioration renforce les dégâts, mais aussi les boucliers, soins et régénérations de la capacité.</p>
                 <div class="moves-list">
                     ${keys.map(key => {
                         const mv = db[key] || {};
                         const ref = moveRefinements[key] || { level: 1, stars: 0 };
                         const lvl = Refinement.levelOf(ref), stars = Refinement.starsOf(ref);
                         const atMax = lvl >= Refinement.getMaxRefineLevel(stars);
-                        const mult = Refinement.getMultiplier(lvl, stars);
+                        const mult = Refinement.trackMultiplier(lvl);
                         const cost = Refinement.getRefinementCost('move', lvl, stars);
                         const mc = GameData.moveTrainingCost(key, ref, mv.type);
                         const tierKey = mc.key || null;
@@ -467,7 +471,7 @@ const RefinementUI = (() => {
                                 </div>
                                 <div class="move-stats">
                                     <div>${kind} · ×${mult.toFixed(2)}${power ? ` · Puissance ${Math.round(power * mult)}` : ''}</div>
-                                    ${gate && !gate.ok ? `<div class="small ko">Palier ${gate.level} : ${gate.have}/${gate.need} autres capacités équipées au niveau ${gate.level}</div>` : ''}
+                                    ${gate && !gate.ok ? `<div class="small ko">${gate.text || `Palier ${gate.level} : ${gate.have}/${gate.need} autres capacités équipées au niveau ${gate.level}`}</div>` : ''}
                                 </div>
                                 <button class="refine-btn small ${ok ? '' : 'disabled'}" ${ok ? '' : 'disabled'} onclick="RefinementUI.refineMove('${key}')">
                                     ${mc.star ? `${Art.item('pp-max', 22)}×${mc.count}` : `${Art.item('tm-' + mc.type, 22)} CT ${typeName} ×${mc.count} <small>(${mc.haveCt} + ${mc.haveJoker} PP Plus)</small>`}${tierKey ? ` ${Art.item(tierKey.item, 20)}×${tierKey.count}` : ''} · ${cost.money.toLocaleString('fr-FR')} $ · ${atMax ? 'Palier ★' : 'Améliorer'}
@@ -807,14 +811,18 @@ const RefinementUI = (() => {
         const ref = GameData.getGlobalItemRefinement(itemId);
         const quantity = data.inventory.items[itemId] || 0;
         
-        const mult = Refinement.getMultiplier(ref.level, ref.stars);
+        const mult = Refinement.trackMultiplier(ref.level);
         const maxLevel = Refinement.getMaxRefineLevel(ref.stars);
         
         const levelCost = Refinement.getRefinementCost('item', ref.level, ref.stars);
         const starCost = Refinement.getStarCost('item', ref.level, ref.stars);
         
-        const canLevelUp = ref.level < maxLevel && data.money >= levelCost.money && quantity >= levelCost.copies;
-        const canAddStar = ref.level >= maxLevel && data.money >= starCost.money && quantity >= starCost.copies;
+        // Palier figé : le meilleur Pokémon qui porte l'objet doit avoir 10 niveaux d'avance
+        const gate = GameData.itemTierGate(itemId, data);
+        const gateOk = !gate || gate.ok;
+        const maxed = ref.level >= Refinement.MAX_LEVEL;
+        const canLevelUp = gateOk && ref.level < maxLevel && data.money >= levelCost.money && quantity >= levelCost.copies;
+        const canAddStar = gateOk && !maxed && ref.level >= maxLevel && data.money >= starCost.money && quantity >= starCost.copies;
 
         return `
             <div class="refinement-options">
@@ -840,6 +848,7 @@ const RefinementUI = (() => {
                             <div>Niveau: ${ref.level}/${maxLevel}</div>
                             <div>Étoiles : ${Refinement.formatDisplay(ref.level, ref.stars)}</div>
                         </div>
+                        ${gate && !gate.ok ? `<p class="small ko">${gate.text}</p>` : ''}
 
                         <div class="refinement-action">
                             <h5>Monter de niveau (${ref.level} → ${ref.level + 1})</h5>
@@ -857,7 +866,7 @@ const RefinementUI = (() => {
                             </button>
                         </div>
                         
-                         ${ref.level >= maxLevel ? `
+                         ${ref.level >= maxLevel && !maxed ? `
                             <div class="refinement-action star-action">
                                 <h5>Ajouter une étoile (★${ref.stars} → ★${ref.stars + 1})</h5>
                                 <div class="cost-display">

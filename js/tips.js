@@ -45,7 +45,7 @@ const Tips = (() => {
         ],
         training: [
             ['#refinement-modal .pokemon-grid', 'Choisis un Pokémon', 'Toute l\'amélioration se fait Pokémon par Pokémon.'],
-            ['#refinement-modal .refinement-options', 'Ce qui se monte', 'Niveau, Grade, IV, EV, nature, attaques : chacun par niveaux, avec un palier (étoile) tous les 20 niveaux.'],
+            ['#refinement-modal .refinement-options', 'Ce qui se monte', 'Niveau, Grade, IV, EV, nature, attaques, objets : chacun monte jusqu’à 100, puis une étoile tous les 10 niveaux jusqu’à 200.'],
             ['#refinement-modal .cost-display', 'Le coût', 'De plus en plus cher. Dès ★3, il faut aussi un objet de déblocage gagné sur les boss.'],
         ],
         workshop: [

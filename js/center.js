@@ -644,7 +644,7 @@ function renderMovesManager() {
         const ref = CURRENT_POKEMON?.moveRefinements?.[move.name];
         const refLevel = ref ? Refinement.levelOf(ref) : 1;
         const refStars = ref ? Refinement.starsOf(ref) : 0;
-        const refMult = Refinement.getMultiplier(refLevel, refStars);
+        const refMult = Refinement.trackMultiplier(refLevel);
         const basePower = rw?.kind === 'attack' ? rw.power : power;
         const shownPower = typeof basePower === 'number' && basePower > 1 ? Math.round(basePower * refMult) : basePower;
         const reach = typeof BattleRules !== 'undefined' && (moveData.power || 0) > 0 && moveData.damage_class !== 'status'

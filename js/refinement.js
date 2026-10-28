@@ -2,9 +2,11 @@
 // Permet d'améliorer Pokémon, objets, IV/EV et CT au-delà de leurs limites normales
 
 const Refinement = (() => {
-    // Progression infinie : plus aucun plafond, ce sont les coûts qui augmentent à chaque palier
-    const MAX_LEVEL = Infinity;
-    const MAX_STARS = Infinity;
+    // Tout plafonne au niveau 200 : 100 niveaux, puis 10 étoiles de 10 niveaux (Pokémon, objets, capacités, IV/EV, nature)
+    const MAX_LEVEL = 200;
+    const MAX_STARS = 10;
+    const FREE_LEVELS = 100;
+    const LEVELS_PER_STAR = 10;
     
     // Coûts de base en argent
     const BASE_COSTS = {
@@ -69,7 +71,7 @@ const Refinement = (() => {
     const GRADE_CAP = 10;
     function getMaxLevel(grade, stars) {
         const g = Math.min(GRADE_CAP, Math.max(1, grade || 1));
-        return g * LEVELS_PER_TIER + (g >= GRADE_CAP ? Math.max(0, stars || 0) * LEVELS_PER_TIER : 0);
+        return g * LEVELS_PER_TIER + (g >= GRADE_CAP ? Math.min(MAX_STARS, Math.max(0, stars || 0)) * LEVELS_PER_TIER : 0);
     }
 
     // Palier partagé : au niveau 10, 20, 30…, on ne passe que si assez d'autres (Pokémon, capacités, stats) y sont aussi
@@ -79,10 +81,18 @@ const Refinement = (() => {
         return { level, need, have: Math.min(have, need), ok: have >= need };
     }
 
-    // Objets, attaques, IV/EV : 20 niveaux par palier d'étoile (★0 : 20, ★1 : 40, ★2 : 60…)
+    // Objets, attaques, IV/EV, nature : comme un Pokémon, niveaux 1 à 100 sans étoile, puis +10 niveaux par étoile (★10 : 200)
     function getMaxRefineLevel(stars) {
-        return (Math.max(0, stars || 0) + 1) * 20;
+        return Math.min(MAX_LEVEL, FREE_LEVELS + Math.min(MAX_STARS, Math.max(0, stars || 0)) * LEVELS_PER_STAR);
     }
+    // Étoiles qu'il faut pour atteindre un niveau (conversion des anciennes sauvegardes)
+    const starsForLevel = (level) => Math.max(0, Math.ceil(((level || 0) - FREE_LEVELS) / LEVELS_PER_STAR));
+    // Puissance et coûts suivent le niveau (même courbe qu'avec l'ancienne étoile tous les 20 niveaux) :
+    // +1 % par niveau et +20 % tous les 20 niveaux franchis ; les étoiles ne font qu'ouvrir les niveaux 101 à 200
+    const tierSteps = (level) => Math.max(0, Math.ceil((level || 0) / 20) - 1);
+    const trackMultiplier = (level) => 1 + (Math.max(1, level || 1) - 1) / 100 + 0.2 * tierSteps(level);
+    // Paliers de prix : ×1,35 tous les 20 niveaux (au lieu de chaque étoile)
+    const costTier = (level) => Math.floor((level || 0) / 20);
 
     /**
      * Calcule l'XP fournie par un Pokémon sacrifié
@@ -156,8 +166,8 @@ const Refinement = (() => {
         if (type === 'pokemon') return 0;
 
         const baseValue = BASE_COSTS[type] || BASE_COSTS.item;
-        // Chaque étoile rend la suite 35 % plus chère (courbe exponentielle)
-        const starMultiplier = escalation(currentStars);
+        // Tous les 20 niveaux, la suite est 35 % plus chère (courbe exponentielle)
+        const starMultiplier = escalation(costTier(currentLevel));
         // Le coût grimpe un peu plus vite que linéairement : la course au grinding ne s'arrête jamais
         return Math.floor(baseValue * currentLevel * starMultiplier * (1 + currentLevel / 100));
     }
@@ -315,7 +325,7 @@ const Refinement = (() => {
         if (currentLevel >= maxLevel) {
             return { 
                 possible: false, 
-                reason: `Niveau maximum atteint (${maxLevel}). Ajoutez une étoile pour débloquer +20 niveaux.`,
+                reason: maxLevel >= MAX_LEVEL ? `Niveau maximum atteint (${MAX_LEVEL}).` : `Niveau maximum atteint (${maxLevel}). Ajoutez une étoile pour débloquer +${LEVELS_PER_STAR} niveaux.`,
                 cost: null
             };
         }
@@ -473,6 +483,12 @@ const Refinement = (() => {
         GRADE_CAP,
         tierGate,
         getMaxRefineLevel,
+        starsForLevel,
+        tierSteps,
+        trackMultiplier,
+        costTier,
+        FREE_LEVELS,
+        LEVELS_PER_STAR,
         getMaxLevelByGrade,
         getFoodXP,
         getRequiredCopies,

@@ -195,8 +195,8 @@
         Object.entries(UPGRADE).forEach(([k, v]) => { out[k] = (base[k] || 0) + v; });
         return out;
     };
-    // Niveaux cumulés : 20 par palier, une étoile pour passer au palier suivant
-    const starsFor = (n) => n > 20 ? Math.ceil(n / 20) - 1 : 0;
+    // Niveaux cumulés : 1 à 100 sans étoile, puis une étoile tous les 10 niveaux (Refinement)
+    const starsFor = (n) => Refinement.starsForLevel(n);
     const track = (n) => ({ level: n, stars: starsFor(n) });
     const refLevel = (n) => ({ level: Math.max(1, n), stars: starsFor(n) });
 
@@ -461,8 +461,8 @@
         const trackCost = (kind, n, itemPrice) => {
             let c = 0;
             for (let i = 0; i < n; i++) {
-                const stars = Math.floor(i / 20);
-                if (i > 0 && i % 20 === 0) c += GameData.trainingCost(kind, 'atk', { level: i, stars: stars - 1 }).money; // étoile (hors matériau rare)
+                const stars = starsFor(i + 1);
+                if (i >= Refinement.FREE_LEVELS && i % Refinement.LEVELS_PER_STAR === 0) c += GameData.trainingCost(kind, 'atk', { level: i, stars: stars - 1 }).money; // étoile (hors matériau rare)
                 const k = GameData.trainingCost(kind, 'atk', { level: i, stars });
                 c += k.money + k.count * itemPrice;
             }

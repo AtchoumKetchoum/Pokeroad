@@ -63,7 +63,8 @@ const QuickUpgrades = (() => {
         const nature = GameData.getNature(pk);
         if (nature?.plus) {
             const c = GameData.natureCost(GameData.natureTrack(pk));
-            if (money >= c.money && GameData.countTrainingItem(c.item) >= c.count && !(c.key && (inv[c.key.item] || 0) < c.key.count)) add('train', `Renforcer la nature ${nature.name}`, () => openTraining(pk, 'nature'), Art.item('star-sweet', 26));
+            const g = GameData.natureTierGate(pk);
+            if ((!g || g.ok) && money >= c.money && GameData.countTrainingItem(c.item) >= c.count && !(c.key && (inv[c.key.item] || 0) < c.key.count)) add('train', `Renforcer la nature ${nature.name}`, () => openTraining(pk, 'nature'), Art.item('star-sweet', 26));
         }
         // Capacités équipées améliorables (CT du type ou PP Plus)
         (pk.selectedMoves || []).forEach(key => {
@@ -94,7 +95,8 @@ const QuickUpgrades = (() => {
             const ref = GameData.getGlobalItemRefinement(id);
             const atMax = Refinement.levelOf(ref) >= Refinement.getMaxRefineLevel(Refinement.starsOf(ref));
             const check = atMax ? Refinement.canRefineAddStar(ref, inv[id], data.money, 'item') : Refinement.canRefineLevelUp(ref, inv[id], data.money, 'item');
-            if (check.possible) out.push({ kind: 'workshop', label: `Améliorer ${GameData.getItem(id)?.name_fr || id} à l'Atelier`, run: () => RefinementUI.open(id, 'item'), icon: Art.item(id, 26) });
+            const gate = GameData.itemTierGate(id, data);
+            if (check.possible && (!gate || gate.ok)) out.push({ kind: 'workshop', label: `Améliorer ${GameData.getItem(id)?.name_fr || id} à l'Atelier`, run: () => RefinementUI.open(id, 'item'), icon: Art.item(id, 26) });
         });
         return out;
     }

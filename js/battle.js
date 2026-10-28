@@ -906,7 +906,7 @@ function buildActorsFromDom() {
       return MoveRework.normalize({
           ...info, // Copie toutes les données du JSON (effect, v_stat_count, etc.)
           // Amélioration de l'attaque (Laboratoire) : multiplie sa puissance
-          _refMult: (pk?.moveRefinements?.[key] ? Refinement.getMultiplier(Refinement.levelOf(pk.moveRefinements[key]), Refinement.starsOf(pk.moveRefinements[key])) : 1),
+          _refMult: (pk?.moveRefinements?.[key] ? Refinement.trackMultiplier(Refinement.levelOf(pk.moveRefinements[key])) : 1),
           id: key,
           name: info.name_fr || key,
           type: (info.type || firstTypeFrom(pk)).toLowerCase(),
@@ -967,7 +967,7 @@ function buildActorsFromDom() {
     actor.itemMults = {};
     [...actor.heldItems, ...actor.berries].forEach(id => {
         const ref = GameData.getGlobalItemRefinement(id);
-        actor.itemMults[id] = Refinement.getMultiplier(Refinement.levelOf(ref), Refinement.starsOf(ref));
+        actor.itemMults[id] = Refinement.trackMultiplier(Refinement.levelOf(ref));
     });
     // Compatibilité : l'ancien code lit un objet et une baie
     actor.heldItem = actor.heldItems[0] || actor.berries[0] || null;
@@ -1029,7 +1029,7 @@ function buildActorsFromDom() {
         ['attack', 'defense', 'spatk', 'spdef', 'speed', 'maxHp'].forEach(k => { actor[k] = Math.round(actor[k] * statMult); });
         actor.hp = actor.maxHp;
         actor.heldItem = tier.item || null;
-        actor.itemMult = Refinement.getMultiplier(tier.itemLevel, tier.itemStars);
+        actor.itemMult = Refinement.trackMultiplier(tier.itemLevel);
         actor.heldItems = tier.items || (tier.item ? [tier.item] : []);
         actor.berries = tier.berries || [];
         actor.itemMults = Object.fromEntries([...actor.heldItems, ...actor.berries].map(id => [id, actor.itemMult]));
