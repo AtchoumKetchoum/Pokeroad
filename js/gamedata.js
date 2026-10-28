@@ -788,7 +788,7 @@ const GameData = (() => {
                 pocket = 'vitamins';
             } else if (key.endsWith('-wing')) {
                 pocket = 'feathers';
-            } else if (item.category === 'Échantillons' || item.category === 'Butin' || key === 'fairy-feather' || key === 'poke-toy' || key === 'plume-fossil') {
+            } else if (item.category === 'Échantillons' || item.category === 'Butin' || key === 'poke-toy' || key === 'plume-fossil') {
                 pocket = 'loot';
             } else if (pocket === 'misc' && ((item.category || '').includes('loot') || (item.category || '').includes('collectible'))) {
                 pocket = 'loot';
@@ -1823,7 +1823,7 @@ const GameData = (() => {
     }
 
     // Items pool enrichie pour les missions
-    function pickRandomItem(pockets = ['misc', 'medicine', 'battle', 'berries', 'ct']) {
+    function pickRandomItem(pockets = ['evolution', 'vitamins', 'feathers', 'exp', 'battle', 'berries', 'ct']) {
         const availablePockets = pockets.filter(p => itemsByPocket[p] && itemsByPocket[p].length > 0);
         if (availablePockets.length === 0) return null;
         
@@ -1932,9 +1932,9 @@ const GameData = (() => {
         const itemChance = 0.4 + (affinityBonus * 0.05); // 40% base + bonus affinité
         
         if (Math.random() < itemChance) {
-            // Poches du catalogue : entraînement (vitamines, plumes, bonbons, mochi) et baies, puis objets tenus et d'évolution
-            let pockets = ['medicine', 'berries'];
-            if (difficulty >= 2) pockets.push('misc', 'battle');
+            // Poches du jeu (categorizeItems) : entraînement et baies, puis objets tenus, d'évolution et échantillons
+            let pockets = ['vitamins', 'feathers', 'berries', 'exp'];
+            if (difficulty >= 2) pockets.push('evolution', 'battle', 'loot');
             
             const foundItem = pickRandomItem(pockets);
             if (foundItem) {

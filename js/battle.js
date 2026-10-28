@@ -2662,10 +2662,23 @@ async function checkWinCondition() {
     // Objets tenus du catalogue (hors objets d'espèce), plus des objets d'évolution
     const catalog = GameData.getItemsByPocket();
     const heldPool = (catalog.battle || []).filter(it => !it.species_only && !it.not_sold).map(it => it.id);
-    // Tous les objets d'évolution et d'entraînement (vitamines, plumes, bonbons, mochi, sucreries…) peuvent aussi tomber
-    const evolutionPool = (catalog.misc || []).filter(it => !it.not_sold && ['Évolution', 'Échantillons'].includes(it.category)).map(it => it.id);
-    const trainingPool = (catalog.medicine || []).filter(it => !it.not_sold).map(it => it.id);
-    const dropableItems = [...heldPool, ...evolutionPool, ...trainingPool];
+    // Tous les objets d'évolution (sucreries comprises), les échantillons et l'entraînement (bonbons, vitamines, plumes, mochi)
+    // peuvent aussi tomber ; poches du jeu (GameData.categorizeItems), pas celles de data/items.json
+    const evolutionPool = [...(catalog.evolution || []), ...(catalog.loot || [])].filter(it => !it.not_sold).map(it => it.id);
+    const trainingPool = [...(catalog.exp || []), ...(catalog.vitamins || []), ...(catalog.feathers || [])].filter(it => !it.not_sold).map(it => it.id);
+    const dropableItems = [...heldPool, ...evolutionPool];
+    // Tirage pondéré : 25 % des objets tombés sont de l'entraînement, où les bonbons pèsent plus
+    // (les petits plus souvent que les gros : un Bonbon Exp XL vaut 30 niveaux)
+    const LOOT_TRAINING_SHARE = 0.25;
+    const CANDY_WEIGHT = { 'exp-candy-xs': 5, 'exp-candy-s': 4, 'rare-candy': 3, 'exp-candy-m': 3, 'exp-candy-l': 2, 'exp-candy-xl': 1 };
+    const pickTraining = () => {
+        const total = trainingPool.reduce((a, id) => a + (CANDY_WEIGHT[id] || 1), 0);
+        let roll = Math.random() * total;
+        return trainingPool.find(id => (roll -= CANDY_WEIGHT[id] || 1) < 0) || trainingPool[0];
+    };
+    const pickItem = () => (trainingPool.length && Math.random() < LOOT_TRAINING_SHARE)
+        ? pickTraining()
+        : dropableItems[Math.floor(Math.random() * dropableItems.length)];
     const ctPool = (catalog.ct || []).filter(it => !it.not_sold).map(it => it.id);
     const dropableBerries = (GameData.getItemsByPocket().berries || []).map(it => it.id);
     
@@ -2689,7 +2702,7 @@ async function checkWinCondition() {
     
     // Un objet et une baie, chacun avec une chance (toujours garantis contre un boss)
     if (battleIndex === 10 || Math.random() < BATTLE_REWARDS.item) {
-        const randomItem = dropableItems[Math.floor(Math.random() * dropableItems.length)];
+        const randomItem = pickItem();
         GameData.addItem(randomItem, 1);
         droppedItems.push({ id: randomItem, name: getCleanItemNameFr(randomItem), icon: Art.item(randomItem, 22) });
     }
@@ -2700,8 +2713,7 @@ async function checkWinCondition() {
     }
     // Œuf Chance : un butin de plus
     if (Math.random() < itemBonus.extraLootChance) {
-        const pool = Math.random() < 0.5 ? dropableItems : dropableBerries;
-        const bonus = pool[Math.floor(Math.random() * pool.length)];
+        const bonus = Math.random() < 0.5 ? pickItem() : dropableBerries[Math.floor(Math.random() * dropableBerries.length)];
         GameData.addItem(bonus, 1);
         droppedItems.push({ id: bonus, name: getCleanItemNameFr(bonus), icon: Art.item(bonus, 22) });
     }
