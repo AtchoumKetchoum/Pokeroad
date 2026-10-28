@@ -1,7 +1,8 @@
 /**
  * synergies.js - Synergies de types : 18 effets différents, un par type.
  *
- * Paliers : 2 / 3 / 4 Pokémon du même type dans l'équipe (les plaques tenues comptent).
+ * Paliers : 2 / 3 / 4 Pokémon du même type dans l'équipe (les plaques tenues comptent : 2 au plus par type,
+ * et pas sur un Pokémon qui a déjà le type).
  * Chaque type a son propre effet, qui grandit à chaque palier. Selon le type, l'effet profite
  * aux Pokémon de ce type (« type ») ou à toute l'équipe (« équipe »).
  */
@@ -39,13 +40,26 @@ const Synergies = (() => {
         fairy:    { name: 'Bénédiction', icon: 'sparkle', scope: 'team', values: [20, 35, 50], text: v => `${pct(v)} de chance d'éviter une altération de statut` },
     };
 
-    // Compte par type (types du Pokémon + plaques tenues)
-    function typesOf(u) {
-        return [...(u.types || []), ...(typeof HeldItems !== 'undefined' ? HeldItems.extraTypes(u) : [])];
+    // Plaques : au plus 2 par type comptent, et pas sur un Pokémon qui a déjà le type
+    // (une plaque complète une synergie, elle ne la crée pas à partir de rien)
+    const PLATE_CAP = 2;
+    function plateTypes(units) {
+        const used = {}, out = new Map();
+        units.forEach(u => {
+            const plates = (typeof HeldItems !== 'undefined' ? HeldItems.extraTypes(u) : [])
+                .filter(t => !(u.types || []).includes(t) && (used[t] || 0) < PLATE_CAP);
+            plates.forEach(t => { used[t] = (used[t] || 0) + 1; });
+            out.set(u, plates);
+        });
+        return out;
+    }
+    // Compte par type (types du Pokémon + plaques qui comptent)
+    function typesOf(u, plates = null) {
+        return [...(u.types || []), ...(plates ? plates.get(u) || [] : u._plateTypes || [])];
     }
     function counts(units) {
-        const c = {};
-        units.forEach(u => typesOf(u).forEach(t => { c[t] = (c[t] || 0) + 1; }));
+        const c = {}, plates = plateTypes(units);
+        units.forEach(u => typesOf(u, plates).forEach(t => { c[t] = (c[t] || 0) + 1; }));
         return c;
     }
     // Liste lisible pour l'interface : actives d'abord, puis celles à un Pokémon d'être actives
@@ -73,7 +87,9 @@ const Synergies = (() => {
 
     // Début du combat : effets immédiats
     function setup(units, cnt) {
+        const plates = plateTypes(units);
         units.forEach(u => {
+            u._plateTypes = plates.get(u) || [];
             u._syn = {};
             u.synergyTypeBonus = {};
             Object.entries(cnt).forEach(([type, n]) => { const t = tierOf(n); if (t && DEFS[type]) u._syn[type] = t; });

@@ -31,7 +31,8 @@ const HeldItems = (() => {
     const PLATES = { 'flame-plate': 'fire', 'splash-plate': 'water', 'zap-plate': 'electric', 'meadow-plate': 'grass', 'icicle-plate': 'ice', 'fist-plate': 'fighting', 'toxic-plate': 'poison', 'earth-plate': 'ground', 'sky-plate': 'flying', 'mind-plate': 'psychic', 'insect-plate': 'bug', 'stone-plate': 'rock', 'spooky-plate': 'ghost', 'draco-plate': 'dragon', 'dread-plate': 'dark', 'iron-plate': 'steel', 'pixie-plate': 'fairy', 'blank-plate': 'normal' };
     Object.entries(PLATES).forEach(([slug, type]) => def(slug, 10, 30, { types: [type], plate: type }));
     def('legend-plate', 15, 45, { species: [493], legendPlate: true });
-    // Gemmes : première attaque du type +{v} % (une fois)
+    // Gemmes : les 3 premières attaques du type +{v} % (sur toutes leurs cibles), puis la gemme est consommée
+    const GEM_USES = 3;
     TYPES.forEach(t => def(`${t}-gem`, 50, 120, { gem: t, consumable: true }));
     // Encens
     def('sea-incense', 15, 45, { types: ['water'], rainRegen: 3 });
@@ -40,11 +41,12 @@ const HeldItems = (() => {
     def('rock-incense', 15, 45, { types: ['rock'], startStages: { DEF: 1 } });
     def('rose-incense', 15, 45, { types: ['grass'], roseIncense: 10 });
     // Dégâts généraux
-    def('muscle-band', 10, 35, { cls: 'physical' });
-    def('wise-glasses', 10, 35, { cls: 'special' });
+    def('muscle-band', 15, 45, { cls: 'physical' });
+    def('wise-glasses', 15, 45, { cls: 'special' });
+    // Objets Choix : verrouillés sur la première attaque utilisée au combat
     def('choice-band', 50, 100, { statPct: { atk: 'v' }, choice: true });
     def('choice-specs', 50, 100, { statPct: { spatk: 'v' }, choice: true });
-    def('choice-scarf', 50, 100, { statPct: { speed: 'v' }, choice: true });
+    def('choice-scarf', 30, 60, { statPct: { speed: 'v' }, choice: true }); // la Vitesse vaut plus que l'attaque dans la jauge d'action
     def('expert-belt', 20, 60, { superEffective: true });
     def('life-orb', 30, 70, { allDmg: true, lifeOrb: 10 });
     def('metronome', 10, 25, { metronome: 5 });
@@ -52,19 +54,19 @@ const HeldItems = (() => {
     def('razor-claw', 50, 100, { crit: 1, critPierce: true });
     def('kings-rock', 10, 30, { flinch: true });
     def('razor-fang', 8, 25, { gaugeCut: 25 });
-    def('wide-lens', 10, 30, { acc: true });
-    def('zoom-lens', 15, 40, { zoom: true });
+    def('wide-lens', 10, 30, { acc: true }); // et ignore l'esquive de la cible
+    def('zoom-lens', 25, 60, { zoom: true });
     def('loaded-dice', 50, 100, { extraHit: true });
     def('punching-glove', 70, 100, { glove: true });
     def('protective-pads', 10, 30, { pads: true });
-    // Objets de pouvoir (Vitesse −50 %)
-    def('power-bracer', 30, 70, { statPct: { atk: 'v', speed: -50 } });
-    def('power-belt', 30, 70, { statPct: { def: 'v', speed: -50 } });
-    def('power-lens', 30, 70, { statPct: { spatk: 'v', speed: -50 } });
-    def('power-band', 30, 70, { statPct: { spdef: 'v', speed: -50 } });
-    def('power-weight', 30, 70, { statPct: { hp: 'v', speed: -50 } });
-    def('power-anklet', 15, 40, { statPct: { speed: -50 }, hitGauge: true });
-    def('macho-brace', 12, 35, { statPct: { atk: 'v', def: 'v', spatk: 'v', spdef: 'v', speed: -50 } });
+    // Objets de pouvoir (Vitesse −10 % : à −50 %, la jauge d'action perdue coûtait plus que le bonus ne rapportait)
+    def('power-bracer', 40, 80, { statPct: { atk: 'v', speed: -10 } });
+    def('power-belt', 40, 80, { statPct: { def: 'v', speed: -10 } });
+    def('power-lens', 40, 80, { statPct: { spatk: 'v', speed: -10 } });
+    def('power-band', 40, 80, { statPct: { spdef: 'v', speed: -10 } });
+    def('power-weight', 40, 80, { statPct: { hp: 'v', speed: -10 } });
+    def('power-anklet', 15, 40, { statPct: { speed: -10 }, hitGauge: true });
+    def('macho-brace', 15, 40, { statPct: { atk: 'v', def: 'v', spatk: 'v', spdef: 'v', speed: -10 } });
     // Défense
     def('assault-vest', 50, 100, { statPct: { spdef: 'v' }, noTactics: true });
     def('eviolite', 50, 100, { statPct: { def: 'v', spdef: 'v' }, needsEvolution: true });
@@ -72,8 +74,8 @@ const HeldItems = (() => {
     def('heavy-duty-boots', 5, 15, { statPct: { speed: 'v' }, boots: true });
     def('safety-goggles', 15, 45, { goggles: true });
     def('utility-umbrella', 8, 25, { umbrella: true });
-    def('bright-powder', 8, 20, { evasion: true });
-    def('lax-incense', 5, 15, { evasion: true, dodgeGauge: 15 });
+    def('bright-powder', 12, 30, { evasion: true });
+    def('lax-incense', 10, 25, { evasion: true, dodgeGauge: 15 });
     def('rocky-helmet', 16, 30, { helmet: true });
     def('focus-sash', 10, 30, { sash: true, consumable: true });
     def('focus-band', 10, 35, { band: true });
@@ -84,12 +86,12 @@ const HeldItems = (() => {
     // Soin
     def('leftovers', 6.25, 15, { regenTurn: true, regenGroup: true });
     def('black-sludge', 10, 20, { regenTurn: true, sludge: true, regenGroup: true });
-    def('shell-bell', 12.5, 30, { shellBell: true });
-    def('big-root', 30, 80, { bigRoot: true });
+    def('shell-bell', 25, 50, { shellBell: true });
+    def('big-root', 30, 80, { bigRoot: true }); // régénération des objets, drains, vol de vie et Vampigraine
     def('soothe-bell', 2, 6, { sootheBell: true });
     def('cleanse-tag', 20, 60, { cleanseTag: true });
     def('pure-incense', 2, 5, { pureIncense: true });
-    def('full-incense', 4, 10, { statPct: { speed: -25 }, fullIncense: true });
+    def('full-incense', 4, 10, { statPct: { speed: -10 }, fullIncense: true });
     // Boucliers et champs
     def('light-clay', 20, 60, { shieldBoost: true, screenTurns: 3 });
     def('electric-seed', 15, 35, { seed: { terrain: 'electric', stat: 'DEF' }, consumable: true });
@@ -156,8 +158,9 @@ const HeldItems = (() => {
     def('amulet-coin', 50, 150, { money: true });
     def('luck-incense', 80, 200, { money: true, moneyIfAlive: true });
     def('lucky-egg', 15, 50, { luckyEgg: true });
+    // Foulards : imposent un rôle, dont le bonus vaut sur toutes les rangées et grandit de {v} %
     const SCARVES = { 'red-scarf': 'attacker', 'blue-scarf': 'speedster', 'pink-scarf': 'support', 'green-scarf': 'caster', 'yellow-scarf': 'tank' };
-    Object.entries(SCARVES).forEach(([slug, role]) => def(slug, 25, 75, { role }));
+    Object.entries(SCARVES).forEach(([slug, role]) => def(slug, 50, 100, { role }));
     // Objets d'espèce
     def('light-ball', 100, 150, { species: [25], statPct: { atk: 'v', spatk: 'v' } });
     def('thick-club', 100, 150, { species: [104, 105], statPct: { atk: 'v' } });
@@ -266,7 +269,9 @@ const HeldItems = (() => {
         u.shield = (u.shield || 0) + Math.round(u.maxHp * Math.min(50, pct * boost) / 100);
         say(u, 'Bouclier', 'buff');
     };
-    const healPct = (u, pct, src = null) => B().heal(u, u.maxHp * pct / 100 * (1 + stacked(has(u, 'bigRoot').map(id => valueOf(u, id))) / 100 * (src === 'regen' ? 1 : 0)), null);
+    // Grosse Racine : soins de régénération, drains, vol de vie et Vampigraine +{v} %
+    const drainMult = (u) => 1 + stacked(has(u, 'bigRoot').map(id => valueOf(u, id))) / 100;
+    const healPct = (u, pct, src = null) => B().heal(u, u.maxHp * pct / 100 * (src === 'regen' ? drainMult(u) : 1), null);
     const addRegen = (u, pct, turns) => { (u._regens = u._regens || []).push({ pct: Math.round(pct * 10) / 10, turns }); say(u, 'Régénération', 'buff'); };
     const stages = (u, st) => B().addStages(u, st, true);
 
@@ -278,6 +283,8 @@ const HeldItems = (() => {
         if (!u) return;
         u._usedItems = new Set();
         u._metronome = { move: null, count: 0 };
+        u._gemUses = {};
+        delete u._choicePending;
         const ids = itemsOf(u);
         ids.forEach(id => {
             const s = S[id];
@@ -296,17 +303,9 @@ const HeldItems = (() => {
                 u.types = [best.t]; u._normalTo = best.t; u._legendType = best.t;
             }
         }
-        // Verrous : objets Choix (1re attaque seulement) et Veste de Combat (pas de tactiques)
+        // Verrous : objets Choix (la 1re attaque utilisée, voir lockChoice) et Veste de Combat (pas de tactiques)
         const isPassive = (m) => typeof MoveRework !== 'undefined' && MoveRework.isPassive(m);
-        if (ids.some(id => S[id].choice) && Array.isArray(u.moves)) {
-            const firstAttack = u.moves.find(m => !isPassive(m) && (m.power || 0) > 0);
-            if (firstAttack) {
-                // Les attaques verrouillées restent affichées (grisées) avec la raison
-                const lockId = ids.find(id => S[id].choice);
-                u._lockedMoves = u.moves.filter(m => m !== firstAttack && !isPassive(m)).map(m => ({ move: m, reason: nameOf(lockId) }));
-                u.moves = u.moves.filter(m => m === firstAttack || isPassive(m));
-            }
-        }
+        if (ids.some(id => S[id].choice)) u._choicePending = ids.find(id => S[id].choice);
         if (ids.some(id => S[id].noTactics) && Array.isArray(u.moves)) {
             const kept = u.moves.filter(m => isPassive(m) || (m.power || 0) > 0);
             if (kept.length) {
@@ -333,6 +332,7 @@ const HeldItems = (() => {
         const id = itemsOf(u).find(x => S[x].role);
         return id ? S[id].role : null;
     }
+    // Foulard du rôle tenu : bonus de rôle ×(1 + {v} %), sur toutes les rangées (BattleRules.roleMult, isWellPlaced)
     const roleBoost = (u) => { const id = itemsOf(u).find(x => S[x].role); return id && u.role === S[id].role ? valueOf(u, id) / 100 : 0; };
     // Après les synergies : boucliers, jauges et paliers de départ
     function onBattleStart(u) {
@@ -348,11 +348,10 @@ const HeldItems = (() => {
             }
             if (s.pureIncense) u._statusImmuneTurns = Math.round(v);
             if (s.quickClaw && Math.random() * 100 < v) { u.actionPoints = Math.max(u.actionPoints || 0, 40); say(u, 'Vive Griffe', 'buff'); }
-            if (s.role && roleBoost(u)) u._roleBoost = roleBoost(u);
         });
         if (u._legendType) say(u, `Type ${u._legendType}`, 'buff');
     }
-    // Synergies : les plaques comptent comme un Pokémon du type
+    // Synergies : les plaques comptent comme un Pokémon du type (2 au plus par type, voir synergies.js)
     const extraTypes = (u) => itemsOf(u).filter(id => S[id].plate).map(id => S[id].plate);
 
     // ------------------------------------------------------------------
@@ -402,11 +401,10 @@ const HeldItems = (() => {
             if (s.guts && a.activeEffects?.some(e => ['STAT_BRU', 'STAT_PSN', 'STAT_PAR'].includes(e.id))) push('guts', v);
             if (s.metronome && a._metronome?.move === move.id) push('metro', v * Math.min(s.metronome, a._metronome.count));
             if (s.zType && move._isBoosted && s.zType === type) push('z', 20);
-            if (s.gem === type && !ctx.estimate && !(move.damage_class === 'status')) { push('gem', v); consume(a, id); }
+            if (s.gem === type && move.damage_class !== 'status') push('gem', v); // consommée dans afterAction
         });
         if (a._nextBoost && !ctx.estimate) { push('next', a._nextBoost); }
         if (a._critBoost && ctx.isCrit) push('critBoost', a._critBoost);
-        if (a._roleBoost && ((a.role === 'attacker' && move.damage_class === 'physical') || (a.role === 'caster' && move.damage_class === 'special'))) push('role', a._roleBoost * 20);
         let mult = 1;
         Object.values(groups).forEach(vals => { mult *= 1 + stacked(vals) / 100; });
         if (a._glove && ctx.contactMove) mult *= Math.max(0.7, Math.min(1, ids.filter(id => S[id].glove).map(id => valueOf(a, id))[0] / 100));
@@ -442,6 +440,8 @@ const HeldItems = (() => {
     const critStages = (u) => Math.min(2, itemsOf(u).reduce((a, id) => a + (S[id].crit || 0), 0)) + (u._critBerry || 0);
     const critShieldPierce = (u) => Math.max(0, ...itemsOf(u).filter(id => S[id].critPierce).map(id => valueOf(u, id)));
     // Précision (Loupe, Lentille Zoom, Baie Micle, Baie Kika) et esquive (Poudre Claire, Encens Doux)
+    // Loupe : ignore aussi l'esquive de la cible (paliers, objets, synergie Vol)
+    const ignoresEvasion = (a) => has(a, 'acc').length > 0;
     function accuracyMult(a, d) {
         if (a._sureHitOnce) return Infinity;
         let bonus = 0;
@@ -451,7 +451,7 @@ const HeldItems = (() => {
             if (s.zoom && (d.effectiveSpeed || 0) > (a.effectiveSpeed || 0)) bonus += valueOf(a, id);
         });
         bonus += a._accBonus || 0;
-        const evasion = stacked(itemsOf(d).filter(id => S[id].evasion).map(id => valueOf(d, id)));
+        const evasion = ignoresEvasion(a) ? 0 : stacked(itemsOf(d).filter(id => S[id].evasion).map(id => valueOf(d, id)));
         return (1 + bonus / 100) * (1 - Math.min(40, evasion) / 100);
     }
     // Jauge Z : cristaux du type de l'attaque
@@ -560,6 +560,15 @@ const HeldItems = (() => {
     // ------------------------------------------------------------------
     // APRÈS L'ACTION DE L'ATTAQUANT
     // ------------------------------------------------------------------
+    // Objets Choix : verrou sur la première attaque utilisée (les autres restent affichées, grisées, avec la raison)
+    function lockChoice(u, move) {
+        const keep = (u.moves || []).find(m => m.id === move.id);
+        if (!keep) return;
+        const isPassive = (m) => typeof MoveRework !== 'undefined' && MoveRework.isPassive(m);
+        u._lockedMoves = [...(u._lockedMoves || []), ...u.moves.filter(m => m !== keep && !isPassive(m)).map(m => ({ move: m, reason: nameOf(u._choicePending) }))];
+        u.moves = u.moves.filter(m => m === keep || isPassive(m));
+        delete u._choicePending;
+    }
     const SOUND = new Set(['hyper-voice', 'boomburst', 'bug-buzz', 'snarl', 'round', 'echoed-voice', 'disarming-voice', 'overdrive', 'sparkling-aria', 'uproar', 'chatter', 'relic-song', 'clanging-scales', 'clangorous-soul', 'torch-song', 'alluring-voice', 'psychic-noise', 'growl', 'roar', 'sing', 'supersonic', 'screech', 'snore', 'perish-song', 'heal-bell', 'noble-roar', 'parting-shot', 'confide', 'metal-sound', 'grass-whistle', 'eerie-spell']);
     async function afterAction(a, move, ctx) {
         if (!a) return;
@@ -568,6 +577,7 @@ const HeldItems = (() => {
         delete a._nextBoost;
         // Métronome : compteur d'utilisations consécutives
         if (a._metronome) a._metronome = a._metronome.move === move.id ? { move: move.id, count: a._metronome.count + 1 } : { move: move.id, count: 1 };
+        if (a._choicePending && damaging && !move._isBoosted) lockChoice(a, move);
         for (const id of itemsOf(a)) {
             const s = S[id], v = valueOf(a, id);
             if (s.lifeOrb && damaging && dealt > 0 && !a.isKO) { B().damage(a, a.maxHp * s.lifeOrb / 100, nameOf(id)); }
@@ -589,6 +599,11 @@ const HeldItems = (() => {
                 addZ(a, v);
             }
             if (s.critZ && ctx.crit) addZ(a, v);
+            if (s.gem && damaging && dealt > 0 && ctx.moveType === s.gem) {
+                a._gemUses = a._gemUses || {};
+                a._gemUses[id] = (a._gemUses[id] || 0) + 1;
+                if (a._gemUses[id] >= GEM_USES) consume(a, id);
+            }
             if (s.firstCrit && a.flags) delete a.flags.nextCrit;
         }
         if (a._accBonus && a._accBonusTurns !== undefined && --a._accBonusTurns <= 0) delete a._accBonus;
@@ -802,8 +817,8 @@ const HeldItems = (() => {
     return {
         ignoresHazards, ignoresWeather, onWeatherChange, onDodge, onStagesGained,
         SPECS: S, spec, valueAt, valueOf, itemsOf, statBonusFor, canEvolve,
-        prepare, forcedRole, onBattleStart, extraTypes, primeFirstCrit,
-        offenseMult, defenseMult, critStages, critPierce, accuracyMult, zGainMult,
+        prepare, forcedRole, roleBoost, onBattleStart, extraTypes, primeFirstCrit,
+        offenseMult, defenseMult, critStages, critPierce, accuracyMult, ignoresEvasion, drainMult, zGainMult,
         beforeHpLoss, afterHpLoss, onHit, afterAction, onTurnStart,
         poisonHeals, poisonHealPct, ignoresBurnPenalty,
         blocksStatus, onStatus, filterEnemyDrops, afterEnemyDrops, freezesStages,

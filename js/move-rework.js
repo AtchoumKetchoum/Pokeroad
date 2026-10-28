@@ -331,7 +331,7 @@ const MoveRework = (() => {
             case 'shield':
                 list.forEach(u => {
                     let value = (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100 * refOf(ctx) * (typeof HeldItems !== 'undefined' && HeldItems.itemsOf(attacker).includes('light-clay') ? 1 + HeldItems.valueOf(attacker, 'light-clay') / 100 : 1);
-                    if (R().roleActive(attacker, 'support')) value *= 1.5;
+                    if (R().roleActive(attacker, 'support')) value *= 1 + 0.5 * R().roleMult(attacker);
                     u.shield = (u.shield || 0) + Math.round(value);
                     say(u, 'Bouclier', 'buff');
                 });
@@ -404,7 +404,7 @@ const MoveRework = (() => {
             case 'shapeHeal': return shapeSupport(attacker, op, 'heal');
             case 'shapeShield': return shapeSupport(attacker, op, 'shield');
             case 'drainTeam': {
-                const amount = (ctx.dealt || 0) * op.pct / 100;
+                const amount = (ctx.dealt || 0) * op.pct / 100 * (typeof HeldItems !== 'undefined' ? HeldItems.drainMult(attacker) : 1); // Grosse Racine
                 const allies = alive(attacker._side);
                 allies.forEach(u => R().heal(u, amount / Math.max(1, allies.length), null));
                 return;
@@ -504,7 +504,7 @@ const MoveRework = (() => {
         const apply = (u, f) => {
             if (!u || u.isKO || f <= 0) return;
             if (kind === 'heal') R().heal(u, u.maxHp * op.pct / 100 * f, attacker);
-            else if (op.pct > 0) { u.shield = (u.shield || 0) + Math.round(u.maxHp * op.pct / 100 * f * (R().roleActive(attacker, 'support') ? 1.5 : 1)); say(u, 'Bouclier', 'buff'); }
+            else if (op.pct > 0) { u.shield = (u.shield || 0) + Math.round(u.maxHp * op.pct / 100 * f * (R().roleActive(attacker, 'support') ? 1 + 0.5 * R().roleMult(attacker) : 1)); say(u, 'Bouclier', 'buff'); }
         };
         if (op.shape === 'soin_cible' || op.shape === 'soin_eclabous') {
             const target = allies.reduce((a, b) => (a.hp / a.maxHp <= b.hp / b.maxHp ? a : b));

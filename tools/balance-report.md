@@ -111,3 +111,49 @@ avec le coût de niveau actuel (20 × niveau + 10), la zone 1 demande ~4 jours p
 au lieu de 1 010, niv. 100 : 8 010 $ au lieu de 2 010). Rythme régulier dans le modèle : ~3,5-4 jours par zone en jeu
 appliqué, ~4,5-5 en auto, sans emballement en fin de parcours. Le modèle ignore le verrou des Grades et l'entraînement.
 
+
+# Passe « chaque objet compte » — 28 octobre 2026
+
+**Méthode** : banc `tools/balance-bench.html`, équipe type des zones 3 et 7 (12 combats ordinaires + 4 boss × 2 tirages
+= 64 combats par objet), jeu appliqué. Chaque objet est porté par les 5 Pokémon (`Bench.kitOverride`) et comparé à la même
+équipe sans objet, sur les mêmes graines. Mesure principale : la **marge** (PV restants du joueur − PV restants des ennemis,
+de −1 à +1), plus les victoires et la durée. Bruit estimé par placebo (même équipe, tirages décalés) : ±0,03 de marge,
+±5 points de victoires. Les objets de rôle (Choix, pouvoir, foulards) ont aussi été mesurés sur les seuls Pokémon du bon rôle.
+
+## Classement avant (marge par rapport à l'équipe sans objet)
+
+- **Trop forts** : les Plaques empilées (Draco +0,40 et +20 points de victoires, Ombre +0,26, Volt +0,22, Poing +0,18) :
+  5 Plaques identiques créent une synergie de palier 3 à partir de rien. Casque Brut ×5 : +0,23, mais +0,03 sur le seul Tank
+  (vraie stratégie, inchangé).
+- **Forts** (+0,12 à +0,16) : Énergie Booster, Boule Fumée, Baie Grepa, Baie Jaboca, Ceinture Pro.
+- **Corrects** (+0,06 à +0,12) : Orbe Vie, Orbes Flamme et Toxik, Lunettes Sages, Métronome, Sitrus, Rowap, Kelpsy, Tamato,
+  Veste de Combat, Herbe Miroir, Évoluroc, Grosses Bottes, objets de type quand le type est joué (Charbon +0,07).
+- **Faibles** (+0,03 à +0,06) : Restes, Lum, Pêcha, baies de soin à 25 %, Bandeau, Cible, Encens Pur, Partage Exp…
+- **Inutiles** (dans le bruit alors que la condition est réunie) : les 18 Gemmes (une seule attaque, première cible seulement),
+  les 18 Cristaux Z (même avec 50 % de jauge Z au départ : les capacités Z pèsent peu sur l'issue), Grelot Coque, Loupe,
+  Lentille Zoom, Poudre Claire, Encens Doux, Bandeau Muscle, Grosse Racine (ne renforçait que la régénération des objets).
+- **Nuisibles** : objets de pouvoir et Bracelet Macho (−0,32 à −0,43 : la Vitesse −50 % coûte plus que le bonus),
+  objets Choix verrouillés sur la 1re case (Bandeau −0,22, Lunettes −0,09, Mouchoir −0,04), Encens Plein (−0,19),
+  foulards rouge/rose/jaune (rôle imposé, aucun bonus pour Tank/Soutien/Rapide, +5 % seulement pour Attaquant/Lanceur).
+- **Non mesurables avec l'équipe type** : objets d'espèce, roches météo, graines et Champ Étendu, Lumargile, pièges
+  (Accro Griffe, Bande Étreinte), Room Service, Carapace Mue, Bouclier Talent, Baie Mepo, argent et butin.
+
+## Changements (validés) et mesures après
+
+| Objet | Changement | Marge avant → après |
+|---|---|---|
+| Plaques (18) | au plus 2 comptent par type pour les synergies, pas sur un Pokémon qui a déjà le type | Draco +0,40 → +0,06, Ombre +0,26 → +0,06, Volt +0,22 → +0,07 |
+| Objets Choix | verrou sur la 1re attaque **utilisée** (comme dans les jeux) ; Mouchoir Choix +50 → +30 % | Lunettes −0,09 → +0,26 (lanceurs seuls +0,20), Mouchoir −0,04 → +0,24 |
+| Objets de pouvoir | +30 % / Vitesse −50 % → +40 % / Vitesse −10 % ; Bracelet Macho 12 → 15 %, Vitesse −10 % ; Chaîne Pouvoir −10 % | Lentille −0,32 → +0,18, Macho −0,38 → +0,13, Poids −0,40 → +0,06 |
+| Encens Plein | Vitesse −25 → −10 % | −0,19 → −0,03 |
+| Foulards de rôle | bonus de rôle ×1,5 (50 %, plafond 100) et valable sur toutes les rangées | vert +0,02 → +0,11, jaune −0,09 → +0,09, bleu +0,06 → +0,08 |
+| Gemmes | les 3 premières attaques du type, sur toutes leurs cibles | Feu 0 → +0,14, Psy +0,04 → +0,12 |
+| Grelot Coque | 12,5 → 25 % (plafond 50) | +0,02 → +0,06 |
+| Grosse Racine | +30 % aussi sur drains, vol de vie et Vampigraine | 0 → 0 (pas de drain dans l'équipe type) |
+| Loupe | ignore les hausses d'esquive de la cible | +0,02 → +0,04 |
+| Lentille Zoom, Poudre Claire, Encens Doux | 15 → 25 %, 8 → 12 %, 5 → 10 % | +0,02 → +0,05, +0,02 → +0,05, +0,01 → +0,04 |
+| Bandeau Muscle, Lunettes Sages | 10 → 15 % (plafond 45) | 0 → 0, +0,09 → +0,14 |
+
+Restent à surveiller : objets Choix et Mouchoir portés par toute l'équipe (+0,24 à +0,26) ; Bandeau Muscle, Poignet Pouvoir
+et Choix Bandeau restent à 0 avec l'équipe type, dont les Pokémon physiques sont surtout des Rapides (la Vitesse prime).
+**Suivi** : les capacités Z changent peu l'issue d'un combat, d'où des Cristaux Z sans effet mesurable ; à traiter côté capacités Z.

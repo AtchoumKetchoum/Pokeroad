@@ -2033,7 +2033,9 @@ async function attack(attacker, primaryTarget, move) {
         if (finalAccuracy !== null) { // Ne s'applique pas aux capacités qui ne ratent jamais
             finalAccuracy = finalAccuracy ?? 100; // Si non-nul mais undefined, on met 100
             const attackerAccuracyMod = attacker.statMods.PRE || 0;
-            const defenderEvasionMod = target.statMods.EVA || 0;
+            // Loupe : les hausses d'esquive de la cible ne comptent pas
+            const ignoresEva = typeof HeldItems !== 'undefined' && HeldItems.ignoresEvasion(attacker);
+            const defenderEvasionMod = ignoresEva ? Math.min(0, target.statMods.EVA || 0) : target.statMods.EVA || 0;
             
             const totalStageMod = clamp(attackerAccuracyMod - defenderEvasionMod, -6, 6);
             finalAccuracy *= getStatMultiplier(totalStageMod);
@@ -2041,7 +2043,7 @@ async function attack(attacker, primaryTarget, move) {
         }
 
         if (finalAccuracy !== null && typeof HeldItems !== 'undefined') { const am = HeldItems.accuracyMult(attacker, target); finalAccuracy = am === Infinity ? null : finalAccuracy * am; }
-        if (finalAccuracy !== null && typeof Synergies !== 'undefined') finalAccuracy *= Synergies.evasionMult(target);
+        if (finalAccuracy !== null && typeof Synergies !== 'undefined' && !(typeof HeldItems !== 'undefined' && HeldItems.ignoresEvasion(attacker))) finalAccuracy *= Synergies.evasionMult(target);
         if (attacker.flags?.sureHit) finalAccuracy = null;
         if (finalAccuracy !== null && Math.random() * 100 >= finalAccuracy) {
             spawnEffectText(target, "Raté !", 'info');

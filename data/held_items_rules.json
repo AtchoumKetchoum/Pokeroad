@@ -45,7 +45,7 @@
       "rule": "Deux objets du même exclusive_group ne peuvent pas être tenus ensemble.",
       "groups": {
         "plaque": {
-          "desc": "Plaques : une seule (une identité de type supplémentaire).",
+          "desc": "Plaques : une seule (une identité de type supplémentaire). Pour les synergies, 2 Plaques au plus comptent par type, et pas sur un Pokémon qui a déjà ce type.",
           "items": [
             "flame-plate",
             "splash-plate",

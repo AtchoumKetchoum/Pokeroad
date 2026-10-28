@@ -127,7 +127,10 @@ const BattleRules = (() => {
         return (base.atk || 0) >= (base.spatk || 0) ? 'attacker' : 'caster';
     }
 
-    const isWellPlaced = (unit) => !!unit.role && ROLES[unit.role].rows.includes(rowOf(unit));
+    // Foulard du rôle (held-items.js) : bonus de rôle ×(1 + {v} %), valable sur toutes les rangées
+    const scarfBoost = (unit) => (typeof HeldItems !== 'undefined' && unit ? HeldItems.roleBoost(unit) : 0);
+    const roleMult = (unit) => 1 + scarfBoost(unit);
+    const isWellPlaced = (unit) => !!unit.role && (ROLES[unit.role].rows.includes(rowOf(unit)) || scarfBoost(unit) > 0);
     const roleActive = (unit, role) => unit.role === role && isWellPlaced(unit);
 
     // ------------------------------------------------------------------
@@ -219,7 +222,7 @@ const BattleRules = (() => {
         if (!unit || unit.isKO || amount <= 0) return 0;
         if (unit.flags?.healBlock) { spawnEffectText(unit, 'Soin bloqué', 'info'); return 0; }
         let value = Math.floor(amount);
-        if (source && roleActive(source, 'support')) value = Math.floor(value * 1.5);
+        if (source && roleActive(source, 'support')) value = Math.floor(value * (1 + 0.5 * roleMult(source)));
         const before = unit.hp;
         unit.hp = Math.min(unit.maxHp, unit.hp + value);
         const gained = unit.hp - before;
@@ -310,7 +313,7 @@ const BattleRules = (() => {
                 if (typeof HeldItems !== 'undefined') HeldItems.prepare(u);
                 const base = (typeof PokedexDB !== 'undefined' && PokedexDB) ? PokedexDB[u._pokemonId]?.stats : null;
                 u.role = (typeof HeldItems !== 'undefined' && HeldItems.forcedRole(u)) || computeRole(base, u.moves);
-                if (roleActive(u, 'speedster')) { u.actionPoints += 50; addStages(u, { CRIT: 1 }); }
+                if (roleActive(u, 'speedster')) { u.actionPoints += Math.round(50 * roleMult(u)); addStages(u, { CRIT: 1 }); }
             });
             // Synergies : un effet par type (js/synergies.js)
             // Zone 1 = apprentissage : les ennemis n'ont pas encore de synergies
@@ -351,9 +354,9 @@ const BattleRules = (() => {
         if (physical && rowOf(attacker) === 'front') m *= 1.1;
         if (rowOf(defender) === 'back') m *= 0.85;
         // Rôles
-        if (physical && roleActive(attacker, 'attacker')) m *= 1.2;
-        if (!physical && roleActive(attacker, 'caster')) m *= 1.2;
-        if (roleActive(defender, 'tank')) m *= 0.75;
+        if (physical && roleActive(attacker, 'attacker')) m *= 1 + 0.2 * roleMult(attacker);
+        if (!physical && roleActive(attacker, 'caster')) m *= 1 + 0.2 * roleMult(attacker);
+        if (roleActive(defender, 'tank')) m *= 1 - 0.25 * roleMult(defender);
         // Météo et champs
         const w = field.weather && WEATHER[field.weather.type];
         const umbrella = typeof HeldItems !== 'undefined' && (HeldItems.ignoresWeather(attacker) || HeldItems.ignoresWeather(defender));
@@ -430,8 +433,9 @@ const BattleRules = (() => {
         if (dealt > 0) {
             const drain = (mech.drain || 0) + (attacker.lifesteal || 0);
             if (drain > 0) {
-                const gained = heal(attacker, dealt * drain, null);
-                if (typeof MoveRework !== 'undefined') MoveRework.drainOverflow(attacker, move, dealt * drain, gained);
+                const healed = dealt * drain * (typeof HeldItems !== 'undefined' ? HeldItems.drainMult(attacker) : 1); // Grosse Racine
+                const gained = heal(attacker, healed, null);
+                if (typeof MoveRework !== 'undefined') MoveRework.drainOverflow(attacker, move, healed, gained);
             }
             if (mech.recoil) damage(attacker, dealt * mech.recoil, 'Contrecoup');
         }
@@ -554,7 +558,7 @@ const BattleRules = (() => {
             const drained = Math.max(1, Math.floor(unit.maxHp / 8));
             damage(unit, drained, 'Vampigraine');
             const seeder = unit.flags.leechSeed?.value;
-            if (seeder && !seeder.isKO) heal(seeder, drained, null);
+            if (seeder && !seeder.isKO) heal(seeder, drained * (typeof HeldItems !== 'undefined' ? HeldItems.drainMult(seeder) : 1), null);
         }
         if (hasFlag(unit, 'perish') && unit.flags.perish.turns <= 1) damage(unit, unit.maxHp * 0.5, 'Requiem');
         if (hasFlag(unit, 'octolock')) addStages(unit, { DEF: -1, SPD: -1 }, true);
@@ -621,7 +625,7 @@ const BattleRules = (() => {
                 case 'hpCost': damage(attacker, attacker.maxHp * op.pct / 100, null); break;
                 case 'shield': list.forEach(u => {
                     let value = (op.of === 'user' ? attacker.maxHp : u.maxHp) * op.pct / 100;
-                    if (roleActive(attacker, 'support')) value *= 1.5;
+                    if (roleActive(attacker, 'support')) value *= 1 + 0.5 * roleMult(attacker);
                     u.shield = (u.shield || 0) + Math.round(value);
                     spawnEffectText(u, 'Bouclier', 'buff');
                 }); break;
@@ -877,7 +881,7 @@ const BattleRules = (() => {
     return {
         ROLES, ROW_LABEL, SYNERGY_PERKS,
         rowOf, rowOfIndex, depthOf, depthOfIndex, laneOf, indexAt, lineIndexes, frontLineUnits, isContact, canTarget, computeRole,
-        slotNumber, slotOf, contactTarget, rangedLanes, retarget, isWellPlaced, roleActive,
+        slotNumber, slotOf, contactTarget, rangedLanes, retarget, isWellPlaced, roleActive, roleMult,
         synergyCounts, synergyTier, describeSynergies, describeField,
         setupBattle, resetField, moveTypeFor, damageMultiplier, defenseStat, itemsDisabled, speedInverted,
         beforeAttack, recordMove, checkProtect, afterDamage, powerMultiplier, dynamicPower, fixedDamage, onTurnStart, executeOps, scoreOps,
