@@ -106,3 +106,13 @@
 /* ---------- Gros dégâts ---------- */
 .damage-float-number.dmg-big { font-size: 58px !important; color: #d7be70 !important; }
 .damage-float-number.dmg-massive { font-size: 78px !important; color: #d58169 !important; animation-duration: 1.4s !important; }
+
+/* Z imminent : le prochain coup de ce Pokémon le déclenche. Couvrez-vous, protégez-vous ou frappez d'abord. */
+#view-battle .unit.z-imminent .z-bar { animation: z-warn .6s steps(1) infinite; }
+#view-battle .unit.z-imminent::after {
+  content: 'Z !'; position: absolute; top: -6px; right: 6px; z-index: 8; pointer-events: none;
+  padding: 1px 6px; border-radius: 4px; background: var(--red, #b8402e); color: #fff;
+  font-family: var(--font-title); font-weight: 700; font-size: 15px; line-height: 1.2;
+  border: 2px solid var(--ink, #2b2433); animation: z-warn .6s steps(1) infinite;
+}
+@keyframes z-warn { 50% { opacity: .35; } }

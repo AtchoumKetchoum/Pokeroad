@@ -268,3 +268,38 @@ Lecture : l'équipe type, qui se place toujours pareil, ne bouge qu'à quelques 
 davantage qu'avant (zones 3, 4 et 8 : +5 à +12 points), et l'écart avec un mauvais placement grandit ou tient partout.
 Dès la zone 3, les mauvais choix sont déjà presque à 0 % : l'écart ne peut plus grandir que par le haut.
 La lecture du banc reste simple : en zones 6 et 7, elle fait moins bien que le placement fixe, avant comme après.
+
+# Rythme des combats : des combats deux fois plus courts — 31 octobre 2026
+
+Base : main avec la passe « fin de jeu » et les formations ennemies fusionnées. Banc, zones 1 à 10, 16 combats
+(12 ordinaires, 4 boss) × 2 tirages par zone et par scénario, mêmes graines avant et après. « Actions » = tours joués.
+
+## Réglages (`BATTLE_PACE`, js/battle.js)
+
+- **Dégâts ×1,5** sur tous les coups.
+- **Attaque Z ×2,2**, mais un Pokémon **couvert** par un allié devant lui dans sa colonne n'en reçoit que la moitié.
+- **Jauge Z** : +15 à chaque tour (même gelé ou endormi), +25 si le Pokémon joue et touche, +25 au total pour les cibles
+  touchées (réparti entre elles). Avant : +20 au lanceur d'une attaque et +20 à sa cible principale.
+- Pastille **« Z ! »** quand le Z est à un coup ; l'IA se protège quand un Z adverse arrive.
+- **Abri** impossible deux tours de suite (comme dans les jeux) ; pas de perte de jauge en boucle (« Résiste »).
+
+Variantes écartées : dégâts ×2 (8 à 14 actions, chaque Pokémon joue à peine une fois et presque aucun Z ne sort),
+dégâts ×2 avec une jauge Z plus rapide (5 à 8 actions).
+
+## Avant (dégâts ×1, ancienne jauge Z) → après, zones 1 à 10
+
+| | Avant | Après |
+|---|---|---|
+| Équipe type, ordinaires : victoires | 100 100 100 83 83 96 63 88 50 42 | 88 100 96 83 88 100 58 71 67 50 |
+| Équipe type, ordinaires : actions | 25 22 19 23 13 18 24 17 24 18 | 15 9 10 12 9 12 14 11 12 10 |
+| Équipe type, boss : victoires | 75 63 88 63 38 100 25 63 50 50 | 75 100 75 88 38 63 13 88 63 25 |
+| Équipe type, Z par Pokémon et par combat | 0,07 à 0,36 | 0,08 à 0,34 |
+| Combat auto, ordinaires | 88 83 79 75 67 29 13 50 21 4 | 79 100 96 88 79 38 21 75 38 25 |
+| Mauvais choix, ordinaires | 71 50 13 29 21 33 4 4 4 0 | 63 46 17 50 25 42 0 0 4 0 |
+| Équipe améliorée, ordinaires | 100 100 100 96 100 100 83 100 71 75 | 100 100 100 88 100 100 83 100 67 67 |
+| Équipe améliorée, boss | 100 100 100 75 75 100 50 88 63 63 | 100 75 100 63 63 100 50 88 88 50 |
+
+Lecture : les combats durent deux fois moins (9 à 15 actions au lieu de 17 à 25) pour des victoires du même ordre,
+aux écarts d'échantillon près (8 boss par case). Les mauvais choix restent très chers. Le combat automatique gagne
+10 à 25 points : un combat plus court laisse moins de décisions où le jeu appliqué fait la différence. L'écart avec le
+jeu appliqué reste net à partir de la zone 6 (100 contre 38 %, 58 contre 21 %, 67 contre 38 %…).

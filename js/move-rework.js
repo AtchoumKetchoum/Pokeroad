@@ -313,6 +313,9 @@ const MoveRework = (() => {
                 return;
             case 'ap':
                 list.forEach(u => {
+                    // Pas de blocage sans fin : après une perte de jauge, le Pokémon doit jouer son tour avant d'en reperdre
+                    if (op.amount < 0 && u._apGuard) { say(u, 'Résiste', 'info'); return; }
+                    if (op.amount < 0) u._apGuard = true;
                     u.actionPoints = Math.max(0, (u.actionPoints || 0) + op.amount);
                     if (typeof updateActionPointsUI === 'function') updateActionPointsUI(u);
                     say(u, op.amount > 0 ? `Jauge +${op.amount} %` : `Jauge ${op.amount} %`, op.amount > 0 ? 'buff' : 'debuff');

@@ -34,6 +34,11 @@ const BattleRules = (() => {
     const rowOf = (unit) => rowOfIndex(unit._side, unit._index);
     const depthOf = (unit) => depthOfIndex(unit._side, unit._index);
 
+    // Un allié vivant se tient devant ce Pokémon dans sa colonne (il encaisse à sa place une partie d'un Z)
+    function isCovered(unit) {
+        return (grid[unit._side] || []).some(u => u && u !== unit && !u.isKO && laneOf(u._index) === laneOf(unit._index) && depthOf(u) < depthOf(unit));
+    }
+
     // Unités vivantes de la première ligne occupée (la « ligne de front » réelle)
     function frontLineUnits(side) {
         const units = (grid[side] || []).filter(u => u && !u.isKO);
@@ -663,7 +668,13 @@ const BattleRules = (() => {
                     showTerrainInfo(); break;
                 }
                 case 'swapHazards': { const tmp = field.hazards.player; field.hazards.player = field.hazards.enemy; field.hazards.enemy = tmp; showTerrainInfo(); break; }
-                case 'protect': attacker.protect = op.variant || 'basic'; spawnEffectText(attacker, 'Abri', 'buff'); break;
+                case 'protect':
+                    // Comme dans les jeux : impossible de se protéger deux tours de suite
+                    if (hasFlag(attacker, 'protectCooldown')) { spawnEffectText(attacker, 'Échec', 'info'); break; }
+                    attacker.protect = op.variant || 'basic';
+                    setFlag(attacker, 'protectCooldown', 2);
+                    spawnEffectText(attacker, 'Abri', 'buff');
+                    break;
                 case 'flag': list.forEach(u => { setFlag(u, op.id, op.turns || 3, op.fromAttacker ? attacker : (op.value ?? true)); if (op.label) spawnEffectText(u, op.label, op.debuff ? 'debuff' : 'status'); }); break;
                 case 'imprison': foesOf(attacker).forEach(u => setFlag(u, 'imprisoned', op.turns || 3, (attacker.moves || []).map(m => m.id))); spawnEffectText(attacker, 'Possessif', 'status'); break;
                 case 'swapStages': list.forEach(u => (op.stats || ['ATK', 'DEF', 'SPA', 'SPD', 'SPE', 'PRE', 'EVA']).forEach(s => {
@@ -867,7 +878,13 @@ const BattleRules = (() => {
                 case 'heal': score += Math.max(0, (1 - (op.target === 'self' ? hpRatio : (target ? target.hp / target.maxHp : 1))) - 0.25); break;
                 case 'healMostWounded': { const a = resolveOpTargets('mostWoundedAlly', unit)[0]; if (a) score += Math.max(0, 1 - a.hp / a.maxHp - 0.3); break; }
                 case 'shield': score += 0.15; break;
-                case 'protect': score += hpRatio < 0.5 ? 0.25 : 0.05; break;
+                case 'protect': {
+                    if (hasFlag(unit, 'protectCooldown')) { score -= 1; break; }
+                    // Se protéger vaut surtout quand un Z adverse est imminent
+                    const zThreat = foesOf(unit).some(f => (f.boostGauge || 0) >= 100 - BATTLE_PACE.zTurn - BATTLE_PACE.zPlay);
+                    score += zThreat ? 0.6 : (hpRatio < 0.5 ? 0.25 : 0.05);
+                    break;
+                }
                 case 'weather': score += field.weather?.type === op.type ? 0 : 0.2; break;
                 case 'terrain': score += field.terrain?.type === op.type ? 0 : 0.2; break;
                 case 'room': score += field.room ? 0 : 0.12; break;
@@ -887,7 +904,7 @@ const BattleRules = (() => {
 
     return {
         ROLES, ROW_LABEL, SYNERGY_PERKS,
-        rowOf, rowOfIndex, depthOf, depthOfIndex, laneOf, indexAt, lineIndexes, frontLineUnits, isContact, canTarget, computeRole,
+        isCovered, rowOf, rowOfIndex, depthOf, depthOfIndex, laneOf, indexAt, lineIndexes, frontLineUnits, isContact, canTarget, computeRole,
         slotNumber, slotOf, contactTarget, contactTargets, rangedLanes, retarget, isWellPlaced, roleActive, roleMult,
         synergyCounts, synergyTier, describeSynergies, describeField,
         setupBattle, resetField, moveTypeFor, damageMultiplier, defenseStat, itemsDisabled, speedInverted,

@@ -354,6 +354,15 @@ function getEffectiveSpeed(unit) {
 }
 
 // --- Dégâts (style Pokémon) ---
+// Rythme des combats : des coups qui comptent et des attaques Z qui font peur.
+// Jauge Z (sur 100) : zTurn à chaque début de tour, zPlay si le Pokémon joue vraiment (pas s'il est gelé,
+// endormi… ni si son attaque rate), zHit au total, réparti entre les cibles réellement touchées.
+// zCover : part des dégâts d'un Z reçue par un Pokémon couvert par un allié devant lui dans sa colonne.
+// Banc (tools/balance-bench.html, mêmes graines) : combats deux fois plus courts qu'avec dégâts ×1
+// (9 à 15 actions au lieu de 17 à 25), autant de Z qu'avant, victoires inchangées à quelques points près.
+// Dégâts ×2 raccourcissait trop (chaque Pokémon jouait à peine une fois) et étouffait les Z.
+const BATTLE_PACE = { damage: 1.5, zDamage: 2.2, zTurn: 15, zPlay: 25, zHit: 25, zCover: 0.5 };
+
 function computeDamage(attacker, defender, move, options = {}) {
     let power = move.power || 0;
     if (move._isBoosted && !move.rw) {
@@ -444,7 +453,14 @@ function computeDamage(attacker, defender, move, options = {}) {
     // Mod3 (non implémenté)
 
     if (typeMod === 0) return { damage: 0, typeMod, isCrit: false };
-    return { damage: Math.max(1, damage), typeMod, isCrit };
+    damage = Math.floor(damage * BATTLE_PACE.damage);
+    let covered = false;
+    if (move._isBoosted) {
+        damage = Math.floor(damage * BATTLE_PACE.zDamage);
+        covered = BattleRules.isCovered(defender);
+        if (covered) damage = Math.floor(damage * BATTLE_PACE.zCover);
+    }
+    return { damage: Math.max(1, damage), typeMod, isCrit, covered };
 }
 
 // Normalise move.effect : "", "STAT_PAR", ["A","B"] ou '["A", "B"]' (chaîne JSON) -> tableau d'IDs
@@ -1532,7 +1548,7 @@ function updateZMoveIndicators() {
             }
             return;
         }
-        const displayPercent = Math.min(100, unit.boostGauge || 0);
+        const displayPercent = Math.min(100, Math.round(unit.boostGauge || 0));
 
         // Mise à jour du texte de charge persistant dans le HUD (le nôtre)
         if (unitEl) {
@@ -1544,6 +1560,8 @@ function updateZMoveIndicators() {
             if (zBar) {
                 zBar.querySelector('.z-fill').style.width = `${displayPercent}%`;
                 zBar.classList.toggle('full', displayPercent >= 100);
+                // Z imminent : le prochain coup de ce Pokémon le déclenche, il faut s'y préparer
+                unitEl.classList.toggle('z-imminent', displayPercent >= 100 - BATTLE_PACE.zTurn - BATTLE_PACE.zPlay);
             }
         }
     });
@@ -2077,6 +2095,7 @@ async function attack(attacker, primaryTarget, move) {
         // Griffe Rasoir : les coups critiques percent une partie du bouclier
         if (damageResult.isCrit && target.shield > 0 && typeof HeldItems !== 'undefined' && HeldItems.critPierce(attacker) > 0) target.shield = Math.floor(target.shield * (1 - HeldItems.critPierce(attacker) / 100));
         if (damageResult.isCrit) anyCrit = true;
+        if (damageResult.covered) spawnEffectText(target, 'Couvert !', 'buff', -60);
         if (hits > 1) spawnEffectText(target, `Touché ${hits} fois !`, 'info', -90);
         // Part de la puissance reçue par cette case de la forme
         const dmg = damageResult.executed ? damageResult.damage : Math.max(damageResult.damage > 0 ? 1 : 0, Math.floor(damageResult.damage * cellMult));
@@ -2088,19 +2107,17 @@ async function attack(attacker, primaryTarget, move) {
     }
     if (attacker.flags?.nextCrit) delete attacker.flags.nextCrit;
 
-  // Mettre à jour les jauges de boost (une seule fois par action)
-  // La jauge de boost ne doit augmenter que pour les capacités offensives (physiques ou spéciales) qui ne sont pas déjà des Z-Moves.
-  if (!moveToDo._isBoosted && (moveForThisHit.damage_class === 'physical' || moveForThisHit.damage_class === 'special') && (moveForThisHit.power && moveForThisHit.power > 0)) {
-      // Attacker's boost gauge
-      if (attacker.boostGauge < 100) {
-          attacker.boostGauge = Math.min(100, (attacker.boostGauge || 0) + Math.round(20 * (attacker.zGainMult || 1) * (typeof HeldItems !== 'undefined' ? HeldItems.zGainMult(attacker, BattleRules.moveTypeFor(attacker, moveForThisHit)) : 1))); // 20% de la jauge (plus avec la synergie Dragon et les cristaux Z)
-      }
-      // Target's boost gauge (only primary target for AOE, as per user's rule)
-      // Check if primaryTarget is still valid (not KO'd before this move)
-      if (primaryTarget && !primaryTarget.isKO && primaryTarget.boostGauge < 100) {
-          primaryTarget.boostGauge = Math.min(100, (primaryTarget.boostGauge || 0) + 20); // +20 % de la jauge (sur 100)
-      }
+  // Jauge Z : le lanceur charge s'il a joué et touché ; les cibles touchées se partagent la charge d'encaissement
+  const isDamagingAttack = (moveForThisHit.damage_class === 'physical' || moveForThisHit.damage_class === 'special') && moveForThisHit.power > 0;
+  const hurtTargets = damages.filter(d => d.dmg > 0).map(d => d.target);
+  const connected = isDamagingAttack ? hurtTargets.length > 0 : successfulTargets.length > 0;
+  if (!moveToDo._isBoosted && connected) {
+      const gainMult = (attacker.zGainMult || 1) * (typeof HeldItems !== 'undefined' ? HeldItems.zGainMult(attacker, BattleRules.moveTypeFor(attacker, moveForThisHit)) : 1); // synergie Dragon, cristaux Z
+      attacker.boostGauge = Math.min(100, (attacker.boostGauge || 0) + BATTLE_PACE.zPlay * gainMult);
   }
+  hurtTargets.forEach(t => {
+      if (t !== attacker) t.boostGauge = Math.min(100, (t.boostGauge || 0) + BATTLE_PACE.zHit / hurtTargets.length);
+  });
 
     if (successfulTargets.length === 0) {
         await sleep(500); // Attendre que le texte "Raté!" soit visible
@@ -2273,6 +2290,10 @@ async function handleStartOfTurnEffects(unit) {
     // Météo, champs, pièges, effets sur la durée, phase de boss
     const ruleResult = await BattleRules.onTurnStart(unit);
     if (unit.isKO) return { canAct: false };
+    // Jauge Z : chaque tour rapporte, même si le Pokémon ne peut pas agir
+    unit.boostGauge = Math.min(100, (unit.boostGauge || 0) + BATTLE_PACE.zTurn);
+    unit._apGuard = false;
+    updateZMoveIndicators();
     // Refonte : passifs « chaque tour », régénérations, piège, vœux
     if (typeof MoveRework !== 'undefined') await MoveRework.onTurnStart(unit);
     if (unit.isKO) return { canAct: false };

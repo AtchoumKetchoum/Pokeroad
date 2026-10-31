@@ -254,6 +254,8 @@
                 ? [...new Set((pk.moves || []).filter(m => typeof m?.name === 'string' && (m.level == null || m.level <= lvl) && MovesDB?.[m.name]).map(m => m.name))].slice(0, 4)
                 : pickMoves(pk, lvl);
             pk.moveRefinements = Object.fromEntries(pk.selectedMoves.map(m => [m, refLevel(prof.move)]));
+            // Attaque Z : la première offensive, comme la fiche du Pokémon la choisit par défaut
+            pk.boostedMove = pk.selectedMoves.find(m => (MovesDB[m]?.power || 0) > 0) || null;
             const moves = pk.selectedMoves.map(id => ({ ...MovesDB[id], id }));
             pk._role = BattleRules.computeRole(base, moves);
             // Objet de type : celui de la meilleure attaque du type du Pokémon (STAB)
@@ -353,8 +355,14 @@
     const MAX_TURNS = 600; // sécurité : l'épuisement (battle.js) termine les combats après 100 tours
     let reflexPlay = null, skilledPlay = null;
     let turnCount = { player: 0, enemy: 0 };
+    let zCount = { player: 0, enemy: 0 };
     let finish = null;
     function installHooks() {
+        const origZ = window.triggerZMove;
+        window.triggerZMove = async (unit) => {
+            if (unit && !unit.isKO && unit._boostedMoveId && unit.boostGauge >= 100) zCount[unit._side]++;
+            return origZ(unit);
+        };
         const origTurn = window.handleStartOfTurnEffects;
         window.handleStartOfTurnEffects = async (unit) => {
             turnCount[unit._side] = (turnCount[unit._side] || 0) + 1;
@@ -386,6 +394,8 @@
         }
         const before = GameData._load().money || 0;
         turnCount = { player: 0, enemy: 0 };
+        zCount = { player: 0, enemy: 0 };
+        const startedAt = vnow;
         seedRandom(seed);
         const done = new Promise(res => { finish = res; });
         await beginBattleSequence();
@@ -398,6 +408,9 @@
             zone, wave, battle, seed, playerItems, enemyItems, enemyLevel, playerLevel: team[0].level,
             win, timeout: !win && players.some(u => !u.isKO) && enemies.some(u => !u.isKO),
             turns: turnCount.player + turnCount.enemy, playerTurns: turnCount.player,
+            seconds: (vnow - startedAt) / 1000,
+            zPerUnit: (zCount.player + zCount.enemy) / Math.max(1, players.length + enemies.length),
+            zPlayer: zCount.player / Math.max(1, players.length),
             hpLeft: hpLeft(players), enemyHpLeft: hpLeft(enemies),
             survivors: players.filter(u => !u.isKO).length, enemiesKo: enemies.filter(u => u.isKO).length, enemies: enemies.length,
             bossHpLeft: enemies.some(u => u.isBoss) ? Math.max(0, enemies.find(u => u.isBoss).hp) / enemies.find(u => u.isBoss).maxHp : null,
@@ -431,6 +444,9 @@
             n: rows.length,
             winRate: avg(r => r.win ? 1 : 0),
             turns: avg(r => r.turns),
+            seconds: avg(r => r.seconds),
+            zPerUnit: avg(r => r.zPerUnit),
+            zPlayer: avg(r => r.zPlayer),
             hpLeft: wins.length ? wins.reduce((a, r) => a + r.hpLeft, 0) / wins.length : 0,
             enemyHpLeft: avg(r => r.enemyHpLeft),
             timeouts: rows.filter(r => r.timeout).length,
@@ -544,7 +560,7 @@
 
     // Résumé texte : victoires, actions et PV restants (combats ordinaires | boss | boss final)
     function text(results = Bench.lastResults) {
-        const f = (s) => `${String(Math.round(s.winRate * 100)).padStart(3)} % ${s.turns.toFixed(0).padStart(3)} act. ${String(Math.round(s.hpLeft * 100)).padStart(3)} % PV${s.timeouts ? ` (${s.timeouts} nuls)` : ''}`;
+        const f = (s) => `${String(Math.round(s.winRate * 100)).padStart(3)} % ${s.turns.toFixed(0).padStart(3)} act. ${String(Math.round(s.hpLeft * 100)).padStart(3)} % PV ${s.seconds.toFixed(0).padStart(3)} s ${s.zPerUnit.toFixed(1)} Z/Pk${s.timeouts ? ` (${s.timeouts} nuls)` : ''}`;
         return (results || []).map(r => `z${String(r.zone).padEnd(2)} ${r.scenario.padEnd(8)} ${r.levels.padEnd(14)} Ordinaires ${f(r.normal)} | Boss ${f(r.boss)} | Final ${Math.round(r.finalBoss.winRate * 100)} %`).join('\n');
     }
 
