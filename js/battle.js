@@ -2853,17 +2853,26 @@ function battleMoneyReward(level) {
     return Math.round((40 + level * 20) * BATTLE_REWARDS.money);
 }
 
-// Toujours une équipe complète en face, dès le premier combat : 5 contre 5
+// Toujours une équipe complète en face, dès le premier combat (un boss et ses escortes : voir BOSS_POWER)
 function getEnemyCount(maxCount) {
     return maxCount;
 }
 
 // Bonus de stats des ennemis (hors vitesse), en plus de leurs paliers (enemy-gen.js) :
-// léger en zone 1 (apprentissage), net dès la zone 2, puis un peu plus à chaque zone
-const ENEMY_POWER = { zone1: 0.08, zone2: 0.28, perZone: 0.02, max: 0.5 };
+// léger en zone 1 (apprentissage), net dès la zone 2, puis il s'efface peu à peu (+14 % en zone 10, plancher +12 %).
+// Il compense des espèces plus faibles que celles du joueur : leur total de stats passe de ~330 en zone 2 à ~510
+// en zone 10, quand l'équipe du joueur plafonne vers 500 dès la zone 4 (voir tools/balance-report.md).
+const ENEMY_POWER = { zone1: 0.08, zone2: 0.28, perZone: -0.0175, min: 0.12 };
 function enemyPowerMult(zone = zoneIndex) {
     if (zone <= 1) return 1 + ENEMY_POWER.zone1;
-    return 1 + Math.min(ENEMY_POWER.max, ENEMY_POWER.zone2 + ENEMY_POWER.perZone * (zone - 2));
+    return 1 + Math.max(ENEMY_POWER.min, ENEMY_POWER.zone2 + ENEMY_POWER.perZone * (zone - 2));
+}
+
+// Combats de boss (enemy-gen.js, battle-rules.js) : PV du boss selon la zone, bonus de niveau, nombre d'escortes.
+// Le boss se bat déjà au niveau du 10e combat (+10 %) et entre en fureur sous 50 % de PV : pas de bonus de niveau en plus.
+const BOSS_POWER = { hpZone1: 1.2, hpPerZone: 0.05, hpMax: 1.5, level: 0, escorts: 3 };
+function bossHpMult(zone = zoneIndex) {
+    return Math.min(BOSS_POWER.hpMax, BOSS_POWER.hpZone1 + (Math.max(1, zone) - 1) * BOSS_POWER.hpPerZone);
 }
 
 function calculateStats(baseStats, level, pokemonId = null) {

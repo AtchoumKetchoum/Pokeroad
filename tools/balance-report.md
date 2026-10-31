@@ -157,3 +157,79 @@ de −1 à +1), plus les victoires et la durée. Bruit estimé par placebo (mêm
 Restent à surveiller : objets Choix et Mouchoir portés par toute l'équipe (+0,24 à +0,26) ; Bandeau Muscle, Poignet Pouvoir
 et Choix Bandeau restent à 0 avec l'équipe type, dont les Pokémon physiques sont surtout des Rapides (la Vitesse prime).
 **Suivi** : les capacités Z changent peu l'issue d'un combat, d'où des Cristaux Z sans effet mesurable ; à traiter côté capacités Z.
+
+# Passe « fin de jeu presque impossible » — 28 octobre 2026
+
+Constat : l'équipe type gagnait ~70 % des combats ordinaires en zones 6 et 8, mais presque rien en zones 7, 9 et 10,
+et les boss tombaient à 0-20 % dès la zone 5. Mesures : équipe type en jeu appliqué, 12 combats ordinaires et les 10 boss
+× 2 tirages par zone (`Bench.run({ battles: [...12 ordinaires, ...Bench.ALL_BOSSES] })`), 880 combats par scénario.
+
+## D'où venait l'écart
+
+- **Bonus de stats ennemi** (`ENEMY_POWER`, battle.js) : +28 % en zone 2, puis +2 % par zone (+44 % en zone 10),
+  multiplié par le Grade de `enemyTier` (+14 % en zone 10) : ×1,64. Ce bonus compensait des espèces plus faibles que
+  celles du joueur, mais le total de stats des ennemis passe de 332 (zone 2) à 509 (zone 10), quand l'équipe type plafonne
+  vers 500 dès la zone 4. Ennemi / joueur en moyenne : PV ×1,15 → ×1,47, défense ×1,14 → ×1,54, attaque ×0,81 → ×1,12
+  de la zone 2 à la zone 10. Rapport des durées de vie (PV × défense × attaque) : 1,1 en zones 2-4, 1,9 en zone 6, 2,5 en zone 10.
+- **Boss** : niveau du 10e combat (+10 %) puis +8 %, soit ~+20 % sur le joueur ; PV ×1,8 ; 4 escortes ; fureur sous 50 %
+  (bouclier de 20 % des PV, +1 Attaque, dégâts ×1,3). Chaque levier seul bouge peu (+5 à +20 points) ; ensemble, beaucoup.
+- **Objets ennemis** : pas la cause. Sans objets ennemis, zones 6 à 10 : 88 / 8 / 79 / 4 / 4 % (avec : 71 / 4 / 71 / 0 / 8 %).
+- **Niveau du joueur** : le banc suppose l'équipe au niveau des ennemis. Les combats seuls n'en financent qu'un tiers
+  (`Bench.budget`, corrigé : il plafonnait le niveau au Grade du profil, d'où un ratio trompeur de 1,4-1,8) ; avec la
+  patrouille au rythme du modèle de progression (~3,5 jours par zone), le coût de l'équipe type représente 46 à 79 % des gains.
+  En revanche, 3 niveaux de plus en zone 10 coûtent ~2,5 jours de patrouille et n'ajoutaient que 5 points : un mur de grinding.
+
+## Réglages retenus (option B parmi 3 proposées)
+
+- `ENEMY_POWER` : +28 % en zone 2, puis -1,75 point par zone (+14 % en zone 10, plancher +12 %).
+- `BOSS_POWER` (nouveau, battle.js) : 3 escortes au lieu de 4, plus de +8 % de niveau pour le boss,
+  PV ×1,2 en zone 1 puis +0,05 par zone jusqu'à ×1,5 (avant ×1,8).
+- Option A (bonus seul) : combats ordinaires débloqués, mais boss encore à 0-10 % en zones 5, 7, 9, 10.
+  Option C (A + 3 escortes et sans bonus de niveau, PV ×1,8 gardés) : boss 10-25 % en zones 7 et 9.
+
+## Avant / après (équipe type sauf mention, zones 1 à 10)
+
+| Scénario | Avant | Après |
+|---|---|---|
+| Ordinaires | 75 88 88 75 79 71 4 71 0 8 | 75 88 100 79 83 96 21 83 54 25 |
+| Boss | 35 15 35 35 5 20 0 45 0 0 | 55 75 55 70 30 80 40 55 45 40 |
+| Améliorée, ordinaires | 100 96 100 88 100 100 21 79 25 13 | 100 96 100 100 96 100 67 88 75 75 |
+| Améliorée, boss | 90 60 70 65 5 30 0 45 0 0 | 100 95 75 70 75 80 60 60 45 60 |
+| Auto réflexe, ordinaires | 75 50 – 33 – 13 – 21 – 0 (zones 1, 2, 4, 6, 8, 10) | 75 50 38 50 58 17 8 63 4 0 |
+| Mauvais choix, ordinaires | 50 29 4 4 4 8 0 0 0 0 | 50 29 13 0 8 25 0 0 0 0 |
+| Mauvais choix, boss | 25 10 0 0 0 0 0 0 0 0 | 45 15 10 0 0 20 0 0 0 0 |
+
+Les mauvais choix restent sanctionnés (0 à 25 % dès la zone 3) et l'auto réflexe reste loin derrière le jeu appliqué :
+la différence se fait par les choix, pas par l'entraînement.
+
+## Limites
+
+- **Zones 7 (Glace/Vol) et 10 (Légendaire/Dragon/Psy)** restent les plus dures (21-25 % en ordinaire). C'est en partie le banc :
+  il choisit 5 lignées sur 9 avec une heuristique de types, sans Glace, Fée ni Ténèbres. Avec 5 lignées de plus
+  (`Bench.ROSTER.push([86,87,87],[173,35,36],[228,229,229],[81,82,82],[361,362,362])`), la zone 10 passe à 79 % et la 9 à 58 %,
+  mais la 2 et la 8 baissent (54 %) car l'heuristique choisit moins bien : à lire comme « le bon choix de types compte beaucoup ».
+- Échantillon : ±15 points sur les boss d'une zone, le boss final n'est joué que 2 fois.
+- Réglages accessibles au banc sans recharger : `ENEMY_POWER`, `BOSS_POWER`, `EnemyGen.TIER.gradePerZone`, `Bench.ROSTER`.
+
+## Contrôle « équipe qui a tout grindé » (après fusion de main 0157323)
+
+Question : en fin de partie, le joueur aura tout grindé ; une équipe développée au maximum de ses gains avance-t-elle ?
+Profil « tout grindé » : tout l'argent gagné jusqu'à la fin de la zone (combats + patrouille au rythme du modèle de
+progression, ~3,5 jours par zone : 76 k$ en zone 1, 838 k$ en zone 6, 1,76 M$ en zone 10), dépensé par pas de
++1 niveau, nature et IV jusqu'au palier 10 (au-delà, il faut les 5 autres stats ou les moyennes IV/EV au même niveau),
+Atelier +1 un pas sur 2, attaques +1 un pas sur 3. Résultat : seulement +2 à +5 niveaux au-dessus de l'équipe type
+(niv. 80 au lieu de 76 en zone 10), nature +2 à +5, Atelier +1 à +2, attaques +0 à +1 : les niveaux coûtent cher
+(niveau²) et l'équipe type dépense déjà 40 à 80 % des gains.
+
+| Zones 1 à 10 | Anciens réglages | Réglages actuels (28af480) |
+|---|---|---|
+| Équipe type, ordinaires | 83 92 88 63 83 58 4 46 0 0 | 83 92 100 75 92 100 21 88 50 46 |
+| Équipe type, boss | 40 20 30 50 0 40 0 25 0 0 | 65 60 65 70 25 85 30 55 30 30 |
+| Tout grindé, ordinaires | 100 100 100 100 100 100 42 79 21 21 | 100 100 100 100 100 100 71 96 79 75 |
+| Tout grindé, boss | 75 60 95 75 15 55 5 50 0 0 | 90 100 100 90 90 100 70 70 50 70 |
+
+Avec les anciens réglages, même l'équipe qui a tout grindé restait bloquée en zones 7, 9 et 10 (boss 0-5 %).
+Avec les réglages actuels, l'équipe type peut bloquer (zones 7, 9, 10 : 21-50 % en ordinaire, 30 % sur les boss)
+et l'équipe qui a tout grindé avec de bons choix avance partout (71-100 % en ordinaire, 50-100 % sur les boss).
+Biais connu : le profil type met 12 à 14 niveaux d'IV sur la stat principale en zones 8-10, ce que le palier des IV
+(0157323) n'autorise plus sans les 5 autres stats au niveau 10 ; l'équipe type réelle y est un peu plus faible.

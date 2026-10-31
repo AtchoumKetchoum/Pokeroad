@@ -4,7 +4,7 @@
  *  - Les Pokémon suivent les types de la zone (Glace au Pic Enneigé, Eau au Lac Azur…).
  *  - Même combat = même équipe, même formation, mêmes attaques : on peut préparer une contre-stratégie.
  *  - Formation logique : Tanks devant, Lanceurs et Soutiens derrière.
- *  - Le 10e combat de chaque vague est un boss entouré de 3 escortes (PV ×1,5 à ×2,5, fureur sous 50 % de PV) ;
+ *  - Le 10e combat de chaque vague est un boss entouré de 3 escortes (PV ×1,2 à ×1,5, fureur sous 50 % de PV ; BOSS_POWER dans battle.js) ;
  *    les Légendaires ne sont boss qu'à la 10e vague (boss final de la zone).
  *  - Réglages vérifiés avec le banc tools/balance-bench.html.
  */
@@ -75,13 +75,14 @@ const EnemyGen = (() => {
     // Paliers d'amélioration d'un ennemi : grade, étoiles, niveau des attaques et de l'objet.
     // Ils montent avec la zone, sans plafond, au rythme de ce qu'un joueur peut financer (banc tools/balance-bench.html) :
     // une rampe régulière plutôt que des marches (l'ancienne étoile de la zone 6 donnait +20 % de stats d'un coup).
+    const TIER = { gradePerZone: 1.5 };
     function enemyTier(level) {
         const progress = (zoneIndex - 1) + (waveIndex - 1) / 10; // 0 au début, 9,9 en fin de zone 10
         const moveLevel = 1 + Math.floor(progress);
         const itemLevel = moveLevel;
         const starsOf = (lvl) => lvl > 20 ? Math.ceil(lvl / 20) - 1 : 0;
         return {
-            grade: 1 + Math.floor(progress * 1.5), // +1,5 % de stats par zone
+            grade: 1 + Math.floor(progress * TIER.gradePerZone), // +1,5 % de stats par zone
             stars: Math.floor((zoneIndex - 1) / 10),
             moveLevel, moveStars: starsOf(moveLevel),
             itemLevel, itemStars: starsOf(itemLevel),
@@ -101,8 +102,8 @@ const EnemyGen = (() => {
         const isBoss = battleIndex === 10;
         const seed = zoneIndex * 100000 + waveIndex * 1000 + battleIndex * 7 + 13;
         const rand = rng(seed);
-        // Toujours 5 contre 5 : un combat de boss aligne le boss et 4 escortes
-        const count = getEnemyCount(isBoss ? 4 : 5);
+        // 5 ennemis ; un combat de boss aligne le boss et ses escortes (BOSS_POWER.escorts)
+        const count = getEnemyCount(isBoss ? BOSS_POWER.escorts : 5);
         const pool = zonePool(zoneIndex, level, false);
         const top = pool.slice(0, Math.max(12, Math.ceil(pool.length * 0.35)));
 
@@ -122,10 +123,10 @@ const EnemyGen = (() => {
         }
 
         const tierBase = enemyTier(level);
-        // Combat de boss : le boss prend tout le bonus de niveau ; ses 4 escortes restent un peu sous le niveau de la vague
+        // Combat de boss : le boss prend tout le bonus de niveau ; ses escortes restent un peu sous le niveau de la vague
         const escortLevel = isBoss ? Math.max(1, Math.min(level, getEnemyLevel(9) - 1)) : level;
         picks.forEach(p => {
-            p.level = p.boss ? level + Math.ceil(level * 0.08) : escortLevel;
+            p.level = p.boss ? level + Math.ceil(level * BOSS_POWER.level) : escortLevel;
             p.tier = { ...tierBase };
             p.moves = pickMoves(p.pk, p.level, rand);
             p.role = BattleRules.computeRole(p.pk.stats, p.moves.map(id => ({ ...MovesDB[id], id })));
@@ -201,5 +202,5 @@ const EnemyGen = (() => {
         });
     }
 
-    return { setup, generate };
+    return { setup, generate, TIER };
 })();
